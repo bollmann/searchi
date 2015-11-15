@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry excluding="src/" kind="src" path=""/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/usr/lib/jvm/java-7-oracle/lib/tools.jar"/>
+	<classpathentry kind="var" path="ANT_PATH"/>
+	<classpathentry kind="lib" path="/usr/local/hadoop/share/hadoop/common/hadoop-common-2.6.0.jar"/>
+	<classpathentry kind="lib" path="/usr/local/hadoop/share/hadoop/mapreduce/hadoop-mapreduce-client-common-2.6.0.jar"/>
+	<classpathentry kind="lib" path="/usr/local/hadoop/share/hadoop/mapreduce/hadoop-mapreduce-client-core-2.6.0.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
