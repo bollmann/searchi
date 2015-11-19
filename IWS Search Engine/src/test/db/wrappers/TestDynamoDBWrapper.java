@@ -8,13 +8,13 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMappingException;
 
 import db.dbo.URLMetaInfo;
-import db.wrappers.DBWrapper;
+import db.wrappers.DynamoDBWrapper;
 
-public class TestDBWrapper extends TestCase {
+public class TestDynamoDBWrapper extends TestCase {
 
 	@Test
 	public void testCreateTable() {
-		DBWrapper wp = DBWrapper.getInstance("http://localhost:8000");
+		DynamoDBWrapper wp = DynamoDBWrapper.getInstance("http://localhost:8000");
 //		wp.deleteTable("URLMetaInfo");
 		wp.createTable("URLMetaInfo", 100, 100, "url", "S");
 		URLMetaInfo info = new URLMetaInfo("abc");
@@ -34,7 +34,7 @@ public class TestDBWrapper extends TestCase {
 	
 	@Test
 	public void testGetForNonExistentItem() {
-		DBWrapper wp = DBWrapper.getInstance("http://localhost:8000");
+		DynamoDBWrapper wp = DynamoDBWrapper.getInstance("http://localhost:8000");
 //		wp.deleteTable("URLMetaInfo");
 		wp.createTable("URLMetaInfo", 100, 100, "url", "S");
 		URLMetaInfo info = new URLMetaInfo("abc");

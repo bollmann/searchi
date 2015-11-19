@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 
+import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
@@ -14,9 +15,9 @@ import com.amazonaws.services.dynamodbv2.model.KeySchemaElement;
 import com.amazonaws.services.dynamodbv2.model.KeyType;
 import com.amazonaws.services.dynamodbv2.model.ProvisionedThroughput;
 
-public class DBWrapper {
-	private final Logger logger = Logger.getLogger(DBWrapper.class);
-	private static DBWrapper wrapper;
+public class DynamoDBWrapper {
+	private final Logger logger = Logger.getLogger(DynamoDBWrapper.class);
+	private static DynamoDBWrapper wrapper;
 	private AmazonDynamoDBClient client;
 	private String endPoint;
 	private DynamoDB dynamoDB;
@@ -30,18 +31,18 @@ public class DBWrapper {
 		return endPoint;
 	}
 
-	private DBWrapper(String endPoint) {
-		client = new AmazonDynamoDBClient();
+	private DynamoDBWrapper(String endPoint) {
+		client = new AmazonDynamoDBClient(new ProfileCredentialsProvider());
 		this.endPoint = endPoint;
 		client.setEndpoint(this.endPoint);
 		dynamoDB = new DynamoDB(client);
 		mapper = new DynamoDBMapper(client);
 	}
 
-	public static DBWrapper getInstance(String endPoint) {
+	public static DynamoDBWrapper getInstance(String endPoint) {
 		if (wrapper == null || !wrapper.getEndPoint().equals(endPoint)) {
-			Logger.getLogger(DBWrapper.class).warn("Setting endpoint to " + endPoint);
-			wrapper = new DBWrapper(endPoint);
+			Logger.getLogger(DynamoDBWrapper.class).warn("Setting endpoint to " + endPoint);
+			wrapper = new DynamoDBWrapper(endPoint);
 		}
 		return wrapper;
 	}
