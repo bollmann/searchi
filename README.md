@@ -1,2 +1,3 @@
-# searchengine
-IWS Search Engine Project.
+# searchi -- our awesome IWS search engine!
+
+That's it. :-)
