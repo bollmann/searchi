@@ -32,7 +32,7 @@ public class DynamoDBWrapper {
 	}
 
 	private DynamoDBWrapper(String endPoint) {
-		client = new AmazonDynamoDBClient(new ProfileCredentialsProvider());
+		client = new AmazonDynamoDBClient(new ProfileCredentialsProvider("shreejit"));
 		this.endPoint = endPoint;
 		client.setEndpoint(this.endPoint);
 		dynamoDB = new DynamoDB(client);

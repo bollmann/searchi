@@ -1,8 +1,10 @@
 package db.wrappers;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.Scanner;
 
@@ -26,9 +28,9 @@ public class S3Wrapper {
 	private AmazonS3 s3client;
 	private String endPoint;
 
-	private S3Wrapper(String endPoint) {
+	private S3Wrapper() {
 		this.endPoint = endPoint;
-		s3client = new AmazonS3Client(new ProfileCredentialsProvider());
+		s3client = new AmazonS3Client(new ProfileCredentialsProvider("shreejit"));
 		s3client.setRegion(Region.getRegion(Regions.US_EAST_1));
 	}
 
@@ -40,9 +42,9 @@ public class S3Wrapper {
 	 *            case s3-us-east-1.amazonaws.com
 	 * @return
 	 */
-	public static S3Wrapper getInstance(String endPoint) {
+	public static S3Wrapper getInstance() {
 		if (instance == null) {
-			instance = new S3Wrapper(endPoint);
+			instance = new S3Wrapper();
 		}
 		return instance;
 	}
@@ -61,7 +63,7 @@ public class S3Wrapper {
 			System.out.println("Error Type:       " + ase.getErrorType());
 			System.out.println("Request ID:       " + ase.getRequestId());
 		} catch (AmazonClientException ace) {
-			System.out.println("Caught an AmazonClientException, which "
+			System.out.println("Caught an AmazonClientException during delete, which "
 					+ "means the client encountered "
 					+ "an internal error while trying to "
 					+ "communicate with S3, "
@@ -85,7 +87,7 @@ public class S3Wrapper {
 			System.out.println("bucket location = " + bucketLocation);
 
 		} catch (AmazonServiceException ase) {
-			System.out.println("Caught an AmazonServiceException, which "
+			System.out.println("Caught an AmazonServiceException during create, which "
 					+ "means your request made it "
 					+ "to Amazon S3, but was rejected with an error response"
 					+ " for some reason.");
@@ -119,10 +121,19 @@ public class S3Wrapper {
 		S3Object object = s3client.getObject(new GetObjectRequest(bucketName,
 				key));
 		InputStream objectData = object.getObjectContent();
-		Scanner scanner = new Scanner(objectData, "UTF-8");
-		String content = scanner.next();
 		
-		scanner.close();
+		BufferedReader br = new BufferedReader(new InputStreamReader(objectData));
+		
+		StringBuilder sb = new StringBuilder();
+		String line = null;
+		try {
+			while((line = br.readLine()) != null) {
+				sb.append(line);
+			}
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		// Process the objectData stream.
 		try {
 			objectData.close();
@@ -131,7 +142,7 @@ public class S3Wrapper {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return content;
+		return sb.toString();
 	}
 
 }
