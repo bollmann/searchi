@@ -1,0 +1,38 @@
+<project name="searchi" default="all" basedir="./">
+  <target name="init">
+    <mkdir dir="bin/"/>
+    <copy file="src/log4j.properties" tofile="bin/log4j.properties"/>
+  </target>
+  
+  <target name="compile-inverted-index">
+    <javac srcdir="src" destdir="bin" includes="indexer/offline/*.java,utils/**/*.java" deprecation="on"
+     debug="true" includeantruntime="false" classpath="classes">
+      <classpath>
+        <fileset dir="lib">
+          <include name="log4j*.jar" />
+          <include name="hadoop*.jar" />
+          <include name="jsoup*.jar" />
+        </fileset>
+      </classpath>
+    </javac>
+  </target>
+  
+  <target name="inverted-index" depends="compile-inverted-index">
+    <jar basedir="bin" destfile="InvertedIndexJob.jar" includes="indexer/offline/*.class,utils/**/*.class">
+      <fileset dir="." includes="lib/*.jar"/>
+      <manifest>
+        <attribute name="Main-Class" value="indexer.offline.InvertedIndexJob" />
+      </manifest>
+    </jar>
+  </target>
+  
+  <target name="all">
+    <!-- TODO! //-->
+  </target>
+  
+  <target name="clean">
+    <delete dir="bin/" />
+    <delete file="InvertedIndexJob.jar" />
+  </target>
+  
+</project>
