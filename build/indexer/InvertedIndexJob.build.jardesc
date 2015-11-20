@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<jardesc>
+    <jar path="indexer/InvertedIndexJob.jar"/>
+    <options buildIfNeeded="true" compress="true" descriptionLocation="/searchi/build/indexer/InvertedIndexJob.build.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="true" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
+    <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
+    <selectedProjects/>
+    <manifest generateManifest="true" mainClassHandleIdentifier="=searchi/src&lt;indexer.offline{InvertedIndexJob.java[InvertedIndexJob" manifestLocation="" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
+        <sealing sealJar="false">
+            <packagesToSeal/>
+            <packagesToUnSeal/>
+        </sealing>
+    </manifest>
+    <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
+        <file path="/searchi/lib/hadoop-mapreduce-client-common-2.6.0.jar"/>
+        <javaElement handleIdentifier="=searchi/src&lt;utils.file"/>
+        <file path="/searchi/lib/log4j-1.2.9.jar"/>
+        <file path="/searchi/lib/jsoup-1.8.3.jar"/>
+        <javaElement handleIdentifier="=searchi/src&lt;indexer.offline"/>
+        <file path="/searchi/lib/hadoop-common-2.6.0.jar"/>
+        <file path="/searchi/lib/hadoop-mapreduce-client-core-2.6.0.jar"/>
+    </selectedElements>
+</jardesc>

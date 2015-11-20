@@ -1,6 +1,5 @@
 package indexer.offline;
 
-import utils.file.FileUtils;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
