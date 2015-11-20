@@ -38,7 +38,27 @@ public final class PRComputeJob extends Configured implements Tool {
 	}
 	
 	public static void main(String [] args) throws Exception {
-		int res = ToolRunner.run(new PRComputeJob(), args);
+		
+		int numIter = 5;
+		if (args.length > 2) {
+			numIter = Integer.parseInt(args[2]);
+		} 
+		
+		String input = args[0];
+		String out = args[1];
+		String tempOut;
+		int res = 0;
+		
+		for (int i = 1; i <= numIter; ++i) {
+			tempOut = out + "_" + Integer.toString(i); 
+			String [] jobArgs = {input, tempOut};
+			res = ToolRunner.run(new PRComputeJob(), jobArgs);
+			if (res != 0) {
+				break;
+			}
+			input = tempOut;
+			
+		}		
 		System.exit(res);
 	}
 
