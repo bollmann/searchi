@@ -1,28 +1,22 @@
 package pagerank.phase2;
 
 import java.io.IOException;
-import java.util.Iterator;
 
 import org.apache.hadoop.io.Text;
-import org.apache.hadoop.mapred.MapReduceBase;
-import org.apache.hadoop.mapred.OutputCollector;
-import org.apache.hadoop.mapred.Reducer;
-import org.apache.hadoop.mapred.Reporter;
+import org.apache.hadoop.mapreduce.Reducer;
 
-public class PRComputeReducer extends MapReduceBase implements Reducer<Text, Text, Text, Text>{
+public class PRComputeReducer extends Reducer<Text, Text, Text, Text>{
 	
 	private static final String DELIM_SINGLE_HASH = "#";
 	
 	@Override
-	public void reduce(Text key, Iterator<Text> values,
-			OutputCollector<Text, Text> output, Reporter reporter) throws IOException {
+	public void reduce(Text key, Iterable<Text> values, Context context)
+		throws IOException, InterruptedException {
 		
 		double pageRank = 0.0;
 		String outLinks = "";
 	
-		while (values.hasNext()) {
-			
-			Text value = values.next();			
+		for (Text value : values) {			
 			String [] incomingPRData = value.toString().split(DELIM_SINGLE_HASH);
 			
 			if (incomingPRData.length == 1) {
@@ -47,7 +41,7 @@ public class PRComputeReducer extends MapReduceBase implements Reducer<Text, Tex
 		oVal.append(DELIM_SINGLE_HASH);
 		oVal.append(outLinks);
 		
-		output.collect(key, new Text(oVal.toString()));		
+		context.write(key, new Text(oVal.toString()));		
 	}
 
 }

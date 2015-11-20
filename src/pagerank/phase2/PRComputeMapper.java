@@ -3,19 +3,16 @@ package pagerank.phase2;
 import java.io.IOException;
 
 import org.apache.hadoop.io.Text;
-import org.apache.hadoop.mapred.MapReduceBase;
-import org.apache.hadoop.mapred.Mapper;
-import org.apache.hadoop.mapred.OutputCollector;
-import org.apache.hadoop.mapred.Reporter;
+import org.apache.hadoop.mapreduce.Mapper;
 
-public class PRComputeMapper extends MapReduceBase implements Mapper<Text, Text, Text, Text> {
+public class PRComputeMapper extends Mapper<Text, Text, Text, Text> {
 	
 	private static final String DELIM_SINGLE_SPACE = " ";
 	private static final String DELIM_SINGLE_HASH = "#";
 
 	@Override
-	public void map(Text key, Text value, OutputCollector<Text, Text> output,
-			Reporter reporter) throws IOException {
+	public void map(Text key, Text value, Context context)
+		throws IOException, InterruptedException {
 		
 		String [] pageRankData = value.toString().split(DELIM_SINGLE_HASH);
 		
@@ -30,11 +27,9 @@ public class PRComputeMapper extends MapReduceBase implements Mapper<Text, Text,
 				StringBuffer oVal = new StringBuffer(pageRankStr);
 				oVal.append(DELIM_SINGLE_HASH);
 				oVal.append(Integer.toString(outLinksCount));
-				output.collect(new Text(outLinks[i].trim()), new Text(oVal.toString()));
+				context.write(new Text(outLinks[i].trim()), new Text(oVal.toString()));
 			}
-			output.collect(key, new Text(pageRankData[1].trim()));
-		}
-		
+			context.write(key, new Text(pageRankData[1].trim()));
+		}		
 	}
-
 }
