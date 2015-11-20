@@ -3,18 +3,15 @@ package pagerank.phase1;
 import java.io.IOException;
 
 import org.apache.hadoop.io.Text;
-import org.apache.hadoop.mapred.MapReduceBase;
-import org.apache.hadoop.mapred.Mapper;
-import org.apache.hadoop.mapred.OutputCollector;
-import org.apache.hadoop.mapred.Reporter;
+import org.apache.hadoop.mapreduce.Mapper;
 
-public class PRInitMapper extends MapReduceBase implements Mapper<Text, Text, Text, Text> {
+public class PRInitMapper extends Mapper<Text, Text, Text, Text> {
 
 	@Override
-	public void map(Text key, Text value, OutputCollector<Text, Text> out,
-			Reporter reporter) throws IOException {
+	public void map(Text key, Text value, Context context) 
+		throws IOException, InterruptedException {
 		
 		/* Map output in format L1		L2 L3 L5 L7 */		
-		out.collect(key, value);		
+		context.write(key, value);
 	}
 }

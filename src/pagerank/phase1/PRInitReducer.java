@@ -1,29 +1,24 @@
 package pagerank.phase1;
 
 import java.io.IOException;
-import java.util.Iterator;
 
 import org.apache.hadoop.io.Text;
-import org.apache.hadoop.mapred.MapReduceBase;
-import org.apache.hadoop.mapred.OutputCollector;
-import org.apache.hadoop.mapred.Reducer;
-import org.apache.hadoop.mapred.Reporter;
+import org.apache.hadoop.mapreduce.Reducer;
 
-public class PRInitReducer extends MapReduceBase implements Reducer<Text, Text, Text, Text> {
+public class PRInitReducer extends Reducer<Text, Text, Text, Text> {
 
 	@Override
-	public void reduce(Text key, Iterator<Text> values,
-			OutputCollector<Text, Text> out, Reporter reporter) throws IOException {
+	public void reduce(Text key, Iterable<Text> values, Context context)
+			throws IOException, InterruptedException {
 		
 		String initPageRank = "1.0";
 		StringBuilder outVal = new StringBuilder(initPageRank + "#");
 		
-		
-		while (values.hasNext()) {
+		for (Text value : values) {
 			outVal.append(" ");
-			outVal.append(values.next().toString().trim());
+			outVal.append(value.toString().trim());
 		}
 		
-		out.collect(key, new Text(outVal.toString()));
+		context.write(key, new Text(outVal.toString()));
 	}
 }

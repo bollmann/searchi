@@ -1,7 +1,5 @@
 package indexer.offline;
 
-import indexer.utils.FileUtils;
-
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -19,6 +17,8 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.apache.log4j.Logger;
+
+import utils.file.FileUtils;
 
 public class DocumentVectors {
 	private static Logger logger = Logger.getLogger(DocumentVectors.class);

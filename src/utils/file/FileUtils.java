@@ -1,4 +1,4 @@
-package indexer.utils;
+package utils.file;
 
 import java.io.File;
 import java.nio.file.Path;
