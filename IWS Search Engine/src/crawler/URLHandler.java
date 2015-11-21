@@ -15,33 +15,31 @@ import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.w3c.tidy.Tidy;
 
 import parsers.Parser;
 import requests.Http10Request;
 import requests.HttpRequest;
 import responses.HttpResponse;
-import storage.DBWrapper;
 import threadpool.MercatorNode;
 import threadpool.MercatorQueue;
 import threadpool.Queue;
 import clients.HttpClient;
 import crawler.info.URLInfo;
-import dao.Channel;
-import dao.ChannelAccessor;
 import dao.URLContent;
-import dao.URLContentAccessor;
+import db.dbo.URLMetaInfo;
+import db.wrappers.DynamoDBWrapper;
+import db.wrappers.S3Wrapper;
 import errors.NoDomainConfigException;
 
 public class URLHandler {
 	private final Logger logger = Logger.getLogger(getClass());
 	private MercatorQueue mq;
 	private Queue<String> q;
-	private String dbPath;
 
-	public URLHandler(MercatorQueue mq, Queue<String> q, String dbPath) {
+	public URLHandler(MercatorQueue mq, Queue<String> q) {
 		this.mq = mq;
 		this.q = q;
-		this.dbPath = dbPath;
 	}
 
 	/**
@@ -71,19 +69,25 @@ public class URLHandler {
 			// updates the domain config for a domain before letting any other
 			// thread to get it
 			
-			DBWrapper.initialize(dbPath);
 			synchronized (node) {
 				logger.info("Handling url:" + url);
 				System.out.println("Attempting to process " + url);
 				
-				URLContentAccessor a = new URLContentAccessor(
-						DBWrapper.getStore());
-				URLContent oldUrlContent = (URLContent) a.pIndex.get(url);
+				DynamoDBWrapper ddb = DynamoDBWrapper.getInstance("http://localhost:8000");
+				S3Wrapper s3 = S3Wrapper.getInstance();
 				
+				URLMetaInfo info = (URLMetaInfo) ddb.getItem(url, URLMetaInfo.class);
 
 				URLContent urlContent = null;
-				if (oldUrlContent != null) {
+				
+				
+				
+				if (info != null) {
 					logger.info("Found a db entry for:" + url);
+					URLContent oldUrlContent = new URLContent();
+					oldUrlContent.setAbsolutePath(url);
+					String content = s3.getItem(url);
+					oldUrlContent.setContent(content);
 					urlContent = getPersistentContent(oldUrlContent);
 				} else {
 					logger.info("Getting fresh data for:" + url);
@@ -93,14 +97,13 @@ public class URLHandler {
 					logger.debug("Saving content of:"
 							+ urlContent.getAbsolutePath());
 					// save content. Doesn't matter if old. Just replaces
-					// content
-					// anyway
-					a.pIndex.put(urlContent);
+					// content anyway
+					s3.putItem(url, urlContent.getContent());
+					
 					// only extract links from text/html
 					logger.debug("Does this contain html?"
 							+ urlContent.getContentType().contains("text/html"));
-					// enqueueURL(url, mq, q);
-					if (urlContent.getContentType().contains("text/html")) {
+					if (Parser.isAllowedCrawlContentType(urlContent.getContentType())) {
 						logger.debug("Content is html. Parsing for links");
 						List<String> links = extractLinksFromContent(
 								new URLInfo(url), urlContent.getContent());
@@ -109,28 +112,18 @@ public class URLHandler {
 						for (String link : links) {
 							enqueueURL(link);
 						}
-					} else {
-						// TODO is xml. Need to update the channel info with
-						// this
-						// url
-						ChannelAccessor cAccessor = new ChannelAccessor(
-								DBWrapper.getStore());
-						EntityCursor<Channel> cCursor = cAccessor.pIndex
-								.entities();
-						for (Channel channel : cCursor) {
-							if (channel.isMatch(urlContent.getContent())) {
-								System.out.println("Matcher found match for channel " + channel.getName() + " - " + url);
-								channel.addUrl(url);
-								cAccessor.pIndex.put(channel);
-							}
-						}
-						cCursor.close();
+						URLMetaInfo toSave = new URLMetaInfo();
+						toSave.setUrl(url);
+						toSave.setLastCrawledOn(Calendar.getInstance().getTime());
+						toSave.setOutgoingURLs(links);
+						toSave.setType(urlContent.getContentType());
+						toSave.setSize(urlContent.getContent().length());
+						ddb.putItem(toSave);
 					}
 				} else {
 					logger.error("UrlContent was null");
 				}
 			} // end of synchonization
-			DBWrapper.close();
 		}
 	}
 

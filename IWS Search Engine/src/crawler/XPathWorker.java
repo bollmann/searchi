@@ -13,12 +13,10 @@ public class XPathWorker extends Thread {
 	private final Logger logger = Logger.getLogger(getClass());
 	private MercatorQueue mq;
 	private Queue<String> q;
-	private String dbPath;
 
-	public XPathWorker(MercatorQueue mq, Queue<String> q, String dbPath) {
+	public XPathWorker(MercatorQueue mq, Queue<String> q) {
 		this.mq = mq;
 		this.q = q;
-		this.dbPath = dbPath;
 	}
 
 	public void run() {
@@ -42,7 +40,7 @@ public class XPathWorker extends Thread {
 
 			logger.debug("Dequeued url " + url);
 			// now process url
-			URLHandler uh = new URLHandler(mq, q, dbPath);
+			URLHandler uh = new URLHandler(mq, q);
 			try {
 				uh.handleURL(url);
 			} catch (IOException | ParseException e) {
@@ -51,8 +49,6 @@ public class XPathWorker extends Thread {
 				continue;
 			}
 			
-			
-
 			// end try processing of url
 		} // end inf while
 		logger.info("Worker  shutting down.");

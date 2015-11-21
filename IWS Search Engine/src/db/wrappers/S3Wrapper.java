@@ -26,10 +26,9 @@ public class S3Wrapper {
 	private final Logger logger = Logger.getLogger(getClass());
 	private static S3Wrapper instance;
 	private AmazonS3 s3client;
-	private String endPoint;
+    public final String URL_BUCKET = "cis455-url-content"; // cannot contain uppercase letters. should be unique
 
 	private S3Wrapper() {
-		this.endPoint = endPoint;
 		s3client = new AmazonS3Client(new ProfileCredentialsProvider("shreejit"));
 		s3client.setRegion(Region.getRegion(Regions.US_EAST_1));
 	}
@@ -106,6 +105,10 @@ public class S3Wrapper {
 		}
 	}
 
+	public void putItem(String key, String content) {
+		putItem(URL_BUCKET, key, content);
+	}
+	
 	public void putItem(String bucketName, String key, String content) {
 		ByteArrayInputStream bais = null;
 		try {
@@ -117,6 +120,10 @@ public class S3Wrapper {
 		s3client.putObject(bucketName, key, bais, null);
 	}
 
+	public String getItem(String key) {
+		return getItem(URL_BUCKET, key);
+	}
+	
 	public String getItem(String bucketName, String key) {
 		S3Object object = s3client.getObject(new GetObjectRequest(bucketName,
 				key));
