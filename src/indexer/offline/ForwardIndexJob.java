@@ -20,8 +20,8 @@ import org.apache.log4j.Logger;
 
 import utils.file.FileUtils;
 
-public class DocumentVectors {
-	private static Logger logger = Logger.getLogger(DocumentVectors.class);
+public class ForwardIndexJob {
+	private static Logger logger = Logger.getLogger(ForwardIndexJob.class);
 	
 	public static List<String> tokenize(String doc) {
 		String[] words = doc.split("\\s+");
@@ -93,7 +93,7 @@ public class DocumentVectors {
 		
 		Configuration conf = new Configuration();
 		Job job = Job.getInstance(conf, "build document vectors");
-		job.setJarByClass(DocumentVectors.class);
+		job.setJarByClass(ForwardIndexJob.class);
 		
 		job.setMapperClass(WordTokenizer.class);
 		job.setMapOutputKeyClass(Text.class);
