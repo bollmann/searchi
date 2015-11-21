@@ -25,6 +25,9 @@ import threadpool.MercatorNode;
 import threadpool.MercatorQueue;
 import threadpool.Queue;
 import clients.HttpClient;
+
+import com.google.gson.Gson;
+
 import crawler.info.URLInfo;
 import dao.URLContent;
 import db.dbo.URLMetaInfo;
@@ -68,57 +71,64 @@ public class URLHandler {
 			// have to synchronize on the node so that a node processes and
 			// updates the domain config for a domain before letting any other
 			// thread to get it
-			
+
 			synchronized (node) {
 				logger.info("Handling url:" + url);
 				System.out.println("Attempting to process " + url);
-				
-				DynamoDBWrapper ddb = DynamoDBWrapper.getInstance("http://localhost:8000");
+
+				DynamoDBWrapper ddb = DynamoDBWrapper
+						.getInstance("http://localhost:8000");
 				S3Wrapper s3 = S3Wrapper.getInstance();
-				
-				URLMetaInfo info = (URLMetaInfo) ddb.getItem(url, URLMetaInfo.class);
+
+				URLMetaInfo info = (URLMetaInfo) ddb.getItem(url,
+						URLMetaInfo.class);
 
 				URLContent urlContent = null;
-				
-				
-				
+
 				if (info != null) {
-					logger.info("Found a db entry for:" + url);
-					URLContent oldUrlContent = new URLContent();
-					oldUrlContent.setAbsolutePath(url);
-					String content = s3.getItem(url);
-					oldUrlContent.setContent(content);
+					logger.info("Found a db entry for:" + url + " so looking in s3 for " + info.getId());
+					URLContent oldUrlContent = null;
+					String content = s3.getItem(info.getId());
+					Gson gson = new Gson();
+					logger.info("Parsing content to urlcontent:" + content);
+					oldUrlContent = gson.fromJson(content, URLContent.class);
+					
 					urlContent = getPersistentContent(oldUrlContent);
 				} else {
 					logger.info("Getting fresh data for:" + url);
 					urlContent = getNewContent(url);
 				}
+
 				if (urlContent != null) {
-					logger.debug("Saving content of:"
-							+ urlContent.getAbsolutePath());
-					// save content. Doesn't matter if old. Just replaces
-					// content anyway
-					s3.putItem(url, urlContent.getContent());
-					
+
 					// only extract links from text/html
 					logger.debug("Does this contain html?"
 							+ urlContent.getContentType().contains("text/html"));
-					if (Parser.isAllowedCrawlContentType(urlContent.getContentType())) {
+					if (Parser.isAllowedCrawlContentType(urlContent
+							.getContentType())) {
 						logger.debug("Content is html. Parsing for links");
 						List<String> links = extractLinksFromContent(
 								new URLInfo(url), urlContent.getContent());
 						// System.out.println("Got links:" + links);
-						logger.info("Got links:" + links);
+//						logger.info("Got links:" + links);
 						for (String link : links) {
 							enqueueURL(link);
 						}
+						logger.info("Saving data for " + url);
 						URLMetaInfo toSave = new URLMetaInfo();
 						toSave.setUrl(url);
-						toSave.setLastCrawledOn(Calendar.getInstance().getTime());
+						toSave.setLastCrawledOn(Calendar.getInstance()
+								.getTime());
 						toSave.setOutgoingURLs(links);
 						toSave.setType(urlContent.getContentType());
 						toSave.setSize(urlContent.getContent().length());
 						ddb.putItem(toSave);
+						
+						String id = toSave.getId();
+						Gson gson = new Gson();
+						String serializeJson = gson.toJson(urlContent);
+						s3.putItem(id, serializeJson);
+						logger.info("Saved data for " + url);
 					}
 				} else {
 					logger.error("UrlContent was null");

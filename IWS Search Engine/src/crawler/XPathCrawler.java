@@ -41,13 +41,16 @@ public class XPathCrawler {
 
 		logger.info("params: " + Arrays.toString(args));
 
-		DynamoDBWrapper ddb = DynamoDBWrapper.getInstance("http://localhost:8000");
-		ddb.createTable("URLMetaInfo", 100, 100, "url", "S");
-		
+		DynamoDBWrapper ddb = DynamoDBWrapper
+				.getInstance("http://localhost:8000");
 		S3Wrapper s3 = S3Wrapper.getInstance();
+		if (args[2].equals("yes")) {
+			ddb.deleteTable("URLMetaInfo");
+			s3.deleteBucket(s3.URL_BUCKET);
+		}
 		s3.createBucket(s3.URL_BUCKET);
-		
-		
+		ddb.createTable("URLMetaInfo", 100, 100, "url", "S");
+
 		MercatorQueue mq = new MercatorQueue();
 		Queue<String> q = new Queue<String>(1000);
 		mq.setOutgoingJobQueue(q);
@@ -80,7 +83,7 @@ public class XPathCrawler {
 	public static void usage() {
 		System.out
 				.println("java -cp lib/*:target/WEB-INF/crawler.XPathCrawler "
-						+ "<max_file_size> <max_urls>");
+						+ "<max_file_size> <max_urls> <refresh_database?yes/no>");
 		System.exit(1);
 	}
 }

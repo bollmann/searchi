@@ -148,7 +148,8 @@ public class MercatorNode {
 		sb.append("MercatorNode: domain=").append(domain)
 				.append(" crawlDelay=").append(crawlDelay)
 				.append(" pathAccessInfo=").append(pathAccessMap)
-				.append(" in queue:" + urls.toString());
+//				.append(" in queue:" + urls.toString());
+				.append(" in queue of size:" + urls.getSize());
 
 		return sb.toString();
 	}

@@ -4,8 +4,8 @@ import junit.framework.TestCase;
 
 import org.junit.Test;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMappingException;
+import com.amazonaws.services.dynamodbv2.model.DescribeTableResult;
 
 import db.dbo.URLMetaInfo;
 import db.wrappers.DynamoDBWrapper;
@@ -15,7 +15,9 @@ public class TestDynamoDBWrapper extends TestCase {
 	@Test
 	public void testCreateTable() {
 		DynamoDBWrapper wp = DynamoDBWrapper.getInstance("http://localhost:8000");
-//		wp.deleteTable("URLMetaInfo");
+		wp.deleteTable("URLMetaInfo");
+		DescribeTableResult result = wp.describeTable("URLMetaInfo");
+		System.out.println(result);
 		wp.createTable("URLMetaInfo", 100, 100, "url", "S");
 		URLMetaInfo info = new URLMetaInfo("abc");
 		wp.putItem(info);
@@ -26,6 +28,7 @@ public class TestDynamoDBWrapper extends TestCase {
 			URLMetaInfo rInfo = (URLMetaInfo) wp.getItem("abc",
 					URLMetaInfo.class);
 			assertEquals("abc", rInfo.getUrl());
+			System.out.println(rInfo.getId());
 		} catch (DynamoDBMappingException e) {
 			e.printStackTrace();
 		}

@@ -11,9 +11,11 @@ import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import com.amazonaws.services.dynamodbv2.document.Table;
 import com.amazonaws.services.dynamodbv2.model.AttributeDefinition;
 import com.amazonaws.services.dynamodbv2.model.CreateTableRequest;
+import com.amazonaws.services.dynamodbv2.model.DescribeTableResult;
 import com.amazonaws.services.dynamodbv2.model.KeySchemaElement;
 import com.amazonaws.services.dynamodbv2.model.KeyType;
 import com.amazonaws.services.dynamodbv2.model.ProvisionedThroughput;
+import com.amazonaws.services.dynamodbv2.model.ResourceNotFoundException;
 
 public class DynamoDBWrapper {
 	private final Logger logger = Logger.getLogger(DynamoDBWrapper.class);
@@ -22,7 +24,7 @@ public class DynamoDBWrapper {
 	private String endPoint;
 	private DynamoDB dynamoDB;
 	private DynamoDBMapper mapper;
-	
+
 	public DynamoDBMapper getMapper() {
 		return mapper;
 	}
@@ -32,16 +34,28 @@ public class DynamoDBWrapper {
 	}
 
 	private DynamoDBWrapper(String endPoint) {
-		client = new AmazonDynamoDBClient(new ProfileCredentialsProvider("shreejit"));
+		client = new AmazonDynamoDBClient(new ProfileCredentialsProvider(
+				"shreejit"));
 		this.endPoint = endPoint;
 		client.setEndpoint(this.endPoint);
 		dynamoDB = new DynamoDB(client);
 		mapper = new DynamoDBMapper(client);
 	}
 
+	public DescribeTableResult describeTable(String tableName) {
+		DescribeTableResult result = null;
+		try {
+			result = client.describeTable(tableName);
+		} catch (ResourceNotFoundException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
 	public static DynamoDBWrapper getInstance(String endPoint) {
 		if (wrapper == null || !wrapper.getEndPoint().equals(endPoint)) {
-			Logger.getLogger(DynamoDBWrapper.class).warn("Setting endpoint to " + endPoint);
+			Logger.getLogger(DynamoDBWrapper.class).warn(
+					"Setting endpoint to " + endPoint);
 			wrapper = new DynamoDBWrapper(endPoint);
 		}
 		return wrapper;
@@ -50,9 +64,9 @@ public class DynamoDBWrapper {
 	/**
 	 * Retrieves the object from dynamodb as identified by the itemId. This
 	 * assumes that you have annotated the class that you want to retrieve with
-	 * this get method with the appropriate dynamodb annotations. The class
-	 * also SHOULD have a default constructor, otherwise it cannot be instantiated
-	 * by dynamodb mapper
+	 * this get method with the appropriate dynamodb annotations. The class also
+	 * SHOULD have a default constructor, otherwise it cannot be instantiated by
+	 * dynamodb mapper
 	 * 
 	 * @param itemId
 	 *            is the record identifier
@@ -96,8 +110,12 @@ public class DynamoDBWrapper {
 			long writeCapacityUnits, String partitionKeyName,
 			String partitionKeyType) {
 
+		if(describeTable(tableName) == null) {
 		createTable(tableName, readCapacityUnits, writeCapacityUnits,
 				partitionKeyName, partitionKeyType, null, null);
+		} else {
+			logger.error("DynamoDB table " + tableName + " already exists! Not creating it");
+		}
 	}
 
 	public void createTable(String tableName, long readCapacityUnits,
