@@ -103,7 +103,9 @@ public class URLHandler {
 			}
 
 			if (urlContent != null) {
-
+				if(urlContent.getContentType() == null) {
+					return;
+				}
 				// only extract links from text/html
 				logger.debug("Does this contain html?"
 						+ urlContent.getContentType().contains("text/html"));
@@ -133,7 +135,6 @@ public class URLHandler {
 								.getTime());
 						
 
-//						toSave.setOutgoingURLs(outgoingLinkIds);
 						toSave.setType(urlContent.getContentType());
 						toSave.setSize(urlContent.getContent().length());
 						ddb.putItem(toSave);
@@ -141,9 +142,9 @@ public class URLHandler {
 						String id = toSave.getId();
 						Gson gson = new Gson();
 						// toSave.setOutgoingURLs(links);
-						List<String> outgoingLinkIds = URLMetaInfo
-								.convertLinksToIds(links, ddb);
-						urlContent.setOutgoingLinks(outgoingLinkIds);
+//						List<String> outgoingLinkIds = URLMetaInfo
+//								.convertLinksToIds(links, ddb);
+						urlContent.setOutgoingLinks(links);
 						String serializeJson = gson.toJson(urlContent);
 						s3.putItem(id, serializeJson);
 						Date end = Calendar.getInstance().getTime();

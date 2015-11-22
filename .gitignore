@@ -1,2 +1,4 @@
 .metadata/*
 *.classpath
+*.class
+IWS Search Engine/target/*

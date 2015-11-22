@@ -3,18 +3,24 @@
  */
 package crawler;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import db.wrappers.DynamoDBWrapper;
-import db.wrappers.S3Wrapper;
 import parsers.Parser;
 import threadpool.MercatorQueue;
 import threadpool.Queue;
 import threadpool.ThreadPool2;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import crawler.shutdownHook.ShutdownHook;
+import db.wrappers.DynamoDBWrapper;
+import db.wrappers.S3Wrapper;
 import errors.QueueFullException;
 
 /**
@@ -25,14 +31,6 @@ public class XPathCrawler {
 	public static Integer maxUrls = Integer.MAX_VALUE;
 
 	public static void main(String[] args) {
-
-		Runtime.getRuntime().addShutdownHook(new Thread() {
-			@Override
-			public void run() {
-				System.out.println("Exiting gracefully");
-				// save mercator queue state
-			}
-		});
 
 		Integer maxFileSize = Integer.parseInt(args[0]);
 		Parser.setMaxFileSize(maxFileSize);
@@ -47,12 +45,30 @@ public class XPathCrawler {
 		if (args[2].equals("yes")) {
 			ddb.deleteTable("URLMetaInfo");
 			s3.deleteBucket(s3.URL_BUCKET);
+			s3.deleteBucket(s3.URL_QUEUE_BUCKET);
 		}
+
 		s3.createBucket(s3.URL_BUCKET);
-		ddb.createTable("URLMetaInfo", 5, 1005, "url", "S");
+		s3.createBucket(s3.URL_QUEUE_BUCKET);
+		ddb.createTable("URLMetaInfo", 5, 5, "url", "S");
+
+		// look for queue in s3. If not there, then initialize to new
+		Queue<String> q = null;
+		try {
+			String queueContent = s3.getItem(s3.URL_QUEUE_BUCKET, "queueState");
+			Type listType = new TypeToken<Queue<String>>() {
+			}.getType();
+			System.out.println("Reading queue for s3. Resuming saved state.");
+			q = new Gson().fromJson(queueContent, listType);
+		} catch (Exception e) {
+			e.printStackTrace();
+			q = new Queue<String>(1000);
+		}
 
 		MercatorQueue mq = new MercatorQueue();
-		Queue<String> q = new Queue<String>(1000);
+
+		Runtime.getRuntime().addShutdownHook(new ShutdownHook(q));
+
 		mq.setOutgoingJobQueue(q);
 
 		List<String> seedUrls = new ArrayList<String>() {

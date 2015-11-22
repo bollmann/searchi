@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.util.Scanner;
+import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 
@@ -20,13 +20,17 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CreateBucketRequest;
 import com.amazonaws.services.s3.model.GetBucketLocationRequest;
 import com.amazonaws.services.s3.model.GetObjectRequest;
+import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.services.s3.model.S3ObjectSummary;
 
 public class S3Wrapper {
 	private final Logger logger = Logger.getLogger(getClass());
 	private static S3Wrapper instance;
 	private AmazonS3 s3client;
     public final String URL_BUCKET = "cis455-url-content"; // cannot contain uppercase letters. should be unique
+    public final String URL_QUEUE_BUCKET = "cis455-url-queue"; // cannot contain uppercase letters. should be unique
+
 
 	private S3Wrapper() {
 		s3client = new AmazonS3Client(new ProfileCredentialsProvider("shreejit"));
@@ -50,7 +54,22 @@ public class S3Wrapper {
 
 	public void deleteBucket(String bucketName) {
 		try {
+			
+			ObjectListing objectListing = s3client.listObjects(bucketName);
+            while (true) {
+                for ( Iterator<?> iterator = objectListing.getObjectSummaries().iterator(); iterator.hasNext(); ) {
+                    S3ObjectSummary objectSummary = (S3ObjectSummary) iterator.next();
+                    s3client.deleteObject(bucketName, objectSummary.getKey());
+                }
+     
+                if (objectListing.isTruncated()) {
+                    objectListing = s3client.listNextBatchOfObjects(objectListing);
+                } else {
+                    break;
+                }
+            };
 			s3client.deleteBucket(bucketName);
+			
 		} catch (AmazonServiceException ase) {
 			System.out.println("Caught an AmazonServiceException, which "
 					+ "means your request made it "

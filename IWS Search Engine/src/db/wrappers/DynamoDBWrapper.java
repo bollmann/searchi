@@ -1,6 +1,8 @@
 package db.wrappers;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +28,10 @@ public class DynamoDBWrapper {
 	private String endPoint;
 	private DynamoDB dynamoDB;
 	private DynamoDBMapper mapper;
+	private long entriesWritten = 0L;
+	private long entriesRead = 0L;
+	private Date startTime;
+	
 	public static final String URL_CONTENT_ENDPOINT = "http://dynamodb.us-east-1.amazonaws.com";
 
 	public DynamoDBMapper getMapper() {
@@ -35,11 +41,22 @@ public class DynamoDBWrapper {
 	public String getEndPoint() {
 		return endPoint;
 	}
+	
+	public void displaySaveStatistics() {
+		Date endTime = Calendar.getInstance().getTime();
+		String message = "Entries read:" + entriesRead 
+				+ " entries written:" + entriesWritten
+				+ " time elapsed: " + (endTime.getTime() - startTime.getTime())/1000 + "s, "
+				+ (endTime.getTime() - startTime.getTime())%1000 + "ms";
+		System.out.println(message);
+		logger.warn(message);
+	}
 
 	private DynamoDBWrapper(String endPoint) {
 		client = new AmazonDynamoDBClient(new ProfileCredentialsProvider(
 				"shreejit"));
 		this.endPoint = endPoint;
+		startTime = Calendar.getInstance().getTime();
 		client.setEndpoint(this.endPoint);
 		dynamoDB = new DynamoDB(client);
 		mapper = new DynamoDBMapper(client);
@@ -79,10 +96,12 @@ public class DynamoDBWrapper {
 	 */
 	public Object getItem(String itemId, Class clazz) {
 		Object obj = mapper.load(clazz, itemId);
+		entriesRead++;
 		return obj;
 	}
 	
 	public Map<String, List<Object>> getBatchItem(List<Object> itemIds) {
+		entriesRead += itemIds.size();
 		return mapper.batchLoad(itemIds);
 	}
 
@@ -95,6 +114,7 @@ public class DynamoDBWrapper {
 	 *            bindings
 	 */
 	public void putItem(Object toSave) {
+		entriesWritten++;
 		mapper.save(toSave);
 	}
 

@@ -11,7 +11,7 @@ public class ThreadPool2 {
 	
 	private List<Thread> threadList;
 	
-	public static Integer MAX_SIZE = 2;
+	public static Integer MAX_SIZE = 15;
 	
 	private Boolean shouldShutdown = false;
 	
