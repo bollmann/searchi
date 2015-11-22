@@ -20,7 +20,7 @@ import errors.QueueFullException;
 public class Queue<T> {
 
 	/** The max queue size. */
-	private int MAX_QUEUE_SIZE = 10000;
+	private int MAX_QUEUE_SIZE = 60000;
 
 	/** The logger. */
 	private static Logger logger = Logger.getLogger(Queue.class);
