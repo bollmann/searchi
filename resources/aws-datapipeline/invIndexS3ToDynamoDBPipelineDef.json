@@ -1,0 +1,123 @@
+{
+  "objects": [
+    {
+      "role": "DataPipelineDefaultRole",
+      "subject": "Fail: Inverted Index Pipeline export from S3 to DynamoDB",
+      "name": "FailureSnsAlarm",
+      "id": "ActionId_QbXsD",
+      "message": "Fail: Inverted Index Pipeline export from S3 to DynamoDB",
+      "type": "SnsAlarm",
+      "topicArn": "arn:aws:sns:us-east-1:670736579927:push_fail_s3_dynamo"
+    },
+    {
+      "occurrences": "1",
+      "period": "1 Day",
+      "name": "RunOnce",
+      "id": "DefaultSchedule",
+      "type": "Schedule",
+      "startAt": "FIRST_ACTIVATION_DATE_TIME"
+    },
+    {
+      "failureAndRerunMode": "CASCADE",
+      "schedule": {
+        "ref": "DefaultSchedule"
+      },
+      "resourceRole": "DataPipelineDefaultResourceRole",
+      "role": "DataPipelineDefaultRole",
+      "pipelineLogUri": "s3://datapipeline-invertedindex-s3-dynamodb-logs/",
+      "scheduleType": "cron",
+      "name": "Default",
+      "id": "Default"
+    },
+    {
+      "name": "ImportS3ToDynamoActivity",
+      "output": {
+        "ref": "DDBDestinationTable"
+      },
+      "input": {
+        "ref": "S3InputDataNode"
+      },      
+      "maximumRetries": "2", 
+      "runsOn": {
+        "ref": "EmrClusterForLoad"
+      },
+      "id": "ImportS3ToDynamoActivity",
+      "type": "HiveActivity",
+      "stage": "false",
+      "scriptUri": "s3://hivescripts/invIndexS3ToDynamoDBScript.hql",
+      "resizeClusterBeforeRunning": "true",
+      "onFail": {
+        "ref": "ActionId_QbXsD"
+      },
+      "onSuccess": {
+        "ref": "ActionId_Vhwxo"
+      }
+    },
+    {
+      "role": "DataPipelineDefaultRole",
+      "subject": "Success: Inverted Index Pipeline export from S3 to DynamoDB",
+      "name": "SuccessSnsAlarm",
+      "id": "ActionId_Vhwxo",
+      "message": "Success: Inverted Index Pipeline export from S3 to DynamoDB",
+      "type": "SnsAlarm",
+      "topicArn": "arn:aws:sns:us-east-1:670736579927:push_success_s3_dynamo"
+    },
+    {
+      "writeThroughputPercent": "#{myDDBWriteThroughputRatio}",
+      "name": "DDBDestinationTable",
+      "id": "DDBDestinationTable",
+      "type": "DynamoDBDataNode",
+      "tableName": "#{myDDBTableName}"
+    },
+    {
+      "bootstrapAction": "s3://#{myDDBRegion}.elasticmapreduce/bootstrap-actions/configure-hadoop, --mapred-key-value,mapreduce.map.speculative=false",
+      "name": "EmrClusterForLoad",
+      "coreInstanceCount": "1",
+      "coreInstanceType": "m3.xlarge",
+      "amiVersion": "3.8.0",
+      "id": "EmrClusterForLoad",
+      "masterInstanceType": "m3.xlarge",
+      "region": "#{myDDBRegion}",
+      "type": "EmrCluster",
+      "terminateAfter": "60 Minutes"
+    },
+    {
+      "directoryPath": "#{myInputS3Loc}",
+      "name": "S3InputDataNode",
+      "id": "S3InputDataNode",
+      "type": "S3DataNode"
+    }
+  ],
+  "parameters": [
+    {
+      "description": "Input S3 folder",
+      "id": "myInputS3Loc",
+      "type": "AWS::S3::ObjectKey"
+    },
+    {
+      "description": "Target DynamoDB table name",
+      "id": "myDDBTableName",
+      "type": "String"
+    },
+    {
+      "default": "0.25",
+      "watermark": "Enter value between 0.1-1.0",
+      "description": "DynamoDB write throughput ratio",
+      "id": "myDDBWriteThroughputRatio",
+      "type": "Double"
+    },
+    {
+      "default": "us-east-1",
+      "watermark": "us-east-1",
+      "description": "Region of the DynamoDB table",
+      "id": "myDDBRegion",
+      "type": "String"
+    }
+  ],
+  "values": {
+    "myDDBRegion": "us-east-1",
+    "myDDBTableName": "invertedIndex",
+    "myDDBWriteThroughputRatio": "0.50",
+    "myInputS3Loc": "s3://inverted-index-raw-table/"
+  }
+}
