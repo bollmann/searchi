@@ -4,14 +4,12 @@
     <copy file="src/log4j.properties" tofile="bin/log4j.properties"/>
   </target>
   
-  <target name="compile-inverted-index">
+  <target name="compile-inverted-index" depends="init">
     <javac srcdir="src" destdir="bin" includes="indexer/offline/*.java,utils/**/*.java" deprecation="on"
      debug="true" includeantruntime="false" classpath="classes">
       <classpath>
         <fileset dir="lib">
-          <include name="log4j*.jar" />
-          <include name="hadoop*.jar" />
-          <include name="jsoup*.jar" />
+          <include name="*.jar" />
         </fileset>
       </classpath>
     </javac>

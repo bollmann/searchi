@@ -1,6 +1,8 @@
 package indexer.offline;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 
 import org.apache.hadoop.fs.FSDataInputStream;
 import org.apache.hadoop.fs.FileSystem;
@@ -14,7 +16,14 @@ import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
+import com.google.gson.Gson;
+
 public class DocumentReader extends RecordReader<Text, Text> {
+	private class PageBlob {
+		String url;
+		String content;
+	}
+	
 	private Text url;
 	private Text words;
 	private int done;
@@ -49,17 +58,16 @@ public class DocumentReader extends RecordReader<Text, Text> {
 		
 		FileSplit docSplit = (FileSplit) split;
 		final Path path = docSplit.getPath();
-		
-		logger.debug(String.format("reading file split for file '%s'...\n", path.toString()));
-		
+				
 		FileSystem fs = path.getFileSystem(context.getConfiguration());
-		url = new Text(path.getName());
-		
 		FSDataInputStream in = fs.open(path);
-		Document doc = Jsoup.parse(in, null, url.toString());
-		words = new Text(doc.select("body").text());
+		Gson gson = new Gson();
+		PageBlob rawPage = gson.fromJson(new InputStreamReader(in, Charset.forName("UTF-8")), PageBlob.class);		
+		Document doc = Jsoup.parse(rawPage.content, rawPage.url);
 		in.close();
 		
+		url = new Text(rawPage.url);
+		words = new Text(doc.select("body").text());
 		done = 0;
 	}
 

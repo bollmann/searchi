@@ -65,5 +65,6 @@
 	<classpathentry kind="lib" path="localVersions/dynamodb/files/DynamoDBLocal_lib/sqlite4java.jar"/>
 	<classpathentry kind="lib" path="localVersions/dynamodb/files/DynamoDBLocal.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/gson-2.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
