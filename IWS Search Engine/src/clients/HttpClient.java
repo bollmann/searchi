@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.HttpURLConnection;
 import java.net.Socket;
 import java.net.URL;
 import java.net.UnknownHostException;
@@ -44,9 +45,9 @@ public class HttpClient {
 			throws IOException {
 		String body = "";
 		int b, total = 0;
-		
+
 		StringBuilder buf = new StringBuilder(bodyBufferSize);
-		
+
 		while (total < length && (b = br.read()) != -1) {
 			buf.append((char) b);
 			total++;
@@ -54,7 +55,8 @@ public class HttpClient {
 			// + length);
 		}
 		body = buf.toString();
-		logger.debug("Read body till :" + body.length() + " out of buffer size:" + bodyBufferSize);
+		logger.debug("Read body till :" + body.length()
+				+ " out of buffer size:" + bodyBufferSize);
 		return body;
 	}
 
@@ -62,7 +64,7 @@ public class HttpClient {
 			throws IOException {
 		StringBuilder sb = new StringBuilder();
 		sb.append(request.getMarshalledHeaders());
-		if(request.getMethod().equals("POST")) {
+		if (request.getMethod().equals("POST")) {
 			sb.append(request.getBody());
 		}
 		out.write(sb.toString());
@@ -144,42 +146,65 @@ public class HttpClient {
 		response.setMethod("GET");
 		URL pUrl = new URL(url);
 		
-		request.setPath(pUrl.getPath() + "?" + pUrl.getQuery());
-		request.setQueryString();
-		int port = pUrl.getPort();
-		String host = pUrl.getHost();
-		logger.info("Sending a GET request to url:" + request.getPath() + "?" + pUrl.getQuery() + " parsed into:"
-				+ pUrl + " host:" + pUrl.getHost() + " port:" + pUrl.getPort());
-		Socket socket = null;
-		if (port == -1) {
-			socket = new Socket(host, 80);
-		} else {
-			socket = new Socket(host, port);
+		logger.info("Sending a GET request to url:" + request.getPath() + "?"
+				+ pUrl.getQuery() + " parsed into:" + pUrl + " host:"
+				+ pUrl.getHost() + " port:" + pUrl.getPort());
+		HttpURLConnection conn = (HttpURLConnection) pUrl.openConnection();
+		conn.setDoInput(true);
+		conn.setDoOutput(false);
+		HttpURLConnection.setFollowRedirects(false);
+		conn.setUseCaches(false);
+		conn.setRequestMethod("GET");
+		List<String> headerNames = Collections.list(request.getHeaderNames());
+		for (String headerName : headerNames) {
+			conn.setRequestProperty(headerName, request.getHeader(headerName));
 		}
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(
-				socket.getInputStream()));
-		PrintWriter out = new PrintWriter(socket.getOutputStream());
-		sendRequest(out, request);
-		response = receiveResponse(br, response);
-
-		socket.close();
+				conn.getInputStream()));
+		conn.connect();
+		logger.debug("GET connected!");
+		Map<String, List<String>> map = conn.getHeaderFields();
+		for (Map.Entry<String, List<String>> entry : map.entrySet()) {
+			for (String value : entry.getValue()) {
+				if (entry.getKey() != null) {
+					response.setHeader(entry.getKey(), value);
+				} else {
+					Response resp = Parser.parseResponseCode(value);
+					String version = Parser.parseResponseVersion(value);
+					response.setResponse(resp.getResponseCode());
+					response.setVersion(version);
+				}
+			}
+			logger.debug("Key : " + entry.getKey() + " ,Value : "
+					+ entry.getValue());
+		}
+		int length = Integer.MAX_VALUE;
+		if (response.containsHeader("Content-Length")) {
+			length = Integer.parseInt(response.getHeader("Content-Length"));
+		}
+		
+		String body = extractBody(length, br);
+		logger.debug("Https get body:" + body);
+		response.setBody(body.getBytes());
+		br.close();
 		return response;
 	}
-	
+
 	public static Http10Response post(String url, HttpRequest request)
 			throws UnknownHostException, IOException, ParseException {
 		Http10Response response = new Http10Response();
 		request.setMethod("POST");
 		response.setMethod("POST");
 		URL pUrl = new URL(url);
-		
+
 		request.setPath(pUrl.getPath());
 		request.setQueryString();
 		int port = pUrl.getPort();
 		String host = pUrl.getHost();
-		logger.info("Sending a POST request to url:" + request.getPath() + "?" + pUrl.getQuery() + " parsed into:"
-				+ pUrl + " host:" + pUrl.getHost() + " port:" + pUrl.getPort());
+		logger.info("Sending a POST request to url:" + request.getPath() + "?"
+				+ pUrl.getQuery() + " parsed into:" + pUrl + " host:"
+				+ pUrl.getHost() + " port:" + pUrl.getPort());
 		Socket socket = null;
 		if (port == -1) {
 			socket = new Socket(host, 80);
@@ -200,25 +225,58 @@ public class HttpClient {
 	public static Http10Response head(String url, HttpRequest request)
 			throws UnknownHostException, IOException, ParseException {
 		Http10Response response = new Http10Response();
-		response.setMethod("GET");
+		response.setMethod("HEAD");
 		URL pUrl = new URL(url);
-		int port = pUrl.getPort();
-		String host = pUrl.getHost();
 		logger.info("Sending a HEAD request to url:" + url + " parsed into:"
 				+ pUrl + " host:" + pUrl.getHost() + " port:" + pUrl.getPort());
-		Socket socket = null;
-		if (port == -1) {
-			socket = new Socket(host, 80);
-		} else {
-			socket = new Socket(host, port);
+		HttpURLConnection conn = (HttpURLConnection) pUrl.openConnection();
+		conn.setDoInput(true);
+		conn.setDoOutput(false);
+		HttpURLConnection.setFollowRedirects(false);
+		conn.setUseCaches(false);
+		conn.setRequestMethod("HEAD");
+
+		if (request.getHeaderNames() != null) {
+			List<String> headerNames = Collections.list(request
+					.getHeaderNames());
+			for (String headerName : headerNames) {
+				conn.setRequestProperty(headerName,
+						request.getHeader(headerName));
+			}
 		}
+
+		if (request.getDateHeaderNames() != null) {
+			List<String> dateHeaderNames = Collections.list(request
+					.getDateHeaderNames());
+			logger.debug("Header names:" + dateHeaderNames);
+			for (String headerName : dateHeaderNames) {
+				Date date = new Date(request.getDateHeader(headerName));
+				logger.debug("Setting date header k:" + headerName + "="
+						+ Parser.formatDate(date));
+				conn.setRequestProperty(headerName, Parser.formatDate(date));
+			}
+		}
+		conn.connect();
+		logger.info("HEAD connected!");
 		BufferedReader br = new BufferedReader(new InputStreamReader(
-				socket.getInputStream()));
-		PrintWriter out = new PrintWriter(socket.getOutputStream());
-		sendRequest(out, request);
-		response = receiveResponse(br, response);
+				conn.getInputStream()));
+		Map<String, List<String>> map = conn.getHeaderFields();
+		for (Map.Entry<String, List<String>> entry : map.entrySet()) {
+			for (String value : entry.getValue()) {
+				logger.debug("Heads trying to put:" + entry.getKey() + "="
+						+ value);
+				if (entry.getKey() != null) {
+					response.setHeader(entry.getKey(), value);
+				} else {
+					Response resp = Parser.parseResponseCode(value);
+					String version = Parser.parseResponseVersion(value);
+					response.setResponse(resp.getResponseCode());
+					response.setVersion(version);
+				}
+			}
+		}
+		br.close();
 		logger.debug("HEAD over");
-		socket.close();
 		return response;
 	}
 
@@ -357,7 +415,7 @@ public class HttpClient {
 		}
 		return response;
 	}
-	
+
 	public static HttpResponse genericPost(String url, HttpRequest request)
 			throws IOException, ParseException {
 		HttpResponse response = null;
@@ -367,7 +425,7 @@ public class HttpClient {
 			response = post(url, request);
 			break;
 		case "https":
-//			response = posts(url, request);
+			// response = posts(url, request);
 			break;
 		default:
 			logger.error("Client got url with incorrect protocol");

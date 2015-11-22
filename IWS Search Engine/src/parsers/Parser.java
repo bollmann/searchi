@@ -778,6 +778,7 @@ public class Parser {
 		while (tokenizer.hasMoreTokens()) {
 			firstLineTokens.add(tokenizer.nextToken());
 		}
+		logger.info("First line tokens:" + firstLineTokens);
 		code = firstLineTokens.get(1);
 		codeString = firstLineTokens.get(2);
 		int codeInt;
@@ -931,7 +932,7 @@ public class Parser {
 				} else if (key.equals("Allow")) {
 					node.addAllowPath(value);
 				} else if(key.equals("Crawl-delay")) {
-					node.setCrawlDelay(Integer.parseInt(value));
+					node.setCrawlDelay(Float.parseFloat(value));
 				}
 			}
 		}
@@ -985,7 +986,7 @@ public class Parser {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<div>");
 		sb.append("<label>Crawled On:" + formatTDate(content.getCrawledOn()) + "</label><br/>");
-		sb.append("<label>Location:" + content.getAbsolutePath() + "</label><br/>");
+		sb.append("<label>Location:" + content.getUrl() + "</label><br/>");
 		sb.append("<div>" + encodeHTML(content.getContent()) + "</div>");
 		sb.append("</div>");
 		return sb.toString();

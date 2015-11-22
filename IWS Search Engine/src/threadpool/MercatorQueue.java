@@ -133,12 +133,12 @@ public class MercatorQueue {
 //			synchronized (node) {
 				logger.debug("Inside check sync block. last crawled "
 						+ node.getLastCrawledTime() + " q size:"
-						+ node.getUrls().getSize());
+						+ node.getUrls().getSize() + " and outgoing q size " + outgoingJobQueue.getSize());
 				if (node.getLastCrawledTime() != null
 						&& node.getUrls().getSize() != 0) {
 					Date lastCrawled = node.getLastCrawledTime();
 					long diff = (now.getTime() - lastCrawled.getTime()) / 1000;
-					logger.info("Check and notify checking node:" + node
+					logger.debug("Check and notify checking node:" + node
 							+ ". Time diff b/w now and last crawl time:" + diff);
 					if (diff > node.getCrawlDelay()) {
 						// dequeue from node and add to outgoing job queue

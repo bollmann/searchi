@@ -42,14 +42,14 @@ public class XPathCrawler {
 		logger.info("params: " + Arrays.toString(args));
 
 		DynamoDBWrapper ddb = DynamoDBWrapper
-				.getInstance("http://localhost:8000");
+				.getInstance(DynamoDBWrapper.URL_CONTENT_ENDPOINT);
 		S3Wrapper s3 = S3Wrapper.getInstance();
 		if (args[2].equals("yes")) {
 			ddb.deleteTable("URLMetaInfo");
 			s3.deleteBucket(s3.URL_BUCKET);
 		}
 		s3.createBucket(s3.URL_BUCKET);
-		ddb.createTable("URLMetaInfo", 100, 100, "url", "S");
+		ddb.createTable("URLMetaInfo", 5, 1005, "url", "S");
 
 		MercatorQueue mq = new MercatorQueue();
 		Queue<String> q = new Queue<String>(1000);
@@ -58,6 +58,7 @@ public class XPathCrawler {
 		List<String> seedUrls = new ArrayList<String>() {
 			{
 				add("https://en.wikipedia.org/wiki/Main_Page");
+				add("https://www.reddit.com/");
 			}
 		};
 		try {

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE web-app
+     PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
+     "http://java.sun.com/j2ee/dtds/web-app_2_2.dtd">
+ 
+ <web-app>
+     <display-name>Test servlet for CIS455</display-name>
+     
+     <servlet-mapping>
+         <servlet-name>default</servlet-name>
+         <url-pattern>*.html</url-pattern>
+     </servlet-mapping>
+
+	<servlet>
+        <servlet-name>WorkerServlet</servlet-name>
+        <servlet-class>edu.upenn.cis455.mapreduce.worker.WorkerServlet</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>WorkerServlet</servlet-name>
+        <url-pattern>/worker/*</url-pattern>
+    </servlet-mapping>
+    
+     <context-param>
+     	<param-name>worker-port</param-name>
+     	<param-value>8081</param-value>
+     </context-param>
+     
+     <context-param>
+     	<param-name>worker-ip</param-name>
+     	<param-value>localhost</param-value>
+     </context-param>
+     
+          
+     <context-param>
+     	<param-name>master</param-name>
+     	<param-value>127.0.0.1:8080</param-value>
+     </context-param>
+     
+      <context-param>
+     	<param-name>storagedir</param-name>
+     	<param-value>resources/worker1</param-value>
+     </context-param>
+
+</web-app>

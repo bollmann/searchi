@@ -14,7 +14,7 @@ public class MercatorNode {
 	private MercatorNode next = null;
 	private String domain;
 	private Date lastCrawledTime;
-	private int crawlDelay = 2; // crawl delay default 2 secs
+	private float crawlDelay = 2.0f; // crawl delay default 2 secs
 	private String userAgent;
 	private Map<String, Boolean> pathAccessMap;
 	private Queue<String> urls;
@@ -60,11 +60,11 @@ public class MercatorNode {
 		this.domain = domain;
 	}
 
-	public int getCrawlDelay() {
+	public float getCrawlDelay() {
 		return crawlDelay;
 	}
 
-	public void setCrawlDelay(int crawlDelay) {
+	public void setCrawlDelay(float crawlDelay) {
 		this.crawlDelay = crawlDelay;
 	}
 

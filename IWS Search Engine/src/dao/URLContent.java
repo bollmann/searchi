@@ -1,17 +1,20 @@
 package dao;
 
 import java.util.Date;
+import java.util.List;
 
 
 public class URLContent {
 
-	String absolutePath;
+	String url;
 	
 	String content;
 	
 	String contentType;
 	
 	Date crawledOn;
+	
+	List<String> outgoingLinks;
 
 	public String getContentType() {
 		return contentType;
@@ -21,12 +24,12 @@ public class URLContent {
 		this.contentType = contentType;
 	}
 
-	public String getAbsolutePath() {
-		return absolutePath;
+	public String getUrl() {
+		return url;
 	}
 
-	public void setAbsolutePath(String path) {
-		this.absolutePath = path;
+	public void setUrl(String path) {
+		this.url = path;
 	}
 
 	public String getContent() {
@@ -45,8 +48,16 @@ public class URLContent {
 		this.crawledOn = crawledOn;
 	}
 	
+	public List<String> getOutgoingLinks() {
+		return outgoingLinks;
+	}
+
+	public void setOutgoingLinks(List<String> outgoingLinks) {
+		this.outgoingLinks = outgoingLinks;
+	}
+
 	public URLContent(String absolutePath) {
-		this.absolutePath = absolutePath;
+		this.url = absolutePath;
 	}
 	
 	public URLContent() {

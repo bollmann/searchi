@@ -1,6 +1,8 @@
 package db.wrappers;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
@@ -24,6 +26,7 @@ public class DynamoDBWrapper {
 	private String endPoint;
 	private DynamoDB dynamoDB;
 	private DynamoDBMapper mapper;
+	public static final String URL_CONTENT_ENDPOINT = "http://dynamodb.us-east-1.amazonaws.com";
 
 	public DynamoDBMapper getMapper() {
 		return mapper;
@@ -78,6 +81,10 @@ public class DynamoDBWrapper {
 		Object obj = mapper.load(clazz, itemId);
 		return obj;
 	}
+	
+	public Map<String, List<Object>> getBatchItem(List<Object> itemIds) {
+		return mapper.batchLoad(itemIds);
+	}
 
 	/**
 	 * 
@@ -110,11 +117,12 @@ public class DynamoDBWrapper {
 			long writeCapacityUnits, String partitionKeyName,
 			String partitionKeyType) {
 
-		if(describeTable(tableName) == null) {
-		createTable(tableName, readCapacityUnits, writeCapacityUnits,
-				partitionKeyName, partitionKeyType, null, null);
+		if (describeTable(tableName) == null) {
+			createTable(tableName, readCapacityUnits, writeCapacityUnits,
+					partitionKeyName, partitionKeyType, null, null);
 		} else {
-			logger.error("DynamoDB table " + tableName + " already exists! Not creating it");
+			logger.error("DynamoDB table " + tableName
+					+ " already exists! Not creating it");
 		}
 	}
 

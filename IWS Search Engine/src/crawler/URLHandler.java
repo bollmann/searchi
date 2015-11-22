@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
@@ -26,6 +27,7 @@ import threadpool.MercatorQueue;
 import threadpool.Queue;
 import clients.HttpClient;
 
+import com.amazonaws.AmazonServiceException;
 import com.google.gson.Gson;
 
 import crawler.info.URLInfo;
@@ -72,68 +74,89 @@ public class URLHandler {
 			// updates the domain config for a domain before letting any other
 			// thread to get it
 
-			synchronized (node) {
-				logger.info("Handling url:" + url);
-				System.out.println("Attempting to process " + url);
+			// synchronized (node) {
+			logger.info("Handling url:" + url);
+			System.out.println("Attempting to process " + url);
 
-				DynamoDBWrapper ddb = DynamoDBWrapper
-						.getInstance("http://localhost:8000");
-				S3Wrapper s3 = S3Wrapper.getInstance();
+			DynamoDBWrapper ddb = DynamoDBWrapper
+					.getInstance(DynamoDBWrapper.URL_CONTENT_ENDPOINT);
+			S3Wrapper s3 = S3Wrapper.getInstance();
 
-				URLMetaInfo info = (URLMetaInfo) ddb.getItem(url,
-						URLMetaInfo.class);
+			URLMetaInfo info = (URLMetaInfo) ddb
+					.getItem(url, URLMetaInfo.class);
 
-				URLContent urlContent = null;
+			URLContent urlContent = null;
 
-				if (info != null) {
-					logger.info("Found a db entry for:" + url + " so looking in s3 for " + info.getId());
-					URLContent oldUrlContent = null;
-					String content = s3.getItem(info.getId());
-					Gson gson = new Gson();
-					logger.info("Parsing content to urlcontent:" + content);
-					oldUrlContent = gson.fromJson(content, URLContent.class);
-					
-					urlContent = getPersistentContent(oldUrlContent);
-				} else {
-					logger.info("Getting fresh data for:" + url);
-					urlContent = getNewContent(url);
-				}
+			if (info != null) {
+				logger.info("Found a db entry for:" + url
+						+ " so looking in s3 for " + info.getId());
+				URLContent oldUrlContent = null;
+				String content = s3.getItem(info.getId());
+				Gson gson = new Gson();
+				logger.debug("Parsing content to urlcontent:" + content);
+				oldUrlContent = gson.fromJson(content, URLContent.class);
 
-				if (urlContent != null) {
+				urlContent = getPersistentContent(oldUrlContent);
+			} else {
+				logger.info("Getting fresh data for:" + url);
+				urlContent = getNewContent(url);
+			}
 
-					// only extract links from text/html
-					logger.debug("Does this contain html?"
-							+ urlContent.getContentType().contains("text/html"));
-					if (Parser.isAllowedCrawlContentType(urlContent
-							.getContentType())) {
-						logger.debug("Content is html. Parsing for links");
-						List<String> links = extractLinksFromContent(
-								new URLInfo(url), urlContent.getContent());
-						// System.out.println("Got links:" + links);
-//						logger.info("Got links:" + links);
-						for (String link : links) {
-							enqueueURL(link);
-						}
+			if (urlContent != null) {
+
+				// only extract links from text/html
+				logger.debug("Does this contain html?"
+						+ urlContent.getContentType().contains("text/html"));
+				if (Parser.isAllowedCrawlContentType(urlContent
+						.getContentType())) {
+					logger.debug("Content is html. Parsing for links");
+					List<String> links = null;
+					try {
+						links = extractLinksFromContent(new URLInfo(url),
+								urlContent.getContent());
+					} catch (Exception e) {
+						logger.error("Skipping " + url + " as error in parsing content for links");
+						e.printStackTrace();
+						return;
+					}
+					// logger.info("Got links:" + links);
+					for (String link : links) {
+						enqueueURL(link);
+					}
+					try {
 						logger.info("Saving data for " + url);
+						Date start = Calendar.getInstance().getTime();
+
 						URLMetaInfo toSave = new URLMetaInfo();
 						toSave.setUrl(url);
 						toSave.setLastCrawledOn(Calendar.getInstance()
 								.getTime());
-						toSave.setOutgoingURLs(links);
+						
+
+//						toSave.setOutgoingURLs(outgoingLinkIds);
 						toSave.setType(urlContent.getContentType());
 						toSave.setSize(urlContent.getContent().length());
 						ddb.putItem(toSave);
-						
+
 						String id = toSave.getId();
 						Gson gson = new Gson();
+						// toSave.setOutgoingURLs(links);
+						List<String> outgoingLinkIds = URLMetaInfo
+								.convertLinksToIds(links, ddb);
+						urlContent.setOutgoingLinks(outgoingLinkIds);
 						String serializeJson = gson.toJson(urlContent);
 						s3.putItem(id, serializeJson);
-						logger.info("Saved data for " + url);
+						Date end = Calendar.getInstance().getTime();
+						logger.info("Saved data for " + url + " in time "
+								+ (end.getTime() - start.getTime()));
+					} catch (AmazonServiceException e) {
+						e.printStackTrace();
 					}
-				} else {
-					logger.error("UrlContent was null");
 				}
-			} // end of synchonization
+			} else {
+				logger.error("UrlContent was null");
+			}
+			// } // end of synchonization
 		}
 	}
 
@@ -178,7 +201,7 @@ public class URLHandler {
 				response = HttpClient.genericGet(url, request);
 				content = new String(response.getBody());
 				urlContent = new URLContent();
-				urlContent.setAbsolutePath(url);
+				urlContent.setUrl(url);
 				urlContent.setContent(content);
 				urlContent.setContentType(response.getHeader("Content-Type"));
 				Date crawledOn = Calendar.getInstance().getTime();
@@ -215,33 +238,31 @@ public class URLHandler {
 		// if present, check last crawled time
 		Date lastCrawled = urlContent.getCrawledOn();
 		HttpRequest request = new Http10Request();
-		request.setPath(new URL(urlContent.getAbsolutePath()).getPath());
+		request.setPath(new URL(urlContent.getUrl()).getPath());
 		request.setMethod("HEAD");
 		request.setHeader("User-Agent", "cis455crawler");
 		request.setDateHeader("If-Modified-Since", lastCrawled.getTime());
-		HttpResponse response = HttpClient.genericHead(
-				urlContent.getAbsolutePath(), request);
+		HttpResponse response = HttpClient.genericHead(urlContent.getUrl(),
+				request);
 		if (response.getResponse().getResponseCode() == 304) {
 			logger.info("Got 304 for head for if modified url:"
-					+ urlContent.getAbsolutePath() + " ifmodified:"
+					+ urlContent.getUrl() + " ifmodified:"
 					+ Parser.formatDate(lastCrawled));
-			System.out.println("Not downloading "
-					+ urlContent.getAbsolutePath()
+			System.out.println("Not downloading " + urlContent.getUrl()
 					+ ". It already exists in db.");
 			// just use this content
 			content = urlContent;
 		} else if (response.getResponse().getResponseCode() == 200) {
 			logger.info("Got a " + response.getResponse().getResponseCode()
 					+ " for a url so getting fresh data");
-			System.out.println("Refreshing content for "
-					+ urlContent.getAbsolutePath()
+			System.out.println("Refreshing content for " + urlContent.getUrl()
 					+ " as it has been updated since the last crawl.");
 			// make a new get
-			content = getNewContent(urlContent.getAbsolutePath());
+			content = getNewContent(urlContent.getUrl());
 		} else if (response.getResponse().getResponseCode() == 301) {
 			String location = response.getHeader("Location");
-			System.out.println("Got redirect from:"
-					+ urlContent.getAbsolutePath() + " to " + location);
+			System.out.println("Got redirect from:" + urlContent.getUrl()
+					+ " to " + location);
 			logger.debug("Got redirect to " + location);
 			enqueueURL(location);
 		}
@@ -255,9 +276,12 @@ public class URLHandler {
 			}
 		} catch (NoDomainConfigException e) {
 			URLInfo urlInfo = new URLInfo(url);
+			if (urlInfo.getProtocol() == null) {
+				return;
+			}
 			String httpRobotsUrl = urlInfo.getProtocol() + "://"
 					+ urlInfo.getHostName() + "/robots.txt";
-			logger.debug("Trying " + urlInfo.getProtocol() + " connection to:"
+			logger.info("Trying " + urlInfo.getProtocol() + " connection to:"
 					+ urlInfo.getProtocol() + "://" + urlInfo.getHostName()
 					+ "/robots.txt");
 			try {
