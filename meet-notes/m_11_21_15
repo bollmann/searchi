@@ -1,0 +1,21 @@
+Meeting details
+================
+
+- Crawler [Shreej]
+    - Single Node Multi threaded [DONE]
+    - Support for HTML files
+    - Wrote the wrappers for db & s3
+    
+    - TODO
+       - Multinodal
+       - Disk backed queue
+       - Worker - [Gman]
+
+       
+
+- Indexer [Dominik]
+
+- PageRank [Ishan]
+    - Phase 1: Try Reading from JSON
+
+
