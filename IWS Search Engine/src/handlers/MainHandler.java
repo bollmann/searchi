@@ -142,7 +142,7 @@ public class MainHandler extends Thread {
 //					logger.info("Read:" + (char) b + " total:" + total
 //							+ " length:" + length);
 				}
-				logger.info("=============Read body:" + buf.toString());
+				logger.debug("=============Read body:" + buf.toString());
 				fullInput.add("BODY-CONTENT: " + buf.toString());
 				logger.debug("Full header input is:" + fullInput);
 			}
@@ -198,8 +198,12 @@ public class MainHandler extends Thread {
 					break;
 				}
 
+				logger.debug("Got request header line" + fullInput);
+				if(fullInput.size() < 1) {
+					continue;
+				}
 				String path = Parser.parseRequestPath(fullInput.get(0));
-				logger.info("Got request header line" + fullInput.get(0));
+				
 				setCurrentUrl(path);
 				String urlMatch = Parser.longestUrlMatch(path.split("\\?")[0],
 						servlets.keySet());

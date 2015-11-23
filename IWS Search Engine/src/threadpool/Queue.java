@@ -80,7 +80,7 @@ public class Queue<T> {
 		logger.debug("Removing element from queue");
 		synchronized (list) {
 			try {
-				return list.remove(list.size() - 1);
+				return list.remove(0);
 			} catch (IndexOutOfBoundsException e) {
 				throw new IndexOutOfBoundsException("Queue is empty!");
 			}

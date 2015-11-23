@@ -67,13 +67,13 @@ public class Http11Request extends HttpRequest implements HttpServletRequest {
 		String path = null;
 		try {
 			path = Parser.parseRequestPath(firstLine);
-			logger.info("Looking at " + firstLine + " is absolute? "
+			logger.debug("Looking at " + firstLine + " is absolute? "
 					+ Parser.isAbsolutePathRequest(firstLine));
 			if (Parser.isAbsolutePathRequest(firstLine)) {
 
 				String newPath = path
 						.replaceFirst(Parser.absoluteUrlRegex, "/");
-				logger.info("Absolute path changed to " + newPath);
+				logger.debug("Absolute path changed to " + newPath);
 				path = newPath;
 			}
 		} catch (Exception e) {
@@ -87,7 +87,7 @@ public class Http11Request extends HttpRequest implements HttpServletRequest {
 
 		List<String> parsedHeaderLines = Parser.parserHeaderLines(fullInput);
 
-		logger.info(parsedHeaderLines);
+		logger.debug(parsedHeaderLines);
 		try {
 			for (int i = 0; i < parsedHeaderLines.size(); i++) {
 				String headerLine = parsedHeaderLines.get(i);
@@ -165,7 +165,7 @@ public class Http11Request extends HttpRequest implements HttpServletRequest {
 			}
 			response.setResponse(200);
 			handleFileAccess(response, path, webRoot);
-			logger.info("Sending response " + new String(response.toBytes()));
+			logger.debug("Sending response " + new String(response.toBytes()));
 		} catch (IllegalArgumentException e) {
 
 		}
@@ -187,7 +187,7 @@ public class Http11Request extends HttpRequest implements HttpServletRequest {
 		Path webRootPath = Paths.get(webRoot);
 		Path filePath = Paths.get(webRoot + "/" + path);
 
-		logger.info("Trying to access " + filePath.toString());
+		logger.debug("Trying to access " + filePath.toString());
 
 		if (!FilePolicy.exists(filePath)) {
 			logger.error("File doesn't exist!");
@@ -213,7 +213,7 @@ public class Http11Request extends HttpRequest implements HttpServletRequest {
 		File file = new File(filePath.toString());
 		long lastModified = file.lastModified();
 
-		logger.info("Last modified " + lastModified);
+		logger.debug("Last modified " + lastModified);
 		Date lastModifiedDate = new Date(lastModified);
 		response.addHeader("Last-Modified", Parser.formatDate(lastModifiedDate));
 

@@ -48,33 +48,37 @@ public class CrawlerSlave extends HttpServlet {
 	@Override
 	public void init() {
 		masterIPPort = (String) getServletContext().getInitParameter("master");
-		String workerIP = (String) getServletContext().getInitParameter("worker-ip");
-		Integer workerPort = Integer.parseInt(getServletContext().getInitParameter("worker-port"));
+		String workerIP = (String) getServletContext().getInitParameter(
+				"worker-ip");
+		Integer workerPort = Integer.parseInt(getServletContext()
+				.getInitParameter("worker-port"));
 		workerStatus = new WorkerStatus();
 		workerStatus.setIpAddress(workerIP);
 		workerStatus.setPort(workerPort);
 		workerStatus.setStatus("active");
-		HeartBeat hb = new HeartBeat("http://" + masterIPPort + "/master/workerStatus");
+		HeartBeat hb = new HeartBeat("http://" + masterIPPort
+				+ "/master/workerStatus");
 		hb.setWorkerStatus(workerStatus);
-		hb.run();
+		hb.start();
 	}
 
 	@Override
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws IOException {
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
 		out.println("<html><body>Worker working!</body></html>");
 		return;
 
 	}
-	
+
 	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response) {
 		String url = request.getParameter("url");
 		List<String> outgoingUrls = null;
 		try {
 			outgoingUrls = handleURL(url);
-			workerStatus.setUrlProcessed(workerStatus.getUrlProcessed()+1);
+			workerStatus.setUrlProcessed(workerStatus.getUrlProcessed() + 1);
 		} catch (IOException | ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -83,13 +87,14 @@ public class CrawlerSlave extends HttpServlet {
 			postLinksToMaster(outgoingUrls);
 		}
 	}
-	
+
 	public void postLinksToMaster(List<String> urls) {
 		String content = new Gson().toJson(urls);
 		Http10Request request = new Http10Request();
 		request.setBody(content);
 		try {
-			HttpClient.post(masterIPPort + "/master/enqueueURLs", request);
+			HttpClient.post("http://" + masterIPPort + "/master/enqueueURLs",
+					request);
 		} catch (IOException | ParseException e) {
 			// TODO Auto-generated catch block
 			logger.error("Posting to server failed!");
@@ -125,25 +130,28 @@ public class CrawlerSlave extends HttpServlet {
 		}
 
 		List<String> links = new ArrayList<String>();
-		
+
 		if (urlContent != null) {
 			if (urlContent.getContentType() == null) {
-				return new ArrayList<String>();
+				urlContent.setContentType("text/html");
 			}
 			// only extract links from text/html
 			logger.debug("Does this contain html?"
 					+ urlContent.getContentType().contains("text/html"));
 			if (Parser.isAllowedCrawlContentType(urlContent.getContentType())) {
-				logger.debug("Content is html. Parsing for links");
-				
-				try {
-					links = extractLinksFromContent(new URLInfo(url),
-							urlContent.getContent());
-				} catch (Exception e) {
-					logger.error("Skipping " + url
-							+ " as error in parsing content for links");
-					e.printStackTrace();
-					return new ArrayList<String>();
+
+				if (urlContent.getContentType().contains("text/html")) {
+					logger.debug("Content is html. Parsing for links");
+
+					try {
+						links = extractLinksFromContent(new URLInfo(url),
+								urlContent.getContent());
+					} catch (Exception e) {
+						logger.error("Skipping " + url
+								+ " as error in parsing content for links");
+						e.printStackTrace();
+						return new ArrayList<String>();
+					}
 				}
 				try {
 					logger.info("Saving data for " + url);
@@ -240,7 +248,7 @@ public class CrawlerSlave extends HttpServlet {
 			System.out.println("Got redirect from:" + url + " to " + location);
 			logger.debug("Got redirect to " + location);
 			List<String> urls = new ArrayList<String>();
-			urls.add(url);
+			urls.add(location); // should be location. not url!
 			postLinksToMaster(urls);
 			return null;
 		}

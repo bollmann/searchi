@@ -206,9 +206,8 @@ public class HttpClient {
 		request.setQueryString();
 		int port = pUrl.getPort();
 		String host = pUrl.getHost();
-		logger.info("Sending a POST request to url:" + request.getPath() + "?"
-				+ pUrl.getQuery() + " parsed into:" + pUrl + " host:"
-				+ pUrl.getHost() + " port:" + pUrl.getPort());
+		logger.info("Sending a POST request to url:" + pUrl + " host:"
+				+ pUrl.getHost() + " port:" + pUrl.getPort() + " with body " + request.getBody());
 		Socket socket = null;
 		if (port == -1) {
 			socket = new Socket(host, 80);

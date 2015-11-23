@@ -229,7 +229,7 @@ public class ServletHandler extends RequestHandler {
 	 */
 	public void service(HttpRequest request, HttpResponse response) {
 		try {
-			logger.info("Now calling service method for:" + servlet);
+			logger.debug("Now calling service method for:" + servlet);
 			response.setRequest(request);
 			servlet.service(request, response);
 

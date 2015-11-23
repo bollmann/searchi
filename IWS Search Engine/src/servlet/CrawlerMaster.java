@@ -115,6 +115,13 @@ public class CrawlerMaster extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
+		if(request.getPathInfo() == null) {
+			String content = "<html><body>Master is running!</body></html>";
+			PrintWriter out = response.getWriter();
+			out.print(content);
+			return;
+		}
+		
 		if (request.getPathInfo().equals("/workerStatus")) {
 			boolean created;
 			String ipAddress = request.getServerName();
@@ -202,7 +209,7 @@ public class CrawlerMaster extends HttpServlet {
 	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
-		if (request.getPathInfo().equals("/enqueueUrls")) {
+		if (request.getPathInfo().equals("/enqueueURLs")) {
 
 			BufferedReader br = request.getReader();
 			StringBuilder sb = new StringBuilder();
@@ -214,6 +221,7 @@ public class CrawlerMaster extends HttpServlet {
 			Type listType = new TypeToken<List<String>>() {
 			}.getType();
 			List<String> urls = new Gson().fromJson(sb.toString(), listType);
+			logger.info("Master got urls: " + urls);
 			for (String url : urls) {
 				enqueueURL(url);
 			}

@@ -12,12 +12,12 @@
      </servlet-mapping>
 
 	<servlet>
-        <servlet-name>WorkerServlet</servlet-name>
-        <servlet-class>edu.upenn.cis455.mapreduce.worker.WorkerServlet</servlet-class>
+        <servlet-name>CrawlerSlave</servlet-name>
+        <servlet-class>servlet.CrawlerSlave</servlet-class>
     </servlet>
     
     <servlet-mapping>
-        <servlet-name>WorkerServlet</servlet-name>
+        <servlet-name>CrawlerSlave</servlet-name>
         <url-pattern>/worker/*</url-pattern>
     </servlet-mapping>
     
@@ -28,18 +28,12 @@
      
      <context-param>
      	<param-name>worker-ip</param-name>
-     	<param-value>localhost</param-value>
+     	<param-value>127.0.0.1</param-value>
      </context-param>
      
-          
      <context-param>
      	<param-name>master</param-name>
      	<param-value>127.0.0.1:8080</param-value>
-     </context-param>
-     
-      <context-param>
-     	<param-name>storagedir</param-name>
-     	<param-value>resources/worker2</param-value>
      </context-param>
 
 </web-app>

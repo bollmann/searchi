@@ -35,7 +35,7 @@ public class UrlPoster extends Thread {
 			String url = null;
 			synchronized (urlQueue) {
 				try {
-					logger.info("UrlPoster waiting for jobQueue");
+					logger.debug("UrlPoster waiting for jobQueue");
 					if (urlQueue.getSize() <= 0)
 						urlQueue.wait();
 				} catch (InterruptedException e) {
@@ -43,7 +43,7 @@ public class UrlPoster extends Thread {
 					e.printStackTrace();
 					break;
 				}
-				logger.info("UrlPoster received notify. Waking up!");
+				logger.debug("UrlPoster received notify. Waking up!");
 				url = urlQueue.dequeue();
 			}
 
@@ -72,6 +72,12 @@ public class UrlPoster extends Thread {
 						e.printStackTrace();
 					}
 				}
+			}
+			try {
+				Thread.sleep(400);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 	}
