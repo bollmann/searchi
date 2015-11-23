@@ -9,7 +9,7 @@ import threadpool.ThreadPool2;
 public class XPathProducer extends Thread {
 	private static Logger logger = Logger.getLogger(XPathProducer.class);
 	private MercatorQueue mq;
-	Queue<String> q;
+	private Queue<String> q;
 
 	public XPathProducer(MercatorQueue mq, Queue<String> q) {
 		this.mq = mq;

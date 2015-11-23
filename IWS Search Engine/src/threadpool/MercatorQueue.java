@@ -178,7 +178,8 @@ public class MercatorQueue {
 			last.setNext(node);
 			last = node;
 
-			logger.info("After adding node, queue now:" + toString());
+			logger.debug("After adding node, queue now:" + toString());
+			logger.info("After adding node, mercator queue size is " + size);
 		} else {
 			logger.info("Ignoring the addition of new node:" + node
 					+ " as node with that domain already exists");

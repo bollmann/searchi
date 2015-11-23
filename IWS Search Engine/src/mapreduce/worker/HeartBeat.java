@@ -3,11 +3,10 @@ package mapreduce.worker;
 import java.io.IOException;
 import java.text.ParseException;
 
-import mapreduce.WorkerStatus;
-
 import org.apache.log4j.Logger;
 
 import requests.Http10Request;
+import servlet.multinodal.status.WorkerStatus;
 import clients.HttpClient;
 
 public class HeartBeat extends Thread {
@@ -41,6 +40,7 @@ public class HeartBeat extends Thread {
 	public void sendHeartBeat(String heartBeatUrl) {
 		Http10Request request = new Http10Request();
 		request.setMethod("GET");
+		request.addHeader("User-Agent", "cis455crawler");
 		String paramString = workerStatus.toParameters();
 		logger.info("Sending heartbeat to " + heartBeatUrl + "?" + paramString);
 		

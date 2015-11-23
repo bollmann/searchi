@@ -145,7 +145,7 @@ public class HttpClient {
 		request.setMethod("GET");
 		response.setMethod("GET");
 		URL pUrl = new URL(url);
-		
+
 		logger.info("Sending a GET request to url:" + request.getPath() + "?"
 				+ pUrl.getQuery() + " parsed into:" + pUrl + " host:"
 				+ pUrl.getHost() + " port:" + pUrl.getPort());
@@ -155,9 +155,13 @@ public class HttpClient {
 		HttpURLConnection.setFollowRedirects(false);
 		conn.setUseCaches(false);
 		conn.setRequestMethod("GET");
-		List<String> headerNames = Collections.list(request.getHeaderNames());
-		for (String headerName : headerNames) {
-			conn.setRequestProperty(headerName, request.getHeader(headerName));
+		if (request.getHeaderNames() != null) {
+			List<String> headerNames = Collections.list(request
+					.getHeaderNames());
+			for (String headerName : headerNames) {
+				conn.setRequestProperty(headerName,
+						request.getHeader(headerName));
+			}
 		}
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(
@@ -183,7 +187,7 @@ public class HttpClient {
 		if (response.containsHeader("Content-Length")) {
 			length = Integer.parseInt(response.getHeader("Content-Length"));
 		}
-		
+
 		String body = extractBody(length, br);
 		logger.debug("Https get body:" + body);
 		response.setBody(body.getBytes());

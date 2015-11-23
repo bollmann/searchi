@@ -778,7 +778,7 @@ public class Parser {
 		while (tokenizer.hasMoreTokens()) {
 			firstLineTokens.add(tokenizer.nextToken());
 		}
-		logger.info("First line tokens:" + firstLineTokens);
+		logger.debug("First line tokens:" + firstLineTokens);
 		code = firstLineTokens.get(1);
 		codeString = firstLineTokens.get(2);
 		int codeInt;

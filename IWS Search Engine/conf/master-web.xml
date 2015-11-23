@@ -12,12 +12,22 @@
      </servlet-mapping>
      
     <servlet>
-        <servlet-name>MasterServlet</servlet-name>
-        <servlet-class>edu.upenn.cis455.mapreduce.master.MasterServlet</servlet-class>
+        <servlet-name>CrawlerMaster</servlet-name>
+        <servlet-class>servlet.CrawlerMaster</servlet-class>
     </servlet>
     
     <servlet-mapping>
-        <servlet-name>MasterServlet</servlet-name>
+        <servlet-name>CrawlerMaster</servlet-name>
         <url-pattern>/master/*</url-pattern>
     </servlet-mapping>
+    
+    <context-param>
+     	<param-name>flushData</param-name>
+     	<param-value>yes</param-value>
+     </context-param>
+     
+     <context-param>
+     	<param-name>maxUrls</param-name>
+     	<param-value>10</param-value>
+     </context-param>
 </web-app>
