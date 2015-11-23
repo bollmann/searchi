@@ -28,6 +28,6 @@
      
      <context-param>
      	<param-name>maxUrls</param-name>
-     	<param-value>100</param-value>
+     	<param-value>10000</param-value>
      </context-param>
 </web-app>

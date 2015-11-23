@@ -67,7 +67,7 @@ public class WorkerServlet extends HttpServlet {
 		masterIPPort = (String) getServletContext().getInitParameter("master");
 		HeartBeat heartBeat = new HeartBeat("http://" + masterIPPort
 				+ "/master/workerstatus");
-		heartBeat.setWorkerStatus(workerStatus);
+//		heartBeat.setWorkerStatus(workerStatus);
 		heartBeat.start();
 
 		String storageDir = (String) getServletContext().getInitParameter(
@@ -241,7 +241,7 @@ public class WorkerServlet extends HttpServlet {
 			String heartBeatUrl = "http://" + masterIPPort
 					+ "/master/workerstatus";
 			HeartBeat heartBeat = new HeartBeat(heartBeatUrl);
-			heartBeat.setWorkerStatus(workerStatus);
+//			heartBeat.setWorkerStatus(workerStatus);
 			heartBeat.sendHeartBeat(heartBeatUrl);
 			logger.info("Worker processed job request");
 			return;
@@ -330,7 +330,7 @@ public class WorkerServlet extends HttpServlet {
 			String heartBeatUrl = "http://" + masterIPPort
 					+ "/master/workerstatus";
 			HeartBeat heartBeat = new HeartBeat(heartBeatUrl);
-			heartBeat.setWorkerStatus(workerStatus);
+//			heartBeat.setWorkerStatus(workerStatus);
 			heartBeat.sendHeartBeat(heartBeatUrl);
 			logger.info("Worker processed reduce request");
 			return;

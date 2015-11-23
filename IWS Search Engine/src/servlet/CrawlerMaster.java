@@ -89,9 +89,9 @@ public class CrawlerMaster extends HttpServlet {
 
 		List<String> seedUrls = new ArrayList<String>() {
 			{
-//				add("https://en.wikipedia.org/wiki/Main_Page");
-//				add("https://www.reddit.com/");
-				add("https://dbappserv.cis.upenn.edu/crawltest.html");
+				add("https://en.wikipedia.org/wiki/Main_Page");
+				add("https://www.reddit.com/");
+//				add("https://dbappserv.cis.upenn.edu/crawltest.html");
 			}
 		};
 		try {

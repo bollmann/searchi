@@ -73,8 +73,10 @@ public class CrawlerSlave extends HttpServlet {
 	}
 
 	@Override
-	public void doPost(HttpServletRequest request, HttpServletResponse response) {
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String url = request.getParameter("url");
+		response.setStatus(200);
+		response.flushBuffer();
 		List<String> outgoingUrls = null;
 		try {
 			outgoingUrls = handleURL(url);
