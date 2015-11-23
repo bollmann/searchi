@@ -38,7 +38,7 @@ public class UrlProducer extends Thread {
 
 	public void run() {
 		logger.debug("UrlProducer started!");
-		int timesZero = 0, maxTimesZeroInARow = 10, maxSecsEmpty = 50;
+		int timesZero = 0, maxTimesZeroInARow = 10, maxSecsEmpty = 30;
 		Date emptyStartTime = Calendar.getInstance().getTime();
 		while (!ThreadPool2.getInstance().isShouldShutdown()) {
 
