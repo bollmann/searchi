@@ -24,7 +24,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 
 public class InvertedIndex {
 	private static Logger logger = Logger.getLogger(InvertedIndex.class);
-			
+
 	public static final String CREDENTIALS_PROFILE = "dominik";
 	public static final String TABLE_NAME = "invertedIndex";
 	
@@ -46,6 +46,16 @@ public class InvertedIndex {
 		DynamoDBQueryExpression<InvertedIndexItem> query = new DynamoDBQueryExpression<InvertedIndexItem>()
 				.withHashKeyValues(item);
 		return db.query(InvertedIndexItem.class, query);
+	}
+	
+	public List<InvertedIndexItem> getAllEntries(List<String> words) {
+		List<Object> items = new LinkedList<Object>();
+		for(String word: words) {
+			InvertedIndexItem item = new InvertedIndexItem();
+			item.setWord(word);
+			items.add(item);
+		}
+		return (List<InvertedIndexItem>)(List<?>) db.batchLoad(items).get(TABLE_NAME);
 	}
 	
 	public void importData(String fromFile) throws IOException {
@@ -94,8 +104,6 @@ public class InvertedIndex {
 		
 		// build TF-IDF information
 		Map<String, Map<String, Double>> docs = new HashMap<String, Map<String, Double>>();
-		Map<String, Double> queryTFIDFs = TFIDF.computeTFIDFs(query, corpusSize, dfs);
-		
 		for(InvertedIndexItem candidate: candidates) {
 			Map<String, Double> doc = docs.get(candidate.getUrl());
 			
@@ -110,6 +118,7 @@ public class InvertedIndex {
 		
 		logger.info(String.format("extracted TF-IDF info for %d documents", docs.size()));
 		
+		Map<String, Double> queryTFIDFs = TFIDF.computeTFIDFs(query, corpusSize, dfs);
 		DocumentVector queryVec = new DocumentVector(queryTFIDFs);
 		return createDocumentVectors(docs, queryVec);
 	}

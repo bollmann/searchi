@@ -56,15 +56,15 @@ public class InvertedIndexJob {
 		
 		@Override
 		public void map(Text url, Text doc, Context context) throws IOException, InterruptedException {
-			logger.info(String.format("map input: key=%s, value=%s", url.toString(), doc.toString()));
+			//logger.info(String.format("map input: key=%s, value=%s", url.toString(), doc.toString()));
 			List<String> words = tokenize(doc.toString());
 			Map<String, Integer> wordCounts = new HashMap<String, Integer>();
 			String maxWord = computeWordCounts(wordCounts, words);
 			
-			logger.info(String.format("map: key=%s, values=%s", url.toString(), words.toString()));
+			//logger.info(String.format("map: key=%s, values=%s", url.toString(), words.toString()));
 			
 			for(String word: wordCounts.keySet()) {
-				logger.info(String.format("map context write: key=%s, value=%s", url.toString(), word));
+				//logger.info(String.format("map context write: key=%s, value=%s", url.toString(), word));
 				
 				double tfScore = getTermFrequency(word, maxWord, wordCounts);
 				String value = String.format("%s\t%d\t%f", url, wordCounts.get(word), tfScore);
@@ -74,7 +74,6 @@ public class InvertedIndexJob {
 	}
 	
 	public static class CorpusIndexer extends Reducer<Text, Text, Text, Text> {
-
 		@Override
 		public void reduce(Text word, Iterable<Text> urls, Context context)
 				throws IOException, InterruptedException {
