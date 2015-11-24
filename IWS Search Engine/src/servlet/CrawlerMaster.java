@@ -122,7 +122,7 @@ public class CrawlerMaster extends HttpServlet {
 		
 		if (request.getPathInfo().equals("/workerStatus")) {
 			boolean created;
-			String ipAddress = request.getServerName();
+			String ipAddress = request.getRemoteAddr();
 			int port = -1;
 			if (request.getParameter("port") != null) {
 				port = Integer.parseInt(request.getParameter("port"));

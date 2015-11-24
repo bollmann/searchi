@@ -210,6 +210,7 @@ public class ServletHandler extends RequestHandler {
 		request.setRemoteHost(socka.getHostName());
 		request.setRemotePort(socka.getPort());
 		request.setRequestURI();
+		request.setRemoteAddr(socka.getAddress().getHostAddress());
 		request.setServerName(socket.getLocalAddress().getCanonicalHostName());
 		request.setServerPort(socket.getPort());
 		request.setServletPathWithServletPath(urlMatch);

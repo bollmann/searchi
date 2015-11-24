@@ -149,6 +149,8 @@ public abstract class HttpRequest implements HttpServletRequest {
 	
 	protected Map<String, List<Long>> dateHeaders;
 
+	private String remoteAddr;
+
 	/**
 	 * Instantiates a new http request.
 	 */
@@ -1100,6 +1102,9 @@ public abstract class HttpRequest implements HttpServletRequest {
 		return null;
 	}
 
+	public void setRemoteAddr(String remoteAddr) {
+		this.remoteAddr = remoteAddr;
+	}
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -1107,7 +1112,7 @@ public abstract class HttpRequest implements HttpServletRequest {
 	 */
 	@Override
 	public String getRemoteAddr() {
-		return null;
+		return remoteAddr;
 	}
 
 	/**
