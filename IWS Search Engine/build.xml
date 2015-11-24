@@ -74,6 +74,7 @@
 			</fileset>
 		</jar>
 		<copy file="${conf.dir}${file.separator}web.xml" tofile="${web-inf.dir}${file.separator}web.xml" overwrite="true" />
+		<copy file="${src.main.dir}${file.separator}log4j-deploy.properties" tofile="${classes.dir}${file.separator}log4j.properties" overwrite="true" />
 		<copy todir="${classes.dir}" overwrite="true">
 			<fileset dir="${conf.dir}">
 				<include name="**" />
@@ -100,90 +101,7 @@
 		<!-- <antcall target="cleanup"/> -->
 	</target>
 
-	<target name="compile-xpathengine" description="Compiles the XPath engine">
-		<mkdir dir="${classes.dir}"/>
-		<javac srcdir="src/edu/upenn/cis455/xpathengine" destdir="${classes.dir}" debug="on" deprecation="off" optimize="on" includeAntRuntime="no">
-			<classpath>
-				<pathelement path="${classes.dir}" />
-				<fileset dir="${inputlib.dir}">
-					<include name="*.jar"/>
-				</fileset>
-			</classpath>
-		</javac>
-	</target>
-
-	<target name="compile-storage" depends="compile-xpathengine" description="Compiles the storage system">
-		<mkdir dir="${classes.dir}"/>
-		<javac srcdir="src/edu/upenn/cis455/storage" destdir="${classes.dir}" debug="on" deprecation="off" optimize="on" includeAntRuntime="no">
-			<classpath>
-				<pathelement path="${classes.dir}" />
-				<fileset dir="${inputlib.dir}">
-					<include name="*.jar"/>
-				</fileset>
-			</classpath>
-		</javac>
-	</target>
-
-	<target name="compile-crawler" depends="compile-xpathengine,compile-storage" description="Compiles the crawler">
-		<mkdir dir="${classes.dir}"/>
-		<javac srcdir="src/edu/upenn/cis455/crawler" destdir="${classes.dir}" debug="on" deprecation="off" optimize="on" includeAntRuntime="no">
-			<classpath>
-				<pathelement path="${classes.dir}" />
-				<fileset dir="${inputlib.dir}">
-					<include name="*.jar"/>
-				</fileset>
-			</classpath>
-		</javac>
-	</target>
-
-	<target name="compile-servlet" depends="compile-xpathengine,compile-storage" description="Compiles the servlet">
-		<mkdir dir="${classes.dir}"/>
-		<javac srcdir="src/edu/upenn/cis455/servlet" destdir="${classes.dir}" debug="on" deprecation="off" optimize="on" includeAntRuntime="no">
-			<classpath>
-				<fileset dir="${inputlib.dir}">
-					<include name="*.jar"/>
-				</fileset>
-			</classpath>
-		</javac>
-	</target>
-
-	<target name="compile-tests" description="compiles test Java source code">
-		<mkdir dir="${test-classes.dir}"/>
-		<javac srcdir="${src.test.dir}${file.separator}" destdir="${test-classes.dir}" debug="on" deprecation="off" optimize="on" includeAntRuntime="no">
-			<classpath>
-				<pathelement path="${classes.dir}" />
-				<fileset dir="${inputlib.dir}">
-					<include name="*.jar"/>
-				</fileset>
-			</classpath>
-		</javac>
-	</target>
-
-	<target name="crawler-jar" depends="compile-crawler" description="Makes the JAR file for the crawler">
-		<delete file="crawler.jar"/>
-		<jar destfile="crawler.jar" update="true">
-			<fileset dir="${classes.dir}">
-				<include name="**/*.class"/>
-			</fileset>
-		</jar>
-	</target>
-
-	<target name="servlet-war" depends="compile-servlet" description="Makes the WAR file for the servlet">
-		<delete file="servlet.war"/>
-		<copy file="${conf.dir}${file.separator}web.xml" tofile="${web-inf.dir}${file.separator}web.xml" overwrite="true" />
-		<copy todir="${web-inf.lib.dir}" overwrite="true">
-			<fileset dir="${inputlib.dir}">
-				<include name="*.jar"/>
-			</fileset>
-		</copy>
-		<jar destfile="servlet.war" update="true">
-			<fileset dir="target">
-				<include name="**/*.class"/>
-				<include name="**/*.jar"/>
-				<include name="WEB-INF/web.xml"/>
-			</fileset>
-		</jar>
-	</target>
+	
 
 	<target name="pack" description="Create an archive for submission">
 		<zip destfile="submit-hw3.zip">
@@ -191,14 +109,6 @@
 		</zip>
 	</target>
 
-
-
-	<target name="compile-jobs" depends="init">
-		<javac srcdir="src" destdir="classes" includes="**/job/*.java,**/Job.java,**/Context.java" deprecation="on"
-	     debug="true" includeantruntime="false" classpath="classes">
-			<compilerarg value="-Xlint"/>
-		</javac>
-	</target>
 
 	<target name="compile-master" depends="init">
 		<javac srcdir="src" destdir="target/master/WEB-INF/classes" includes="**/master/*.java" deprecation="on"
@@ -214,7 +124,6 @@
 		</javac>
 	</target>
 
-	<target name="all" depends="war-master,war-worker,compile-jobs"/>
 
 	<target name="war-master" depends="compile-master">
 		<jar destfile="master.war">
