@@ -1,11 +1,27 @@
 <project name="searchi" default="all" basedir="./">
+	<property name="shared.root" location="${basedir}"/>
+	<property name="file.separator" location="/"/>
+	<property name="project.root" location="${basedir}"/>
+	<property name="build.dir" location="${project.root}"/>
+	<property name="build.target.dir" location="${project.root}${file.separator}target"/>
+	<property name="web-inf.dir" location="${build.target.dir}${file.separator}WEB-INF"/>
+	<property name="classes.dir"     location="${web-inf.dir}${file.separator}classes"/>
+	<property name="web-inf.lib.dir" location="${web-inf.dir}${file.separator}lib"/>
+	<property name="test-classes.dir" location="${build.target.dir}${file.separator}test${file.separator}classes"/>
+	<property name="test-lib.dir"     location="${build.target.dir}${file.separator}test${file.separator}lib"/>
+	<property name="src.main.dir"  location="${build.dir}${file.separator}src${file.separator}"/>
+	<property name="inputlib.dir"  location="${shared.root}${file.separator}lib"/>
+	<property name="src.test.dir"  location="${build.dir}${file.separator}src${file.separator}test"/>
+	<property name="resources.dir" location="${build.dir}${file.separator}resources"/>
+	<property name="conf.dir"      location="${build.dir}${file.separator}conf"/>
+	
   <target name="init">
     <mkdir dir="bin/"/>
     <copy file="src/log4j.properties" tofile="bin/log4j.properties"/>
   </target>
   
   <target name="compile-inverted-index" depends="init">
-    <javac srcdir="src" destdir="bin" includes="indexer/offline/*.java,utils/**/*.java" deprecation="on"
+    <javac srcdir="src" destdir="bin" includes="indexer/offline/*.java,indexer/servlets/*.java,utils/**/*.java" deprecation="on"
      debug="true" includeantruntime="false" classpath="classes">
       <classpath>
         <fileset dir="lib">
@@ -16,14 +32,26 @@
   </target>
   
   <target name="inverted-index" depends="compile-inverted-index">
-    <jar basedir="bin" destfile="InvertedIndexJob.jar" includes="indexer/offline/*.class,utils/**/*.class">
+    <jar basedir="bin" destfile="InvertedIndexJob.jar" includes="indexer/offline/*.class,indexer/servlets/*.class,utils/**/*.class">
       <fileset dir="." includes="lib/*.jar"/>
       <manifest>
         <attribute name="Main-Class" value="indexer.offline.InvertedIndexJob" />
       </manifest>
     </jar>
   </target>
-  
+	
+  <target name="compile-servlet" description="Makes the WAR file for the servlet">
+        <delete file="servlet.war"/>
+        <copy file="${conf.dir}${file.separator}web.xml" tofile="${web-inf.dir}${file.separator}web.xml" overwrite="true" />
+        <jar destfile="servlet.war" update="true">
+            <fileset dir="target">
+                <include name="**/*.class"/>
+                <include name="**/*.jar"/>
+                <include name="WEB-INF/web.xml"/>
+            </fileset>
+        </jar>    	       
+  </target>
+	
   <target name="all">
     <!-- TODO! //-->
   </target>
