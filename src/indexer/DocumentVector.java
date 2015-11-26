@@ -9,21 +9,20 @@ public class DocumentVector implements Comparable<DocumentVector> {
 	
 	public DocumentVector(Map<String, Double> wordFrequencies) {
 		this.wordFrequencies = wordFrequencies;
+		this.similarityScore = -1;
 	}
 	
 	@Override
 	public int compareTo(DocumentVector other) {
-		return Double.compare(this.similarityScore, other.similarityScore);
+		return (-1) * Double.compare(this.similarityScore, other.similarityScore);
 	}
 	
 	public static double cosineSimilarity(DocumentVector v1, DocumentVector v2) {
 		double dotproduct = 0;
-		
 		for(String word: v1.wordFrequencies.keySet()) {
 			if(v2.wordFrequencies.containsKey(word))
 				dotproduct += v1.wordFrequencies.get(word) * v2.wordFrequencies.get(word);
 		}
-		
 		return dotproduct;
 	}
 	
