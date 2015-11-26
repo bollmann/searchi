@@ -20,35 +20,25 @@
 		<copy file="src/log4j.properties" tofile="bin/log4j.properties"/>
 	</target>
 
-	<target name="compile-inverted-index" depends="init">
-		<javac srcdir="src" destdir="bin" includes="indexer/offline/*.java,utils/**/*.java" deprecation="on"
+	<target name="compile-indexer" depends="init">
+		<javac srcdir="src" destdir="bin" includes="indexer/**/*.java,utils/**/*.java" deprecation="on"
      debug="true" includeantruntime="false">
 			<classpath>
 				<fileset dir="lib">
-					<include name="**/*.jar" />
+					<include name="**/*.jar"/>
+				    <include name="*.jar"/>
 				</fileset>
 			</classpath>
 		</javac>
 	</target>
-
-	<target name="inverted-index" depends="compile-inverted-index">
-		<jar basedir="bin" destfile="InvertedIndexJob.jar" includes="indexer/offline/*.class,utils/**/*.class">
-			<fileset dir="." includes="lib/*.jar"/>
+  
+	<target name="inverted-index" depends="compile-indexer">
+		<jar basedir="bin" destfile="InvertedIndexJob.jar" includes="indexer/**/*.class,indexer/*.class,utils/**/*.class">
+			<fileset dir="." includes="lib/*.jar,lib/**/*.jar" />
 			<manifest>
 				<attribute name="Main-Class" value="indexer.offline.InvertedIndexJob" />
 			</manifest>
 		</jar>
-	</target>
-
-	<target name="compile-indexer" depends="compile-inverted-index">
-		<javac srcdir="src" destdir="bin" includes="indexer/**/*.java,indexer/*.java,utils/**/*.java" deprecation="on"
-     debug="true" includeantruntime="false" classpath="classes">
-			<classpath>
-				<fileset dir="lib">
-					<include name="**/*.jar"/>
-				</fileset>
-			</classpath>
-		</javac>
 	</target>
 
 	<target name="compile-servlet" depends="compile-indexer" description="Makes the WAR file for the servlet">
