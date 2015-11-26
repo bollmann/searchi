@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <jardesc>
     <jar path="searchi/pr2.jar"/>
-    <options buildIfNeeded="true" compress="true" descriptionLocation="/searchi/build/pagerank/pr2.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="true" overwrite="true" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
+    <options buildIfNeeded="true" compress="true" descriptionLocation="/searchi/build/pagerank/pr2.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="true" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
     <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
     <selectedProjects/>
     <manifest generateManifest="true" mainClassHandleIdentifier="=searchi/src&lt;pagerank.phase2{PRComputeJob.java[PRComputeJob" manifestLocation="" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
@@ -11,7 +11,9 @@
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
-        <javaElement handleIdentifier="=searchi/src&lt;pagerank.phase2"/>
         <javaElement handleIdentifier="=searchi/src&lt;utils.file"/>
+        <javaElement handleIdentifier="=searchi/src&lt;utils.string"/>
+        <javaElement handleIdentifier="=searchi/src&lt;mapreduce.lib"/>
+        <javaElement handleIdentifier="=searchi/src&lt;pagerank.phase2"/>
     </selectedElements>
 </jardesc>
