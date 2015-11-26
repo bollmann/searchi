@@ -1,4 +1,4 @@
-package indexer.offline;
+package indexer;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -45,7 +45,7 @@ public class WordCounts implements Iterable<String> {
 	
 	public double getMaximumTermFrequency(String word) {
 		double alpha = 0.5;
-		return alpha + (1 - alpha) * ((float) wordCounts.get(word) / wordCounts.get(maxWord));
+		return alpha + (1 - alpha) * ((double) wordCounts.get(word) / wordCounts.get(maxWord));
 	}
 	
 	public double getEuclideanTermFrequency(String word) {

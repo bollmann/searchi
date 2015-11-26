@@ -13,7 +13,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
  * Models an Item (row) from the Inverted Index.
  */
 @DynamoDBTable(tableName=InvertedIndex.TABLE_NAME)
-public class WordDocumentStatistics implements Comparable<WordDocumentStatistics> {
+public class InvertedIndexRow implements Comparable<InvertedIndexRow> {
 	private String word;
 	private String url;
 	private int wordCount;
@@ -86,7 +86,7 @@ public class WordDocumentStatistics implements Comparable<WordDocumentStatistics
 
 	@DynamoDBIgnore
 	@Override
-	public int compareTo(WordDocumentStatistics other) {
+	public int compareTo(InvertedIndexRow other) {
 		return (-1)*Double.compare(this.rank, other.rank);
 	}
 	

@@ -40,49 +40,49 @@ public class InvertedIndex {
 		// TODO: obtain the real corpus size here at the beginning once!
 	}
 	
-	public List<WordDocumentStatistics> getDocumentLocations(String word) {
-		WordDocumentStatistics item = new WordDocumentStatistics();
+	public List<InvertedIndexRow> getDocumentLocations(String word) {
+		InvertedIndexRow item = new InvertedIndexRow();
 		item.setWord(word);
 		
-		DynamoDBQueryExpression<WordDocumentStatistics> query = new DynamoDBQueryExpression<WordDocumentStatistics>()
+		DynamoDBQueryExpression<InvertedIndexRow> query = new DynamoDBQueryExpression<InvertedIndexRow>()
 				.withHashKeyValues(item);
-		return db.query(WordDocumentStatistics.class, query);
+		return db.query(InvertedIndexRow.class, query);
 	}
 	
-	public List<WordDocumentStatistics> getAllEntries(List<String> words) {
+	public List<InvertedIndexRow> getAllEntries(List<String> words) {
 		List<Object> items = new LinkedList<Object>();
 		for(String word: words) {
-			WordDocumentStatistics item = new WordDocumentStatistics();
+			InvertedIndexRow item = new InvertedIndexRow();
 			item.setWord(word);
 			items.add(item);
 		}
-		return (List<WordDocumentStatistics>)(List<?>) db.batchLoad(items).get(TABLE_NAME);
+		return (List<InvertedIndexRow>)(List<?>) db.batchLoad(items).get(TABLE_NAME);
 	}
 	
 	public void importData(String fromFile) throws IOException {
 		BufferedReader br = new BufferedReader(new FileReader(new File(fromFile)));
 		String line = null;
-		List<WordDocumentStatistics> items = new LinkedList<WordDocumentStatistics>();
+		List<InvertedIndexRow> items = new LinkedList<InvertedIndexRow>();
 		
 		int rowCount = 0;
 		while ((line = br.readLine()) != null) {
 			++rowCount;
 			try {
 				String parts[] = line.split("\t");
-				WordDocumentStatistics item = new WordDocumentStatistics();
+				InvertedIndexRow item = new InvertedIndexRow();
 				item.setWord(parts[0]);
 				item.setUrl(parts[1]);
 				item.setMaximumTermFrequency(Double.parseDouble(parts[2]));
 				item.setEuclideanTermFrequency(Double.parseDouble(parts[3]));
 				item.setWordCount(Integer.parseInt(parts[4]));
-				//item.setLinkCount(Integer.parseInt(parts[5]));
-				//item.setMetaTagCount(Integer.parseInt(parts[6]));
-				//item.setHeaderCount(Integer.parseInt(parts[7]));
+				item.setLinkCount(Integer.parseInt(parts[5]));
+				item.setMetaTagCount(Integer.parseInt(parts[6]));
+				item.setHeaderCount(Integer.parseInt(parts[7]));
 				
 				items.add(item);
 				if(items.size() >= 5000) {
 					this.db.batchSave(items);
-					items = new LinkedList<WordDocumentStatistics>();
+					items = new LinkedList<InvertedIndexRow>();
 					logger.info(String.format("imported %d records into DynamoDB's 'inverted-index' table.", rowCount));
 				}
 			} catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
@@ -93,22 +93,22 @@ public class InvertedIndex {
 		br.close();
 	}
 	
-	public PriorityQueue<WordDocumentStatistics> rankDocuments(List<String> query) {
+	public PriorityQueue<InvertedIndexRow> rankDocuments(List<String> query) {
 		// TODO: query URLMetaInfo dynamoDB table for corpus size??
 		int corpusSize = 4000;
 		
-		Map<String, WordDocumentStatistics> ranks = new HashMap<String, WordDocumentStatistics>();
+		Map<String, InvertedIndexRow> ranks = new HashMap<String, InvertedIndexRow>();
 		for(String word: query) {
 			// TODO: optimize based on different table layout, multi-thread requests, etc.
-			List<WordDocumentStatistics> wordDocLocs = getDocumentLocations(word);
-			for(WordDocumentStatistics wordDocLoc: wordDocLocs) {
+			List<InvertedIndexRow> wordDocLocs = getDocumentLocations(word);
+			for(InvertedIndexRow wordDocLoc: wordDocLocs) {
 				
 				if(!ranks.containsKey(wordDocLoc.getUrl())) {
 					wordDocLoc.setSimilarityRank(0);
 					ranks.put(wordDocLoc.getUrl(), wordDocLoc);
 				}
 				
-				WordDocumentStatistics rankedDoc = ranks.get(wordDocLoc.getUrl());
+				InvertedIndexRow rankedDoc = ranks.get(wordDocLoc.getUrl());
 				double queryWeight = wordDocLoc.getMaximumTermFrequency() * Math.log((double) corpusSize / wordDocLocs.size());
 				double docWeight = wordDocLoc.getEuclideanTermFrequency();
 				rankedDoc.setSimilarityRank(rankedDoc.getSimilarityRank() + queryWeight * docWeight);
@@ -117,18 +117,18 @@ public class InvertedIndex {
 			logger.info(String.format("=> got %d documents for query word '%s'.", wordDocLocs.size(), word));
 		}
 		
-		return new PriorityQueue<WordDocumentStatistics>(ranks.values());
+		return new PriorityQueue<InvertedIndexRow>(ranks.values());
 	}
 	
 	public TreeSet<DocumentVector> lookupDocuments(List<String> query) {
 		// TODO: query URLMetaInfo dynamoDB table for corpus size??
 		int corpusSize = 4000;
 		
-		List<WordDocumentStatistics> candidates = new LinkedList<WordDocumentStatistics>();
+		List<InvertedIndexRow> candidates = new LinkedList<InvertedIndexRow>();
 		Map<String, Integer> dfs = new HashMap<String, Integer>();
 		for(String word: query) {
 			// TODO: optimize based on different table layout, multi-thread requests, etc.
-			List<WordDocumentStatistics> wordCandidates = getDocumentLocations(word);
+			List<InvertedIndexRow> wordCandidates = getDocumentLocations(word);
 			candidates.addAll(wordCandidates);
 			dfs.put(word, wordCandidates.size());
 			logger.info(String.format("=> got %d documents for query word '%s'.", wordCandidates.size(), word));
@@ -136,7 +136,7 @@ public class InvertedIndex {
 		
 		// build TF-IDF information
 		Map<String, Map<String, Double>> docs = new HashMap<String, Map<String, Double>>();
-		for(WordDocumentStatistics candidate: candidates) {
+		for(InvertedIndexRow candidate: candidates) {
 			Map<String, Double> doc = docs.get(candidate.getUrl());
 			
 			if(doc == null) {
@@ -174,11 +174,11 @@ public class InvertedIndex {
 				idx.importData(args[1]);
 			} else if(args[0].equals("query")) {
 				List<String> query = Arrays.asList(Arrays.copyOfRange(args, 1, args.length));
-				PriorityQueue<WordDocumentStatistics> newResults = idx.rankDocuments(query);
+				PriorityQueue<InvertedIndexRow> newResults = idx.rankDocuments(query);
 				
-				Iterator<WordDocumentStatistics> iter = newResults.iterator();
+				Iterator<InvertedIndexRow> iter = newResults.iterator();
 				for(int i = 0; i < 10 && iter.hasNext(); ++i) {
-					WordDocumentStatistics doc = iter.next();
+					InvertedIndexRow doc = iter.next();
 					System.out.println(doc.toString());
 				}
 				
@@ -191,7 +191,6 @@ public class InvertedIndex {
 					DocumentVector doc = olditer.next();
 					System.out.println(doc.toString());
 				}
-				
 			} else {
 				System.out.println("usage: InvertedIndex import <fromdir>");
 				System.out.println("       InvertedIndex query <word1> <word2> ... <wordN>");
