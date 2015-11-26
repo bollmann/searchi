@@ -22,10 +22,10 @@
 
 	<target name="compile-inverted-index" depends="init">
 		<javac srcdir="src" destdir="bin" includes="indexer/offline/*.java,utils/**/*.java" deprecation="on"
-     debug="true" includeantruntime="false" classpath="classes">
+     debug="true" includeantruntime="false">
 			<classpath>
 				<fileset dir="lib">
-					<include name="*.jar" />
+					<include name="**/*.jar" />
 				</fileset>
 			</classpath>
 		</javac>
