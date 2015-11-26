@@ -23,7 +23,7 @@ public class IndexerClientServlet extends HttpServlet {
 		buffer.append("<html><head><title>Interface-Search Engine Test</title></head>");
 		buffer.append("<body><form action = \"/indexerclient\" method = \"post\">");
 		buffer.append("<input size=50 name = \"query\">");
-		buffer.append("<button>Searchi</button>");
+		buffer.append("<button>Searchi!</button>");
 		buffer.append("</form></body></html>");
 		out.append(buffer.toString());
 		out.flush();
@@ -49,7 +49,11 @@ public class IndexerClientServlet extends HttpServlet {
 		for(InvertedIndexRow doc :iiObj.rankDocuments(query)){
 			buffer.append("<li>" + doc.toString() + "</li>");
 		}
-		buffer.append("</ol></body></html>");
+		buffer.append("</ol>");
+		buffer.append("<br><br><form action = \"/indexerclient\" method = \"post\">");
+		buffer.append("<input size=50 name = \"query\">");
+		buffer.append("<button>Searchi again!</button>");
+		buffer.append("</form></body></html>");
 		out.append(buffer.toString());
 		out.flush();
 		out.close();

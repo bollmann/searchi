@@ -59,8 +59,22 @@
       </manifest>
     </jar>
   </target>
-  
-  <target name="compile-servlet" depends="inverted-index" description="Makes the WAR file for the servlet">
+
+  <target name="compile-indexer" depends="compile-inverted-index">
+    <javac srcdir="src" destdir="bin" includes="indexer/**/*.java,indexer/*.java,utils/**/*.java" deprecation="on"
+     debug="true" includeantruntime="false" classpath="classes">
+      <classpath>
+        <fileset dir="lib">
+          <include name="**/*.jar"/>
+        </fileset>
+	<fileset dir="localVersions">
+	  <include name="**/*.jar"/>
+	</fileset>
+      </classpath>
+    </javac>
+  </target>
+
+  <target name="compile-servlet" depends="compile-indexer" description="Makes the WAR file for the servlet">
     <delete file="servlet.war"/>
   	<mkdir dir="${web-inf.dir}${file.separator}classes"/>
   	<mkdir dir="${web-inf.dir}${file.separator}lib"/>
@@ -90,8 +104,8 @@
 		    <include name="**/*.jar"/>
 		    <include name="WEB-INF/web.xml"/>
 	    </fileset>
-   	</jar>    	
-  	<delete dir="target"/>
+   	</jar>
+	<delete dir="target"/>    	
   </target>
 	
   <target name="all">
