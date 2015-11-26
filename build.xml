@@ -64,13 +64,13 @@
 		</copy>
 		<delete dir="${web-inf.dir}${file.separator}lib${file.separator}aws-sdk"/>
 		<jar destfile="servlet.war" update="true">
-			<fileset dir="target">
+			<fileset dir="${build.target.dir}">
 				<include name="**/*.class"/>
 				<include name="**/*.jar"/>
 				<include name="WEB-INF/web.xml"/>
 			</fileset>
 		</jar>
-		<delete dir="target"/>
+		<delete dir="${build.target.dir}"/>
 	</target>
 
 	<target name="all">
