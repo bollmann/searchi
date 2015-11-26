@@ -20,7 +20,7 @@ public class DiskBackedQueue<T> {
 	/** The max queue size. */
 	private int MAX_QUEUE_SIZE = 100000;
 
-	private Integer pushToDiskLimit = 1; // the size of inputList when it is
+	private Integer pushToDiskLimit = 10000; // the size of inputList when it is
 											// pushed to s3.
 	// this is exponentially grown till it reaches MAX_QUEUE_SIZE
 

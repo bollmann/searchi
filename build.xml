@@ -14,107 +14,72 @@
 	<property name="src.test.dir"  location="${build.dir}${file.separator}src${file.separator}test"/>
 	<property name="resources.dir" location="${build.dir}${file.separator}resources"/>
 	<property name="conf.dir"      location="${build.dir}${file.separator}conf"/>
-	
-  <target name="init">
-    <mkdir dir="bin/"/>
-    <copy file="src/log4j.properties" tofile="bin/log4j.properties"/>
-  </target>
-  
-  <target name="compile-inverted-index" depends="init">
-    <javac srcdir="src" destdir="bin" includes="indexer/offline/*.java,utils/**/*.java" deprecation="on"
-     debug="true" includeantruntime="false" classpath="classes">
-      <classpath>
-        <fileset dir="lib">
-          <include name="*.jar" />
-        </fileset>
-      </classpath>
-    </javac>
-  </target>
-  
-  <target name="inverted-index" depends="compile-inverted-index">
-    <jar basedir="bin" destfile="InvertedIndexJob.jar" includes="indexer/offline/*.class,utils/**/*.class">
-      <fileset dir="." includes="lib/*.jar"/>
-      <manifest>
-        <attribute name="Main-Class" value="indexer.offline.InvertedIndexJob" />
-      </manifest>
-    </jar>
-  </target>
 
-  <target name="compile-inverted-index-v2" depends="init">
-    <javac srcdir="src" destdir="bin" includes="indexer/v2/offline/*.java,utils/**/*.java" deprecation="on"
-     debug="true" includeantruntime="false" classpath="classes">
-      <classpath>
-        <fileset dir="lib">
-          <include name="*.jar" />
-        </fileset>
-      </classpath>
-    </javac>
-  </target>
-  
-  <target name="inverted-index-v2" depends="compile-inverted-index-v2">
-    <jar basedir="bin" destfile="InvertedIndexV2.jar" includes="indexer/v2/offline/*.class,utils/**/*.class">
-      <fileset dir="." includes="lib/*.jar"/>
-      <manifest>
-        <attribute name="Main-Class" value="indexer.v2.offline.InvertedIndexJob" />
-      </manifest>
-    </jar>
-  </target>
+	<target name="init">
+		<mkdir dir="bin/"/>
+		<copy file="src/log4j.properties" tofile="bin/log4j.properties"/>
+	</target>
 
-  <target name="compile-indexer" depends="compile-inverted-index">
-    <javac srcdir="src" destdir="bin" includes="indexer/**/*.java,indexer/*.java,utils/**/*.java" deprecation="on"
+	<target name="compile-inverted-index" depends="init">
+		<javac srcdir="src" destdir="bin" includes="indexer/offline/*.java,utils/**/*.java" deprecation="on"
      debug="true" includeantruntime="false" classpath="classes">
-      <classpath>
-        <fileset dir="lib">
-          <include name="**/*.jar"/>
-        </fileset>
-	<fileset dir="localVersions">
-	  <include name="**/*.jar"/>
-	</fileset>
-      </classpath>
-    </javac>
-  </target>
+			<classpath>
+				<fileset dir="lib">
+					<include name="*.jar" />
+				</fileset>
+			</classpath>
+		</javac>
+	</target>
 
-  <target name="compile-servlet" depends="compile-indexer" description="Makes the WAR file for the servlet">
-    <delete file="servlet.war"/>
-  	<mkdir dir="${web-inf.dir}${file.separator}classes"/>
-  	<mkdir dir="${web-inf.dir}${file.separator}lib"/>
-    <copy file="${conf.dir}${file.separator}web.xml" tofile="${web-inf.dir}${file.separator}web.xml" overwrite="true" />
-	<copy todir="${web-inf.dir}${file.separator}classes">
-		<fileset dir="bin" includes="**"/>
-	</copy>
-	<copy todir="${web-inf.dir}${file.separator}lib">
-		<fileset dir="lib" includes="*.jar"/>
-		<fileset dir="lib/aws-sdk/1.10.33/lib" includes="*.jar"/>
-		<fileset dir="lib/aws-sdk/1.10.33/third-party/aspectj-1.6" includes="*.jar"/>
-		<fileset dir="lib/aws-sdk/1.10.33/third-party/commons-logging-1.1.3" includes="*.jar"/>
-		<fileset dir="lib/aws-sdk/1.10.33/third-party/httpcomponents-client-4.3" includes="*.jar"/>
-		<fileset dir="lib/aws-sdk/1.10.33/third-party/jackson-core-2.5.3" includes="*.jar"/>
-		<fileset dir="lib/aws-sdk/1.10.33/third-party/javax-mail-1.4.6" includes="*.jar"/>
-		<fileset dir="lib/aws-sdk/1.10.33/third-party/spring-3.0" includes="*.jar"/>
-		<fileset dir="lib/aws-sdk/1.10.33/third-party/commons-codec-1.6" includes="*.jar"/>
-		<fileset dir="lib/aws-sdk/1.10.33/third-party/freemarker-2.3.18" includes="*.jar"/>
-		<fileset dir="lib/aws-sdk/1.10.33/third-party/jackson-annotations-2.5.3" includes="*.jar"/>
-		<fileset dir="lib/aws-sdk/1.10.33/third-party/jackson-databind-2.5.3" includes="*.jar"/>
-		<fileset dir="lib/aws-sdk/1.10.33/third-party/joda-time-2.8.1" includes="*.jar"/>			
-	</copy>
-  	<delete dir="${web-inf.dir}${file.separator}lib${file.separator}aws-sdk"/>
-	<jar destfile="servlet.war" update="true">
-		<fileset dir="target">
-		    <include name="**/*.class"/>
-		    <include name="**/*.jar"/>
-		    <include name="WEB-INF/web.xml"/>
-	    </fileset>
-   	</jar>
-	<delete dir="target"/>    	
-  </target>
-	
-  <target name="all">
-    <!-- TODO! //-->
-  </target>
-  
-  <target name="clean">
-    <delete dir="bin/" />
-    <delete file="InvertedIndexJob.jar" />
-  </target>
-  
+	<target name="inverted-index" depends="compile-inverted-index">
+		<jar basedir="bin" destfile="InvertedIndexJob.jar" includes="indexer/offline/*.class,utils/**/*.class">
+			<fileset dir="." includes="lib/*.jar"/>
+			<manifest>
+				<attribute name="Main-Class" value="indexer.offline.InvertedIndexJob" />
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="compile-indexer" depends="compile-inverted-index">
+		<javac srcdir="src" destdir="bin" includes="indexer/**/*.java,indexer/*.java,utils/**/*.java" deprecation="on"
+     debug="true" includeantruntime="false" classpath="classes">
+			<classpath>
+				<fileset dir="lib">
+					<include name="**/*.jar"/>
+				</fileset>
+			</classpath>
+		</javac>
+	</target>
+
+	<target name="compile-servlet" depends="compile-indexer" description="Makes the WAR file for the servlet">
+		<delete file="servlet.war"/>
+		<mkdir dir="${web-inf.dir}${file.separator}classes"/>
+		<mkdir dir="${web-inf.dir}${file.separator}lib"/>
+		<copy file="${conf.dir}${file.separator}web.xml" tofile="${web-inf.dir}${file.separator}web.xml" overwrite="true" />
+		<copy todir="${web-inf.dir}${file.separator}classes">
+			<fileset dir="bin" includes="**"/>
+		</copy>
+		<copy todir="${web-inf.dir}${file.separator}lib">
+			<fileset dir="lib" includes="*.jar"/>
+		</copy>
+		<delete dir="${web-inf.dir}${file.separator}lib${file.separator}aws-sdk"/>
+		<jar destfile="servlet.war" update="true">
+			<fileset dir="target">
+				<include name="**/*.class"/>
+				<include name="**/*.jar"/>
+				<include name="WEB-INF/web.xml"/>
+			</fileset>
+		</jar>
+		<delete dir="target"/>
+	</target>
+
+	<target name="all">
+		<!-- TODO! //-->
+	</target>
+
+	<target name="clean">
+		<delete dir="bin/" />
+		<delete file="InvertedIndexJob.jar" />
+	</target>
+
 </project>

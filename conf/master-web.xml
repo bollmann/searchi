@@ -13,7 +13,7 @@
      
     <servlet>
         <servlet-name>CrawlerMaster</servlet-name>
-        <servlet-class>servlet.CrawlerMaster</servlet-class>
+        <servlet-class>crawler.servlet.CrawlerMaster</servlet-class>
     </servlet>
     
     <servlet-mapping>
