@@ -1,19 +1,17 @@
 package indexer.servlets;
 
+import indexer.DocumentVector;
+import indexer.InvertedIndex;
+import indexer.InvertedIndexRow;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.LinkedList;
-import java.util.PriorityQueue;
-import java.util.TreeSet;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import indexer.DocumentVector;
-import indexer.InvertedIndex;
-import indexer.WordDocumentStatistics;
 
 @SuppressWarnings("serial")
 public class IndexerClientServlet extends HttpServlet {
@@ -48,7 +46,7 @@ public class IndexerClientServlet extends HttpServlet {
 			buffer.append("<li>" + doc.toString() + "</li>");
 		}
 		buffer.append("</ol><br>Using rankDocuments():<ol>" );
-		for(WordDocumentStatistics doc :iiObj.rankDocuments(query)){
+		for(InvertedIndexRow doc :iiObj.rankDocuments(query)){
 			buffer.append("<li>" + doc.toString() + "</li>");
 		}
 		buffer.append("</ol></body></html>");
