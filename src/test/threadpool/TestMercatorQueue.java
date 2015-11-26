@@ -6,9 +6,9 @@ import junit.framework.TestCase;
 
 import org.junit.Test;
 
+import crawler.errors.NoDomainConfigException;
 import crawler.threadpool.MercatorNode;
 import crawler.threadpool.MercatorQueue;
-import errors.NoDomainConfigException;
 
 public class TestMercatorQueue extends TestCase {
 	

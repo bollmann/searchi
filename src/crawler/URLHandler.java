@@ -22,6 +22,7 @@ import com.google.gson.Gson;
 
 import crawler.clients.HttpClient;
 import crawler.dao.URLContent;
+import crawler.errors.NoDomainConfigException;
 import crawler.info.URLInfo;
 import crawler.parsers.Parser;
 import crawler.requests.Http10Request;
@@ -33,7 +34,6 @@ import crawler.threadpool.Queue;
 import db.dbo.URLMetaInfo;
 import db.wrappers.DynamoDBWrapper;
 import db.wrappers.S3Wrapper;
-import errors.NoDomainConfigException;
 
 public class URLHandler {
 	private final Logger logger = Logger.getLogger(getClass());

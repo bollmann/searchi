@@ -24,6 +24,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import crawler.clients.HttpClient;
+import crawler.errors.NoDomainConfigException;
 import crawler.info.URLInfo;
 import crawler.parsers.Parser;
 import crawler.policies.FilePolicy;
@@ -38,7 +39,6 @@ import crawler.threadpool.MercatorNode;
 import crawler.threadpool.MercatorQueue;
 import db.wrappers.DynamoDBWrapper;
 import db.wrappers.S3Wrapper;
-import errors.NoDomainConfigException;
 
 public class CrawlerMaster extends HttpServlet {
 	private final Logger logger = Logger.getLogger(getClass());

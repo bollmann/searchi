@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import crawler.errors.QueueFullException;
 import crawler.parsers.Parser;
 import crawler.shutdownHook.ShutdownHook;
 import crawler.threadpool.MercatorQueue;
@@ -20,7 +21,6 @@ import crawler.threadpool.Queue;
 import crawler.threadpool.ThreadPool2;
 import db.wrappers.DynamoDBWrapper;
 import db.wrappers.S3Wrapper;
-import errors.QueueFullException;
 
 /**
  * The Class XPathCrawler.

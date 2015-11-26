@@ -1,4 +1,4 @@
-package errors;
+package crawler.errors;
 
 public class NoDomainConfigException extends Exception {
 

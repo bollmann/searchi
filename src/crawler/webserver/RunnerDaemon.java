@@ -14,10 +14,10 @@ import javax.servlet.http.HttpServlet;
 
 import org.apache.log4j.Logger;
 
+import crawler.errors.QueueFullException;
 import crawler.handlers.MainHandler;
 import crawler.threadpool.Queue;
 import crawler.threadpool.ThreadPool;
-import errors.QueueFullException;
 
 // TODO: Auto-generated Javadoc
 /**

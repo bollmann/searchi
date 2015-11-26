@@ -12,8 +12,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.log4j.Logger;
 
-import errors.NoDomainConfigException;
-import errors.QueueFullException;
+import crawler.errors.NoDomainConfigException;
+import crawler.errors.QueueFullException;
 
 public class MercatorQueue {
 	private Integer size;

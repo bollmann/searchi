@@ -7,7 +7,7 @@ import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 
-import errors.QueueFullException;
+import crawler.errors.QueueFullException;
 
 public class MercatorNode {
 	private final Logger logger = Logger.getLogger(getClass());

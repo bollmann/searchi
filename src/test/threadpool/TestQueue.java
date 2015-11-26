@@ -8,8 +8,8 @@ import junit.framework.TestCase;
 import org.junit.Assert;
 import org.junit.Test;
 
+import crawler.errors.QueueFullException;
 import crawler.threadpool.Queue;
-import errors.QueueFullException;
 
 // TODO: Auto-generated Javadoc
 /**

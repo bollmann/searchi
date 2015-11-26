@@ -1,7 +1,7 @@
 /*
  * Written by Shreejit Gangadharan
  */
-package errors;
+package crawler.errors;
 
 // TODO: Auto-generated Javadoc
 /**

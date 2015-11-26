@@ -8,7 +8,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import errors.QueueFullException;
+import crawler.errors.QueueFullException;
 
 // TODO: Auto-generated Javadoc
 /**

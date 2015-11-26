@@ -10,10 +10,10 @@ import com.amazonaws.services.dynamodbv2.model.DescribeTableResult;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import crawler.errors.QueueFullException;
 import db.dbo.QueueInfo;
 import db.wrappers.DynamoDBWrapper;
 import db.wrappers.S3Wrapper;
-import errors.QueueFullException;
 
 public class DiskBackedQueue<T> { 
 
