@@ -11,9 +11,12 @@ import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
+import org.apache.log4j.Logger;
 
 public final class PRComputeJob extends Configured implements Tool {
 
+	private static final Logger logger = Logger.getLogger(PRComputeJob.class);
+	
 	@Override
 	public int run(String[] args) throws Exception {
 		Configuration conf = new Configuration();
@@ -53,12 +56,15 @@ public final class PRComputeJob extends Configured implements Tool {
 			tempOut = out + "_" + Integer.toString(i); 
 			String [] jobArgs = {input, tempOut};
 			res = ToolRunner.run(new PRComputeJob(), jobArgs);
-			if (res != 0) {
+			if (res != 0) {				
 				break;
 			}
-			input = tempOut;
-			
-		}		
+			input = tempOut;			
+		}
+		
+		String [] jobArgs = {input, out};
+		res = ToolRunner.run(new PRFinalAggJob(), jobArgs);
+		
 		System.exit(res);
 	}
 

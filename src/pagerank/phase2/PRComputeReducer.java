@@ -8,6 +8,7 @@ import org.apache.hadoop.mapreduce.Reducer;
 public class PRComputeReducer extends Reducer<Text, Text, Text, Text>{
 	
 	private static final String DELIM_SINGLE_HASH = "#";
+	private static final String DELIM_PR_LINKS = "###";
 	
 	@Override
 	public void reduce(Text key, Iterable<Text> values, Context context)
@@ -17,7 +18,7 @@ public class PRComputeReducer extends Reducer<Text, Text, Text, Text>{
 		String outLinks = "";
 	
 		for (Text value : values) {			
-			String [] incomingPRData = value.toString().split(DELIM_SINGLE_HASH);
+			String [] incomingPRData = value.toString().split(DELIM_PR_LINKS);
 			
 			if (incomingPRData.length == 1) {
 				outLinks = incomingPRData[0].trim();
@@ -38,7 +39,7 @@ public class PRComputeReducer extends Reducer<Text, Text, Text, Text>{
 		
 		// Form the output value as string
 		StringBuffer oVal = new StringBuffer(Double.toString(pageRank));
-		oVal.append(DELIM_SINGLE_HASH);
+		oVal.append(DELIM_PR_LINKS);
 		oVal.append(outLinks);
 		
 		context.write(key, new Text(oVal.toString()));		
