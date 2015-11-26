@@ -24,6 +24,6 @@
 	<classpathentry kind="lib" path="lib/junit-4.10.jar"/>
 	<classpathentry kind="lib" path="lib/log4j-1.2.9.jar"/>
 	<classpathentry kind="lib" path="lib/servlet-api-2.4.jar"/>
-	<classpathentry kind="lib" path="/home/cis455/git/searchi/lib/hadoop-annotations-2.6.0.jar"/>
+	<classpathentry kind="lib" path="lib/hadoop-annotations-2.6.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
