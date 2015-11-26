@@ -32,7 +32,7 @@ public class DynamoDBWrapper {
 	private long entriesRead = 0L;
 	private Date startTime;
 	
-	public static final String URL_CONTENT_ENDPOINT = "http://dynamodb.us-east-1.amazonaws.com";
+	public static final String US_EAST = "http://dynamodb.us-east-1.amazonaws.com";
 
 	public DynamoDBMapper getMapper() {
 		return mapper;

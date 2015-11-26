@@ -28,6 +28,7 @@ import responses.HttpResponse;
 import servlet.multinodal.producer.UrlPoster;
 import servlet.multinodal.producer.UrlProducer;
 import servlet.multinodal.status.WorkerStatus;
+import threadpool.DiskBackedQueue;
 import threadpool.MercatorNode;
 import threadpool.MercatorQueue;
 import threadpool.Queue;
@@ -52,58 +53,52 @@ public class CrawlerMaster extends HttpServlet {
 
 	@Override
 	public void init() {
-		ddb = DynamoDBWrapper.getInstance(DynamoDBWrapper.URL_CONTENT_ENDPOINT);
+		ddb = DynamoDBWrapper.getInstance(DynamoDBWrapper.US_EAST);
 		s3 = S3Wrapper.getInstance();
 		workerStatusMap = new HashMap<String, WorkerStatus>();
 
 		String flushData = (String) getServletContext().getInitParameter(
 				"flushData");
 
+		String flushQueue = (String) getServletContext().getInitParameter(
+				"flushQueue");
+
 		if (flushData.equals("yes")) {
 			ddb.deleteTable("URLMetaInfo");
 			s3.deleteBucket(s3.URL_BUCKET);
+
+		}
+
+		if (flushQueue.equals("yes")) {
 			s3.deleteBucket(s3.URL_QUEUE_BUCKET);
 		}
 
 		s3.createBucket(s3.URL_BUCKET);
 		s3.createBucket(s3.URL_QUEUE_BUCKET);
-		ddb.createTable("URLMetaInfo", 5, 5, "url", "S");
+		ddb.createTable("URLMetaInfo", 100, 100, "url", "S");
 
 		// look for queue in s3. If not there, then initialize to new
 
-		try {
-			String queueContent = s3.getItem(s3.URL_QUEUE_BUCKET, "queueState");
-			Type listType = new TypeToken<Queue<String>>() {
-			}.getType();
-			System.out.println("Reading queue for s3. Resuming saved state.");
-			q = new Gson().fromJson(queueContent, listType);
-		} catch (Exception e) {
-			e.printStackTrace();
-			q = new Queue<String>(1000);
-		}
+		DiskBackedQueue<String> q = new DiskBackedQueue<String>();
 
 		mq = new MercatorQueue();
 		mq.setOutgoingJobQueue(q);
 
 		List<String> seedUrls = new ArrayList<String>() {
 			{
-//				add("https://en.wikipedia.org/wiki/Main_Page");
-				add("https://www.reddit.com/");
-//				add("https://dbappserv.cis.upenn.edu/crawltest.html");
+				// add("https://en.wikipedia.org/wiki/Main_Page");
+				// add("https://www.reddit.com/");
+				add("https://dbappserv.cis.upenn.edu/crawltest.html");
 			}
 		};
-		try {
-			for (String url : seedUrls) {
-				q.enqueue(url);
-			}
-		} catch (QueueFullException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+
+		for (String url : seedUrls) {
+			q.enqueue(url);
 		}
 
 		Integer maxUrls = Integer.parseInt((String) getServletContext()
 				.getInitParameter("maxUrls"));
-		UrlProducer producer = new UrlProducer(mq, q, maxUrls);
+		UrlProducer producer = new UrlProducer(mq, q, maxUrls, workerStatusMap);
 		Thread t = new Thread(producer);
 		t.start();
 		UrlPoster poster = new UrlPoster(q, workerStatusMap);
@@ -113,13 +108,13 @@ public class CrawlerMaster extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
-		if(request.getPathInfo() == null) {
+		if (request.getPathInfo() == null) {
 			String content = "<html><body>Master is running!</body></html>";
 			PrintWriter out = response.getWriter();
 			out.print(content);
 			return;
 		}
-		
+
 		if (request.getPathInfo().equals("/workerStatus")) {
 			boolean created;
 			String ipAddress = request.getRemoteAddr();
@@ -197,10 +192,31 @@ public class CrawlerMaster extends HttpServlet {
 			}
 
 			content = content.replace("<$workers$>", sb.toString());
+			content = content.replace("<$queueItems$>", "Items in queue: "
+					+ String.valueOf(q.getSize()));
 			response.setContentType("text/html");
 			PrintWriter out = response.getWriter();
 			out.println(content);
 			return;
+		} else if (request.getPathInfo().equals("/queueStatus")) {
+			String content = null;
+			try {
+				content = FilePolicy
+						.readFile("resources/master_queue_status_page.html");
+			} catch (IOException e) {
+				e.printStackTrace();
+				return;
+			}
+			StringBuilder sb = new StringBuilder();
+			sb.append("<ol>");
+			for (String url : q.getList()) {
+				sb.append("<li>" + url + "</li>");
+			}
+			sb.append("</ol>");
+			content = content.replace("<$queueStatus$>", sb.toString());
+			response.setContentType("text/html");
+			PrintWriter out = response.getWriter();
+			out.println(content);
 		}
 	}
 
@@ -287,5 +303,16 @@ public class CrawlerMaster extends HttpServlet {
 			mq.enqueueUrl(url);
 			logger.info("Setting last crawled time to now.");
 		}
+	}
+
+	@Override
+	public void destroy() {
+		System.out.println("Exiting master gracefully.");
+		DynamoDBWrapper ddb = DynamoDBWrapper
+				.getInstance(DynamoDBWrapper.US_EAST);
+		S3Wrapper s3 = S3Wrapper.getInstance();
+		String queueContent = new Gson().toJson(q);
+		s3.putItem(s3.URL_QUEUE_BUCKET, "queueState", queueContent);
+		ddb.displaySaveStatistics();
 	}
 }

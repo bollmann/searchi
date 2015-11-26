@@ -27,7 +27,12 @@
      </context-param>
      
      <context-param>
+     	<param-name>flushQueue</param-name>
+     	<param-value>yes</param-value>
+     </context-param>
+     
+     <context-param>
      	<param-name>maxUrls</param-name>
-     	<param-value>10000</param-value>
+     	<param-value>50</param-value>
      </context-param>
 </web-app>

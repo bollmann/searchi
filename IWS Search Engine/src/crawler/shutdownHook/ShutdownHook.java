@@ -18,7 +18,7 @@ public class ShutdownHook extends Thread {
 	public void run() {
 		System.out.println("Exiting gracefully");
 		DynamoDBWrapper ddb = DynamoDBWrapper
-				.getInstance(DynamoDBWrapper.URL_CONTENT_ENDPOINT);
+				.getInstance(DynamoDBWrapper.US_EAST);
 		S3Wrapper s3 = S3Wrapper.getInstance();
 		String queueContent = new Gson().toJson(urlQueue);
 		s3.putItem(s3.URL_QUEUE_BUCKET, "queueState", queueContent);

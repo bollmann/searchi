@@ -85,9 +85,20 @@ public class CrawlerSlave extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		if (outgoingUrls.size() > 0) {
-			postLinksToMaster(outgoingUrls);
+		List<String> filteredurls = filterUrls(outgoingUrls);
+		if (filteredurls.size() > 0) {
+			postLinksToMaster(filteredurls);
 		}
+	}
+	
+	public List<String> filterUrls(List<String> urls) {
+		List<String> filteredUrls = new ArrayList<String>();
+		for(String url: urls) {
+			if(Parser.isCrawlableUrl(url)) {
+				filteredUrls.add(url);
+			}
+		}
+		return filteredUrls;
 	}
 
 	public void postLinksToMaster(List<String> urls) {
@@ -109,7 +120,7 @@ public class CrawlerSlave extends HttpServlet {
 		System.out.println("Attempting to process " + url);
 
 		DynamoDBWrapper ddb = DynamoDBWrapper
-				.getInstance(DynamoDBWrapper.URL_CONTENT_ENDPOINT);
+				.getInstance(DynamoDBWrapper.US_EAST);
 		S3Wrapper s3 = S3Wrapper.getInstance();
 
 		URLMetaInfo info = (URLMetaInfo) ddb.getItem(url, URLMetaInfo.class);
@@ -328,6 +339,9 @@ public class CrawlerSlave extends HttpServlet {
 				if (linkItem.getAttributes().getNamedItem("href") != null) {
 					linkHref = linkItem.getAttributes().getNamedItem("href")
 							.getNodeValue();
+					if(linkHref.startsWith("#")) { // remove anchor links to same page
+						continue;
+					}
 				} else {
 					continue;
 				}

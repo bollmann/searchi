@@ -13,17 +13,17 @@ import org.apache.log4j.Logger;
 import parsers.Parser;
 import requests.Http10Request;
 import servlet.multinodal.status.WorkerStatus;
+import threadpool.DiskBackedQueue;
 import threadpool.Queue;
-import threadpool.ThreadPool2;
 import clients.HttpClient;
 import errors.QueueFullException;
 
 public class UrlPoster extends Thread {
 	private final Logger logger = Logger.getLogger(getClass());
-	private Queue<String> urlQueue;
+	private DiskBackedQueue<String> urlQueue;
 	private Map<String, WorkerStatus> workerStatusMap;
 
-	public UrlPoster(Queue<String> urlQueue,
+	public UrlPoster(DiskBackedQueue<String> urlQueue,
 			Map<String, WorkerStatus> workerStatusMap) {
 		this.urlQueue = urlQueue;
 		this.workerStatusMap = workerStatusMap;
@@ -47,7 +47,6 @@ public class UrlPoster extends Thread {
 				url = urlQueue.dequeue();
 			}
 
-			
 			if (workerStatusMap.size() > 0) {
 				// we have workers! put them to work
 				String ipPort = getNextWorker(workerStatusMap);
@@ -64,14 +63,9 @@ public class UrlPoster extends Thread {
 				logger.debug("Dequeued url " + url + " and sent to " + ipPort);
 			} else {
 				// no workers. just put the url back into the queue
-				synchronized(urlQueue) {
-					try {
-						urlQueue.enqueue(url);
-					} catch (QueueFullException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
+
+				urlQueue.enqueue(url);
+
 			}
 			try {
 				Thread.sleep(100);

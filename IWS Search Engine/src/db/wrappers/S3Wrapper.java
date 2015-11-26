@@ -171,5 +171,9 @@ public class S3Wrapper {
 		}
 		return sb.toString();
 	}
+	
+	public void deleteItem(String bucketName, String key) {
+		s3client.deleteObject(bucketName, key);
+	}
 
 }

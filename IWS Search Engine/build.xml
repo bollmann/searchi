@@ -8,6 +8,7 @@
 	<property name="web-inf.dir" location="${build.target.dir}${file.separator}WEB-INF" />
 	<property name="classes.dir" location="${web-inf.dir}${file.separator}classes" />
 	<property name="web-inf.lib.dir" location="${web-inf.dir}${file.separator}lib" />
+	<property name="web-inf-resources.lib.dir" location="${web-inf.dir}${file.separator}resources" />
 	<property name="test-classes.dir" location="${build.target.dir}${file.separator}test${file.separator}classes" />
 	<property name="test-lib.dir" location="${build.target.dir}${file.separator}test${file.separator}lib" />
 	<property name="src.main.dir" location="${build.dir}${file.separator}src${file.separator}" />
@@ -82,7 +83,7 @@
 				<exclude name="web.xml" />
 			</fileset>
 		</copy>
-		<copy todir="${build.target.dir}" overwrite="true">
+		<copy todir="${web-inf-resources.lib.dir}" overwrite="true">
 			<fileset dir="${resources.dir}">
 				<include name="**" />
 			</fileset>
@@ -90,6 +91,11 @@
 		<copy todir="${web-inf.lib.dir}" overwrite="true">
 			<fileset dir="${inputlib.dir}">
 				<include name="*.jar" />
+			</fileset>
+		</copy>
+		<copy todir="${web-inf-resources.lib.dir}" overwrite="true">
+			<fileset dir="${resources.dir}">
+				<include name="**" />
 			</fileset>
 		</copy>
 		<antcall target="compilejavatest" />
@@ -101,7 +107,7 @@
 		<!-- <antcall target="cleanup"/> -->
 	</target>
 
-	
+
 
 	<target name="pack" description="Create an archive for submission">
 		<zip destfile="submit-hw3.zip">
@@ -109,35 +115,25 @@
 		</zip>
 	</target>
 
-
-	<target name="compile-master" depends="init">
-		<javac srcdir="src" destdir="target/master/WEB-INF/classes" includes="**/master/*.java" deprecation="on"
-	     debug="true" includeantruntime="false" classpath="lib/servlet-api.jar">
-			<compilerarg value="-Xlint"/>
-		</javac>
-	</target>
-
-	<target name="compile-worker" depends="init">
-		<javac srcdir="src" destdir="target/worker/WEB-INF/classes" includes="**/worker/*.java" deprecation="on"
-	     debug="true" includeantruntime="false" classpath="lib/servlet-api.jar">
-			<compilerarg value="-Xlint"/>
-		</javac>
-	</target>
-
-
-	<target name="war-master" depends="compile-master">
-		<jar destfile="master.war">
-			<fileset dir="target/master/" includes="WEB-INF/classes/**/*.class"/>
-			<fileset dir="target/master/" includes="WEB-INF/lib/*.jar"/>
-			<fileset dir="target/master/" includes="WEB-INF/*.xml"/>
-		</jar>
-	</target>
-
-	<target name="war-worker" depends="compile-worker">
-		<jar destfile="worker.war">
-			<fileset dir="target/worker/" includes="WEB-INF/classes/**/*.class"/>
-			<fileset dir="target/worker/" includes="WEB-INF/lib/*.jar"/>
-			<fileset dir="target/worker/" includes="WEB-INF/*.xml"/>
+	<target name="war" depends="build" description="Makes the WAR file for the servlet">
+		<delete file="servlet.war"/>
+		<copy file="${conf.dir}${file.separator}web.xml" tofile="${web-inf.dir}${file.separator}web.xml" overwrite="true" />
+		<copy todir="${web-inf.lib.dir}" overwrite="true">
+			<fileset dir="${inputlib.dir}">
+				<include name="*.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="${web-inf-resources.lib.dir}" overwrite="true">
+			<fileset dir="${resources.dir}">
+				<include name="**" />
+			</fileset>
+		</copy>
+		<jar destfile="servlet.war" update="true">
+			<fileset dir="target">
+				<include name="**/*.class"/>
+				<include name="**/*.jar"/>
+				<include name="WEB-INF/web.xml"/>
+			</fileset>
 		</jar>
 	</target>
 

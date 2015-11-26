@@ -195,7 +195,7 @@ public class MainHandler extends Thread {
 
 				} catch (IOException e) {
 					logger.error(e.getMessage());
-					break;
+					continue;
 				}
 
 				logger.debug("Got request header line" + fullInput);
@@ -227,9 +227,10 @@ public class MainHandler extends Thread {
 							+ new String(response.toBytes()));
 					handler.writeOutput(response.toBytes());
 
-				} catch (IOException e) {
-					logger.error(e.getMessage());
-					break;
+				
+				} catch (Exception e) {
+					logger.error("Mainhandler got exception in handling request. Got " + e.getMessage());
+					continue;
 				}
 				if (path.equals("/shutdown")) {
 					SessionMap.getInstance().destroy();

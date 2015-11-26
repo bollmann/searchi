@@ -2,9 +2,12 @@ package servlet.multinodal.producer;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 
+import servlet.multinodal.status.WorkerStatus;
 import threadpool.MercatorQueue;
 import threadpool.Queue;
 import threadpool.ThreadPool2;
@@ -19,17 +22,28 @@ public class UrlProducer extends Thread {
 	private MercatorQueue mq;
 	private Queue<String> q;
 	private Integer maxUrls = 100;
-
-	public UrlProducer(MercatorQueue mq, Queue<String> q, Integer maxUrls) {
+	Map<String, WorkerStatus> workerStatusMap;
+	
+	public UrlProducer(MercatorQueue mq, Queue<String> q, Integer maxUrls, Map<String, WorkerStatus> workerStatusMap) {
 		this.mq = mq;
 		this.q = q;
 		this.maxUrls = maxUrls;
+		this.workerStatusMap = workerStatusMap;
+	}
+	
+	public Integer getUrlsProcessed(Map<String, WorkerStatus> workerStatusMap) {
+		Integer sum = 0;
+		for(Entry<String, WorkerStatus> entry : workerStatusMap.entrySet()) {
+			sum += entry.getValue().getUrlProcessed();
+		}
+		logger.debug("Checked workers and found a total of " + sum + "urls processed");
+		return sum;
 	}
 	
 	public void shutdown() {
 		System.out.println("Exiting gracefully");
 		DynamoDBWrapper ddb = DynamoDBWrapper
-				.getInstance(DynamoDBWrapper.URL_CONTENT_ENDPOINT);
+				.getInstance(DynamoDBWrapper.US_EAST);
 		S3Wrapper s3 = S3Wrapper.getInstance();
 		String queueContent = new Gson().toJson(q);
 		s3.putItem(s3.URL_QUEUE_BUCKET, "queueState", queueContent);
@@ -44,7 +58,7 @@ public class UrlProducer extends Thread {
 
 			mq.checkAndNotifyQueues();
 
-			int urlCount = mq.getUrlsProcessed();
+			int urlCount = getUrlsProcessed(workerStatusMap);
 			if (urlCount >= maxUrls) {
 				System.out.println("Shutting down as encountered " + urlCount
 						+ " urls.");

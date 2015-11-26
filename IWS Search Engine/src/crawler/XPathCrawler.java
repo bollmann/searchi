@@ -40,7 +40,7 @@ public class XPathCrawler {
 		logger.info("params: " + Arrays.toString(args));
 
 		DynamoDBWrapper ddb = DynamoDBWrapper
-				.getInstance(DynamoDBWrapper.URL_CONTENT_ENDPOINT);
+				.getInstance(DynamoDBWrapper.US_EAST);
 		S3Wrapper s3 = S3Wrapper.getInstance();
 		if (args[2].equals("yes")) {
 			ddb.deleteTable("URLMetaInfo");

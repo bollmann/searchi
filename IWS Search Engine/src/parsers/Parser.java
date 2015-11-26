@@ -83,6 +83,9 @@ public class Parser {
 	public static Integer maxFileSize = 10; // file size in mb. 10 by default
 	
 	public static String formEncoding = "application/x-www-form-urlencoded";
+	
+	public static String[] nonCrawlableUrlPatterns = {".*\\.jpg", ".*\\.php", 
+		".*\\.css", ".*\\.js", ".*\\.gif"};
 	/**
 	 * The Class Handler.
 	 */
@@ -996,5 +999,17 @@ public class Parser {
 	
 	public static Integer convertByesToMBytes(Integer byteLength) {
 		return byteLength/(1024 * 1024);
+	}
+	
+	public static boolean isCrawlableUrl(String url) {
+		boolean answer = true;
+		for(String nonCrawableUrlPattern : nonCrawlableUrlPatterns) {
+			Pattern p = Pattern.compile(nonCrawableUrlPattern);
+			Matcher m = p.matcher(url);
+			if(m.matches()) {
+				return false;
+			}
+		}
+		return answer;
 	}
 }

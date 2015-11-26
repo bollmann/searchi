@@ -57,12 +57,13 @@ public class Queue<T> {
 	 * @throws QueueFullException
 	 *             the queue full exception
 	 */
-	public void enqueue(T element) throws QueueFullException {
+	public boolean enqueue(T element) throws QueueFullException {
 		logger.debug("Adding element to queue " + element.toString());
 		if (list.size() < MAX_QUEUE_SIZE) {
 			synchronized (list) {
 				list.add(element);
 			}
+			return false;
 		} else {
 			throw new QueueFullException("Queue is full!");
 		}
@@ -96,6 +97,10 @@ public class Queue<T> {
 		synchronized (list) {
 			return list.size();
 		}
+	}
+	
+	public List<T> getList() {
+		return list;
 	}
 
 	@Override

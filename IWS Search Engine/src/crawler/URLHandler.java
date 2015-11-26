@@ -79,7 +79,7 @@ public class URLHandler {
 			System.out.println("Attempting to process " + url);
 
 			DynamoDBWrapper ddb = DynamoDBWrapper
-					.getInstance(DynamoDBWrapper.URL_CONTENT_ENDPOINT);
+					.getInstance(DynamoDBWrapper.US_EAST);
 			S3Wrapper s3 = S3Wrapper.getInstance();
 
 			URLMetaInfo info = (URLMetaInfo) ddb
