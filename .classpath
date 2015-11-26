@@ -1,29 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry excluding="src/|localVersions/dynamodb/files/|lib/|build/indexer/|build/|resources/pagerank/|localVersions/dynamodb/|resources/|localVersions/" kind="src" path=""/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="com.amazonaws.eclipse.sdk.AWS_JAVA_SDK"/>
-	<classpathentry kind="lib" path="/home/cis455/workspace/searchi/lib/ant.jar"/>
-	<classpathentry kind="lib" path="/home/cis455/workspace/searchi/lib/aws-java-sdk-1.10.33.jar"/>
-	<classpathentry kind="lib" path="/home/cis455/workspace/searchi/lib/aws-java-sdk-flow-build-tools-1.10.33.jar"/>
-	<classpathentry kind="lib" path="/home/cis455/workspace/searchi/lib/commons-codec-1.6.jar"/>
-	<classpathentry kind="lib" path="/home/cis455/workspace/searchi/lib/commons-logging.jar"/>
-	<classpathentry kind="lib" path="/home/cis455/workspace/searchi/lib/gson-2.4.jar"/>
-	<classpathentry kind="lib" path="/home/cis455/workspace/searchi/lib/hadoop-common-2.6.0.jar"/>
-	<classpathentry kind="lib" path="/home/cis455/workspace/searchi/lib/hadoop-mapreduce-client-common-2.6.0.jar"/>
-	<classpathentry kind="lib" path="/home/cis455/workspace/searchi/lib/hadoop-mapreduce-client-core-2.6.0.jar"/>
-	<classpathentry kind="lib" path="/home/cis455/workspace/searchi/lib/httpclient-4.3.6.jar"/>
-	<classpathentry kind="lib" path="/home/cis455/workspace/searchi/lib/httpcore-4.3.3.jar"/>
-	<classpathentry kind="lib" path="/home/cis455/workspace/searchi/lib/jackson-annotations-2.5.3.jar"/>
-	<classpathentry kind="lib" path="/home/cis455/workspace/searchi/lib/jackson-core-2.5.3.jar"/>
-	<classpathentry kind="lib" path="/home/cis455/workspace/searchi/lib/jackson-databind-2.5.3.jar"/>
-	<classpathentry kind="lib" path="/home/cis455/workspace/searchi/lib/je-6.2.31.jar"/>
-	<classpathentry kind="lib" path="/home/cis455/workspace/searchi/lib/joda-time-2.8.1.jar"/>
-	<classpathentry kind="lib" path="/home/cis455/workspace/searchi/lib/jsoup-1.8.3.jar"/>
-	<classpathentry kind="lib" path="/home/cis455/workspace/searchi/lib/jtidy-r938.jar"/>
-	<classpathentry kind="lib" path="/home/cis455/workspace/searchi/lib/junit-4.10.jar"/>
-	<classpathentry kind="lib" path="/home/cis455/workspace/searchi/lib/log4j-1.2.9.jar"/>
-	<classpathentry kind="lib" path="/home/cis455/workspace/searchi/lib/servlet-api-2.4.jar"/>
+	<classpathentry kind="lib" path="lib/ant.jar"/>
+	<classpathentry kind="lib" path="lib/aws-java-sdk-1.10.33.jar"/>
+	<classpathentry kind="lib" path="lib/aws-java-sdk-flow-build-tools-1.10.33.jar"/>
+	<classpathentry kind="lib" path="lib/commons-codec-1.6.jar"/>
+	<classpathentry kind="lib" path="lib/commons-logging.jar"/>
+	<classpathentry kind="lib" path="lib/gson-2.4.jar"/>
+	<classpathentry kind="lib" path="lib/hadoop-common-2.6.0.jar"/>
+	<classpathentry kind="lib" path="lib/hadoop-mapreduce-client-common-2.6.0.jar"/>
+	<classpathentry kind="lib" path="lib/hadoop-mapreduce-client-core-2.6.0.jar"/>
+	<classpathentry kind="lib" path="lib/httpclient-4.3.6.jar"/>
+	<classpathentry kind="lib" path="lib/httpcore-4.3.3.jar"/>
+	<classpathentry kind="lib" path="lib/jackson-annotations-2.5.3.jar"/>
+	<classpathentry kind="lib" path="lib/jackson-core-2.5.3.jar"/>
+	<classpathentry kind="lib" path="lib/jackson-databind-2.5.3.jar"/>
+	<classpathentry kind="lib" path="lib/je-6.2.31.jar"/>
+	<classpathentry kind="lib" path="lib/joda-time-2.8.1.jar"/>
+	<classpathentry kind="lib" path="lib/jsoup-1.8.3.jar"/>
+	<classpathentry kind="lib" path="lib/jtidy-r938.jar"/>
+	<classpathentry kind="lib" path="lib/junit-4.10.jar"/>
+	<classpathentry kind="lib" path="lib/log4j-1.2.9.jar"/>
+	<classpathentry kind="lib" path="lib/servlet-api-2.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
