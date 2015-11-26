@@ -2,10 +2,10 @@ package indexer.offline;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
@@ -17,57 +17,70 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.apache.log4j.Logger;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import utils.file.FileUtils;
 
 public class InvertedIndexJob {
 	private static Logger logger = Logger.getLogger(InvertedIndexJob.class);
 	
-	public static List<String> tokenize(String doc) {
-		String[] words = doc.split("\\s+");
-		return Arrays.asList(words);
+	public static final String TEXT_SPLIT = "[^a-zA-Z0-9'-]+";
+	public static final String AHREF_SPLIT = "\\s+|[.,;_/-]+";
+	
+	private static Iterable<String> extractLinks(Document dom) {
+		Elements links = dom.select("a[href]");
+		List<String> tokens = new LinkedList<String>();
+		for(Element link: links) {
+			tokens.addAll(Arrays.asList(link.attr("href").split(AHREF_SPLIT)));
+			tokens.addAll(Arrays.asList(link.text().split(TEXT_SPLIT)));
+		}
+		return tokens;
+	}
+	
+	private static Iterable<String> extractMetaTags(Document dom) {
+		Elements links = dom.select("meta[name~=(description|keywords)][content]");
+		List<String> tokens = new LinkedList<String>();
+		for(Element link: links)
+			tokens.addAll(Arrays.asList(link.attr("content").split(TEXT_SPLIT)));
+		return tokens;
+	}
+	
+	private static Iterable<String> extractText(Document dom, String selector) {
+		Elements headers = dom.select(selector);
+		List<String> tokens = new LinkedList<String>();
+		for(Element header: headers)
+			tokens.addAll(Arrays.asList(header.text().split(TEXT_SPLIT)));
+		return tokens;
 	}
 	
 	public static class DocumentIndexer extends Mapper<Text, Text, Text, Text>  {
-
-		private String computeWordCounts(Map<String, Integer> wordCounts, Iterable<String> words) {
-			Iterator<String> iter = words.iterator();
-			String maxWord = null;
-			while (iter.hasNext()) {
-				String word = iter.next();
-				Integer counts = wordCounts.get(word);
-
-				if (counts == null)
-					wordCounts.put(word, 1);
-				else
-					wordCounts.put(word, counts + 1);
-
-				// update maxWord, if necessary:
-				if (maxWord == null || wordCounts.get(maxWord) < wordCounts.get(word))
-					maxWord = word;
-			}
-			return maxWord;
-		}
-		
-		private double getTermFrequency(String word, String maxWord, Map<String, Integer> counts) {
-			double alpha = 0.5; // TODO: tune this parameter!
-			return alpha + (1 - alpha) * counts.get(word) / (float) counts.get(maxWord);
-		}
-		
 		@Override
 		public void map(Text url, Text doc, Context context) throws IOException, InterruptedException {
-			//logger.info(String.format("map input: key=%s, value=%s", url.toString(), doc.toString()));
-			List<String> words = tokenize(doc.toString());
-			Map<String, Integer> wordCounts = new HashMap<String, Integer>();
-			String maxWord = computeWordCounts(wordCounts, words);
+			Document dom = Jsoup.parse(doc.toString(), url.toString());
+			WordCounts linkCounts = new WordCounts(extractLinks(dom));
+			WordCounts metaTagCounts = new WordCounts(extractMetaTags(dom));
+			WordCounts headerCounts = new WordCounts(extractText(dom, "title,h1,h2,h3,h4,h5,h6"));
+			WordCounts textCounts = new WordCounts(extractText(dom, "title,body"));
+	
+			WordCounts allCounts = new WordCounts(textCounts)
+				.addCounts(headerCounts)
+				.addCounts(metaTagCounts)
+				.addCounts(linkCounts);
 			
-			//logger.info(String.format("map: key=%s, values=%s", url.toString(), words.toString()));
-			
-			for(String word: wordCounts.keySet()) {
-				//logger.info(String.format("map context write: key=%s, value=%s", url.toString(), word));
+			for(String word: allCounts) {
+				// value format: url max-tf euclid-tf total-counts# link-counts# metatag-counts# header-counts#
+				String value = String.format("%s\t%f\t%f\t%d\t%d\t%d\t%d", 
+						url.toString(),
+						allCounts.getEuclideanTermFrequency(word),
+						allCounts.getMaximumTermFrequency(word),
+						allCounts.getCounts(word),
+						linkCounts.getCounts(word),
+						metaTagCounts.getCounts(word),
+						headerCounts.getCounts(word));
 				
-				double tfScore = getTermFrequency(word, maxWord, wordCounts);
-				String value = String.format("%s\t%d\t%f", url, wordCounts.get(word), tfScore);
 				context.write(new Text(word), new Text(value));
 			}
 		}
@@ -77,11 +90,14 @@ public class InvertedIndexJob {
 		@Override
 		public void reduce(Text word, Iterable<Text> urls, Context context)
 				throws IOException, InterruptedException {
-			// needed just for sorting; doesn't do anything itself.
-			Iterator<Text> iter = urls.iterator();
-			while (iter.hasNext()) {
-				Text url = iter.next();
-				context.write(word, new Text(url.toString()));
+			Set<String> seenURLs = new HashSet<String>();
+			
+			for(Text stats: urls) {
+				String value = stats.toString();
+				String parts[] = value.split("\t");
+				if(!seenURLs.contains(parts[0]))
+					context.write(word, new Text(value));
+				seenURLs.add(parts[0]);
 			}
 		}
 	}
@@ -92,7 +108,7 @@ public class InvertedIndexJob {
 		FileUtils.deleteIfExists(java.nio.file.Paths.get(args[1]));
 		
 		Configuration conf = new Configuration();
-		Job job = Job.getInstance(conf, "build document vectors");
+		Job job = Job.getInstance(conf, "build inverted index");
 		job.setJarByClass(InvertedIndexJob.class);
 		
 		job.setMapperClass(DocumentIndexer.class);

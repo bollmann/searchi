@@ -21,7 +21,7 @@
   </target>
   
   <target name="compile-inverted-index" depends="init">
-    <javac srcdir="src" destdir="bin" includes="indexer/offline/*.java,indexer/servlets/*.java,utils/**/*.java" deprecation="on"
+    <javac srcdir="src" destdir="bin" includes="indexer/offline/*.java,utils/**/*.java" deprecation="on"
      debug="true" includeantruntime="false" classpath="classes">
       <classpath>
         <fileset dir="lib">
@@ -32,14 +32,34 @@
   </target>
   
   <target name="inverted-index" depends="compile-inverted-index">
-    <jar basedir="bin" destfile="InvertedIndexJob.jar" includes="indexer/offline/*.class,indexer/servlets/*.class,utils/**/*.class">
+    <jar basedir="bin" destfile="InvertedIndexJob.jar" includes="indexer/offline/*.class,utils/**/*.class">
       <fileset dir="." includes="lib/*.jar"/>
       <manifest>
         <attribute name="Main-Class" value="indexer.offline.InvertedIndexJob" />
       </manifest>
     </jar>
   </target>
-	
+
+  <target name="compile-inverted-index-v2" depends="init">
+    <javac srcdir="src" destdir="bin" includes="indexer/v2/offline/*.java,utils/**/*.java" deprecation="on"
+     debug="true" includeantruntime="false" classpath="classes">
+      <classpath>
+        <fileset dir="lib">
+          <include name="*.jar" />
+        </fileset>
+      </classpath>
+    </javac>
+  </target>
+  
+  <target name="inverted-index-v2" depends="compile-inverted-index-v2">
+    <jar basedir="bin" destfile="InvertedIndexV2.jar" includes="indexer/v2/offline/*.class,utils/**/*.class">
+      <fileset dir="." includes="lib/*.jar"/>
+      <manifest>
+        <attribute name="Main-Class" value="indexer.v2.offline.InvertedIndexJob" />
+      </manifest>
+    </jar>
+  </target>
+  
   <target name="compile-servlet" description="Makes the WAR file for the servlet">
         <delete file="servlet.war"/>
         <copy file="${conf.dir}${file.separator}web.xml" tofile="${web-inf.dir}${file.separator}web.xml" overwrite="true" />

@@ -25,7 +25,7 @@ public class DocumentReader extends RecordReader<Text, Text> {
 	}
 	
 	private Text url;
-	private Text words;
+	private Text doc;
 	private int done;
 	
 	private static Logger logger = Logger.getLogger(DocumentReader.class);
@@ -41,7 +41,7 @@ public class DocumentReader extends RecordReader<Text, Text> {
 	@Override
 	public Text getCurrentValue() throws IOException, InterruptedException {
 		done = 1;
-		return words;
+		return doc;
 	}
 
 	@Override
@@ -62,12 +62,12 @@ public class DocumentReader extends RecordReader<Text, Text> {
 		FileSystem fs = path.getFileSystem(context.getConfiguration());
 		FSDataInputStream in = fs.open(path);
 		Gson gson = new Gson();
-		PageBlob rawPage = gson.fromJson(new InputStreamReader(in, Charset.forName("UTF-8")), PageBlob.class);		
-		Document doc = Jsoup.parse(rawPage.content, rawPage.url);
+		
+		PageBlob blob = gson.fromJson(new InputStreamReader(in, Charset.forName("UTF-8")), PageBlob.class);
 		in.close();
 		
-		url = new Text(rawPage.url);
-		words = new Text(doc.select("body").text());
+		url = new Text(blob.url);
+		doc = new Text(blob.content);
 		done = 0;
 	}
 
