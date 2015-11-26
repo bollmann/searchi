@@ -37,7 +37,7 @@ public class IndexerClientServlet extends HttpServlet {
 		PrintWriter out = resp.getWriter();
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("<html><head><title>Interface-Search Engine Test</title></head>");
-		buffer.append("<body>Using lookup documents:<ol>");
+		buffer.append("<body>Using lookupDocuments():<ol>");
 		
 		String queryStr = req.getParameter("query");
 		LinkedList<String> query = new LinkedList<String>();
@@ -47,7 +47,7 @@ public class IndexerClientServlet extends HttpServlet {
 		for(DocumentVector doc: iiObj.lookupDocuments(query)){
 			buffer.append("<li>" + doc.toString() + "</li>");
 		}
-		buffer.append("</ol><br>Using rankDocuments<ol>" );
+		buffer.append("</ol><br>Using rankDocuments():<ol>" );
 		for(WordDocumentStatistics doc :iiObj.rankDocuments(query)){
 			buffer.append("<li>" + doc.toString() + "</li>");
 		}
@@ -56,30 +56,4 @@ public class IndexerClientServlet extends HttpServlet {
 		out.flush();
 		out.close();
 	}
-	
-	static public void main(String[] args){
-		InvertedIndex iiObj = new InvertedIndex();
-		LinkedList<String> query = new LinkedList<String>();
-		for(String word: "astronomer".split(" "))
-			query.add(word);
-		TreeSet<DocumentVector> results = iiObj.lookupDocuments(query);
-		PriorityQueue<WordDocumentStatistics> results2 = iiObj.rankDocuments(query);
-			
-		int count = 0;
-		for(DocumentVector doc: results){
-			if(count == 10)
-				break;
-			count++;
-			System.out.println(doc.toString());
-		}
-		System.out.println("----------");
-		count = 0;
-		for(WordDocumentStatistics doc: results2){
-			if(count == 10)
-				break;
-			count++;
-			System.out.println(doc.toString());
-		}
-	}
-
 }
