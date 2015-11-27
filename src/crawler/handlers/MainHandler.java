@@ -224,8 +224,8 @@ public class MainHandler extends Thread {
 
 					} catch (Exception e) {
 						logger.error("Mainhandler got exception in handling request. Got "
-								+ e.getMessage() + e.getStackTrace());
-						// e.printStackTrace();
+								+ e.getMessage());
+//						 e.printStackTrace();
 						socket.close();
 						continue;
 					}

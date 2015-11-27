@@ -14,6 +14,7 @@
 	<servlet>
         <servlet-name>CrawlerSlave</servlet-name>
         <servlet-class>crawler.servlet.CrawlerSlave</servlet-class>
+        <load-on-startup>1</load-on-startup>
     </servlet>
     
     <servlet-mapping>

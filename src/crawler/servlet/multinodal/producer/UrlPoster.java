@@ -53,6 +53,7 @@ public class UrlPoster extends Thread {
 				request.setBody("url=" + url);
 				request.setMethod("POST");
 				try {
+					logger.debug("Master sending url:" + url + " to worker");
 					HttpClient.post("http://" + ipPort + "/worker", request);
 				} catch (IOException | ParseException e) {
 					// TODO Auto-generated catch block

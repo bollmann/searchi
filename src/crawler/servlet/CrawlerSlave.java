@@ -127,7 +127,7 @@ public class CrawlerSlave extends HttpServlet {
 			}
 		} catch (Exception e) {
 			logger.error("Slave got error " + e.getMessage());
-			// e.printStackTrace();
+//			e.printStackTrace();
 			return;
 		}
 
@@ -146,6 +146,7 @@ public class CrawlerSlave extends HttpServlet {
 	public void postLinksToMaster(List<String> urls) {
 		String content = new Gson().toJson(urls);
 		Http10Request request = new Http10Request();
+		
 		request.setBody(content);
 		try {
 			HttpClient.post("http://" + masterIPPort + "/master/enqueueURLs",
@@ -153,7 +154,7 @@ public class CrawlerSlave extends HttpServlet {
 		} catch (IOException | ParseException e) {
 			// TODO Auto-generated catch block
 			logger.error("Posting to server failed!");
-			// e.printStackTrace();
+//			 e.printStackTrace();
 		}
 	}
 
@@ -165,7 +166,12 @@ public class CrawlerSlave extends HttpServlet {
 				.getInstance(DynamoDBWrapper.US_EAST);
 		S3Wrapper s3 = S3Wrapper.getInstance();
 
-		URLMetaInfo info = (URLMetaInfo) ddb.getItem(url, URLMetaInfo.class);
+		URLMetaInfo info = null;
+		try {
+			info = (URLMetaInfo) ddb.getItem(url, URLMetaInfo.class);
+		} catch (Exception e) {
+
+		}
 
 		URLContent urlContent = null;
 
@@ -288,9 +294,9 @@ public class CrawlerSlave extends HttpServlet {
 						"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
 				response = HttpClient.genericGet(url, request);
 				content = new String(response.getBody());
-				
-				//file handling logic
-				
+
+				// file handling logic
+
 				urlContent = new URLContent();
 				urlContent.setUrl(url);
 				urlContent.setContent(content);

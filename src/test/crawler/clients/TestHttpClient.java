@@ -7,12 +7,16 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URL;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import junit.framework.TestCase;
 
 import org.junit.Test;
+
+import com.google.gson.Gson;
 
 import crawler.clients.HttpClient;
 import crawler.parsers.Parser;
@@ -160,6 +164,23 @@ public class TestHttpClient extends TestCase {
 		response = HttpClient.genericGet(url, request);
 		content = new String(response.getBody());
 		System.out.println("Original:" + content);
+	}
+	
+	@Test
+	public void testPost() {
+		List<String> urls = new ArrayList<String>();
+		urls.add("http://www.google.com");
+		String content = new Gson().toJson(urls);
+		Http10Request request = new Http10Request();
+		request.setBody(content);
+		
+		try {
+			HttpClient.post("http://" + "127.0.0.1:8080" + "/master/enqueueURLs",
+					request);
+		} catch (IOException | ParseException e) {
+			// TODO Auto-generated catch block
+			 e.printStackTrace();
+		}
 	}
 
 }

@@ -4,11 +4,11 @@
 package crawler.clients;
 
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
-import java.net.Socket;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.text.ParseException;
@@ -166,12 +166,15 @@ public class HttpClient {
 		}
 
 		BufferedReader br;
-		
-		if (conn.getHeaderField("Content-Encoding")!=null && conn.getHeaderField("Content-Encoding").equals("gzip")){
-			br = new BufferedReader(new InputStreamReader(new GZIPInputStream(conn.getInputStream())));            
-	    } else {
-	    	br = new BufferedReader(new InputStreamReader(conn.getInputStream()));            
-	    } 
+
+		if (conn.getHeaderField("Content-Encoding") != null
+				&& conn.getHeaderField("Content-Encoding").equals("gzip")) {
+			br = new BufferedReader(new InputStreamReader(new GZIPInputStream(
+					conn.getInputStream())));
+		} else {
+			br = new BufferedReader(
+					new InputStreamReader(conn.getInputStream()));
+		}
 		conn.connect();
 		logger.debug("GET connected!");
 		Map<String, List<String>> map = conn.getHeaderFields();
@@ -189,6 +192,7 @@ public class HttpClient {
 			logger.debug("Key : " + entry.getKey() + " ,Value : "
 					+ entry.getValue());
 		}
+		
 		int length = Integer.MAX_VALUE;
 		if (response.containsHeader("Content-Length")) {
 			length = Integer.parseInt(response.getHeader("Content-Length"));
@@ -208,27 +212,48 @@ public class HttpClient {
 		response.setMethod("POST");
 		URL pUrl = new URL(url);
 
-		request.setPath(pUrl.getPath());
-		request.setQueryString();
-		int port = pUrl.getPort();
-		String host = pUrl.getHost();
-		logger.info("Sending a POST request to url:" + pUrl + " host:"
-				+ pUrl.getHost() + " port:" + pUrl.getPort() + " with body " + request.getBody());
-		Socket socket = null;
-		if (port == -1) {
-			socket = new Socket(host, 80);
-		} else {
-			socket = new Socket(host, port);
+		HttpURLConnection conn = (HttpURLConnection) pUrl.openConnection();         
+		conn.setDoOutput( true );
+		conn.setInstanceFollowRedirects( false );
+		conn.setRequestMethod( "POST" ); 
+		conn.setUseCaches( false );
+		
+		if (request.getHeaderNames() != null) {
+			List<String> headerNames = Collections.list(request
+					.getHeaderNames());
+			for (String headerName : headerNames) {
+				conn.setRequestProperty(headerName,
+						request.getHeader(headerName));
+			}
+		}
+		
+		try( DataOutputStream wr = new DataOutputStream( conn.getOutputStream())) {
+		   wr.write( request.getBody().getBytes("UTF-8") );
+		}
+		
+		BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+		
+		conn.connect();
+		
+		logger.info("POST connected! Sent " + request.getBody());
+		Map<String, List<String>> map = conn.getHeaderFields();
+		for (Map.Entry<String, List<String>> entry : map.entrySet()) {
+			for (String value : entry.getValue()) {
+				if (entry.getKey() != null) {
+					response.setHeader(entry.getKey(), value);
+				} else {
+					Response resp = Parser.parseResponseCode(value);
+					String version = Parser.parseResponseVersion(value);
+					response.setResponse(resp.getResponseCode());
+					response.setVersion(version);
+				}
+			}
+			logger.debug("Key : " + entry.getKey() + " ,Value : "
+					+ entry.getValue());
 		}
 
-		BufferedReader br = new BufferedReader(new InputStreamReader(
-				socket.getInputStream()));
-		
-		PrintWriter out = new PrintWriter(socket.getOutputStream());
-		sendRequest(out, request);
 		response = receiveResponse(br, response);
 
-		socket.close();
 		return response;
 	}
 
@@ -362,13 +387,16 @@ public class HttpClient {
 		}
 
 		BufferedReader br = null;
-		
-		if (conn.getHeaderField("Content-Encoding")!=null && conn.getHeaderField("Content-Encoding").equals("gzip")){
-			br = new BufferedReader(new InputStreamReader(new GZIPInputStream(conn.getInputStream())));            
-	    } else {
-	    	br = new BufferedReader(new InputStreamReader(conn.getInputStream()));            
-	    } 
-		
+
+		if (conn.getHeaderField("Content-Encoding") != null
+				&& conn.getHeaderField("Content-Encoding").equals("gzip")) {
+			br = new BufferedReader(new InputStreamReader(new GZIPInputStream(
+					conn.getInputStream())));
+		} else {
+			br = new BufferedReader(
+					new InputStreamReader(conn.getInputStream()));
+		}
+
 		conn.connect();
 		logger.debug("GET connected!");
 		Map<String, List<String>> map = conn.getHeaderFields();

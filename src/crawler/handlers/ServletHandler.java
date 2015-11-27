@@ -189,12 +189,14 @@ public class ServletHandler extends RequestHandler {
 			// handle post
 			paramString = request.getBody();
 		}
+		
 		if (paramString != null) {
 			if (request.getMethod().equals("GET")
 					|| request.getMethod().equals("HEAD")
 					|| (request.getHeader("Content-Type") != null && request
 							.getHeader("Content-Type").equals(
 									Parser.formEncoding))) {
+				logger.info("Processing paramString");
 				for (String kv : paramString.trim().split("&")) {
 					String key = kv.split("=")[0];
 					String value = kv.split("=")[1];

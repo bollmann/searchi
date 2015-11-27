@@ -252,6 +252,7 @@ public class CrawlerMaster extends HttpServlet {
 			response.flushBuffer();
 			Type listType = new TypeToken<List<String>>() {
 			}.getType();
+			logger.debug("Master trying to process POST request with:" + sb.toString());
 			List<String> urls = new Gson().fromJson(sb.toString(), listType);
 			logger.info("Master got urls: " + urls);
 			for (String url : urls) {

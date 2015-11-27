@@ -14,6 +14,7 @@
     <servlet>
         <servlet-name>CrawlerMaster</servlet-name>
         <servlet-class>crawler.servlet.CrawlerMaster</servlet-class>
+        <load-on-startup>1</load-on-startup>
     </servlet>
     
     <servlet-mapping>
@@ -23,16 +24,16 @@
     
     <context-param>
      	<param-name>flushData</param-name>
-     	<param-value>yes</param-value>
+     	<param-value>no</param-value>
      </context-param>
      
      <context-param>
      	<param-name>flushQueue</param-name>
-     	<param-value>yes</param-value>
+     	<param-value>no</param-value>
      </context-param>
      
      <context-param>
      	<param-name>maxUrls</param-name>
-     	<param-value>100</param-value>
+     	<param-value>10000</param-value>
      </context-param>
 </web-app>
