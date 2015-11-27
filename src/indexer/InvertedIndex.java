@@ -11,7 +11,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
-import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
 
@@ -93,6 +92,7 @@ public class InvertedIndex {
 		br.close();
 	}
 	
+	// FIXME: this method is actually doing a wrong computation!
 	public PriorityQueue<InvertedIndexRow> rankDocuments(List<String> query) {
 		// TODO: query URLMetaInfo dynamoDB table for corpus size??
 		int corpusSize = 4000;
@@ -109,6 +109,7 @@ public class InvertedIndex {
 				}
 				
 				InvertedIndexRow rankedDoc = ranks.get(wordDocLoc.getUrl());
+				// wrong! it needs to be the tf wrt the query, not the wordDocLoc!
 				double queryWeight = wordDocLoc.getMaximumTermFrequency() * Math.log((double) corpusSize / wordDocLocs.size());
 				double docWeight = wordDocLoc.getEuclideanTermFrequency();
 				rankedDoc.setSimilarityRank(rankedDoc.getSimilarityRank() + queryWeight * docWeight);
@@ -120,50 +121,52 @@ public class InvertedIndex {
 		return new PriorityQueue<InvertedIndexRow>(ranks.values());
 	}
 	
-	public TreeSet<DocumentVector> lookupDocuments(List<String> query) {
-		// TODO: query URLMetaInfo dynamoDB table for corpus size??
+	public PriorityQueue<DocumentVector> lookupDocuments(List<String> query) {
+		// TODO: query URLMetaInfo dynamoDB table for real corpus size!
 		int corpusSize = 4000;
 		
 		List<InvertedIndexRow> candidates = new LinkedList<InvertedIndexRow>();
 		Map<String, Integer> dfs = new HashMap<String, Integer>();
 		for(String word: query) {
-			// TODO: optimize based on different table layout, multi-thread requests, etc.
 			List<InvertedIndexRow> wordCandidates = getDocumentLocations(word);
 			candidates.addAll(wordCandidates);
-			dfs.put(word, wordCandidates.size());
+			dfs.put(word, wordCandidates.size()); 
 			logger.info(String.format("=> got %d documents for query word '%s'.", wordCandidates.size(), word));
 		}
 		
-		// build TF-IDF information
+		// build candidate document vectors
 		Map<String, Map<String, Double>> docs = new HashMap<String, Map<String, Double>>();
 		for(InvertedIndexRow candidate: candidates) {
 			Map<String, Double> doc = docs.get(candidate.getUrl());
-			
 			if(doc == null) {
 				doc = new HashMap<String, Double>();
 				docs.put(candidate.getUrl(), doc);
 			}
-			
 			doc.put(candidate.getWord(), candidate.getEuclideanTermFrequency());
 		}
 		
-		logger.info(String.format("extracted TF-IDF info for %d documents", docs.size()));
-		
-		Map<String, Double> queryTFIDFs = TFIDF.computeTFIDFs(query, corpusSize, dfs);
-		DocumentVector queryVec = new DocumentVector(queryTFIDFs);
-		return createDocumentVectors(docs, queryVec);
-	}
-	
-	private TreeSet<DocumentVector> createDocumentVectors(Map<String, Map<String, Double>> docs, 
-			DocumentVector queryVector) {
-		TreeSet<DocumentVector> set = new TreeSet<DocumentVector>();
+		// compute document similarity
+		DocumentVector queryVector = getQueryVector(query, corpusSize, dfs);
+		PriorityQueue<DocumentVector> ranks = new PriorityQueue<>();
 		for(String doc: docs.keySet()) {
 			DocumentVector docVec = new DocumentVector(docs.get(doc));
 			docVec.setUrl(doc);
 			docVec.setSimilarity(DocumentVector.cosineSimilarity(docVec, queryVector));
-			set.add(docVec);
+			ranks.add(docVec);
 		}
-		return set;
+		return ranks;
+	}
+	
+	private DocumentVector getQueryVector(List<String> query, int corpusSize, Map<String, Integer> dfs) {
+		WordCounts queryCounts = new WordCounts(query);
+		Map<String, Double> queryVector = new HashMap<String, Double>();
+		for(String queryWord: queryCounts) {
+			// FIXME: what do we do, if the queryWord is not found in the corpus at all?
+			// i.e., it is an 'UNK' word to the corpus?
+			double idf = Math.log((double) corpusSize / dfs.get(queryWord));
+			queryVector.put(queryWord, queryCounts.getMaximumTermFrequency(queryWord) * idf);
+		}
+		return new DocumentVector(queryVector);
 	}
 	
 	public static void main(String[] args) {
@@ -185,8 +188,8 @@ public class InvertedIndex {
 				System.out.println("============");
 				System.out.println("old results:");
 				System.out.println("============");
-				TreeSet<DocumentVector> oldResults = idx.lookupDocuments(query);
-				Iterator<DocumentVector> olditer = oldResults.descendingIterator();
+				PriorityQueue<DocumentVector> oldResults = idx.lookupDocuments(query);
+				Iterator<DocumentVector> olditer = oldResults.iterator();
 				for(int i = 0; i < 10 && olditer.hasNext(); ++i) {
 					DocumentVector doc = olditer.next();
 					System.out.println(doc.toString());

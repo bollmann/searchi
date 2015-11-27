@@ -1,8 +1,9 @@
-package indexer.offline;
+package mapreduce.lib;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
+import java.util.List;
 
 import org.apache.hadoop.fs.FSDataInputStream;
 import org.apache.hadoop.fs.FileSystem;
@@ -16,17 +17,19 @@ import org.apache.log4j.Logger;
 
 import com.google.gson.Gson;
 
-public class DocumentReader extends RecordReader<Text, Text> {
+import utils.string.StringUtils;
+
+public class URLsFromJsonReader extends RecordReader<Text, Text> {
 	private class PageBlob {
 		String url;
-		String content;
+		List<String> outgoingLinks;
 	}
 	
 	private Text url;
-	private Text doc;
+	private Text outLinks;
 	private int done;
 	
-	private static Logger logger = Logger.getLogger(DocumentReader.class);
+	private static Logger logger = Logger.getLogger(URLsFromJsonReader.class);
 	
 	@Override
 	public void close() throws IOException { }
@@ -39,7 +42,7 @@ public class DocumentReader extends RecordReader<Text, Text> {
 	@Override
 	public Text getCurrentValue() throws IOException, InterruptedException {
 		done = 1;
-		return doc;
+		return outLinks;
 	}
 
 	@Override
@@ -65,7 +68,7 @@ public class DocumentReader extends RecordReader<Text, Text> {
 		in.close();
 		
 		url = new Text(blob.url);
-		doc = new Text(blob.content);
+		outLinks = new Text(StringUtils.listToString(blob.outgoingLinks, " "));
 		done = 0;
 	}
 
@@ -73,4 +76,5 @@ public class DocumentReader extends RecordReader<Text, Text> {
 	public boolean nextKeyValue() throws IOException, InterruptedException {
 		return (done == 0);
 	}
+	
 }

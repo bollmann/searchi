@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <jardesc>
     <jar path="searchi/pr1.jar"/>
-    <options buildIfNeeded="true" compress="true" descriptionLocation="/searchi/build/pagerank/pr1.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="true" overwrite="true" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
+    <options buildIfNeeded="true" compress="true" descriptionLocation="/searchi/build/pagerank/pr1.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="true" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
     <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
     <selectedProjects/>
     <manifest generateManifest="true" mainClassHandleIdentifier="=searchi/src&lt;pagerank.phase1{PRInitJob.java[PRInitJob" manifestLocation="" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
@@ -12,6 +12,8 @@
     </manifest>
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
         <javaElement handleIdentifier="=searchi/src&lt;utils.file"/>
+        <javaElement handleIdentifier="=searchi/src&lt;utils.string"/>
+        <javaElement handleIdentifier="=searchi/src&lt;mapreduce.lib"/>
         <javaElement handleIdentifier="=searchi/src&lt;pagerank.phase1"/>
     </selectedElements>
 </jardesc>

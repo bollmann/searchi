@@ -2,12 +2,13 @@ package pagerank.phase1;
 
 import java.nio.file.Paths;
 
+import mapreduce.lib.URLInputFormat;
+
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
-import org.apache.hadoop.mapreduce.lib.input.KeyValueTextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.apache.hadoop.mapreduce.Job;
@@ -32,7 +33,8 @@ public final class PRInitJob extends Configured implements Tool {
         job.setMapperClass(PRInitMapper.class);
         job.setReducerClass(PRInitReducer.class);
 
-        job.setInputFormatClass(KeyValueTextInputFormat.class);
+        //job.setInputFormatClass(KeyValueTextInputFormat.class);
+        job.setInputFormatClass(URLInputFormat.class);
         job.setOutputFormatClass(TextOutputFormat.class);
         
         job.setOutputKeyClass(Text.class);
