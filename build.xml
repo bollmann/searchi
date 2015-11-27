@@ -21,7 +21,7 @@
 	</target>
 
 
-	<target name="compilejavamain" description="compiles main Java source code">
+	<target name="compilejavamain" depends="init" description="compiles main Java source code">
 		<javac srcdir="${src.main.dir}${file.separator}" destdir="bin" debug="on" deprecation="off" optimize="on" includeAntRuntime="no">
 			<classpath>
 				<fileset dir="${inputlib.dir}">
