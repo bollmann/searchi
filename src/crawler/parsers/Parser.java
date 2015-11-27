@@ -76,8 +76,8 @@ public class Parser {
 	/** The absolute url regex. */
 	public static String absoluteUrlRegex = ".*(http|https)://.*";
 	
-	public static String[] allowedCrawlCotentTypes = {"text/html.*"
-		, "text/xml.*", "application/xml.*", ".*\\+xml.*"
+	public static String[] allowedCrawlCotentTypes = {"text/html.*", "text/plain.*"
+//		, "text/xml.*", "application/xml.*", ".*\\+xml.*"
 		};
 	
 	public static Integer maxFileSize = 10; // file size in mb. 10 by default
@@ -85,7 +85,7 @@ public class Parser {
 	public static String formEncoding = "application/x-www-form-urlencoded";
 	
 	public static String[] nonCrawlableUrlPatterns = {".*\\.jpg", ".*\\.php", 
-		".*\\.css", ".*\\.js", ".*\\.gif"};
+		".*\\.css", ".*\\.js", ".*\\.gif", ".*\\.png"};
 	/**
 	 * The Class Handler.
 	 */

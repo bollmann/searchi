@@ -227,9 +227,10 @@ public class MainHandler extends Thread {
 							+ new String(response.toBytes()));
 					handler.writeOutput(response.toBytes());
 
-				
+					
 				} catch (Exception e) {
-					logger.error("Mainhandler got exception in handling request. Got " + e.getMessage());
+					logger.error("Mainhandler got exception in handling request. Got " + e.getMessage() + e.getStackTrace());
+//					e.printStackTrace();
 					continue;
 				}
 				if (path.equals("/shutdown")) {

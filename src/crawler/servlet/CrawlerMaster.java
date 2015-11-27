@@ -73,7 +73,7 @@ public class CrawlerMaster extends HttpServlet {
 
 		s3.createBucket(s3.URL_BUCKET);
 		s3.createBucket(s3.URL_QUEUE_BUCKET);
-		ddb.createTable("URLMetaInfo", 100, 100, "url", "S");
+		ddb.createTable("URLMetaInfo", 15, 15, "url", "S");
 
 		// look for queue in s3. If not there, then initialize to new
 
