@@ -139,8 +139,8 @@ public class MainHandler extends Thread {
 				while (total < length && (b = br.read()) != -1) {
 					buf.append((char) b);
 					total++;
-//					logger.info("Read:" + (char) b + " total:" + total
-//							+ " length:" + length);
+					// logger.info("Read:" + (char) b + " total:" + total
+					// + " length:" + length);
 				}
 				logger.debug("=============Read body:" + buf.toString());
 				fullInput.add("BODY-CONTENT: " + buf.toString());
@@ -193,56 +193,62 @@ public class MainHandler extends Thread {
 
 					fullInput = parseLines(in, out);
 
+					logger.debug("Got request header line" + fullInput);
+					if (fullInput.size() < 1) {
+						continue;
+					}
+					String path = Parser.parseRequestPath(fullInput.get(0));
+
+					setCurrentUrl(path);
+					String urlMatch = Parser.longestUrlMatch(
+							path.split("\\?")[0], servlets.keySet());
+
+					if (urlMatch != null) {
+						logger.debug("Servlet found for " + urlMatch);
+						// we have a match for a servlet
+						HttpServlet servlet = servlets.get(urlMatch);
+						handler = new ServletHandler(socket, servlet, urlMatch);
+
+					} else {
+						// is static path
+						logger.debug("Resorting to static path");
+						handler = new StaticRequestHandler(socket);
+					}
+
+					try {
+						HttpResponse response = handler.handleRequest(
+								fullInput, webRoot, jobQueue);
+						logger.debug("Sending back "
+								+ new String(response.toBytes()));
+						handler.writeOutput(response.toBytes());
+
+					} catch (Exception e) {
+						logger.error("Mainhandler got exception in handling request. Got "
+								+ e.getMessage() + e.getStackTrace());
+						// e.printStackTrace();
+						socket.close();
+						continue;
+					}
+					if (path.equals("/shutdown")) {
+						SessionMap.getInstance().destroy();
+						for (Entry<String, HttpServlet> servlet : servlets
+								.entrySet()) {
+							servlet.getValue().destroy();
+						}
+						ThreadPool.getInstance().setShouldShutdown(true);
+						logger.info("Shutting down threads. Set should shutdown to "
+								+ ThreadPool.getInstance().getShouldShutdown());
+						RunnerDaemon.shutdown();
+					}
 				} catch (IOException e) {
 					logger.error(e.getMessage());
-					continue;
-				}
-
-				logger.debug("Got request header line" + fullInput);
-				if(fullInput.size() < 1) {
-					continue;
-				}
-				String path = Parser.parseRequestPath(fullInput.get(0));
-				
-				setCurrentUrl(path);
-				String urlMatch = Parser.longestUrlMatch(path.split("\\?")[0],
-						servlets.keySet());
-
-				if (urlMatch != null) {
-					logger.debug("Servlet found for " + urlMatch);
-					// we have a match for a servlet
-					HttpServlet servlet = servlets.get(urlMatch);
-					handler = new ServletHandler(socket, servlet, urlMatch);
-
-				} else {
-					// is static path
-					logger.debug("Resorting to static path");
-					handler = new StaticRequestHandler(socket);
-				}
-
-				try {
-					HttpResponse response = handler.handleRequest(fullInput,
-							webRoot, jobQueue);
-					logger.debug("Sending back "
-							+ new String(response.toBytes()));
-					handler.writeOutput(response.toBytes());
-
-					
-				} catch (Exception e) {
-					logger.error("Mainhandler got exception in handling request. Got " + e.getMessage() + e.getStackTrace());
-//					e.printStackTrace();
-					continue;
-				}
-				if (path.equals("/shutdown")) {
-					SessionMap.getInstance().destroy();
-					for (Entry<String, HttpServlet> servlet : servlets
-							.entrySet()) {
-						servlet.getValue().destroy();
+					try {
+						socket.close();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
 					}
-					ThreadPool.getInstance().setShouldShutdown(true);
-					logger.info("Shutting down threads. Set should shutdown to "
-							+ ThreadPool.getInstance().getShouldShutdown());
-					RunnerDaemon.shutdown();
+					continue;
 				}
 			} else {
 				// exception
