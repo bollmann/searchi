@@ -33,6 +33,8 @@ public class DynamoDBWrapper {
 	private Date startTime;
 	
 	public static final String US_EAST = "http://dynamodb.us-east-1.amazonaws.com";
+	public static final String CLIENT_SHREEJIT = "shreejit";
+	public static final String CLIENT_DEFAULT = "default";
 
 	public DynamoDBMapper getMapper() {
 		return mapper;
@@ -52,16 +54,55 @@ public class DynamoDBWrapper {
 		logger.warn(message);
 	}
 
-	private DynamoDBWrapper(String endPoint) {
-		client = new AmazonDynamoDBClient(new ProfileCredentialsProvider(
-				"shreejit"));
+	private DynamoDBWrapper(String endPoint, String client) {
+		this.client = new AmazonDynamoDBClient(new ProfileCredentialsProvider(client));
 		this.endPoint = endPoint;
-		startTime = Calendar.getInstance().getTime();
-		client.setEndpoint(this.endPoint);
-		dynamoDB = new DynamoDB(client);
-		mapper = new DynamoDBMapper(client);
+		this.startTime = Calendar.getInstance().getTime();
+		this.client.setEndpoint(this.endPoint);
+
+		dynamoDB = new DynamoDB(this.client);
+		mapper = new DynamoDBMapper(this.client);
 	}
 
+	/**
+	 * Get dynamo instance with default (Shreejit's client)
+	 * @param endPoint
+	 */
+	public static DynamoDBWrapper getInstance(String endPoint) {
+		if (wrapper != null) {
+			return wrapper;
+		}
+
+		Logger.getLogger(DynamoDBWrapper.class).warn(
+			"Setting endpoint to " + endPoint);
+
+		return getInstance(endPoint, null);
+	}
+
+	/**
+	 * Get dynamo instance with specified client
+	 * @param endPoint
+	 */
+	public static DynamoDBWrapper getInstance(String endPoint, String client) {
+		if (wrapper != null) {
+			return wrapper;
+		}
+
+		if (client == null) {
+			Logger.getLogger(DynamoDBWrapper.class).warn(
+				"Setting client to " + CLIENT_SHREEJIT);
+			client = CLIENT_SHREEJIT;
+		}
+
+		wrapper = new DynamoDBWrapper(endPoint, client);
+		return wrapper;
+	}
+
+	/**
+	 * Describe the meta properties of the specified table
+	 * @param tableName
+	 * @return
+	 */
 	public DescribeTableResult describeTable(String tableName) {
 		DescribeTableResult result = null;
 		try {
@@ -72,15 +113,7 @@ public class DynamoDBWrapper {
 		return result;
 	}
 
-	public static DynamoDBWrapper getInstance(String endPoint) {
-		if (wrapper == null || !wrapper.getEndPoint().equals(endPoint)) {
-			Logger.getLogger(DynamoDBWrapper.class).warn(
-					"Setting endpoint to " + endPoint);
-			wrapper = new DynamoDBWrapper(endPoint);
-		}
-		return wrapper;
-	}
-
+	
 	/**
 	 * Retrieves the object from dynamodb as identified by the itemId. This
 	 * assumes that you have annotated the class that you want to retrieve with
@@ -88,12 +121,11 @@ public class DynamoDBWrapper {
 	 * SHOULD have a default constructor, otherwise it cannot be instantiated by
 	 * dynamodb mapper
 	 * 
-	 * @param itemId
-	 *            is the record identifier
-	 * @param clazz
-	 *            the dynamodb annotated record class
+	 * @param itemId    is the record identifier
+	 * @param clazz     the dynamodb annotated record class
 	 * @return
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Object getItem(String itemId, Class clazz) {
 		Object obj = mapper.load(clazz, itemId);
 		entriesRead++;
@@ -105,8 +137,8 @@ public class DynamoDBWrapper {
 		return mapper.batchLoad(itemIds);
 	}
 
+	
 	/**
-	 * 
 	 * @param tableName
 	 * @param toSave
 	 *            this assumes that you have annotated the class object with the
@@ -117,6 +149,12 @@ public class DynamoDBWrapper {
 		entriesWritten++;
 		mapper.save(toSave);
 	}
+
+	public void putItemBatch(List<Object> toSave) {
+		entriesWritten += toSave.size();
+		mapper.batchSave(toSave);
+	}
+
 
 	public void deleteTable(String tableName) {
 		Table table = dynamoDB.getTable(tableName);
