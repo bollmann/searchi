@@ -248,7 +248,8 @@ public class CrawlerMaster extends HttpServlet {
 			while ((line = br.readLine()) != null) {
 				sb.append(line + "\n");
 			}
-
+			response.setStatus(200);
+			response.flushBuffer();
 			Type listType = new TypeToken<List<String>>() {
 			}.getType();
 			List<String> urls = new Gson().fromJson(sb.toString(), listType);
