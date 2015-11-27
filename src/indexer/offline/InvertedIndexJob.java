@@ -8,6 +8,8 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
@@ -31,31 +33,48 @@ public class InvertedIndexJob {
 	
 	public static final String TEXT_SPLIT = "[^a-zA-Z0-9'-]+";
 	public static final String AHREF_SPLIT = "\\s+|[.,;_/-]+";
+	public static final String WORD_PATTERN = "^\\W*(\\w+)\\W*$";
 	
 	private static Iterable<String> extractLinks(Document dom) {
+		Pattern textSplitter = Pattern.compile(TEXT_SPLIT);
+		Pattern refSplitter = Pattern.compile(AHREF_SPLIT);
 		Elements links = dom.select("a[href]");
 		List<String> tokens = new LinkedList<String>();
 		for(Element link: links) {
-			tokens.addAll(Arrays.asList(link.attr("href").split(AHREF_SPLIT)));
-			tokens.addAll(Arrays.asList(link.text().split(TEXT_SPLIT)));
+			tokens.addAll(extractWords(refSplitter.split(link.attr("href"))));
+			tokens.addAll(extractWords(textSplitter.split(link.text())));
 		}
 		return tokens;
 	}
 	
 	private static Iterable<String> extractMetaTags(Document dom) {
-		Elements links = dom.select("meta[name~=(description|keywords)][content]");
+		Pattern splitter = Pattern.compile(TEXT_SPLIT);
+		Elements metaTags = dom.select("meta[name~=(description|keywords)][content]");
 		List<String> tokens = new LinkedList<String>();
-		for(Element link: links)
-			tokens.addAll(Arrays.asList(link.attr("content").split(TEXT_SPLIT)));
+		for(Element metaTag: metaTags)
+			tokens.addAll(extractWords(splitter.split(metaTag.attr("content"))));
 		return tokens;
 	}
 	
 	private static Iterable<String> extractText(Document dom, String selector) {
+		Pattern splitter = Pattern.compile(TEXT_SPLIT);
 		Elements headers = dom.select(selector);
 		List<String> tokens = new LinkedList<String>();
-		for(Element header: headers)
-			tokens.addAll(Arrays.asList(header.text().split(TEXT_SPLIT)));
+		for(Element header: headers) {
+			tokens.addAll(extractWords(splitter.split(header.text())));
+		}
 		return tokens;
+	}
+	
+	private static List<String> extractWords(String[] wordTokens) {
+		List<String> words = new LinkedList<String>();
+		Pattern isWord = Pattern.compile(WORD_PATTERN);
+		for(String token: wordTokens) {
+			Matcher matcher = isWord.matcher(token);
+			if(matcher.matches())
+				words.add(matcher.group(1));
+		}
+		return words;
 	}
 	
 	public static class DocumentIndexer extends Mapper<Text, Text, Text, Text>  {

@@ -48,16 +48,6 @@ public class InvertedIndex {
 		return db.query(InvertedIndexRow.class, query);
 	}
 	
-	public List<InvertedIndexRow> getAllEntries(List<String> words) {
-		List<Object> items = new LinkedList<Object>();
-		for(String word: words) {
-			InvertedIndexRow item = new InvertedIndexRow();
-			item.setWord(word);
-			items.add(item);
-		}
-		return (List<InvertedIndexRow>)(List<?>) db.batchLoad(items).get(TABLE_NAME);
-	}
-	
 	public void importData(String fromFile) throws IOException {
 		BufferedReader br = new BufferedReader(new FileReader(new File(fromFile)));
 		String line = null;
@@ -79,7 +69,7 @@ public class InvertedIndex {
 				item.setHeaderCount(Integer.parseInt(parts[7]));
 				
 				items.add(item);
-				if(items.size() >= 5000) {
+				if(items.size() >= 10000) {
 					this.db.batchSave(items);
 					items = new LinkedList<InvertedIndexRow>();
 					logger.info(String.format("imported %d records into DynamoDB's 'inverted-index' table.", rowCount));
