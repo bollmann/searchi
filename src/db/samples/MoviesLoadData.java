@@ -1,4 +1,4 @@
-package db;
+package db.samples;
 
 import java.io.File;
 import java.util.Iterator;

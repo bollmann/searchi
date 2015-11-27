@@ -1,4 +1,4 @@
-package db;
+package db.samples;
 /*
  * Copyright 2012-2015 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
@@ -44,6 +44,7 @@ import com.amazonaws.services.dynamodbv2.util.Tables;
  * This sample demonstrates how to perform a few simple operations with the
  * Amazon DynamoDB service.
  */
+@SuppressWarnings("deprecation")
 public class AmazonDynamoDBSample {
 
     /*

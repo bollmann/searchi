@@ -1,4 +1,4 @@
-package db;
+package db.samples;
 
 import java.util.Arrays;
 
