@@ -17,6 +17,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.GZIPInputStream;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.http.Cookie;
@@ -164,8 +165,13 @@ public class HttpClient {
 			}
 		}
 
-		BufferedReader br = new BufferedReader(new InputStreamReader(
-				conn.getInputStream()));
+		BufferedReader br;
+		
+		if (conn.getHeaderField("Content-Encoding")!=null && conn.getHeaderField("Content-Encoding").equals("gzip")){
+			br = new BufferedReader(new InputStreamReader(new GZIPInputStream(conn.getInputStream())));            
+	    } else {
+	    	br = new BufferedReader(new InputStreamReader(conn.getInputStream()));            
+	    } 
 		conn.connect();
 		logger.debug("GET connected!");
 		Map<String, List<String>> map = conn.getHeaderFields();
@@ -217,6 +223,7 @@ public class HttpClient {
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(
 				socket.getInputStream()));
+		
 		PrintWriter out = new PrintWriter(socket.getOutputStream());
 		sendRequest(out, request);
 		response = receiveResponse(br, response);
@@ -354,8 +361,14 @@ public class HttpClient {
 			conn.setRequestProperty(headerName, request.getHeader(headerName));
 		}
 
-		BufferedReader br = new BufferedReader(new InputStreamReader(
-				conn.getInputStream()));
+		BufferedReader br = null;
+		
+		if (conn.getHeaderField("Content-Encoding")!=null && conn.getHeaderField("Content-Encoding").equals("gzip")){
+			br = new BufferedReader(new InputStreamReader(new GZIPInputStream(conn.getInputStream())));            
+	    } else {
+	    	br = new BufferedReader(new InputStreamReader(conn.getInputStream()));            
+	    } 
+		
 		conn.connect();
 		logger.debug("GET connected!");
 		Map<String, List<String>> map = conn.getHeaderFields();

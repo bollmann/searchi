@@ -3,6 +3,7 @@
  */
 package test.crawler.parsers;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -23,8 +24,11 @@ import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
 
+import crawler.clients.HttpClient;
 import crawler.parsers.Parser;
 import crawler.parsers.Parser.Handler;
+import crawler.requests.Http10Request;
+import crawler.responses.HttpResponse;
 import crawler.responses.Response;
 import crawler.servlets.ServletContextImpl;
 import crawler.threadpool.MercatorNode;

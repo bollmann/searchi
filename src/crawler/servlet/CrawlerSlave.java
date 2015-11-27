@@ -1,7 +1,9 @@
 package crawler.servlet;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
@@ -11,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Map.Entry;
+import java.util.zip.GZIPInputStream;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -70,7 +72,7 @@ public class CrawlerSlave extends HttpServlet {
 				content = FilePolicy
 						.readFile("resources/master_status_page.html");
 			} catch (IOException e) {
-//				e.printStackTrace();
+				// e.printStackTrace();
 				logger.error("error in reading status page");
 				return;
 			}
@@ -113,7 +115,7 @@ public class CrawlerSlave extends HttpServlet {
 						.setUrlProcessed(workerStatus.getUrlProcessed() + 1);
 			} catch (IOException | ParseException e) {
 				// TODO Auto-generated catch block
-//				e.printStackTrace();
+				// e.printStackTrace();
 				logger.error("Error in handling the url " + url);
 			}
 			List<String> filteredurls = filterUrls(outgoingUrls);
@@ -125,7 +127,7 @@ public class CrawlerSlave extends HttpServlet {
 			}
 		} catch (Exception e) {
 			logger.error("Slave got error " + e.getMessage());
-//			e.printStackTrace();
+			// e.printStackTrace();
 			return;
 		}
 
@@ -151,7 +153,7 @@ public class CrawlerSlave extends HttpServlet {
 		} catch (IOException | ParseException e) {
 			// TODO Auto-generated catch block
 			logger.error("Posting to server failed!");
-//			e.printStackTrace();
+			// e.printStackTrace();
 		}
 	}
 
@@ -202,7 +204,7 @@ public class CrawlerSlave extends HttpServlet {
 					} catch (Exception e) {
 						logger.error("Skipping " + url
 								+ " as error in parsing content for links");
-//						e.printStackTrace();
+						// e.printStackTrace();
 						return new ArrayList<String>();
 					}
 				}
@@ -230,7 +232,7 @@ public class CrawlerSlave extends HttpServlet {
 					logger.info("Saved data for " + url + " in time "
 							+ (end.getTime() - start.getTime()));
 				} catch (AmazonServiceException e) {
-//					e.printStackTrace();
+					// e.printStackTrace();
 					logger.error("Got an error while saving the url.");
 				}
 			}
@@ -263,8 +265,8 @@ public class CrawlerSlave extends HttpServlet {
 				length = Parser.convertByesToMBytes(Integer.parseInt(response
 						.getHeader("Content-Length")));
 			}
-			if(request.getHeader("Content-Language") != null) {
-				if(!request.getHeader("Content-Language").startsWith("en")) {
+			if (request.getHeader("Content-Language") != null) {
+				if (!request.getHeader("Content-Language").startsWith("en")) {
 					return null;
 				}
 			}
@@ -286,6 +288,9 @@ public class CrawlerSlave extends HttpServlet {
 						"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
 				response = HttpClient.genericGet(url, request);
 				content = new String(response.getBody());
+				
+				//file handling logic
+				
 				urlContent = new URLContent();
 				urlContent.setUrl(url);
 				urlContent.setContent(content);
@@ -307,7 +312,9 @@ public class CrawlerSlave extends HttpServlet {
 			System.out.println("Got redirect from:" + url + " to " + location);
 			logger.debug("Got redirect to " + location);
 			List<String> urls = new ArrayList<String>();
-			urls.add(location); // should be location. not url!
+			if (Parser.isCrawlableUrl(location)) {
+				urls.add(location); // should be location. not url!
+			}
 			postLinksToMaster(urls);
 			return null;
 		}
@@ -369,7 +376,7 @@ public class CrawlerSlave extends HttpServlet {
 			inputStream = new ByteArrayInputStream(content.getBytes("UTF-8"));
 		} catch (UnsupportedEncodingException e) {
 			logger.error("Error in extracting links from html for:" + urlRoot);
-//			e.printStackTrace();
+			// e.printStackTrace();
 			return new ArrayList<String>();
 		}
 		logger.debug("Parsing dom");
