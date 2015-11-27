@@ -15,6 +15,8 @@ public class URLContent {
 	Date crawledOn;
 	
 	List<String> outgoingLinks;
+	
+	private String contentLanguage;
 
 	public String getContentType() {
 		return contentType;
@@ -54,6 +56,14 @@ public class URLContent {
 
 	public void setOutgoingLinks(List<String> outgoingLinks) {
 		this.outgoingLinks = outgoingLinks;
+	}
+
+	public String getContentLanguage() {
+		return contentLanguage;
+	}
+
+	public void setContentLanguage(String contentLanguage) {
+		this.contentLanguage = contentLanguage;
 	}
 
 	public URLContent(String absolutePath) {

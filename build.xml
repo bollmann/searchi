@@ -3,7 +3,7 @@
 	<property name="file.separator" location="/"/>
 	<property name="project.root" location="${basedir}"/>
 	<property name="build.dir" location="${project.root}"/>
-	<property name="build.target.dir" location="${project.root}${file.separator}target"/>
+	<property name="build.target.dir" location="${project.root}${file.separator}bin"/>
 	<property name="web-inf.dir" location="${build.target.dir}${file.separator}WEB-INF"/>
 	<property name="classes.dir"     location="${web-inf.dir}${file.separator}classes"/>
 	<property name="web-inf.lib.dir" location="${web-inf.dir}${file.separator}lib"/>
@@ -20,6 +20,16 @@
 		<copy file="src/log4j.properties" tofile="bin/log4j.properties"/>
 	</target>
 
+	<target name="compilejavamain" description="compiles main Java source code">
+			<javac srcdir="${src.main.dir}${file.separator}" destdir="bin" debug="on" deprecation="off" optimize="on" includeAntRuntime="no">
+				<classpath>
+					<fileset dir="${inputlib.dir}">
+						<include name="*.jar" />
+					</fileset>
+				</classpath>
+			</javac>
+		</target>
+			
 	<target name="compile-inverted-index" depends="init">
 		<javac srcdir="src" destdir="bin" includes="indexer/offline/*.java,utils/**/*.java" deprecation="on"
      debug="true" includeantruntime="false" classpath="classes">

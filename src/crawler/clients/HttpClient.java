@@ -260,7 +260,7 @@ public class HttpClient {
 			}
 		}
 		conn.connect();
-		logger.info("HEAD connected!");
+		logger.debug("HEAD connected!");
 		BufferedReader br = new BufferedReader(new InputStreamReader(
 				conn.getInputStream()));
 		Map<String, List<String>> map = conn.getHeaderFields();
@@ -316,7 +316,7 @@ public class HttpClient {
 			}
 		}
 		conn.connect();
-		logger.info("HEAD connected!");
+		logger.debug("HEAD connected!");
 		BufferedReader br = new BufferedReader(new InputStreamReader(
 				conn.getInputStream()));
 		Map<String, List<String>> map = conn.getHeaderFields();

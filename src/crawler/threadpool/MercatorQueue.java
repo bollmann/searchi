@@ -17,7 +17,7 @@ import crawler.errors.QueueFullException;
 
 public class MercatorQueue {
 	private Integer size;
-	private Integer urlsProcessed;
+	private Integer urlsProcessed = 0;
 	private final Logger logger = Logger.getLogger(getClass());
 	MercatorNode head = null, last = null;
 	Set<String> frontier;

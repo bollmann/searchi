@@ -68,6 +68,7 @@ public class CrawlerMaster extends HttpServlet {
 
 		if (flushQueue.equals("yes")) {
 			s3.deleteBucket(s3.URL_QUEUE_BUCKET);
+			ddb.deleteTable("QueueInfo");
 		}
 
 		s3.createBucket(s3.URL_BUCKET);
@@ -76,16 +77,28 @@ public class CrawlerMaster extends HttpServlet {
 
 		// look for queue in s3. If not there, then initialize to new
 
-		DiskBackedQueue<String> q = new DiskBackedQueue<String>();
+		DiskBackedQueue<String> q = null;
+
+		try {
+			String queueContent = s3.getItem(s3.URL_QUEUE_BUCKET, "queueState");
+			logger.info("queue content " + queueContent);
+			Type listType = new TypeToken<DiskBackedQueue<String>>() {
+			}.getType();
+			System.out.println("Reading queue for s3. Resuming saved state.");
+			q = new Gson().fromJson(queueContent, listType);
+		} catch (Exception e) {
+			e.printStackTrace();
+			q = new DiskBackedQueue<String>(1000);
+		}
 
 		mq = new MercatorQueue();
 		mq.setOutgoingJobQueue(q);
 
 		List<String> seedUrls = new ArrayList<String>() {
 			{
-				 add("https://en.wikipedia.org/wiki/Main_Page");
-				 add("https://www.reddit.com/");
-//				add("https://dbappserv.cis.upenn.edu/crawltest.html");
+				add("https://en.wikipedia.org/wiki/Main_Page");
+				add("https://www.reddit.com/");
+				// add("https://dbappserv.cis.upenn.edu/crawltest.html");
 			}
 		};
 
@@ -156,7 +169,11 @@ public class CrawlerMaster extends HttpServlet {
 				}
 			}
 			workerStatus.setIpAddress(ipAddress);
-			workerStatus.setUrlProcessed(urlsProcessed);
+			if (urlsProcessed > workerStatus.getUrlProcessed()) {
+				workerStatus.setUrlProcessed(urlsProcessed);
+			} else {
+				workerStatus.setUrlProcessed(workerStatus.getUrlProcessed() + urlsProcessed);
+			}
 			workerStatus.setStatus(status);
 
 			synchronized (workerStatusMap) {

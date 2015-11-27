@@ -35,18 +35,19 @@ public class UrlProducer extends Thread {
 		for(Entry<String, WorkerStatus> entry : workerStatusMap.entrySet()) {
 			sum += entry.getValue().getUrlProcessed();
 		}
-		logger.debug("Checked workers and found a total of " + sum + "urls processed");
+		
+		if(sum % (maxUrls / 20) == 0) {
+			logger.warn("Checked workers and found a total of " + sum + "urls processed out of " + maxUrls);
+		}
 		return sum;
 	}
 	
 	public void shutdown() {
 		System.out.println("Exiting gracefully");
-		DynamoDBWrapper ddb = DynamoDBWrapper
-				.getInstance(DynamoDBWrapper.US_EAST);
 		S3Wrapper s3 = S3Wrapper.getInstance();
 		String queueContent = new Gson().toJson(q);
 		s3.putItem(s3.URL_QUEUE_BUCKET, "queueState", queueContent);
-		ddb.displaySaveStatistics();
+		System.exit(0);
 	}
 
 	public void run() {
@@ -58,6 +59,7 @@ public class UrlProducer extends Thread {
 			mq.checkAndNotifyQueues();
 
 			int urlCount = getUrlsProcessed(workerStatusMap);
+			
 			if (urlCount >= maxUrls) {
 				System.out.println("Shutting down as encountered " + urlCount
 						+ " urls.");

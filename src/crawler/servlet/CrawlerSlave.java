@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -29,6 +30,7 @@ import crawler.clients.HttpClient;
 import crawler.dao.URLContent;
 import crawler.info.URLInfo;
 import crawler.parsers.Parser;
+import crawler.policies.FilePolicy;
 import crawler.requests.Http10Request;
 import crawler.requests.HttpRequest;
 import crawler.responses.HttpResponse;
@@ -62,10 +64,36 @@ public class CrawlerSlave extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
-		response.setContentType("text/html");
-		PrintWriter out = response.getWriter();
-		out.println("<html><body>Worker working!</body></html>");
-		return;
+		if (request.getPathInfo().equals("/status")) {
+			String content = null;
+			try {
+				content = FilePolicy
+						.readFile("resources/master_status_page.html");
+			} catch (IOException e) {
+				e.printStackTrace();
+				return;
+			}
+			StringBuilder sb = new StringBuilder();
+
+			sb.append("<tr>");
+			sb.append("<td>" + workerStatus.getIpAddress() + ":"
+					+ workerStatus.getPort() + "</td>" + "<td>"
+					+ workerStatus.getStatus() + "</td>" + "<td>"
+					+ workerStatus.getUrlProcessed() + "</td>");
+			sb.append("</tr>");
+
+			content = content.replace("<$workers$>", sb.toString());
+			response.setContentType("text/html");
+			response.setContentType("text/html");
+			PrintWriter out = response.getWriter();
+			out.println(content);
+			return;
+		} else {
+			response.setContentType("text/html");
+			PrintWriter out = response.getWriter();
+			out.println("<html><body>Worker working!</body></html>");
+			return;
+		}
 
 	}
 
@@ -87,12 +115,16 @@ public class CrawlerSlave extends HttpServlet {
 				e.printStackTrace();
 			}
 			List<String> filteredurls = filterUrls(outgoingUrls);
+			if (outgoingUrls == null) {
+				return;
+			}
 			if (filteredurls.size() > 0) {
 				postLinksToMaster(filteredurls);
 			}
 		} catch (Exception e) {
 			logger.error("Slave got error " + e.getMessage());
 			e.printStackTrace();
+			return;
 		}
 
 	}
@@ -227,6 +259,11 @@ public class CrawlerSlave extends HttpServlet {
 			if (response.getHeader("Content-Length") != null) {
 				length = Parser.convertByesToMBytes(Integer.parseInt(response
 						.getHeader("Content-Length")));
+			}
+			if(request.getHeader("Content-Language") != null) {
+				if(!request.getHeader("Content-Language").startsWith("en")) {
+					return null;
+				}
 			}
 			boolean contentPolicy = Parser.isAllowedCrawlContentType(response
 					.getHeader("Content-Type"))

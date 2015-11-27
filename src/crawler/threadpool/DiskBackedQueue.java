@@ -63,7 +63,14 @@ public class DiskBackedQueue<T> {
 
 	public DiskBackedQueue(int size) {
 		inputList = new ArrayList<T>(size);
-		outputList = new ArrayList<T>();
+		outputList = new ArrayList<T>(size);
+		ddb = DynamoDBWrapper.getInstance(DynamoDBWrapper.US_EAST);
+		ddb.createTable("QueueInfo", 5, 5, "name", "S");
+		queueInfo = (QueueInfo) ddb.getItem(QUEUE_NAME, QueueInfo.class);
+		if (queueInfo == null) {
+			queueInfo = new QueueInfo();
+		}
+		s3 = S3Wrapper.getInstance();
 	}
 
 	/**
