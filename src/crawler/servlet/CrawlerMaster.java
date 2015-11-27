@@ -87,7 +87,8 @@ public class CrawlerMaster extends HttpServlet {
 			System.out.println("Reading queue for s3. Resuming saved state.");
 			q = new Gson().fromJson(queueContent, listType);
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+			logger.error("Couldn't find saved queue");
 			q = new DiskBackedQueue<String>(1000);
 		}
 
@@ -186,7 +187,8 @@ public class CrawlerMaster extends HttpServlet {
 				content = FilePolicy
 						.readFile("resources/master_status_page.html");
 			} catch (IOException e) {
-				e.printStackTrace();
+//				e.printStackTrace();
+				logger.error("Error in reading file");
 				return;
 			}
 			StringBuilder sb = new StringBuilder();
@@ -218,7 +220,8 @@ public class CrawlerMaster extends HttpServlet {
 				content = FilePolicy
 						.readFile("resources/master_queue_status_page.html");
 			} catch (IOException e) {
-				e.printStackTrace();
+//				e.printStackTrace();
+				logger.error("Error in reading file");
 				return;
 			}
 			StringBuilder sb = new StringBuilder();

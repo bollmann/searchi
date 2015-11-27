@@ -70,7 +70,8 @@ public class CrawlerSlave extends HttpServlet {
 				content = FilePolicy
 						.readFile("resources/master_status_page.html");
 			} catch (IOException e) {
-				e.printStackTrace();
+//				e.printStackTrace();
+				logger.error("error in reading status page");
 				return;
 			}
 			StringBuilder sb = new StringBuilder();
@@ -112,7 +113,8 @@ public class CrawlerSlave extends HttpServlet {
 						.setUrlProcessed(workerStatus.getUrlProcessed() + 1);
 			} catch (IOException | ParseException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+//				e.printStackTrace();
+				logger.error("Error in handling the url " + url);
 			}
 			List<String> filteredurls = filterUrls(outgoingUrls);
 			if (outgoingUrls == null) {
@@ -123,7 +125,7 @@ public class CrawlerSlave extends HttpServlet {
 			}
 		} catch (Exception e) {
 			logger.error("Slave got error " + e.getMessage());
-			e.printStackTrace();
+//			e.printStackTrace();
 			return;
 		}
 
@@ -149,7 +151,7 @@ public class CrawlerSlave extends HttpServlet {
 		} catch (IOException | ParseException e) {
 			// TODO Auto-generated catch block
 			logger.error("Posting to server failed!");
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 	}
 
@@ -200,7 +202,7 @@ public class CrawlerSlave extends HttpServlet {
 					} catch (Exception e) {
 						logger.error("Skipping " + url
 								+ " as error in parsing content for links");
-						e.printStackTrace();
+//						e.printStackTrace();
 						return new ArrayList<String>();
 					}
 				}
@@ -228,7 +230,8 @@ public class CrawlerSlave extends HttpServlet {
 					logger.info("Saved data for " + url + " in time "
 							+ (end.getTime() - start.getTime()));
 				} catch (AmazonServiceException e) {
-					e.printStackTrace();
+//					e.printStackTrace();
+					logger.error("Got an error while saving the url.");
 				}
 			}
 		} else {
@@ -366,7 +369,7 @@ public class CrawlerSlave extends HttpServlet {
 			inputStream = new ByteArrayInputStream(content.getBytes("UTF-8"));
 		} catch (UnsupportedEncodingException e) {
 			logger.error("Error in extracting links from html for:" + urlRoot);
-			e.printStackTrace();
+//			e.printStackTrace();
 			return new ArrayList<String>();
 		}
 		logger.debug("Parsing dom");
@@ -408,7 +411,6 @@ public class CrawlerSlave extends HttpServlet {
 						}
 					}
 
-					// e.printStackTrace();
 				}
 				logger.debug("Link derelativized to:" + linkHref);
 				links.add(linkHref);
