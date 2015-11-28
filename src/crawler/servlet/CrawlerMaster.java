@@ -97,9 +97,9 @@ public class CrawlerMaster extends HttpServlet {
 
 		List<String> seedUrls = new ArrayList<String>() {
 			{
-				add("https://en.wikipedia.org/wiki/Main_Page");
-				add("https://www.reddit.com/");
-				// add("https://dbappserv.cis.upenn.edu/crawltest.html");
+//				add("https://en.wikipedia.org/wiki/Main_Page");
+//				add("https://www.reddit.com/");
+				 add("https://dbappserv.cis.upenn.edu/crawltest.html");
 			}
 		};
 
@@ -181,6 +181,8 @@ public class CrawlerMaster extends HttpServlet {
 				workerStatusMap.put(workerStatus.getIpAddress() + ":"
 						+ workerStatus.getPort(), workerStatus);
 			}
+			logger.info("Finished worker status handling");
+			return;
 		} else if (request.getPathInfo().equals("/status")) {
 			String content = null;
 			try {
@@ -254,10 +256,11 @@ public class CrawlerMaster extends HttpServlet {
 			}.getType();
 			logger.debug("Master trying to process POST request with:" + sb.toString());
 			List<String> urls = new Gson().fromJson(sb.toString(), listType);
-			logger.info("Master got urls: " + urls);
+			logger.debug("Master got urls: " + urls);
 			for (String url : urls) {
 				enqueueURL(url);
 			}
+			logger.debug("Master finished with enqueueing urls");
 		}
 	}
 
@@ -320,7 +323,7 @@ public class CrawlerMaster extends HttpServlet {
 			node.setLastCrawledTime(Calendar.getInstance().getTime());
 			mq.addNode(node);
 			mq.enqueueUrl(url);
-			logger.info("Setting last crawled time to now.");
+			logger.debug("Setting last crawled time to now.");
 		}
 	}
 

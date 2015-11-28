@@ -221,7 +221,7 @@ public class MainHandler extends Thread {
 						logger.debug("Sending back "
 								+ new String(response.toBytes()));
 						handler.writeOutput(response.toBytes());
-
+						logger.debug("Mainhandler finished writing to socket");
 					} catch (Exception e) {
 						logger.error("Mainhandler got exception in handling request. Got "
 								+ e.getMessage());
@@ -240,6 +240,8 @@ public class MainHandler extends Thread {
 								+ ThreadPool.getInstance().getShouldShutdown());
 						RunnerDaemon.shutdown();
 					}
+					socket.close();
+					logger.debug("Socket closed");
 				} catch (IOException e) {
 					logger.error(e.getMessage());
 					try {
@@ -250,6 +252,7 @@ public class MainHandler extends Thread {
 					}
 					continue;
 				}
+				
 			} else {
 				// exception
 				logger.error("Socket is null!");

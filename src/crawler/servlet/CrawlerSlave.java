@@ -1,9 +1,7 @@
 package crawler.servlet;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
@@ -13,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.zip.GZIPInputStream;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -30,13 +27,17 @@ import com.google.gson.Gson;
 
 import crawler.clients.HttpClient;
 import crawler.dao.URLContent;
+import crawler.errors.QueueFullException;
 import crawler.info.URLInfo;
 import crawler.parsers.Parser;
 import crawler.policies.FilePolicy;
 import crawler.requests.Http10Request;
 import crawler.requests.HttpRequest;
+import crawler.responses.Http10Response;
 import crawler.responses.HttpResponse;
+import crawler.servlet.multinodal.producer.WorkerUrlPoster;
 import crawler.servlet.multinodal.status.WorkerStatus;
+import crawler.threadpool.Queue;
 import db.dbo.URLMetaInfo;
 import db.wrappers.DynamoDBWrapper;
 import db.wrappers.S3Wrapper;
@@ -45,10 +46,12 @@ public class CrawlerSlave extends HttpServlet {
 	private final Logger logger = Logger.getLogger(getClass());
 	private String masterIPPort = null;
 	private WorkerStatus workerStatus = null;
+	private Queue<List<String>> urlQueue;
 
 	@Override
 	public void init() {
 		masterIPPort = (String) getServletContext().getInitParameter("master");
+		urlQueue = new Queue<List<String>>();
 		String workerIP = (String) getServletContext().getInitParameter(
 				"worker-ip");
 		Integer workerPort = Integer.parseInt(getServletContext()
@@ -57,6 +60,8 @@ public class CrawlerSlave extends HttpServlet {
 		workerStatus.setIpAddress(workerIP);
 		workerStatus.setPort(workerPort);
 		workerStatus.setStatus("active");
+		WorkerUrlPoster wup = new WorkerUrlPoster("http://" + masterIPPort + "/master/enqueueURLs", urlQueue);
+		wup.start();
 		HeartBeat hb = new HeartBeat("http://" + masterIPPort
 				+ "/master/workerStatus");
 		hb.setWorkerStatus(workerStatus);
@@ -74,6 +79,7 @@ public class CrawlerSlave extends HttpServlet {
 			} catch (IOException e) {
 				// e.printStackTrace();
 				logger.error("error in reading status page");
+				response.sendError(404);
 				return;
 			}
 			StringBuilder sb = new StringBuilder();
@@ -105,8 +111,6 @@ public class CrawlerSlave extends HttpServlet {
 			throws IOException {
 		try {
 			String url = request.getParameter("url");
-
-			response.setStatus(200);
 			response.flushBuffer();
 			List<String> outgoingUrls = null;
 			try {
@@ -118,13 +122,18 @@ public class CrawlerSlave extends HttpServlet {
 				// e.printStackTrace();
 				logger.error("Error in handling the url " + url);
 			}
-			List<String> filteredurls = filterUrls(outgoingUrls);
+			logger.info("Enqueueing urls to be sent to master");
+			List<String> filteredUrls = filterUrls(outgoingUrls);
 			if (outgoingUrls == null) {
 				return;
 			}
-			if (filteredurls.size() > 0) {
-				postLinksToMaster(filteredurls);
+			if (filteredUrls.size() > 0) {
+				synchronized(urlQueue) {
+					urlQueue.enqueue(filteredUrls);
+					urlQueue.notify();
+				}
 			}
+			
 		} catch (Exception e) {
 			logger.error("Slave got error " + e.getMessage());
 //			e.printStackTrace();
@@ -143,23 +152,10 @@ public class CrawlerSlave extends HttpServlet {
 		return filteredUrls;
 	}
 
-	public void postLinksToMaster(List<String> urls) {
-		String content = new Gson().toJson(urls);
-		Http10Request request = new Http10Request();
-		
-		request.setBody(content);
-		try {
-			HttpClient.post("http://" + masterIPPort + "/master/enqueueURLs",
-					request);
-		} catch (IOException | ParseException e) {
-			// TODO Auto-generated catch block
-			logger.error("Posting to server failed!");
-//			 e.printStackTrace();
-		}
-	}
+
 
 	public List<String> handleURL(String url) throws IOException,
-			ParseException {
+			ParseException, QueueFullException {
 		System.out.println("Attempting to process " + url);
 
 		DynamoDBWrapper ddb = DynamoDBWrapper
@@ -176,7 +172,7 @@ public class CrawlerSlave extends HttpServlet {
 		URLContent urlContent = null;
 
 		if (info != null) {
-			logger.info("Found a db entry for:" + url
+			logger.debug("Found a db entry for:" + url
 					+ " so looking in s3 for " + info.getId());
 			URLContent oldUrlContent = null;
 			String content = s3.getItem(info.getId());
@@ -186,7 +182,7 @@ public class CrawlerSlave extends HttpServlet {
 
 			urlContent = getPersistentContent(oldUrlContent);
 		} else {
-			logger.info("Getting fresh data for:" + url);
+			logger.debug("Getting fresh data for:" + url);
 			urlContent = getNewContent(url);
 		}
 
@@ -243,14 +239,13 @@ public class CrawlerSlave extends HttpServlet {
 				}
 			}
 		} else {
-			logger.error("UrlContent was null");
+			logger.debug("UrlContent was null");
 		}
-		// } // end of synchonization
 		return links;
 	}
 
 	private URLContent getNewContent(String url) throws IOException,
-			ParseException {
+			ParseException, QueueFullException {
 		System.out.println("Downloading new content for " + url);
 		// HEAD. check content
 		String content = null;
@@ -321,14 +316,17 @@ public class CrawlerSlave extends HttpServlet {
 			if (Parser.isCrawlableUrl(location)) {
 				urls.add(location); // should be location. not url!
 			}
-			postLinksToMaster(urls);
+			synchronized(urlQueue) {
+				urlQueue.enqueue(urls);
+				urlQueue.notify();
+			}
 			return null;
 		}
 		return urlContent;
 	}
 
 	private URLContent getPersistentContent(URLContent urlContent)
-			throws IOException, ParseException {
+			throws IOException, ParseException, QueueFullException {
 		URLContent content = null;
 		// if present, check last crawled time
 		Date lastCrawled = urlContent.getCrawledOn();
@@ -361,7 +359,10 @@ public class CrawlerSlave extends HttpServlet {
 			logger.debug("Got redirect to " + location);
 			List<String> urls = new ArrayList<String>();
 			urls.add(location);
-			postLinksToMaster(urls);
+			synchronized(urlQueue) {
+				urlQueue.enqueue(urls);
+				urlQueue.notify();
+			}
 			return null;
 		}
 		return content;

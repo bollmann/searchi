@@ -235,7 +235,7 @@ public class HttpClient {
 		
 		conn.connect();
 		
-		logger.info("POST connected! Sent " + request.getBody());
+		logger.debug("POST connected! Sent " + request.getBody());
 		Map<String, List<String>> map = conn.getHeaderFields();
 		for (Map.Entry<String, List<String>> entry : map.entrySet()) {
 			for (String value : entry.getValue()) {
@@ -262,8 +262,7 @@ public class HttpClient {
 		Http10Response response = new Http10Response();
 		response.setMethod("HEAD");
 		URL pUrl = new URL(url);
-		logger.info("Sending a HEAD request to url:" + url + " parsed into:"
-				+ pUrl + " host:" + pUrl.getHost() + " port:" + pUrl.getPort());
+		logger.info("Sending a HEAD request to url:" + pUrl + " host:" + pUrl.getHost() + " port:" + pUrl.getPort());
 		HttpURLConnection conn = (HttpURLConnection) pUrl.openConnection();
 		conn.setDoInput(true);
 		conn.setDoOutput(false);

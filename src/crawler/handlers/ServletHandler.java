@@ -196,7 +196,7 @@ public class ServletHandler extends RequestHandler {
 					|| (request.getHeader("Content-Type") != null && request
 							.getHeader("Content-Type").equals(
 									Parser.formEncoding))) {
-				logger.info("Processing paramString");
+				logger.debug("Processing paramString");
 				for (String kv : paramString.trim().split("&")) {
 					String key = kv.split("=")[0];
 					String value = kv.split("=")[1];
@@ -239,6 +239,7 @@ public class ServletHandler extends RequestHandler {
 			if (!response.isCommitted()) {
 				response.flushBuffer();
 			}
+			logger.debug("ServletHandler finished flushing buffer");
 		} catch (ServletException | IOException e) {
 			response.setResponse(500);
 			logger.error(e.getMessage());

@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 
 import crawler.clients.HttpClient;
 import crawler.requests.Http10Request;
+import crawler.responses.Http10Response;
 import crawler.servlet.multinodal.status.WorkerStatus;
 
 public class HeartBeat extends Thread {
@@ -45,7 +46,8 @@ public class HeartBeat extends Thread {
 		logger.info("Sending heartbeat to " + heartBeatUrl + "?" + paramString);
 		
 		try {
-			HttpClient.get(heartBeatUrl + "?" + paramString, request);
+			Http10Response response = HttpClient.get(heartBeatUrl + "?" + paramString, request);
+			logger.info("Worker got response for heartbeat " + response.getResponse());
 		} catch (IOException | ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

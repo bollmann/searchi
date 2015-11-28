@@ -1,6 +1,7 @@
 package crawler.servlet.multinodal.producer;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,9 +11,13 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import crawler.clients.HttpClient;
 import crawler.parsers.Parser;
 import crawler.requests.Http10Request;
+import crawler.responses.Http10Response;
 import crawler.servlet.multinodal.status.WorkerStatus;
 import crawler.threadpool.DiskBackedQueue;
 
@@ -53,8 +58,12 @@ public class UrlPoster extends Thread {
 				request.setBody("url=" + url);
 				request.setMethod("POST");
 				try {
-					logger.debug("Master sending url:" + url + " to worker");
-					HttpClient.post("http://" + ipPort + "/worker", request);
+					logger.debug("Url Poster sending url:" + url + " to worker");
+					Http10Response response = HttpClient.post("http://"
+							+ ipPort + "/worker", request);
+					logger.debug("Url Poster got response "
+							+ response.getResponse() + "for url:" + url
+							+ " body:" + new String(response.getBody()));
 				} catch (IOException | ParseException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

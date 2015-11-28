@@ -141,7 +141,7 @@ public class DiskBackedQueue<T> {
 		logger.debug("Removing element from queue");
 		boolean queueFileExists = queueInfo.getToRead() > 0 && queueInfo.getToRead() < queueInfo.getToWrite();
 		if (outputList.size() < 1) {
-			logger.info("Refilling queue from disk");
+			
 			if (queueFileExists) {
 				logger.info("Found queue element in disk for queueInfo "
 						+ queueInfo);
