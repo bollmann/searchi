@@ -3,13 +3,8 @@ package indexer.offline;
 import indexer.WordCounts;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
@@ -24,67 +19,36 @@ import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import utils.file.FileUtils;
 
 public class InvertedIndexJob {
 	private static Logger logger = Logger.getLogger(InvertedIndexJob.class);
 	
-	public static final String TEXT_SPLIT = "[^a-zA-Z0-9'-]+";
-	public static final String AHREF_SPLIT = "\\s+|[.,;_/-]+";
-	public static final String WORD_PATTERN = "^\\W*(\\w+)\\W*$";
-	
-	private static Iterable<String> extractLinks(Document dom) {
-		Pattern textSplitter = Pattern.compile(TEXT_SPLIT);
-		Pattern refSplitter = Pattern.compile(AHREF_SPLIT);
-		Elements links = dom.select("a[href]");
-		List<String> tokens = new LinkedList<String>();
-		for(Element link: links) {
-			tokens.addAll(extractWords(refSplitter.split(link.attr("href"))));
-			tokens.addAll(extractWords(textSplitter.split(link.text())));
+	private static String extractLinks(Document doc) {
+		StringBuffer result = new StringBuffer();
+		for(Element link: doc.select("a[href]")) {
+			result.append(link.attr("href") + " ");
+			result.append(link.text() + " ");
 		}
-		return tokens;
+		return result.toString();
 	}
 	
-	private static Iterable<String> extractMetaTags(Document dom) {
-		Pattern splitter = Pattern.compile(TEXT_SPLIT);
-		Elements metaTags = dom.select("meta[name~=(description|keywords)][content]");
-		List<String> tokens = new LinkedList<String>();
-		for(Element metaTag: metaTags)
-			tokens.addAll(extractWords(splitter.split(metaTag.attr("content"))));
-		return tokens;
-	}
-	
-	private static Iterable<String> extractText(Document dom, String selector) {
-		Pattern splitter = Pattern.compile(TEXT_SPLIT);
-		Elements headers = dom.select(selector);
-		List<String> tokens = new LinkedList<String>();
-		for(Element header: headers) {
-			tokens.addAll(extractWords(splitter.split(header.text())));
-		}
-		return tokens;
-	}
-	
-	private static List<String> extractWords(String[] wordTokens) {
-		List<String> words = new LinkedList<String>();
-		Pattern isWord = Pattern.compile(WORD_PATTERN);
-		for(String token: wordTokens) {
-			Matcher matcher = isWord.matcher(token);
-			if(matcher.matches())
-				words.add(matcher.group(1));
-		}
-		return words;
+	private static String extractMetaTags(Document doc) {
+		StringBuffer result = new StringBuffer();
+		for(Element metaTag: doc.select("meta[name~=(keywords|description)][content]"))
+			result.append(metaTag.attr("content"));
+		return result.toString();
 	}
 	
 	public static class DocumentIndexer extends Mapper<Text, Text, Text, Text>  {
 		@Override
-		public void map(Text url, Text doc, Context context) throws IOException, InterruptedException {
-			Document dom = Jsoup.parse(doc.toString(), url.toString());
-			WordCounts linkCounts = new WordCounts(extractLinks(dom));
-			WordCounts metaTagCounts = new WordCounts(extractMetaTags(dom));
-			WordCounts headerCounts = new WordCounts(extractText(dom, "title,h1,h2,h3,h4,h5,h6"));
-			WordCounts textCounts = new WordCounts(extractText(dom, "title,body"));
+		public void map(Text url, Text rawDoc, Context context) throws IOException, InterruptedException {
+			Document doc = Jsoup.parse(rawDoc.toString(), url.toString());
+			WordCounts linkCounts = new WordCounts(new Tokenizer(doc.select("a[href]").text()).getTokens());
+			WordCounts metaTagCounts = new WordCounts(new Tokenizer(extractMetaTags(doc)).getTokens());
+			WordCounts headerCounts = new WordCounts(new Tokenizer(doc.select("title,h1,h2,h3,h4,h5,h6").text()).getTokens());
+			WordCounts textCounts = new WordCounts(new Tokenizer(doc.select("title,body").text()).getTokens());
 	
 			WordCounts allCounts = new WordCounts(textCounts)
 				.addCounts(headerCounts)

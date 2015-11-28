@@ -27,7 +27,7 @@ public class WordCounts implements Iterable<String> {
 	
 	public WordCounts(WordCounts other) {
 		this.wordCounts = new HashMap<String, Integer>(other.wordCounts);
-		this.maxWord = new String(other.maxWord);
+		this.maxWord = (other.maxWord == null ? null : new String(other.maxWord));
 	}
 	
 	public WordCounts addCounts(WordCounts other) {
