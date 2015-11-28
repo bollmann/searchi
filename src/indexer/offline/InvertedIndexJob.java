@@ -3,10 +3,7 @@ package indexer.offline;
 import indexer.WordCounts;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 
 import org.apache.hadoop.conf.Configuration;
@@ -22,50 +19,36 @@ import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import utils.file.FileUtils;
 
 public class InvertedIndexJob {
 	private static Logger logger = Logger.getLogger(InvertedIndexJob.class);
 	
-	public static final String TEXT_SPLIT = "[^a-zA-Z0-9'-]+";
-	public static final String AHREF_SPLIT = "\\s+|[.,;_/-]+";
-	
-	private static Iterable<String> extractLinks(Document dom) {
-		Elements links = dom.select("a[href]");
-		List<String> tokens = new LinkedList<String>();
-		for(Element link: links) {
-			tokens.addAll(Arrays.asList(link.attr("href").split(AHREF_SPLIT)));
-			tokens.addAll(Arrays.asList(link.text().split(TEXT_SPLIT)));
+	private static String extractLinks(Document doc) {
+		StringBuffer result = new StringBuffer();
+		for(Element link: doc.select("a[href]")) {
+			result.append(link.attr("href") + " ");
+			result.append(link.text() + " ");
 		}
-		return tokens;
+		return result.toString();
 	}
 	
-	private static Iterable<String> extractMetaTags(Document dom) {
-		Elements links = dom.select("meta[name~=(description|keywords)][content]");
-		List<String> tokens = new LinkedList<String>();
-		for(Element link: links)
-			tokens.addAll(Arrays.asList(link.attr("content").split(TEXT_SPLIT)));
-		return tokens;
-	}
-	
-	private static Iterable<String> extractText(Document dom, String selector) {
-		Elements headers = dom.select(selector);
-		List<String> tokens = new LinkedList<String>();
-		for(Element header: headers)
-			tokens.addAll(Arrays.asList(header.text().split(TEXT_SPLIT)));
-		return tokens;
+	private static String extractMetaTags(Document doc) {
+		StringBuffer result = new StringBuffer();
+		for(Element metaTag: doc.select("meta[name~=(keywords|description)][content]"))
+			result.append(metaTag.attr("content"));
+		return result.toString();
 	}
 	
 	public static class DocumentIndexer extends Mapper<Text, Text, Text, Text>  {
 		@Override
-		public void map(Text url, Text doc, Context context) throws IOException, InterruptedException {
-			Document dom = Jsoup.parse(doc.toString(), url.toString());
-			WordCounts linkCounts = new WordCounts(extractLinks(dom));
-			WordCounts metaTagCounts = new WordCounts(extractMetaTags(dom));
-			WordCounts headerCounts = new WordCounts(extractText(dom, "title,h1,h2,h3,h4,h5,h6"));
-			WordCounts textCounts = new WordCounts(extractText(dom, "title,body"));
+		public void map(Text url, Text rawDoc, Context context) throws IOException, InterruptedException {
+			Document doc = Jsoup.parse(rawDoc.toString(), url.toString());
+			WordCounts linkCounts = new WordCounts(new Tokenizer(doc.select("a[href]").text()).getTokens());
+			WordCounts metaTagCounts = new WordCounts(new Tokenizer(extractMetaTags(doc)).getTokens());
+			WordCounts headerCounts = new WordCounts(new Tokenizer(doc.select("title,h1,h2,h3,h4,h5,h6").text()).getTokens());
+			WordCounts textCounts = new WordCounts(new Tokenizer(doc.select("title,body").text()).getTokens());
 	
 			WordCounts allCounts = new WordCounts(textCounts)
 				.addCounts(headerCounts)

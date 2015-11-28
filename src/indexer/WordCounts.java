@@ -27,7 +27,7 @@ public class WordCounts implements Iterable<String> {
 	
 	public WordCounts(WordCounts other) {
 		this.wordCounts = new HashMap<String, Integer>(other.wordCounts);
-		this.maxWord = new String(other.maxWord);
+		this.maxWord = (other.maxWord == null ? null : new String(other.maxWord));
 	}
 	
 	public WordCounts addCounts(WordCounts other) {
@@ -52,7 +52,7 @@ public class WordCounts implements Iterable<String> {
 		int docSize = 0;
 		for(String w: wordCounts.keySet())
 			docSize += Math.pow(wordCounts.get(w), 2.0);
-		return (double) getCounts(word) / Math.sqrt((double) docSize);
+		return getCounts(word) / Math.sqrt((double) docSize);
 	}
 	
 	public int getCounts(String word) {
