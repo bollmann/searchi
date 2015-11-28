@@ -1,0 +1,186 @@
+{
+  "objects": [
+    {
+      "role": "DataPipelineDefaultRole",
+      "subject": "Failure of PageRank S3 to Dynamo Import",
+      "name": "FailureSnsAlarm",
+      "id": "ActionId_t1E0A",
+      "message": "Failure of PageRank S3 to Dynamo Import",
+      "type": "SnsAlarm",
+      "topicArn": "arn:aws:sns:us-east-1:670736579927:push_fail_s3_dynamo"
+    },
+    {
+      "schedule": {
+        "ref": "DefaultSchedule"
+      },
+      "directoryPath": "#{myPageLinkInput}",
+      "name": "PageLinkInputDataNode",
+      "id": "DataNodeId_5ahJD",
+      "type": "S3DataNode"
+    },
+    {
+      "occurrences": "1",
+      "period": "1 Day",
+      "name": "RunOnce",
+      "id": "DefaultSchedule",
+      "type": "Schedule",
+      "startAt": "FIRST_ACTIVATION_DATE_TIME"
+    },
+    {
+      "role": "DataPipelineDefaultRole",
+      "subject": "Success of PageRank S3 to Dynamo Import",
+      "name": "SuccessSnsAlarm",
+      "id": "ActionId_a1VvN",
+      "message": "Success of PageRank S3 to Dynamo Import",
+      "type": "SnsAlarm",
+      "topicArn": "arn:aws:sns:us-east-1:670736579927:push_success_s3_dynamo"
+    },
+    {
+      "name": "PageRankEMRConfig",
+      "property": {
+        "ref": "PropertyId_MKngm"
+      },
+      "id": "EmrConfigurationId_UagSh",
+      "type": "EmrConfiguration",
+      "classification": "spark"
+    },
+    {
+      "schedule": {
+        "ref": "DefaultSchedule"
+      },
+      "configuration": {
+        "ref": "EmrConfigurationId_UagSh"
+      },
+      "name": "EmrClusterPageRank",
+      "coreInstanceCount": "2",
+      "coreInstanceType": "m3.xlarge",
+      "amiVersion": "3.8.0",
+      "id": "EmrClusterId_avU5n",
+      "masterInstanceType": "m3.xlarge",
+      "region": "#{myDDBRegion}",
+      "type": "EmrCluster",
+      "terminateAfter": "3 Hours"
+    },
+    {
+      "bootstrapAction": "s3://#{myDDBRegion}.elasticmapreduce/bootstrap-actions/configure-hadoop, --mapred-key-value,mapreduce.map.speculative=false",
+      "name": "EmrClusterForLoad",
+      "coreInstanceCount": "1",
+      "coreInstanceType": "m3.xlarge",
+      "amiVersion": "3.8.0",
+      "id": "EmrClusterForLoad",
+      "masterInstanceType": "m3.xlarge",
+      "region": "#{myDDBRegion}",
+      "type": "EmrCluster",
+      "terminateAfter": "60 Minutes"
+    },
+    {
+      "failureAndRerunMode": "CASCADE",
+      "schedule": {
+        "ref": "DefaultSchedule"
+      },
+      "resourceRole": "DataPipelineDefaultResourceRole",
+      "role": "DataPipelineDefaultRole",
+      "pipelineLogUri": "s3://datapipeline-pagerank-s3-dynamodb-logs/",
+      "scheduleType": "cron",
+      "name": "Default",
+      "id": "Default"
+    },
+    {
+      "output": {
+        "ref": "DDBDestinationTable"
+      },
+      "input": {
+        "ref": "S3InputDataNode"
+      },
+      "stage": "false",
+      "scriptUri": "s3://hivescripts/PageRankS3ToDynamoDBScript.hql",
+      "onFail": {
+        "ref": "ActionId_a1VvN"
+      },
+      "maximumRetries": "2",
+      "name": "ImportS3ToDynamoActivity",
+      "runsOn": {
+        "ref": "EmrClusterForLoad"
+      },
+      "id": "ImportS3ToDynamoActivity",
+      "type": "HiveActivity",
+      "onSuccess": {
+        "ref": "ActionId_t1E0A"
+      },
+      "resizeClusterBeforeRunning": "true"
+    },
+    {
+      "name": "PageRankEMRProp",
+      "id": "PropertyId_MKngm",
+      "type": "Property",
+      "value": "true",
+      "key": "maximizeResourceAllocation"
+    },
+    {
+      "writeThroughputPercent": "#{myDDBWriteThroughputRatio}",
+      "name": "DDBDestinationTable",
+      "id": "DDBDestinationTable",
+      "type": "DynamoDBDataNode",
+      "tableName": "#{myDDBTableName}"
+    },
+    {
+      "output": {
+        "ref": "S3InputDataNode"
+      },
+      "schedule": {
+        "ref": "DefaultSchedule"
+      },
+      "input": {
+        "ref": "DataNodeId_5ahJD"
+      },
+      "maximumRetries": "1",
+      "name": "PageRankCompute",
+      "step": ["s3://pagerank-complete.test/pr2.jar,s3://pagerank-complete.test/input,s3://pagerank-complete.test/output"],
+      "runsOn": {
+        "ref": "EmrClusterId_avU5n"
+      },
+      "id": "ActivityId_eBUm2",
+      "type": "EmrActivity",
+      "resizeClusterBeforeRunning": "true"
+    },
+    {
+      "directoryPath": "#{myInputS3Loc}",
+      "name": "S3InputDataNode",
+      "id": "S3InputDataNode",
+      "type": "S3DataNode"
+    }
+  ],
+  "parameters": [
+    {
+      "description": "Input S3 folder",
+      "id": "myInputS3Loc",
+      "type": "AWS::S3::ObjectKey"
+    },
+    {
+      "description": "Target DynamoDB table name",
+      "id": "myDDBTableName",
+      "type": "String"
+    },
+    {
+      "default": "0.25",
+      "watermark": "Enter value between 0.1-1.0",
+      "description": "DynamoDB write throughput ratio",
+      "id": "myDDBWriteThroughputRatio",
+      "type": "Double"
+    },
+    {
+      "default": "us-east-1",
+      "watermark": "us-east-1",
+      "description": "Region of the DynamoDB table",
+      "id": "myDDBRegion",
+      "type": "String"
+    }
+  ],
+  "values": {
+    "myDDBRegion": "us-east-1",
+    "myDDBTableName": "PageRank",
+    "myDDBWriteThroughputRatio": "0.50",
+    "myInputS3Loc": "s3://pagerank.sample/",
+    "myPageLinkInput": "s3://pagerank.sample/"
+  }
+}
