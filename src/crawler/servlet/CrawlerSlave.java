@@ -33,7 +33,6 @@ import crawler.parsers.Parser;
 import crawler.policies.FilePolicy;
 import crawler.requests.Http10Request;
 import crawler.requests.HttpRequest;
-import crawler.responses.Http10Response;
 import crawler.responses.HttpResponse;
 import crawler.servlet.multinodal.producer.WorkerUrlPoster;
 import crawler.servlet.multinodal.status.WorkerStatus;
@@ -60,7 +59,8 @@ public class CrawlerSlave extends HttpServlet {
 		workerStatus.setIpAddress(workerIP);
 		workerStatus.setPort(workerPort);
 		workerStatus.setStatus("active");
-		WorkerUrlPoster wup = new WorkerUrlPoster("http://" + masterIPPort + "/master/enqueueURLs", urlQueue);
+		WorkerUrlPoster wup = new WorkerUrlPoster("http://" + masterIPPort
+				+ "/master/enqueueURLs", urlQueue);
 		wup.start();
 		HeartBeat hb = new HeartBeat("http://" + masterIPPort
 				+ "/master/workerStatus");
@@ -128,16 +128,16 @@ public class CrawlerSlave extends HttpServlet {
 				return;
 			}
 			if (filteredUrls.size() > 0) {
-				synchronized(urlQueue) {
+				synchronized (urlQueue) {
 					urlQueue.enqueue(filteredUrls);
 					urlQueue.notify();
 				}
 			}
 			logger.info("Finished servlet handle post");
-			
+
 		} catch (Exception e) {
 			logger.error("Slave got error " + e.getMessage());
-//			e.printStackTrace();
+			// e.printStackTrace();
 			return;
 		}
 
@@ -147,13 +147,17 @@ public class CrawlerSlave extends HttpServlet {
 		List<String> filteredUrls = new ArrayList<String>();
 		for (String url : urls) {
 			if (Parser.isCrawlableUrl(url)) {
-				filteredUrls.add(url);
+				if (url.endsWith("/")) {
+					filteredUrls.add(url.substring(0, url.length() - 1));
+				} else if (url.endsWith("/#")) {
+					filteredUrls.add(url.substring(0, url.length() - 2));
+				} else {
+					filteredUrls.add(url);
+				}
 			}
 		}
 		return filteredUrls;
 	}
-
-
 
 	public List<String> handleURL(String url) throws IOException,
 			ParseException, QueueFullException {
@@ -317,7 +321,7 @@ public class CrawlerSlave extends HttpServlet {
 			if (Parser.isCrawlableUrl(location)) {
 				urls.add(location); // should be location. not url!
 			}
-			synchronized(urlQueue) {
+			synchronized (urlQueue) {
 				urlQueue.enqueue(urls);
 				urlQueue.notify();
 			}
@@ -360,7 +364,7 @@ public class CrawlerSlave extends HttpServlet {
 			logger.debug("Got redirect to " + location);
 			List<String> urls = new ArrayList<String>();
 			urls.add(location);
-			synchronized(urlQueue) {
+			synchronized (urlQueue) {
 				urlQueue.enqueue(urls);
 				urlQueue.notify();
 			}
