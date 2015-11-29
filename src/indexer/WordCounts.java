@@ -62,8 +62,8 @@ public class WordCounts implements Iterable<String> {
 			return 0;
 	}
 	
-	public double getTFIDF(String word, int corpusSize, Map<String, Integer> idfs) {
-		return this.getMaximumTermFrequency(word) * Math.log((double) corpusSize / idfs.get(word));
+	public double getTFIDF(String word, int corpusSize, int df) {
+		return this.getMaximumTermFrequency(word) * Math.log((double) corpusSize / df);
 	}
 
 	@Override

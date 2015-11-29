@@ -37,7 +37,7 @@ public class InvertedIndexJob {
 	private static String extractMetaTags(Document doc) {
 		StringBuffer result = new StringBuffer();
 		for(Element metaTag: doc.select("meta[name~=(keywords|description)][content]"))
-			result.append(metaTag.attr("content"));
+			result.append(metaTag.attr("content") + " ");
 		return result.toString();
 	}
 	

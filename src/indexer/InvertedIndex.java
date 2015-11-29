@@ -26,7 +26,7 @@ public class InvertedIndex {
 	private static Logger logger = Logger.getLogger(InvertedIndex.class);
 
 	public static final String CREDENTIALS_PROFILE = "default";
-	public static final String TABLE_NAME = "invertedIndex";
+	public static final String TABLE_NAME = "InvertedIndex";
 	
 	private DynamoDBMapper db;
 	
@@ -82,33 +82,30 @@ public class InvertedIndex {
 		br.close();
 	}
 	
-	// FIXME: this method is actually doing a wrong computation!
-	public PriorityQueue<InvertedIndexRow> rankDocuments(List<String> query) {
+	public PriorityQueue<DocumentScore> rankDocuments(List<String> query) {
 		// TODO: query URLMetaInfo dynamoDB table for corpus size??
 		int corpusSize = 4000;
 		
-		Map<String, InvertedIndexRow> ranks = new HashMap<String, InvertedIndexRow>();
+		WordCounts queryCounts = new WordCounts(query);
+		Map<String, DocumentScore> documentRanks = new HashMap<String, DocumentScore>();
 		for(String word: query) {
 			// TODO: optimize based on different table layout, multi-thread requests, etc.
-			List<InvertedIndexRow> wordDocLocs = getDocumentLocations(word);
-			for(InvertedIndexRow wordDocLoc: wordDocLocs) {
-				
-				if(!ranks.containsKey(wordDocLoc.getUrl())) {
-					wordDocLoc.setSimilarityRank(0);
-					ranks.put(wordDocLoc.getUrl(), wordDocLoc);
+			List<InvertedIndexRow> rows = getDocumentLocations(word);
+			for(InvertedIndexRow row: rows) {
+				DocumentScore rankedDoc = documentRanks.get(row.getUrl());
+				if(rankedDoc == null) {
+					rankedDoc = new DocumentScore(row);
+					documentRanks.put(row.getUrl(), rankedDoc);
+				} else {
+					rankedDoc.addFeatures(row);
 				}
-				
-				InvertedIndexRow rankedDoc = ranks.get(wordDocLoc.getUrl());
-				// wrong! it needs to be the tf wrt the query, not the wordDocLoc!
-				double queryWeight = wordDocLoc.getMaximumTermFrequency() * Math.log((double) corpusSize / wordDocLocs.size());
-				double docWeight = wordDocLoc.getEuclideanTermFrequency();
-				rankedDoc.setSimilarityRank(rankedDoc.getSimilarityRank() + queryWeight * docWeight);
-				rankedDoc.addWordVector(wordDocLoc.getWord());
+				double queryWeight = queryCounts.getTFIDF(word, corpusSize, rows.size());
+				double docWeight = row.getEuclideanTermFrequency();
+				rankedDoc.setRank(rankedDoc.getRank() + queryWeight * docWeight);
 			}
-			logger.info(String.format("=> got %d documents for query word '%s'.", wordDocLocs.size(), word));
+			logger.info(String.format("=> got %d documents for query word '%s'.", rows.size(), word));
 		}
-		
-		return new PriorityQueue<InvertedIndexRow>(ranks.values());
+		return new PriorityQueue<DocumentScore>(documentRanks.values());
 	}
 	
 	public PriorityQueue<DocumentVector> lookupDocuments(List<String> query) {
@@ -167,11 +164,11 @@ public class InvertedIndex {
 				idx.importData(args[1]);
 			} else if(args[0].equals("query")) {
 				List<String> query = Arrays.asList(Arrays.copyOfRange(args, 1, args.length));
-				PriorityQueue<InvertedIndexRow> newResults = idx.rankDocuments(query);
+				PriorityQueue<DocumentScore> newResults = idx.rankDocuments(query);
 				
-				Iterator<InvertedIndexRow> iter = newResults.iterator();
+				Iterator<DocumentScore> iter = newResults.iterator();
 				for(int i = 0; i < 10 && iter.hasNext(); ++i) {
-					InvertedIndexRow doc = iter.next();
+					DocumentScore doc = iter.next();
 					System.out.println(doc.toString());
 				}
 				

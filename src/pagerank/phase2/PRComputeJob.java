@@ -13,6 +13,8 @@ import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 import org.apache.log4j.Logger;
 
+import pagerank.phase1.PRInitJob;
+
 public final class PRComputeJob extends Configured implements Tool {
 
 	private static final Logger logger = Logger.getLogger(PRComputeJob.class);
@@ -41,28 +43,44 @@ public final class PRComputeJob extends Configured implements Tool {
 	}
 	
 	public static void main(String [] args) throws Exception {
+		logger.info("Starting page rank on Map Reduce");
 		
 		int numIter = 5;
 		if (args.length > 2) {
 			numIter = Integer.parseInt(args[2]);
-		} 
+		}
 		
 		String input = args[0];
 		String out = args[1];
-		String tempOut;
+		String tempOut = input + "-init";
 		int res = 0;
+
+		String [] jobArgs = {input, tempOut};
+		res = ToolRunner.run(new PRInitJob(), jobArgs);
 		
+		if (res != 0) {
+			logger.error("Error with init phase of page rank. Exiting");
+			System.exit(res);
+		}
+
+		logger.info("Starting the compute phase of page rank");
+		input = tempOut;
 		for (int i = 1; i <= numIter; ++i) {
-			tempOut = out + "_" + Integer.toString(i); 
-			String [] jobArgs = {input, tempOut};
+			tempOut = out + "-" + Integer.toString(i);
+			jobArgs[0] = input;
+			jobArgs[1]= tempOut;
 			res = ToolRunner.run(new PRComputeJob(), jobArgs);
-			if (res != 0) {				
-				break;
+			if (res != 0) {
+				logger.error(String.format(
+					"Error in iter=%d of compute phase of page rank. Exiting", i));
+				System.exit(res);
 			}
 			input = tempOut;			
 		}
 		
-		String [] jobArgs = {input, out};
+		logger.info("Starting the final aggregation phase of page rank");
+		jobArgs[0] = input;
+		jobArgs[1]= out;
 		res = ToolRunner.run(new PRFinalAggJob(), jobArgs);
 		
 		System.exit(res);
