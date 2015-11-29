@@ -62,8 +62,7 @@ public class DocumentScore implements Comparable<DocumentScore> {
 	@Override
 	public String toString() {
 		StringBuffer fmt = new StringBuffer();
-		fmt.append("url %s, rank=%f\n");
-		fmt.append("document features:\n");
+		fmt.append("URL %s: rank=%f\n");
 		fmt.append("totalWordCounts=%s\n");
 		fmt.append("headerCounts=%s\n");
 		fmt.append("linkCounts=%s\n");
