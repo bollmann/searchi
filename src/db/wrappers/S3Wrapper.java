@@ -61,8 +61,10 @@ public class S3Wrapper {
 	}
 
 	public void deleteBucket(String bucketName) {
+		logger.info("Deleting elements from s3 bucket " + bucketName);
+		
 		try {
-
+			Integer deletedItems = 0;
 			ObjectListing objectListing = s3client.listObjects(bucketName);
 			while (true) {
 				for (Iterator<?> iterator = objectListing.getObjectSummaries()
@@ -70,8 +72,12 @@ public class S3Wrapper {
 					S3ObjectSummary objectSummary = (S3ObjectSummary) iterator
 							.next();
 					s3client.deleteObject(bucketName, objectSummary.getKey());
+					deletedItems += 1;
+					if(deletedItems % 500 == 0) {
+						logger.info("Deleted " + deletedItems + " items");
+					}
 				}
-
+				
 				if (objectListing.isTruncated()) {
 					objectListing = s3client
 							.listNextBatchOfObjects(objectListing);

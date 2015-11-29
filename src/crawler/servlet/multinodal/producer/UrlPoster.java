@@ -58,7 +58,7 @@ public class UrlPoster extends Thread {
 				request.setBody("url=" + url);
 				request.setMethod("POST");
 				try {
-					logger.debug("Url Poster sending url:" + url + " to worker");
+					logger.info("Url Poster sending url:" + url + " to worker");
 					Http10Response response = HttpClient.post("http://"
 							+ ipPort + "/worker", request);
 					logger.debug("Url Poster got response "
