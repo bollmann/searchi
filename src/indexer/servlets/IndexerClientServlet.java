@@ -1,5 +1,6 @@
 package indexer.servlets;
 
+import indexer.DocumentScore;
 import indexer.DocumentVector;
 import indexer.InvertedIndex;
 import indexer.InvertedIndexRow;
@@ -46,7 +47,7 @@ public class IndexerClientServlet extends HttpServlet {
 			buffer.append("<li>" + doc.toString() + "</li>");
 		}
 		buffer.append("</ol><br>Using rankDocuments():<ol>" );
-		for(InvertedIndexRow doc :iiObj.rankDocuments(query)){
+		for(DocumentScore doc: iiObj.rankDocuments(query)){
 			buffer.append("<li>" + doc.toString() + "</li>");
 		}
 		buffer.append("</ol>");
