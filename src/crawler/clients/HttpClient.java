@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.text.ParseException;
@@ -139,9 +140,10 @@ public class HttpClient {
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 * @throws ParseException
+	 * @throws MalformedURLException
 	 */
 	public static Http10Response get(String url, HttpRequest request)
-			throws UnknownHostException, IOException, ParseException {
+			throws UnknownHostException, ParseException, MalformedURLException {
 		Http10Response response = new Http10Response();
 		request.setMethod("GET");
 		response.setMethod("GET");
@@ -150,58 +152,73 @@ public class HttpClient {
 		logger.info("Sending a GET request to url:" + request.getPath() + "?"
 				+ pUrl.getQuery() + " parsed into:" + pUrl + " host:"
 				+ pUrl.getHost() + " port:" + pUrl.getPort());
-		HttpURLConnection conn = (HttpURLConnection) pUrl.openConnection();
-		conn.setDoInput(true);
-		conn.setDoOutput(false);
-		HttpURLConnection.setFollowRedirects(false);
-		conn.setUseCaches(false);
-		conn.setRequestMethod("GET");
-		if (request.getHeaderNames() != null) {
-			List<String> headerNames = Collections.list(request
-					.getHeaderNames());
-			for (String headerName : headerNames) {
-				conn.setRequestProperty(headerName,
-						request.getHeader(headerName));
-			}
-		}
+		HttpURLConnection conn = null;
+		BufferedReader br = null;
+		try {
+			conn = (HttpURLConnection) pUrl.openConnection();
 
-		BufferedReader br;
-
-		if (conn.getHeaderField("Content-Encoding") != null
-				&& conn.getHeaderField("Content-Encoding").equals("gzip")) {
-			br = new BufferedReader(new InputStreamReader(new GZIPInputStream(
-					conn.getInputStream())));
-		} else {
-			br = new BufferedReader(
-					new InputStreamReader(conn.getInputStream()));
-		}
-		conn.connect();
-		logger.debug("GET connected!");
-		Map<String, List<String>> map = conn.getHeaderFields();
-		for (Map.Entry<String, List<String>> entry : map.entrySet()) {
-			for (String value : entry.getValue()) {
-				if (entry.getKey() != null) {
-					response.setHeader(entry.getKey(), value);
-				} else {
-					Response resp = Parser.parseResponseCode(value);
-					String version = Parser.parseResponseVersion(value);
-					response.setResponse(resp.getResponseCode());
-					response.setVersion(version);
+			conn.setDoInput(true);
+			conn.setDoOutput(false);
+			conn.setReadTimeout(1000);
+			conn.setInstanceFollowRedirects(false);
+			conn.setUseCaches(false);
+			conn.setRequestMethod("GET");
+			if (request.getHeaderNames() != null) {
+				List<String> headerNames = Collections.list(request
+						.getHeaderNames());
+				for (String headerName : headerNames) {
+					conn.setRequestProperty(headerName,
+							request.getHeader(headerName));
 				}
 			}
-			logger.debug("Key : " + entry.getKey() + " ,Value : "
-					+ entry.getValue());
-		}
-		
-		int length = Integer.MAX_VALUE;
-		if (response.containsHeader("Content-Length")) {
-			length = Integer.parseInt(response.getHeader("Content-Length"));
+
+			if (conn.getHeaderField("Content-Encoding") != null
+					&& conn.getHeaderField("Content-Encoding").equals("gzip")) {
+				br = new BufferedReader(new InputStreamReader(
+						new GZIPInputStream(conn.getInputStream())));
+			} else {
+				br = new BufferedReader(new InputStreamReader(
+						conn.getInputStream()));
+			}
+			conn.connect();
+			logger.debug("GET connected!");
+			Map<String, List<String>> map = conn.getHeaderFields();
+			for (Map.Entry<String, List<String>> entry : map.entrySet()) {
+				for (String value : entry.getValue()) {
+					if (entry.getKey() != null) {
+						response.setHeader(entry.getKey(), value);
+					} else {
+						Response resp = Parser.parseResponseCode(value);
+						String version = Parser.parseResponseVersion(value);
+						response.setResponse(resp.getResponseCode());
+						response.setVersion(version);
+					}
+				}
+				logger.debug("Key : " + entry.getKey() + " ,Value : "
+						+ entry.getValue());
+			}
+
+			int length = Integer.MAX_VALUE;
+			if (response.containsHeader("Content-Length")) {
+				length = Integer.parseInt(response.getHeader("Content-Length"));
+			}
+
+			String body = extractBody(length, br);
+			logger.debug("Https get body:" + body);
+			response.setBody(body.getBytes());
+		} catch (IOException e) {
+
+		} finally {
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		}
 
-		String body = extractBody(length, br);
-		logger.debug("Https get body:" + body);
-		response.setBody(body.getBytes());
-		br.close();
 		return response;
 	}
 
@@ -212,12 +229,12 @@ public class HttpClient {
 		response.setMethod("POST");
 		URL pUrl = new URL(url);
 
-		HttpURLConnection conn = (HttpURLConnection) pUrl.openConnection();         
-		conn.setDoOutput( true );
-		conn.setInstanceFollowRedirects( false );
-		conn.setRequestMethod( "POST" ); 
-		conn.setUseCaches( false );
-		
+		HttpURLConnection conn = (HttpURLConnection) pUrl.openConnection();
+		conn.setDoOutput(true);
+		conn.setInstanceFollowRedirects(false);
+		conn.setRequestMethod("POST");
+		conn.setUseCaches(false);
+
 		if (request.getHeaderNames() != null) {
 			List<String> headerNames = Collections.list(request
 					.getHeaderNames());
@@ -226,15 +243,16 @@ public class HttpClient {
 						request.getHeader(headerName));
 			}
 		}
-		
-		try( DataOutputStream wr = new DataOutputStream( conn.getOutputStream())) {
-		   wr.write( request.getBody().getBytes("UTF-8") );
+
+		try (DataOutputStream wr = new DataOutputStream(conn.getOutputStream())) {
+			wr.write(request.getBody().getBytes("UTF-8"));
 		}
-		
-		BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-		
+
+		BufferedReader br = new BufferedReader(new InputStreamReader(
+				conn.getInputStream()));
+
 		conn.connect();
-		
+
 		logger.debug("POST connected! Sent " + request.getBody());
 		Map<String, List<String>> map = conn.getHeaderFields();
 		for (Map.Entry<String, List<String>> entry : map.entrySet()) {
@@ -258,170 +276,217 @@ public class HttpClient {
 	}
 
 	public static Http10Response head(String url, HttpRequest request)
-			throws UnknownHostException, IOException, ParseException {
+			throws UnknownHostException, ParseException, MalformedURLException {
 		Http10Response response = new Http10Response();
 		response.setMethod("HEAD");
 		URL pUrl = new URL(url);
-		logger.info("Sending a HEAD request to url:" + pUrl + " host:" + pUrl.getHost() + " port:" + pUrl.getPort());
-		HttpURLConnection conn = (HttpURLConnection) pUrl.openConnection();
-		conn.setDoInput(true);
-		conn.setDoOutput(false);
-		HttpURLConnection.setFollowRedirects(false);
-		conn.setUseCaches(false);
-		conn.setRequestMethod("HEAD");
+		logger.info("Sending a HEAD request to url:" + pUrl + " host:"
+				+ pUrl.getHost() + " port:" + pUrl.getPort());
+		HttpURLConnection conn = null;
+		BufferedReader br = null;
+		try {
+			conn = (HttpURLConnection) pUrl.openConnection();
+			conn.setDoInput(true);
+			conn.setReadTimeout(1000);
+			conn.setDoOutput(false);
+			conn.setInstanceFollowRedirects(false);
+			conn.setUseCaches(false);
+			conn.setRequestMethod("HEAD");
 
-		if (request.getHeaderNames() != null) {
-			List<String> headerNames = Collections.list(request
-					.getHeaderNames());
-			for (String headerName : headerNames) {
-				conn.setRequestProperty(headerName,
-						request.getHeader(headerName));
+			if (request.getHeaderNames() != null) {
+				List<String> headerNames = Collections.list(request
+						.getHeaderNames());
+				for (String headerName : headerNames) {
+					conn.setRequestProperty(headerName,
+							request.getHeader(headerName));
+				}
 			}
-		}
 
-		if (request.getDateHeaderNames() != null) {
-			List<String> dateHeaderNames = Collections.list(request
-					.getDateHeaderNames());
-			logger.debug("Header names:" + dateHeaderNames);
-			for (String headerName : dateHeaderNames) {
-				Date date = new Date(request.getDateHeader(headerName));
-				logger.debug("Setting date header k:" + headerName + "="
-						+ Parser.formatDate(date));
-				conn.setRequestProperty(headerName, Parser.formatDate(date));
+			if (request.getDateHeaderNames() != null) {
+				List<String> dateHeaderNames = Collections.list(request
+						.getDateHeaderNames());
+				logger.debug("Header names:" + dateHeaderNames);
+				for (String headerName : dateHeaderNames) {
+					Date date = new Date(request.getDateHeader(headerName));
+					logger.debug("Setting date header k:" + headerName + "="
+							+ Parser.formatDate(date));
+					conn.setRequestProperty(headerName, Parser.formatDate(date));
+				}
 			}
-		}
-		conn.connect();
-		logger.debug("HEAD connected!");
-		BufferedReader br = new BufferedReader(new InputStreamReader(
-				conn.getInputStream()));
-		Map<String, List<String>> map = conn.getHeaderFields();
-		for (Map.Entry<String, List<String>> entry : map.entrySet()) {
-			for (String value : entry.getValue()) {
-				logger.debug("Heads trying to put:" + entry.getKey() + "="
-						+ value);
-				if (entry.getKey() != null) {
-					response.setHeader(entry.getKey(), value);
-				} else {
-					Response resp = Parser.parseResponseCode(value);
-					String version = Parser.parseResponseVersion(value);
-					response.setResponse(resp.getResponseCode());
-					response.setVersion(version);
+			conn.connect();
+			logger.debug("HEAD connected!");
+			br = new BufferedReader(
+					new InputStreamReader(conn.getInputStream()));
+			Map<String, List<String>> map = conn.getHeaderFields();
+			for (Map.Entry<String, List<String>> entry : map.entrySet()) {
+				for (String value : entry.getValue()) {
+					logger.debug("Heads trying to put:" + entry.getKey() + "="
+							+ value);
+					if (entry.getKey() != null) {
+						response.setHeader(entry.getKey(), value);
+					} else {
+						Response resp = Parser.parseResponseCode(value);
+						String version = Parser.parseResponseVersion(value);
+						response.setResponse(resp.getResponseCode());
+						response.setVersion(version);
+					}
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
 		}
-		br.close();
+
 		logger.debug("HEAD over");
 		return response;
 	}
 
 	public static Http11Response heads(String url, HttpRequest request)
-			throws IOException, ParseException {
+			throws ParseException, MalformedURLException {
 		Http11Response response = new Http11Response();
 		response.setMethod("HEAD");
 		URL pUrl = new URL(url);
-		HttpsURLConnection conn = (HttpsURLConnection) pUrl.openConnection();
-		conn.setDoInput(true);
-		conn.setDoOutput(false);
-		HttpsURLConnection.setFollowRedirects(false);
-		conn.setUseCaches(false);
-		conn.setRequestMethod("HEAD");
+		HttpsURLConnection conn = null;
+		BufferedReader br = null;
+		try {
+			conn = (HttpsURLConnection) pUrl.openConnection();
+			conn.setDoInput(true);
+			conn.setReadTimeout(1000);
+			conn.setDoOutput(false);
+			HttpsURLConnection.setFollowRedirects(false);
+			conn.setUseCaches(false);
+			conn.setRequestMethod("HEAD");
 
-		if (request.getHeaderNames() != null) {
+			if (request.getHeaderNames() != null) {
+				List<String> headerNames = Collections.list(request
+						.getHeaderNames());
+				for (String headerName : headerNames) {
+					conn.setRequestProperty(headerName,
+							request.getHeader(headerName));
+				}
+			}
+
+			if (request.getDateHeaderNames() != null) {
+				List<String> dateHeaderNames = Collections.list(request
+						.getDateHeaderNames());
+				logger.debug("Header names:" + dateHeaderNames);
+				for (String headerName : dateHeaderNames) {
+					Date date = new Date(request.getDateHeader(headerName));
+					logger.debug("Setting date header k:" + headerName + "="
+							+ Parser.formatDate(date));
+					conn.setRequestProperty(headerName, Parser.formatDate(date));
+				}
+			}
+			conn.connect();
+			logger.debug("HEAD connected!");
+			br = new BufferedReader(
+					new InputStreamReader(conn.getInputStream()));
+			Map<String, List<String>> map = conn.getHeaderFields();
+			for (Map.Entry<String, List<String>> entry : map.entrySet()) {
+				for (String value : entry.getValue()) {
+					logger.debug("Heads trying to put:" + entry.getKey() + "="
+							+ value);
+					if (entry.getKey() != null) {
+						response.setHeader(entry.getKey(), value);
+					} else {
+						Response resp = Parser.parseResponseCode(value);
+						String version = Parser.parseResponseVersion(value);
+						response.setResponse(resp.getResponseCode());
+						response.setVersion(version);
+					}
+				}
+			}
+		} catch (IOException e) {
+
+		} finally {
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return response;
+	}
+
+	public static Http11Response gets(String url, HttpRequest request)
+			throws ParseException, MalformedURLException {
+		Http11Response response = new Http11Response();
+		response.setMethod("GET");
+		URL pUrl = new URL(url);
+		HttpsURLConnection conn = null;
+		BufferedReader br = null;
+		try {
+			conn = (HttpsURLConnection) pUrl.openConnection();
+
+			conn.setDoInput(true);
+			conn.setDoOutput(false);
+			conn.setInstanceFollowRedirects(false);
+			conn.setUseCaches(false);
+			conn.setRequestMethod("GET");
 			List<String> headerNames = Collections.list(request
 					.getHeaderNames());
 			for (String headerName : headerNames) {
 				conn.setRequestProperty(headerName,
 						request.getHeader(headerName));
 			}
-		}
 
-		if (request.getDateHeaderNames() != null) {
-			List<String> dateHeaderNames = Collections.list(request
-					.getDateHeaderNames());
-			logger.debug("Header names:" + dateHeaderNames);
-			for (String headerName : dateHeaderNames) {
-				Date date = new Date(request.getDateHeader(headerName));
-				logger.debug("Setting date header k:" + headerName + "="
-						+ Parser.formatDate(date));
-				conn.setRequestProperty(headerName, Parser.formatDate(date));
+			if (conn.getHeaderField("Content-Encoding") != null
+					&& conn.getHeaderField("Content-Encoding").equals("gzip")) {
+				br = new BufferedReader(new InputStreamReader(
+						new GZIPInputStream(conn.getInputStream())));
+			} else {
+				br = new BufferedReader(new InputStreamReader(
+						conn.getInputStream()));
 			}
-		}
-		conn.connect();
-		logger.debug("HEAD connected!");
-		BufferedReader br = new BufferedReader(new InputStreamReader(
-				conn.getInputStream()));
-		Map<String, List<String>> map = conn.getHeaderFields();
-		for (Map.Entry<String, List<String>> entry : map.entrySet()) {
-			for (String value : entry.getValue()) {
-				logger.debug("Heads trying to put:" + entry.getKey() + "="
-						+ value);
-				if (entry.getKey() != null) {
-					response.setHeader(entry.getKey(), value);
-				} else {
-					Response resp = Parser.parseResponseCode(value);
-					String version = Parser.parseResponseVersion(value);
-					response.setResponse(resp.getResponseCode());
-					response.setVersion(version);
+
+			conn.connect();
+			logger.debug("GET connected!");
+			Map<String, List<String>> map = conn.getHeaderFields();
+			for (Map.Entry<String, List<String>> entry : map.entrySet()) {
+				for (String value : entry.getValue()) {
+					if (entry.getKey() != null) {
+						response.setHeader(entry.getKey(), value);
+					} else {
+						Response resp = Parser.parseResponseCode(value);
+						String version = Parser.parseResponseVersion(value);
+						response.setResponse(resp.getResponseCode());
+						response.setVersion(version);
+					}
+				}
+				logger.debug("Key : " + entry.getKey() + " ,Value : "
+						+ entry.getValue());
+			}
+			int length = Integer.MAX_VALUE;
+			if (response.containsHeader("Content-Length")) {
+				length = Integer.parseInt(response.getHeader("Content-Length"));
+			}
+
+			String body = extractBody(length, br);
+			logger.debug("Https get body:" + body);
+			response.setBody(body.getBytes());
+		} catch (IOException e) {
+
+		} finally {
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
 		}
-		br.close();
-		return response;
-	}
-
-	public static Http11Response gets(String url, HttpRequest request)
-			throws IOException, ParseException {
-		Http11Response response = new Http11Response();
-		response.setMethod("GET");
-		URL pUrl = new URL(url);
-		HttpsURLConnection conn = (HttpsURLConnection) pUrl.openConnection();
-		conn.setDoInput(true);
-		conn.setDoOutput(false);
-		HttpsURLConnection.setFollowRedirects(false);
-		conn.setUseCaches(false);
-		conn.setRequestMethod("GET");
-		List<String> headerNames = Collections.list(request.getHeaderNames());
-		for (String headerName : headerNames) {
-			conn.setRequestProperty(headerName, request.getHeader(headerName));
-		}
-
-		BufferedReader br = null;
-
-		if (conn.getHeaderField("Content-Encoding") != null
-				&& conn.getHeaderField("Content-Encoding").equals("gzip")) {
-			br = new BufferedReader(new InputStreamReader(new GZIPInputStream(
-					conn.getInputStream())));
-		} else {
-			br = new BufferedReader(
-					new InputStreamReader(conn.getInputStream()));
-		}
-
-		conn.connect();
-		logger.debug("GET connected!");
-		Map<String, List<String>> map = conn.getHeaderFields();
-		for (Map.Entry<String, List<String>> entry : map.entrySet()) {
-			for (String value : entry.getValue()) {
-				if (entry.getKey() != null) {
-					response.setHeader(entry.getKey(), value);
-				} else {
-					Response resp = Parser.parseResponseCode(value);
-					String version = Parser.parseResponseVersion(value);
-					response.setResponse(resp.getResponseCode());
-					response.setVersion(version);
-				}
-			}
-			logger.debug("Key : " + entry.getKey() + " ,Value : "
-					+ entry.getValue());
-		}
-		int length = Integer.MAX_VALUE;
-		if (response.containsHeader("Content-Length")) {
-			length = Integer.parseInt(response.getHeader("Content-Length"));
-		}
-
-		String body = extractBody(length, br);
-		logger.debug("Https get body:" + body);
-		response.setBody(body.getBytes());
-		br.close();
 		return response;
 	}
 

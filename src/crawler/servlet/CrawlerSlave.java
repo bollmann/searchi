@@ -133,6 +133,7 @@ public class CrawlerSlave extends HttpServlet {
 					urlQueue.notify();
 				}
 			}
+			logger.info("Finished servlet handle post");
 			
 		} catch (Exception e) {
 			logger.error("Slave got error " + e.getMessage());

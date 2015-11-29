@@ -14,12 +14,15 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import com.amazonaws.services.dynamodbv2.document.Table;
 import com.amazonaws.services.dynamodbv2.model.AttributeDefinition;
+import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.CreateTableRequest;
 import com.amazonaws.services.dynamodbv2.model.DescribeTableResult;
 import com.amazonaws.services.dynamodbv2.model.KeySchemaElement;
 import com.amazonaws.services.dynamodbv2.model.KeyType;
 import com.amazonaws.services.dynamodbv2.model.ProvisionedThroughput;
 import com.amazonaws.services.dynamodbv2.model.ResourceNotFoundException;
+import com.amazonaws.services.dynamodbv2.model.ScanRequest;
+import com.amazonaws.services.dynamodbv2.model.ScanResult;
 
 public class DynamoDBWrapper {
 	private final Logger logger = Logger.getLogger(DynamoDBWrapper.class);
@@ -31,7 +34,7 @@ public class DynamoDBWrapper {
 	private long entriesWritten = 0L;
 	private long entriesRead = 0L;
 	private Date startTime;
-	
+
 	public static final String US_EAST = "http://dynamodb.us-east-1.amazonaws.com";
 	public static final String CLIENT_SHREEJIT = "shreejit";
 	public static final String CLIENT_DEFAULT = "default";
@@ -43,19 +46,20 @@ public class DynamoDBWrapper {
 	public String getEndPoint() {
 		return endPoint;
 	}
-	
+
 	public void displaySaveStatistics() {
 		Date endTime = Calendar.getInstance().getTime();
-		String message = "Entries read:" + entriesRead 
-				+ " entries written:" + entriesWritten
-				+ " time elapsed: " + (endTime.getTime() - startTime.getTime())/1000 + "s, "
-				+ (endTime.getTime() - startTime.getTime())%1000 + "ms";
+		String message = "Entries read:" + entriesRead + " entries written:"
+				+ entriesWritten + " time elapsed: "
+				+ (endTime.getTime() - startTime.getTime()) / 1000 + "s, "
+				+ (endTime.getTime() - startTime.getTime()) % 1000 + "ms";
 		System.out.println(message);
 		logger.warn(message);
 	}
 
 	private DynamoDBWrapper(String endPoint, String client) {
-		this.client = new AmazonDynamoDBClient(new ProfileCredentialsProvider(client));
+		this.client = new AmazonDynamoDBClient(new ProfileCredentialsProvider(
+				client));
 		this.endPoint = endPoint;
 		this.startTime = Calendar.getInstance().getTime();
 		this.client.setEndpoint(this.endPoint);
@@ -66,6 +70,7 @@ public class DynamoDBWrapper {
 
 	/**
 	 * Get dynamo instance with default (Shreejit's client)
+	 * 
 	 * @param endPoint
 	 */
 	public static DynamoDBWrapper getInstance(String endPoint) {
@@ -74,13 +79,14 @@ public class DynamoDBWrapper {
 		}
 
 		Logger.getLogger(DynamoDBWrapper.class).warn(
-			"Setting endpoint to " + endPoint);
+				"Setting endpoint to " + endPoint);
 
 		return getInstance(endPoint, null);
 	}
 
 	/**
 	 * Get dynamo instance with specified client
+	 * 
 	 * @param endPoint
 	 */
 	public static DynamoDBWrapper getInstance(String endPoint, String client) {
@@ -90,7 +96,7 @@ public class DynamoDBWrapper {
 
 		if (client == null) {
 			Logger.getLogger(DynamoDBWrapper.class).warn(
-				"Setting client to " + CLIENT_SHREEJIT);
+					"Setting client to " + CLIENT_SHREEJIT);
 			client = CLIENT_SHREEJIT;
 		}
 
@@ -100,6 +106,7 @@ public class DynamoDBWrapper {
 
 	/**
 	 * Describe the meta properties of the specified table
+	 * 
 	 * @param tableName
 	 * @return
 	 */
@@ -113,7 +120,6 @@ public class DynamoDBWrapper {
 		return result;
 	}
 
-	
 	/**
 	 * Retrieves the object from dynamodb as identified by the itemId. This
 	 * assumes that you have annotated the class that you want to retrieve with
@@ -121,8 +127,10 @@ public class DynamoDBWrapper {
 	 * SHOULD have a default constructor, otherwise it cannot be instantiated by
 	 * dynamodb mapper
 	 * 
-	 * @param itemId    is the record identifier
-	 * @param clazz     the dynamodb annotated record class
+	 * @param itemId
+	 *            is the record identifier
+	 * @param clazz
+	 *            the dynamodb annotated record class
 	 * @return
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -131,13 +139,12 @@ public class DynamoDBWrapper {
 		entriesRead++;
 		return obj;
 	}
-	
+
 	public Map<String, List<Object>> getBatchItem(List<Object> itemIds) {
 		entriesRead += itemIds.size();
 		return mapper.batchLoad(itemIds);
 	}
 
-	
 	/**
 	 * @param tableName
 	 * @param toSave
@@ -154,7 +161,6 @@ public class DynamoDBWrapper {
 		entriesWritten += toSave.size();
 		mapper.batchSave(toSave);
 	}
-
 
 	public void deleteTable(String tableName) {
 		Table table = dynamoDB.getTable(tableName);
@@ -228,6 +234,24 @@ public class DynamoDBWrapper {
 			System.err.println("CreateTable request failed for " + tableName);
 			System.err.println(e.getMessage());
 		}
+	}
+
+	public Integer getNumberOfItemsInTable(String tableName) {
+		Integer rowCount = 0;
+		Map<String, AttributeValue> lastKeyEvaluated = null;
+		do {
+		    ScanRequest scanRequest = new ScanRequest()
+		        .withTableName(tableName)
+		        .withExclusiveStartKey(lastKeyEvaluated);
+
+		    ScanResult result = client.scan(scanRequest);
+		    for (Map<String, AttributeValue> item : result.getItems()){
+//		        printItem(item);
+		        rowCount += 1;
+		    }
+		    lastKeyEvaluated = result.getLastEvaluatedKey();
+		} while (lastKeyEvaluated != null);
+		return rowCount;
 	}
 
 }

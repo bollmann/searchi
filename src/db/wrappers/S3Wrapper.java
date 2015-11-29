@@ -7,7 +7,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.Iterator;
-import java.util.List;
 
 import org.apache.log4j.Logger;
 
@@ -21,6 +20,7 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CreateBucketRequest;
 import com.amazonaws.services.s3.model.GetBucketLocationRequest;
 import com.amazonaws.services.s3.model.GetObjectRequest;
+import com.amazonaws.services.s3.model.ListObjectsRequest;
 import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
@@ -29,12 +29,19 @@ public class S3Wrapper {
 	private final Logger logger = Logger.getLogger(getClass());
 	private static S3Wrapper instance;
 	private AmazonS3 s3client;
-    public final String URL_BUCKET = "cis455-url-content"; // cannot contain uppercase letters. should be unique
-    public final String URL_QUEUE_BUCKET = "cis455-url-queue"; // cannot contain uppercase letters. should be unique
-
+	public final String URL_BUCKET = "cis455-url-content"; // cannot contain
+															// uppercase
+															// letters. should
+															// be unique
+	public final String URL_QUEUE_BUCKET = "cis455-url-queue"; // cannot contain
+																// uppercase
+																// letters.
+																// should be
+																// unique
 
 	private S3Wrapper() {
-		s3client = new AmazonS3Client(new ProfileCredentialsProvider("shreejit"));
+		s3client = new AmazonS3Client(
+				new ProfileCredentialsProvider("shreejit"));
 		s3client.setRegion(Region.getRegion(Regions.US_EAST_1));
 	}
 
@@ -55,22 +62,26 @@ public class S3Wrapper {
 
 	public void deleteBucket(String bucketName) {
 		try {
-			
+
 			ObjectListing objectListing = s3client.listObjects(bucketName);
-            while (true) {
-                for ( Iterator<?> iterator = objectListing.getObjectSummaries().iterator(); iterator.hasNext(); ) {
-                    S3ObjectSummary objectSummary = (S3ObjectSummary) iterator.next();
-                    s3client.deleteObject(bucketName, objectSummary.getKey());
-                }
-     
-                if (objectListing.isTruncated()) {
-                    objectListing = s3client.listNextBatchOfObjects(objectListing);
-                } else {
-                    break;
-                }
-            };
+			while (true) {
+				for (Iterator<?> iterator = objectListing.getObjectSummaries()
+						.iterator(); iterator.hasNext();) {
+					S3ObjectSummary objectSummary = (S3ObjectSummary) iterator
+							.next();
+					s3client.deleteObject(bucketName, objectSummary.getKey());
+				}
+
+				if (objectListing.isTruncated()) {
+					objectListing = s3client
+							.listNextBatchOfObjects(objectListing);
+				} else {
+					break;
+				}
+			}
+			;
 			s3client.deleteBucket(bucketName);
-			
+
 		} catch (AmazonServiceException ase) {
 			System.out.println("Caught an AmazonServiceException, which "
 					+ "means your request made it "
@@ -82,11 +93,12 @@ public class S3Wrapper {
 			System.out.println("Error Type:       " + ase.getErrorType());
 			System.out.println("Request ID:       " + ase.getRequestId());
 		} catch (AmazonClientException ace) {
-			System.out.println("Caught an AmazonClientException during delete, which "
-					+ "means the client encountered "
-					+ "an internal error while trying to "
-					+ "communicate with S3, "
-					+ "such as not being able to access the network.");
+			System.out
+					.println("Caught an AmazonClientException during delete, which "
+							+ "means the client encountered "
+							+ "an internal error while trying to "
+							+ "communicate with S3, "
+							+ "such as not being able to access the network.");
 			System.out.println("Error Message: " + ace.getMessage());
 		}
 
@@ -106,10 +118,11 @@ public class S3Wrapper {
 			System.out.println("bucket location = " + bucketLocation);
 
 		} catch (AmazonServiceException ase) {
-			System.out.println("Caught an AmazonServiceException during create, which "
-					+ "means your request made it "
-					+ "to Amazon S3, but was rejected with an error response"
-					+ " for some reason.");
+			System.out
+					.println("Caught an AmazonServiceException during create, which "
+							+ "means your request made it "
+							+ "to Amazon S3, but was rejected with an error response"
+							+ " for some reason.");
 			System.out.println("Error Message:    " + ase.getMessage());
 			System.out.println("HTTP Status Code: " + ase.getStatusCode());
 			System.out.println("AWS Error Code:   " + ase.getErrorCode());
@@ -128,7 +141,7 @@ public class S3Wrapper {
 	public void putItem(String key, String content) {
 		putItem(URL_BUCKET, key, content);
 	}
-	
+
 	public void putItem(String bucketName, String key, String content) {
 		ByteArrayInputStream bais = null;
 		try {
@@ -143,18 +156,19 @@ public class S3Wrapper {
 	public String getItem(String key) {
 		return getItem(URL_BUCKET, key);
 	}
-	
+
 	public String getItem(String bucketName, String key) {
 		S3Object object = s3client.getObject(new GetObjectRequest(bucketName,
 				key));
 		InputStream objectData = object.getObjectContent();
-		
-		BufferedReader br = new BufferedReader(new InputStreamReader(objectData));
-		
+
+		BufferedReader br = new BufferedReader(
+				new InputStreamReader(objectData));
+
 		StringBuilder sb = new StringBuilder();
 		String line = null;
 		try {
-			while((line = br.readLine()) != null) {
+			while ((line = br.readLine()) != null) {
 				sb.append(line);
 			}
 		} catch (IOException e1) {
@@ -171,9 +185,49 @@ public class S3Wrapper {
 		}
 		return sb.toString();
 	}
-	
+
 	public void deleteItem(String bucketName, String key) {
 		s3client.deleteObject(bucketName, key);
+	}
+
+	public Integer getNumberOfItemsInBucket(String bucketName) {
+		Integer itemCount = 0;
+		try {
+//			System.out.println("Listing objects");
+
+			ListObjectsRequest listObjectsRequest = new ListObjectsRequest()
+					.withBucketName(bucketName);
+			ObjectListing objectListing;
+			do {
+				objectListing = s3client.listObjects(listObjectsRequest);
+				for (S3ObjectSummary objectSummary : objectListing
+						.getObjectSummaries()) {
+//					System.out.println(" - " + objectSummary.getKey() + "  "
+//							+ "(size = " + objectSummary.getSize() + ")");
+					itemCount += 1;
+				}
+				listObjectsRequest.setMarker(objectListing.getNextMarker());
+			} while (objectListing.isTruncated());
+		} catch (AmazonServiceException ase) {
+			System.out.println("Caught an AmazonServiceException, "
+					+ "which means your request made it "
+					+ "to Amazon S3, but was rejected with an error response "
+					+ "for some reason.");
+			System.out.println("Error Message:    " + ase.getMessage());
+			System.out.println("HTTP Status Code: " + ase.getStatusCode());
+			System.out.println("AWS Error Code:   " + ase.getErrorCode());
+			System.out.println("Error Type:       " + ase.getErrorType());
+			System.out.println("Request ID:       " + ase.getRequestId());
+		} catch (AmazonClientException ace) {
+			System.out.println("Caught an AmazonClientException, "
+					+ "which means the client encountered "
+					+ "an internal error while trying to communicate"
+					+ " with S3, "
+					+ "such as not being able to access the network.");
+			System.out.println("Error Message: " + ace.getMessage());
+		}
+		
+		return itemCount;
 	}
 
 }

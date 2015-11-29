@@ -1,7 +1,6 @@
 package test.db.wrappers;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -113,6 +112,13 @@ public class TestDynamoDBWrapper extends TestCase {
 			e.printStackTrace();
 		}
 		wp.deleteTable("URLMetaInfo");
+	}
+	
+	@Test
+	public void testGetNumberOfItemsInTable() {
+		DynamoDBWrapper ddb = DynamoDBWrapper.getInstance(DynamoDBWrapper.US_EAST);
+		Integer result = ddb.getNumberOfItemsInTable("URLMetaInfo");
+		System.out.println(result);
 	}
 
 }

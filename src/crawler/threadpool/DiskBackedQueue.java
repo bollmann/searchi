@@ -36,7 +36,7 @@ public class DiskBackedQueue<T> {
 	S3Wrapper s3;
 	QueueInfo queueInfo;
 
-	public static String QUEUE_NAME = "queueStatus";
+	public static String QUEUE_NAME = "queueState";
 
 	/**
 	 * Instantiates a new queue.
@@ -48,7 +48,10 @@ public class DiskBackedQueue<T> {
 		ddb.createTable("QueueInfo", 5, 5, "name", "S");
 		queueInfo = (QueueInfo) ddb.getItem(QUEUE_NAME, QueueInfo.class);
 		if (queueInfo == null) {
+			logger.info("Creating new disk backed queue");
 			queueInfo = new QueueInfo();
+		} else {
+			logger.info("Using existing queue");
 		}
 		s3 = S3Wrapper.getInstance();
 	}
@@ -68,7 +71,10 @@ public class DiskBackedQueue<T> {
 		ddb.createTable("QueueInfo", 5, 5, "name", "S");
 		queueInfo = (QueueInfo) ddb.getItem(QUEUE_NAME, QueueInfo.class);
 		if (queueInfo == null) {
+			logger.info("Creating new disk backed queue");
 			queueInfo = new QueueInfo();
+		} else {
+			logger.info("Using existing queue");
 		}
 		s3 = S3Wrapper.getInstance();
 	}

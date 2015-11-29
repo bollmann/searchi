@@ -87,7 +87,7 @@ public class CrawlerMaster extends HttpServlet {
 			System.out.println("Reading queue for s3. Resuming saved state.");
 			q = new Gson().fromJson(queueContent, listType);
 		} catch (Exception e) {
-//			e.printStackTrace();
+			// e.printStackTrace();
 			logger.error("Couldn't find saved queue");
 			q = new DiskBackedQueue<String>(1000);
 		}
@@ -97,9 +97,13 @@ public class CrawlerMaster extends HttpServlet {
 
 		List<String> seedUrls = new ArrayList<String>() {
 			{
-//				add("https://en.wikipedia.org/wiki/Main_Page");
-//				add("https://www.reddit.com/");
-				 add("https://dbappserv.cis.upenn.edu/crawltest.html");
+				// add("https://en.wikipedia.org/wiki/Main_Page");
+				// add("https://www.reddit.com/");
+				add("http://www.dmoz.org/");
+				add("http://www.dtelepathy.com/blog/inspiration/14-beautiful-content-heavy-websites-for-inspiration");
+				add("http://www.nytimes.com/");
+				add("http://www.onlinenewspapers.com/Top50/Top50-CurrentUS.htm");
+				add("https://dbappserv.cis.upenn.edu/crawltest.html");
 			}
 		};
 
@@ -173,7 +177,8 @@ public class CrawlerMaster extends HttpServlet {
 			if (urlsProcessed > workerStatus.getUrlProcessed()) {
 				workerStatus.setUrlProcessed(urlsProcessed);
 			} else {
-				workerStatus.setUrlProcessed(workerStatus.getUrlProcessed() + urlsProcessed);
+				workerStatus.setUrlProcessed(workerStatus.getUrlProcessed()
+						+ urlsProcessed);
 			}
 			workerStatus.setStatus(status);
 
@@ -189,7 +194,7 @@ public class CrawlerMaster extends HttpServlet {
 				content = FilePolicy
 						.readFile("resources/master_status_page.html");
 			} catch (IOException e) {
-//				e.printStackTrace();
+				// e.printStackTrace();
 				logger.error("Error in reading file");
 				return;
 			}
@@ -222,7 +227,7 @@ public class CrawlerMaster extends HttpServlet {
 				content = FilePolicy
 						.readFile("resources/master_queue_status_page.html");
 			} catch (IOException e) {
-//				e.printStackTrace();
+				// e.printStackTrace();
 				logger.error("Error in reading file");
 				return;
 			}
@@ -254,7 +259,8 @@ public class CrawlerMaster extends HttpServlet {
 			response.flushBuffer();
 			Type listType = new TypeToken<List<String>>() {
 			}.getType();
-			logger.debug("Master trying to process POST request with:" + sb.toString());
+			logger.debug("Master trying to process POST request with:"
+					+ sb.toString());
 			List<String> urls = new Gson().fromJson(sb.toString(), listType);
 			logger.debug("Master got urls: " + urls);
 			for (String url : urls) {
