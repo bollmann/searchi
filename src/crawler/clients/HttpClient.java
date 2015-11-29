@@ -159,7 +159,7 @@ public class HttpClient {
 
 			conn.setDoInput(true);
 			conn.setDoOutput(false);
-			conn.setReadTimeout(1000);
+			conn.setReadTimeout(5000);
 			conn.setInstanceFollowRedirects(false);
 			conn.setUseCaches(false);
 			conn.setRequestMethod("GET");
@@ -287,7 +287,7 @@ public class HttpClient {
 		try {
 			conn = (HttpURLConnection) pUrl.openConnection();
 			conn.setDoInput(true);
-			conn.setReadTimeout(1000);
+			conn.setReadTimeout(5000);
 			conn.setDoOutput(false);
 			conn.setInstanceFollowRedirects(false);
 			conn.setUseCaches(false);
@@ -359,7 +359,7 @@ public class HttpClient {
 		try {
 			conn = (HttpsURLConnection) pUrl.openConnection();
 			conn.setDoInput(true);
-			conn.setReadTimeout(1000);
+			conn.setReadTimeout(5000);
 			conn.setDoOutput(false);
 			HttpsURLConnection.setFollowRedirects(false);
 			conn.setUseCaches(false);
