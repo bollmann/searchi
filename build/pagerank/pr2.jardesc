@@ -11,14 +11,13 @@
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
+        <javaElement handleIdentifier="=searchi/src&lt;utils.file"/>
         <javaElement handleIdentifier="=searchi/src&lt;pagerank.db.dao"/>
         <javaElement handleIdentifier="=searchi/src&lt;pagerank.db.ddl"/>
+        <javaElement handleIdentifier="=searchi/src&lt;utils.string"/>
+        <javaElement handleIdentifier="=searchi/src&lt;mapreduce.lib"/>
         <javaElement handleIdentifier="=searchi/src&lt;pagerank.api"/>
         <javaElement handleIdentifier="=searchi/src&lt;pagerank.phase2"/>
-        <javaElement handleIdentifier="=searchi/src&lt;mapreduce.lib"/>
         <javaElement handleIdentifier="=searchi/src&lt;pagerank.phase1"/>
-        <javaElement handleIdentifier="=searchi/src&lt;utils.file"/>
-        <javaElement handleIdentifier="=searchi/src&lt;db.wrappers"/>
-        <javaElement handleIdentifier="=searchi/src&lt;utils.string"/>
     </selectedElements>
 </jardesc>
