@@ -148,6 +148,7 @@ public class MercatorNode {
 		this.domain = domain;
 		urls = new Queue<String>();
 		pathAccessMap = new HashMap<String, Boolean>();
+		lastCrawledTime = Calendar.getInstance().getTime();
 	}
 
 	@Override

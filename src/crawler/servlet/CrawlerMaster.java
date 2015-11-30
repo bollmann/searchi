@@ -93,7 +93,7 @@ public class CrawlerMaster extends HttpServlet {
 		}
 
 		mq = new MercatorQueue();
-		mq.setOutgoingJobQueue(q);
+//		mq.setOutgoingJobQueue(q);
 
 		List<String> seedUrls = new ArrayList<String>() {
 			{

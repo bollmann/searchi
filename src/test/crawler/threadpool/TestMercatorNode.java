@@ -90,4 +90,5 @@ public class TestMercatorNode extends TestCase {
 		mn2.setLastCrawledTime(oneSecondAgo);
 		assertFalse(mn2.isQueriable());
 	}
+
 }

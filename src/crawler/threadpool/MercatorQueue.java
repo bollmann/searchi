@@ -22,7 +22,7 @@ public class MercatorQueue {
 	MercatorNode head = null, last = null;
 	Set<String> frontier;
 	Map<String, MercatorNode> domainNodeMap;
-	DiskBackedQueue<String> outgoingJobQueue;
+	private int MAX_INACTIVE_DOMAIN_INTERVAL = 60*60;
 
 	public Integer getUrlsProcessed() {
 		return urlsProcessed;
@@ -38,14 +38,6 @@ public class MercatorQueue {
 
 	public void setSize(Integer size) {
 		this.size = size;
-	}
-
-	public DiskBackedQueue<String> getOutgoingJobQueue() {
-		return outgoingJobQueue;
-	}
-
-	public void setOutgoingJobQueue(DiskBackedQueue<String> outgoingJobQueue) {
-		this.outgoingJobQueue = outgoingJobQueue;
 	}
 
 	public Set<String> getFrontier() {
@@ -119,11 +111,16 @@ public class MercatorQueue {
 		}
 	}
 
+	public void addUrlToFrontier(String url) {
+		synchronized (frontier) {
+			frontier.add(url);
+		}
+	}
+
 	public boolean isVisited(String url) {
 		if (frontier.contains(url)) {
 			return true;
 		}
-
 		return false;
 	}
 
@@ -137,8 +134,7 @@ public class MercatorQueue {
 			// synchronized (node) {
 			logger.debug("Inside check sync block. last crawled "
 					+ node.getLastCrawledTime() + " q size:"
-					+ node.getUrls().getSize() + " and outgoing q size "
-					+ outgoingJobQueue.getSize());
+					+ node.getUrls().getSize());
 			if (node.getLastCrawledTime() != null
 					&& node.getUrls().getSize() != 0) {
 				Date lastCrawled = node.getLastCrawledTime();
@@ -152,11 +148,11 @@ public class MercatorQueue {
 					size--;
 					logger.debug("Dequeued url:" + url + " from node:" + node);
 
-					synchronized (outgoingJobQueue) {
-						outgoingJobQueue.enqueue(url);
-						outgoingJobQueue.notify();
-						urlsProcessed++;
-					}
+					// synchronized (outgoingJobQueue) {
+					// outgoingJobQueue.enqueue(url);
+					// outgoingJobQueue.notify();
+					// urlsProcessed++;
+					// }
 
 				}
 			}
@@ -202,6 +198,25 @@ public class MercatorQueue {
 						+ node.getNext() + " to:" + node.getNext().getNext());
 				node.setNext(node.getNext().getNext());
 				return;
+			}
+			node = node.getNext();
+		}
+	}
+
+	public void cleanUp() {
+		Date now = Calendar.getInstance().getTime();
+		if (head == null) {
+			return;
+		}
+		MercatorNode node = head;
+		if ((now.getTime() - node.getLastCrawledTime().getTime()) / 1000 > MAX_INACTIVE_DOMAIN_INTERVAL) {
+			head = head.getNext();
+		}
+		while (node.getNext() != null) {
+			if ((now.getTime() - node.getNext().getLastCrawledTime().getTime()) / 1000 > MAX_INACTIVE_DOMAIN_INTERVAL) {
+				logger.info("Changing next node of " + node + " from:"
+						+ node.getNext() + " to:" + node.getNext().getNext());
+				node.setNext(node.getNext().getNext());
 			}
 			node = node.getNext();
 		}

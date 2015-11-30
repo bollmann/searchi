@@ -6,6 +6,7 @@ import java.net.URL;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -41,13 +42,21 @@ public class UrlPoster extends Thread {
 
 	@Override
 	public void run() {
+		int mqCleanupInterval = 5000;
+		Date timeMercatorQueueCleaned = Calendar.getInstance().getTime();
 		while (true) {
+			Date timeNow = Calendar.getInstance().getTime();
+			if ((timeNow.getTime() - timeMercatorQueueCleaned.getTime()) / 1000 > mqCleanupInterval) {
+				logger.info("Cleaning up mercator queue");
+				timeMercatorQueueCleaned = Calendar.getInstance().getTime();
+				mq.cleanUp();
+			}
 			String url = null;
 			synchronized (urlQueue) {
 				try {
 					logger.debug("UrlPoster waiting for jobQueue");
 					if (urlQueue.getSize() <= 0) {
-						logger.info("UrlPoster is going to sleep!");
+						logger.debug("UrlPoster is going to sleep!");
 						urlQueue.wait();
 					}
 				} catch (InterruptedException e) {
@@ -75,11 +84,17 @@ public class UrlPoster extends Thread {
 						enqueueUrl(url);
 						continue;
 					} else {
-						logger.debug("Allowing url " + url
-								+ " to be sent to workers");
-						synchronized (mn) {
-							mn.setLastCrawledTime(Calendar.getInstance()
-									.getTime());
+						if (mn.isAllowed(parsedUrl.getPath()) && !mq.isVisited(url)) {
+							logger.debug("Allowing url " + url
+									+ " to be sent to workers");
+							synchronized (mn) {
+								mn.setLastCrawledTime(Calendar.getInstance()
+										.getTime());
+							}
+							mq.addUrlToFrontier(url);
+
+						} else {
+							logger.debug("Discared url " + url);
 						}
 					}
 

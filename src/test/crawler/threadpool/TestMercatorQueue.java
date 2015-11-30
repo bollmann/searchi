@@ -1,6 +1,8 @@
 package test.crawler.threadpool;
 
 import java.net.MalformedURLException;
+import java.util.Calendar;
+import java.util.Date;
 
 import junit.framework.TestCase;
 
@@ -156,6 +158,29 @@ public class TestMercatorQueue extends TestCase {
 		}
 		assertEquals(3, node.getUrls().getSize());
 		assertEquals(url1, node.getUrls().dequeue());
+	}
+	
+	
+	@Test
+	public void testCleanUp() {
+		MercatorNode node11 = new MercatorNode("/1");
+		MercatorNode node12 = new MercatorNode("/2");
+		MercatorNode node13 = new MercatorNode("/3");
+		
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.HOUR, -1);
+		cal.add(Calendar.MINUTE, -1);
+		Date oneHourAgo = cal.getTime();
+		node12.setLastCrawledTime(oneHourAgo);
+		
+		MercatorQueue queue1 = new MercatorQueue(); // head
+		queue1.addNode(node11);
+		queue1.addNode(node12);
+		queue1.addNode(node13);
+		
+		queue1.cleanUp();
+		assertEquals(node11, queue1.getHead());
+		assertEquals(node13, queue1.getHead().getNext());
 	}
 
 }
