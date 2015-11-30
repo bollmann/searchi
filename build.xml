@@ -21,7 +21,7 @@
 	</target>
 
 
-	<target name="compilejavamain" depends="init" description="compiles main Java source code">
+	<target name="compile-all" depends="init" description="compiles all Java source code">
 		<javac srcdir="${src.main.dir}${file.separator}" destdir="bin" debug="on" deprecation="off" optimize="on" includeAntRuntime="no">
 			<classpath>
 				<fileset dir="${inputlib.dir}">
@@ -31,7 +31,7 @@
 		</javac>
 	</target>
 
-	<target name="compile-master-crawler" depends="compilejavamain" description="Makes the master WAR file for the crawler">
+	<target name="compile-master-crawler" depends="compile-all" description="Makes the master WAR file for the crawler">
 		<delete file="crawler-servlet.war" />
 		<mkdir dir="${web-inf.dir}${file.separator}classes" />
 		<mkdir dir="${web-inf.dir}${file.separator}lib" />
@@ -52,7 +52,7 @@
 		</jar>
 	</target>
 
-	<target name="compile-slave-crawler" depends="compilejavamain" description="Makes the master WAR file for the crawler">
+	<target name="compile-slave-crawler" depends="compile-all" description="Makes the master WAR file for the crawler">
 		<delete file="crawler-servlet.war" />
 		<mkdir dir="${web-inf.dir}${file.separator}classes" />
 		<mkdir dir="${web-inf.dir}${file.separator}lib" />
@@ -78,7 +78,6 @@
 		<javac srcdir="src" destdir="bin" includes="indexer/**/*.java,utils/**/*.java" deprecation="on" debug="true" includeantruntime="false">
 			<classpath>
 				<fileset dir="lib">
-					<include name="**/*.jar" />
 					<include name="*.jar" />
 				</fileset>
 			</classpath>
@@ -123,6 +122,8 @@
 	<target name="clean">
 		<delete dir="bin/" />
 		<delete file="InvertedIndexJob.jar" />
+	    <delete file="servlet.war" />
+	    <delete file="crawler-servlet.war" />
 	</target>
 
 </project>
