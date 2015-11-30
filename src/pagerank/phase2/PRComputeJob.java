@@ -52,7 +52,7 @@ public final class PRComputeJob extends Configured implements Tool {
 		
 		String input = args[0];
 		String out = args[1];
-		String tempOut = input + "-init";
+		String tempOut = out + "-init";
 		int res = 0;
 
 		String [] jobArgs = {input, tempOut};
