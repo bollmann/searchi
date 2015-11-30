@@ -8,11 +8,13 @@ import java.util.Set;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.apache.log4j.Logger;
@@ -22,7 +24,15 @@ import org.jsoup.nodes.Element;
 
 import utils.file.FileUtils;
 
+import com.google.gson.Gson;
+
+
 public class InvertedIndexJob {
+	private class PageBlob {
+		String url;
+		String content;
+	}
+	
 	private static Logger logger = Logger.getLogger(InvertedIndexJob.class);
 	
 	private static String extractLinks(Document doc) {
@@ -41,10 +51,11 @@ public class InvertedIndexJob {
 		return result.toString();
 	}
 	
-	public static class DocumentIndexer extends Mapper<Text, Text, Text, Text>  {
+	public static class DocumentIndexer extends Mapper<LongWritable, Text, Text, Text>  {
 		@Override
-		public void map(Text url, Text rawDoc, Context context) throws IOException, InterruptedException {
-			Document doc = Jsoup.parse(rawDoc.toString(), url.toString());
+		public void map(LongWritable lineNr, Text jsonBlob, Context context) throws IOException, InterruptedException {
+			PageBlob page = new Gson().fromJson(jsonBlob.toString(), PageBlob.class);
+			Document doc = Jsoup.parse(page.content, page.url);
 			WordCounts linkCounts = new WordCounts(new Tokenizer(doc.select("a[href]").text()).getTokens());
 			WordCounts metaTagCounts = new WordCounts(new Tokenizer(extractMetaTags(doc)).getTokens());
 			WordCounts headerCounts = new WordCounts(new Tokenizer(doc.select("title,h1,h2,h3,h4,h5,h6").text()).getTokens());
@@ -58,7 +69,7 @@ public class InvertedIndexJob {
 			for(String word: allCounts) {
 				// value format: url max-tf euclid-tf total-counts# link-counts# metatag-counts# header-counts#
 				String value = String.format("%s\t%f\t%f\t%d\t%d\t%d\t%d", 
-						url.toString(),
+						page.url,
 						allCounts.getEuclideanTermFrequency(word),
 						allCounts.getMaximumTermFrequency(word),
 						allCounts.getCounts(word),
@@ -102,7 +113,7 @@ public class InvertedIndexJob {
 		
 		job.setReducerClass(CorpusIndexer.class);
 		
-		job.setInputFormatClass(DocumentInputFormat.class);
+		job.setInputFormatClass(TextInputFormat.class);
 		job.setOutputFormatClass(TextOutputFormat.class);
 		FileInputFormat.addInputPath(job, new Path(args[0]));
 		FileOutputFormat.setOutputPath(job, new Path(args[1]));
