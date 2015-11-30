@@ -177,15 +177,17 @@ public class CrawlerSlave extends HttpServlet {
 		URLContent urlContent = null;
 
 		if (info != null) {
-			logger.debug("Found a db entry for:" + url
-					+ " so looking in s3 for " + info.getId());
-			URLContent oldUrlContent = null;
-			String content = s3.getItem(info.getId());
-			Gson gson = new Gson();
-			logger.debug("Parsing content to urlcontent:" + content);
-			oldUrlContent = gson.fromJson(content, URLContent.class);
-
-			urlContent = getPersistentContent(oldUrlContent);
+			//ignore as already processed
+//			logger.debug("Found a db entry for:" + url
+//					+ " so looking in s3 for " + info.getId());
+//			URLContent oldUrlContent = null;
+//			String content = s3.getItem(info.getId());
+//			Gson gson = new Gson();
+//			logger.debug("Parsing content to urlcontent:" + content);
+//			oldUrlContent = gson.fromJson(content, URLContent.class);
+//
+//			urlContent = getPersistentContent(oldUrlContent);
+			return new ArrayList<String>();
 		} else {
 			logger.debug("Getting fresh data for:" + url);
 			urlContent = getNewContent(url);
@@ -219,7 +221,13 @@ public class CrawlerSlave extends HttpServlet {
 					logger.info("Saving data for " + url);
 					Date start = Calendar.getInstance().getTime();
 
+					//get batch. put batchId, content value in metaInfo
+					//batch put in s2
+					
+					String id = s3.getCurrentBatchId();
+					
 					URLMetaInfo toSave = new URLMetaInfo();
+					toSave.setId(id);
 					toSave.setUrl(url);
 					toSave.setLastCrawledOn(Calendar.getInstance().getTime());
 
@@ -227,14 +235,13 @@ public class CrawlerSlave extends HttpServlet {
 					toSave.setSize(urlContent.getContent().length());
 					ddb.putItem(toSave);
 
-					String id = toSave.getId();
 					Gson gson = new Gson();
 					// toSave.setOutgoingURLs(links);
 					// List<String> outgoingLinkIds = URLMetaInfo
 					// .convertLinksToIds(links, ddb);
 					urlContent.setOutgoingLinks(links);
 					String serializeJson = gson.toJson(urlContent);
-					s3.putItem(id, serializeJson);
+					s3.putBatchItem(id, serializeJson);
 					Date end = Calendar.getInstance().getTime();
 					logger.info("Saved data for " + url + " in time "
 							+ (end.getTime() - start.getTime()));

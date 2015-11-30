@@ -95,6 +95,7 @@ public class UrlPoster extends Thread {
 
 						} else {
 							logger.debug("Discared url " + url);
+							continue;
 						}
 					}
 

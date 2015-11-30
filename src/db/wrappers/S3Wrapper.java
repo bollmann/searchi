@@ -6,7 +6,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.log4j.Logger;
 
@@ -24,6 +29,7 @@ import com.amazonaws.services.s3.model.ListObjectsRequest;
 import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
+import com.google.gson.Gson;
 
 public class S3Wrapper {
 	private final Logger logger = Logger.getLogger(getClass());
@@ -38,11 +44,25 @@ public class S3Wrapper {
 																// letters.
 																// should be
 																// unique
+	private Map<String, String> batchKeyValueMap = null;
+	public static int BATCH_SIZE = 1000;
+	private String currentBatchId;
+
+	public String getCurrentBatchId() {
+		synchronized (currentBatchId) {
+			if (currentBatchId == null) {
+				currentBatchId = UUID.randomUUID().toString();
+				;
+			}
+		}
+		return currentBatchId;
+	}
 
 	private S3Wrapper() {
 		s3client = new AmazonS3Client(
 				new ProfileCredentialsProvider("shreejit"));
 		s3client.setRegion(Region.getRegion(Regions.US_EAST_1));
+		batchKeyValueMap = new ConcurrentHashMap<String, String>();
 	}
 
 	/**
@@ -62,7 +82,7 @@ public class S3Wrapper {
 
 	public void deleteBucket(String bucketName) {
 		logger.info("Deleting elements from s3 bucket " + bucketName);
-		
+
 		try {
 			Integer deletedItems = 0;
 			ObjectListing objectListing = s3client.listObjects(bucketName);
@@ -73,11 +93,11 @@ public class S3Wrapper {
 							.next();
 					s3client.deleteObject(bucketName, objectSummary.getKey());
 					deletedItems += 1;
-					if(deletedItems % 500 == 0) {
+					if (deletedItems % 500 == 0) {
 						logger.info("Deleted " + deletedItems + " items");
 					}
 				}
-				
+
 				if (objectListing.isTruncated()) {
 					objectListing = s3client
 							.listNextBatchOfObjects(objectListing);
@@ -148,6 +168,27 @@ public class S3Wrapper {
 		putItem(URL_BUCKET, key, content);
 	}
 
+	public void putBatchItem(String key, String content) {
+		synchronized (currentBatchId) {
+			if (batchKeyValueMap.size() < BATCH_SIZE) {
+				batchKeyValueMap.put(key, content);
+			} else {
+				// write all content out to s3
+				StringBuilder sb = new StringBuilder();
+				List<String> contentList = new ArrayList<String>(batchKeyValueMap.keySet());
+				sb.append(new Gson().toJson(contentList));
+//				for (Entry<String, String> entry : batchKeyValueMap.entrySet()) {
+//					sb.append(entry.getValue() + "\n");
+//				}
+				putItem(currentBatchId, sb.toString());
+				logger.info("Wrote a batch " + currentBatchId + " of " + batchKeyValueMap.size() + " items to s3 " );
+				batchKeyValueMap.clear();
+				currentBatchId = null;
+			}
+		}
+
+	}
+
 	public void putItem(String bucketName, String key, String content) {
 		ByteArrayInputStream bais = null;
 		try {
@@ -199,7 +240,7 @@ public class S3Wrapper {
 	public Integer getNumberOfItemsInBucket(String bucketName) {
 		Integer itemCount = 0;
 		try {
-//			System.out.println("Listing objects");
+			// System.out.println("Listing objects");
 
 			ListObjectsRequest listObjectsRequest = new ListObjectsRequest()
 					.withBucketName(bucketName);
@@ -208,8 +249,8 @@ public class S3Wrapper {
 				objectListing = s3client.listObjects(listObjectsRequest);
 				for (S3ObjectSummary objectSummary : objectListing
 						.getObjectSummaries()) {
-//					System.out.println(" - " + objectSummary.getKey() + "  "
-//							+ "(size = " + objectSummary.getSize() + ")");
+					// System.out.println(" - " + objectSummary.getKey() + "  "
+					// + "(size = " + objectSummary.getSize() + ")");
 					itemCount += 1;
 				}
 				listObjectsRequest.setMarker(objectListing.getNextMarker());
@@ -232,7 +273,7 @@ public class S3Wrapper {
 					+ "such as not being able to access the network.");
 			System.out.println("Error Message: " + ace.getMessage());
 		}
-		
+
 		return itemCount;
 	}
 
