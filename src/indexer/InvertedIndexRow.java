@@ -1,11 +1,7 @@
 package indexer;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIgnore;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 
@@ -13,7 +9,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
  * Models an Item (row) from the Inverted Index.
  */
 @DynamoDBTable(tableName=InvertedIndex.TABLE_NAME)
-public class InvertedIndexRow implements Comparable<InvertedIndexRow> {
+public class InvertedIndexRow {
 	private String word;
 	private String url;
 	private int wordCount;
@@ -22,12 +18,6 @@ public class InvertedIndexRow implements Comparable<InvertedIndexRow> {
 	private int linkCount;
 	private int metaTagCount;
 	private int headerCount;
-	
-	/*
-	 * The document's cosine similarity rank wrt some query vector.
-	 */
-	private double rank;
-	private List<String> words = new LinkedList<String>();
 	
 	@DynamoDBHashKey(attributeName="word")
 	public String getWord() { return word; }
@@ -77,27 +67,5 @@ public class InvertedIndexRow implements Comparable<InvertedIndexRow> {
 	}
 	public void setHeaderCount(int headerCount) {
 		this.headerCount = headerCount;
-	}
-	
-	@DynamoDBIgnore
-	public double getSimilarityRank() { return rank; }
-	public void setSimilarityRank(double r) { rank = r; }
-	
-
-	@DynamoDBIgnore
-	@Override
-	public int compareTo(InvertedIndexRow other) {
-		return (-1)*Double.compare(this.rank, other.rank);
-	}
-	
-	@DynamoDBIgnore
-	@Override
-	public String toString() {
-		return String.format("url: %s. cosine similarity=%f, words=%s", url, rank, words);
-	}
-	
-	@DynamoDBIgnore
-	public void addWordVector(String w) {
-		words.add(w);
 	}
 }
