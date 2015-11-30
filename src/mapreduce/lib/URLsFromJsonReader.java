@@ -3,6 +3,7 @@ package mapreduce.lib;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.hadoop.fs.FSDataInputStream;
@@ -67,8 +68,9 @@ public class URLsFromJsonReader extends RecordReader<Text, Text> {
 		PageBlob blob = gson.fromJson(new InputStreamReader(in, Charset.forName("UTF-8")), PageBlob.class);
 		in.close();
 		
-		url = new Text(blob.url);
-		outLinks = new Text(StringUtils.listToString(blob.outgoingLinks, " "));
+		url = new Text(blob.url.trim());
+		outLinks = new Text(StringUtils.listToString(blob.outgoingLinks, " ",
+			Arrays.asList(blob.url.trim())));
 		done = 0;
 	}
 
