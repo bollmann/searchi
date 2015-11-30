@@ -144,12 +144,13 @@ public class DiskBackedQueue<T> {
 	 */
 	
 	public T dequeue() throws IndexOutOfBoundsException {
-		logger.debug("Removing element from queue");
 		boolean queueFileExists = queueInfo.getToRead() > 0 && queueInfo.getToRead() < queueInfo.getToWrite();
+		logger.debug("Dequeueing for DBQ. Info:" + queueInfo + " outputList size:" + outputList.size() 
+				+ " inputList size:" + inputList.size());
 		if (outputList.size() < 1) {
 			
 			if (queueFileExists) {
-				logger.info("Found queue element in disk for queueInfo "
+				logger.debug("Found queue element in disk for queueInfo "
 						+ queueInfo);
 				// retrieve queue file and make it outputList
 				synchronized (queueInfo) {
@@ -162,14 +163,17 @@ public class DiskBackedQueue<T> {
 					Type listType = new TypeToken<List<T>>() {
 					}.getType();
 					outputList = new Gson().fromJson(content, listType);
-					logger.info("Retrieved a list of size" + outputList.size());
+					logger.debug("Retrieved a list of size" + outputList.size());
 					queueInfo.setToRead(queueInfo.getToRead() + 1);
 					ddb.putItem(queueInfo);
 				}
 			} else {
+				logger.debug("Checking with inputList");
 				if(inputList.size() > 0) {
 					outputList.addAll(inputList);
 					inputList.clear();
+				} else {
+					logger.debug("Both input and outlist are empty!");
 				}
 			}
 		}

@@ -18,7 +18,7 @@ public class TestUrlPoster extends TestCase {
 		workerStatusMap.put("1", new WorkerStatus());
 		workerStatusMap.put("2", new WorkerStatus());
 		workerStatusMap.put("3", new WorkerStatus());
-		UrlPoster p = new UrlPoster(null, workerStatusMap);
+		UrlPoster p = new UrlPoster(null, null, workerStatusMap);
 		String result = p.getNextWorker(workerStatusMap);
 		System.out.println(result);
 	}

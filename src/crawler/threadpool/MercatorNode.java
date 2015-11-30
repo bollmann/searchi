@@ -1,5 +1,6 @@
 package crawler.threadpool;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,7 +15,7 @@ public class MercatorNode {
 	private MercatorNode next = null;
 	private String domain;
 	private Date lastCrawledTime;
-	private float crawlDelay = 2.0f; // crawl delay default 2 secs
+	private float crawlDelay = 0.5f; // crawl delay default 2 secs
 	private String userAgent;
 	private Map<String, Boolean> pathAccessMap;
 	private Queue<String> urls;
@@ -29,7 +30,14 @@ public class MercatorNode {
 	}
 
 	public boolean isQueriable() {
-		return isQueriable;
+		Date now = Calendar.getInstance().getTime();
+		logger.debug("Comparing now:" + now.getTime() + " and last crawled:" + lastCrawledTime.getTime()
+				+ " with diff:" + (now.getTime() - lastCrawledTime.getTime())/1000);
+		if((now.getTime() - lastCrawledTime.getTime())/1000 > crawlDelay) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public void setQueriable(boolean isQueriable) {

@@ -40,11 +40,11 @@ import crawler.threadpool.MercatorQueue;
 import db.wrappers.DynamoDBWrapper;
 import db.wrappers.S3Wrapper;
 
-public class CrawlerMaster extends HttpServlet {
+public class CrawlerMaster2 extends HttpServlet {
 	private final Logger logger = Logger.getLogger(getClass());
 	private DynamoDBWrapper ddb = null;
 	private S3Wrapper s3 = null;
-	private DiskBackedQueue<String> q = null;
+	private DiskBackedQueue<String> urlQueue = null;
 	private MercatorQueue mq = null;
 	private Map<String, WorkerStatus> workerStatusMap = null;
 
@@ -77,23 +77,21 @@ public class CrawlerMaster extends HttpServlet {
 
 		// look for queue in s3. If not there, then initialize to new
 
-		DiskBackedQueue<String> q = null;
-
 		try {
 			String queueContent = s3.getItem(s3.URL_QUEUE_BUCKET, "queueState");
-			logger.info("queue content " + queueContent);
+			logger.debug("queue content " + queueContent);
 			Type listType = new TypeToken<DiskBackedQueue<String>>() {
 			}.getType();
-			System.out.println("Reading queue for s3. Resuming saved state.");
-			q = new Gson().fromJson(queueContent, listType);
+			logger.info("Reading queue for s3. Resuming saved state.");
+			urlQueue = new Gson().fromJson(queueContent, listType);
 		} catch (Exception e) {
 			// e.printStackTrace();
 			logger.error("Couldn't find saved queue");
-			q = new DiskBackedQueue<String>(1000);
+			urlQueue = new DiskBackedQueue<String>(1000);
 		}
 
 		mq = new MercatorQueue();
-		mq.setOutgoingJobQueue(q);
+		// mq.setOutgoingJobQueue(q);
 
 		List<String> seedUrls = new ArrayList<String>() {
 			{
@@ -108,16 +106,22 @@ public class CrawlerMaster extends HttpServlet {
 		};
 
 		for (String url : seedUrls) {
-			q.enqueue(url);
+			synchronized (urlQueue) {
+				urlQueue.enqueue(url);
+			}
 		}
 
-		Integer maxUrls = Integer.parseInt((String) getServletContext()
-				.getInitParameter("maxUrls"));
-//		UrlProducer producer = new UrlProducer(mq, q, maxUrls, workerStatusMap);
-//		Thread t = new Thread(producer);
-//		t.start();
-//		UrlPoster poster = new UrlPoster(q, workerStatusMap);
-//		poster.start();
+		// Integer maxUrls = Integer.parseInt((String) getServletContext()
+		// .getInitParameter("maxUrls"));
+		// UrlProducer producer = new UrlProducer(mq, q, maxUrls,
+		// workerStatusMap);
+		// Thread t = new Thread(producer);
+		// t.start();
+		int maxPosters = 10;
+		for (int i = 0; i < maxPosters; i++) {
+			UrlPoster poster = new UrlPoster(mq, urlQueue, workerStatusMap);
+			poster.start();
+		}
 	}
 
 	@Override
@@ -216,31 +220,11 @@ public class CrawlerMaster extends HttpServlet {
 
 			content = content.replace("<$workers$>", sb.toString());
 			content = content.replace("<$queueItems$>", "Items in queue: "
-					+ String.valueOf(q.getSize()));
+					+ String.valueOf(urlQueue.getSize()));
 			response.setContentType("text/html");
 			PrintWriter out = response.getWriter();
 			out.println(content);
 			return;
-		} else if (request.getPathInfo().equals("/queueStatus")) {
-			String content = null;
-			try {
-				content = FilePolicy
-						.readFile("resources/master_queue_status_page.html");
-			} catch (IOException e) {
-				// e.printStackTrace();
-				logger.error("Error in reading file");
-				return;
-			}
-			StringBuilder sb = new StringBuilder();
-			sb.append("<ol>");
-			for (String url : q.getOutputList()) {
-				sb.append("<li>" + url + "</li>");
-			}
-			sb.append("</ol>");
-			content = content.replace("<$queueStatus$>", sb.toString());
-			response.setContentType("text/html");
-			PrintWriter out = response.getWriter();
-			out.println(content);
 		}
 	}
 
@@ -270,77 +254,10 @@ public class CrawlerMaster extends HttpServlet {
 		}
 	}
 
-	public void enqueueURL(String url) throws MalformedURLException {
-		try {
-			synchronized (mq) {
-				mq.enqueueUrl(url);
-			}
-		} catch (NoDomainConfigException e) {
-			URLInfo urlInfo = new URLInfo(url);
-			if (urlInfo.getProtocol() == null) {
-				return;
-			}
-			String httpRobotsUrl = urlInfo.getProtocol() + "://"
-					+ urlInfo.getHostName() + "/robots.txt";
-			logger.info("Trying " + urlInfo.getProtocol() + " connection to:"
-					+ urlInfo.getProtocol() + "://" + urlInfo.getHostName()
-					+ "/robots.txt");
-			try {
-				HttpRequest request = new Http10Request();
-				request.setPath(new URL(url).getPath());
-				request.setMethod("HEAD");
-				request.setHeader("User-Agent", "cis455crawler");
-				HttpResponse response = HttpClient.genericHead(httpRobotsUrl,
-						request);
-				logger.debug("Got head");
-				if (response.getResponse().getResponseCode() == 200) {
-					request = new Http10Request();
-					request.setPath(new URL(url).getPath());
-					request.setMethod("GET");
-					request.setHeader("User-Agent", "cis455crawler");
-					response = HttpClient.genericGet(httpRobotsUrl, request);
-					MercatorNode node = Parser.parseRobotsContent(
-							urlInfo.getHostName(),
-							new String(response.getBody()));
-					addNodeToMq(node, url);
-				} else {
-					// make default mn
-					MercatorNode node = new MercatorNode(urlInfo.getHostName());
-					addNodeToMq(node, url);
-
-				}
-			} catch (MalformedURLException | NoDomainConfigException e1) {
-				logger.error("There's something wrong even after adding to MQ the new url hasn't been added to the apt queue!");
-				e1.printStackTrace();
-			} catch (IOException e1) {
-				logger.error("Got an io exception with url:" + url);
-				e1.printStackTrace();
-			} catch (ParseException e1) {
-				logger.error("Got a parse exception with url:" + url);
-				e1.printStackTrace();
-			}
+	public void enqueueURL(String url) {
+		synchronized (urlQueue) {
+			urlQueue.enqueue(url);
+			urlQueue.notify();
 		}
-
-	}
-
-	public void addNodeToMq(MercatorNode node, String url)
-			throws MalformedURLException, NoDomainConfigException {
-		synchronized (mq) {
-			node.setLastCrawledTime(Calendar.getInstance().getTime());
-			mq.addNode(node);
-			mq.enqueueUrl(url);
-			logger.debug("Setting last crawled time to now.");
-		}
-	}
-
-	@Override
-	public void destroy() {
-		System.out.println("Exiting master gracefully.");
-		DynamoDBWrapper ddb = DynamoDBWrapper
-				.getInstance(DynamoDBWrapper.US_EAST);
-		S3Wrapper s3 = S3Wrapper.getInstance();
-		String queueContent = new Gson().toJson(q);
-		s3.putItem(s3.URL_QUEUE_BUCKET, "queueState", queueContent);
-		ddb.displaySaveStatistics();
 	}
 }

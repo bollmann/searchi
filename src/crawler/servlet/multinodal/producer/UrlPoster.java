@@ -1,9 +1,11 @@
 package crawler.servlet.multinodal.producer;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -11,23 +13,28 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
 import crawler.clients.HttpClient;
+import crawler.errors.NoDomainConfigException;
+import crawler.info.URLInfo;
 import crawler.parsers.Parser;
 import crawler.requests.Http10Request;
+import crawler.requests.HttpRequest;
 import crawler.responses.Http10Response;
+import crawler.responses.HttpResponse;
 import crawler.servlet.multinodal.status.WorkerStatus;
 import crawler.threadpool.DiskBackedQueue;
+import crawler.threadpool.MercatorNode;
+import crawler.threadpool.MercatorQueue;
 
 public class UrlPoster extends Thread {
 	private final Logger logger = Logger.getLogger(getClass());
+	private MercatorQueue mq;
 	private DiskBackedQueue<String> urlQueue;
 	private Map<String, WorkerStatus> workerStatusMap;
 
-	public UrlPoster(DiskBackedQueue<String> urlQueue,
+	public UrlPoster(MercatorQueue mq, DiskBackedQueue<String> urlQueue,
 			Map<String, WorkerStatus> workerStatusMap) {
+		this.mq = mq;
 		this.urlQueue = urlQueue;
 		this.workerStatusMap = workerStatusMap;
 	}
@@ -39,8 +46,10 @@ public class UrlPoster extends Thread {
 			synchronized (urlQueue) {
 				try {
 					logger.debug("UrlPoster waiting for jobQueue");
-					if (urlQueue.getSize() <= 0)
+					if (urlQueue.getSize() <= 0) {
+						logger.info("UrlPoster is going to sleep!");
 						urlQueue.wait();
+					}
 				} catch (InterruptedException e) {
 					logger.error("UrlPoster got interrupt. Shutting down");
 					e.printStackTrace();
@@ -50,9 +59,47 @@ public class UrlPoster extends Thread {
 				url = urlQueue.dequeue();
 			}
 
+			// get the mercator node for this url. if it is ready, send it to a
+			// worker
+			// otherwise just enqueue back to the queue. if there is no mercator
+			// node,
+			// then create the node.
+
+			try {
+				if (mq.isDomainPresentForUrl(url)) {
+					// check if node is ready
+					URL parsedUrl = new URL(url);
+					MercatorNode mn = mq.getDomainNodeMap().get(
+							parsedUrl.getHost());
+					if (!mn.isQueriable()) {
+						enqueueUrl(url);
+						continue;
+					} else {
+						logger.debug("Allowing url " + url
+								+ " to be sent to workers");
+						synchronized (mn) {
+							mn.setLastCrawledTime(Calendar.getInstance()
+									.getTime());
+						}
+					}
+
+				} else {
+					// create a domain for this
+					MercatorNode mn = createMercatorNode(url);
+					addMercatorNodetoMercatorQueue(mn, url);
+					enqueueUrl(url);
+					continue;
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				enqueueUrl(url);
+				continue;
+			}
+
 			if (workerStatusMap.size() > 0) {
 				// we have workers! put them to work
 				String ipPort = getNextWorker(workerStatusMap);
+				logger.debug("Giving url " + url + " to worker " + ipPort);
 				Http10Request request = new Http10Request();
 				request.setHeader("Content-Type", Parser.formEncoding);
 				request.setBody("url=" + url);
@@ -71,16 +118,79 @@ public class UrlPoster extends Thread {
 				logger.debug("Dequeued url " + url + " and sent to " + ipPort);
 			} else {
 				// no workers. just put the url back into the queue
+				logger.debug("Putting url " + url + " back in the queue");
+				enqueueUrl(url);
+			}
 
-				urlQueue.enqueue(url);
+			// try {
+			// Thread.sleep(100);
+			// } catch (InterruptedException e) {
+			// // TODO Auto-generated catch block
+			// e.printStackTrace();
+			// }
+		}
+	}
+
+	public void enqueueUrl(String url) {
+		synchronized (urlQueue) {
+			urlQueue.enqueue(url);
+			urlQueue.notify();
+		}
+	}
+
+	public MercatorNode createMercatorNode(String url) {
+		URLInfo urlInfo = new URLInfo(url);
+		MercatorNode node = new MercatorNode(urlInfo.getHostName());
+		if (urlInfo.getProtocol() == null) {
+			return null;
+		}
+		String httpRobotsUrl = urlInfo.getProtocol() + "://"
+				+ urlInfo.getHostName() + "/robots.txt";
+		logger.info("Trying " + urlInfo.getProtocol() + " connection to:"
+				+ urlInfo.getProtocol() + "://" + urlInfo.getHostName()
+				+ "/robots.txt");
+		try {
+			HttpRequest request = new Http10Request();
+			request.setPath(new URL(url).getPath());
+			request.setMethod("HEAD");
+			request.setHeader("User-Agent", "cis455crawler");
+			HttpResponse response = HttpClient.genericHead(httpRobotsUrl,
+					request);
+			logger.debug("Got head");
+			if (response.getResponse().getResponseCode() == 200) {
+				request = new Http10Request();
+				request.setPath(new URL(url).getPath());
+				request.setMethod("GET");
+				request.setHeader("User-Agent", "cis455crawler");
+				response = HttpClient.genericGet(httpRobotsUrl, request);
+				node = Parser.parseRobotsContent(urlInfo.getHostName(),
+						new String(response.getBody()));
+				return node;
+			} else {
+				// make default mn
+				return node;
 
 			}
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		} catch (MalformedURLException e1) {
+			logger.error("There's something wrong even after adding to MQ the new url hasn't been added to the apt queue!");
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			logger.error("Got an io exception with url:" + url);
+			e1.printStackTrace();
+		} catch (ParseException e1) {
+			logger.error("Got a parse exception with url:" + url);
+			e1.printStackTrace();
+		}
+		return node;
+	}
+
+	public void addMercatorNodetoMercatorQueue(MercatorNode node, String url)
+			throws MalformedURLException, NoDomainConfigException {
+		synchronized (node) {
+			node.setLastCrawledTime(Calendar.getInstance().getTime());
+		}
+		synchronized (mq) {
+			mq.addNode(node);
 		}
 	}
 

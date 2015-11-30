@@ -2,6 +2,8 @@ package test.crawler.threadpool;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Calendar;
+import java.util.Date;
 
 import junit.framework.TestCase;
 
@@ -68,5 +70,24 @@ public class TestMercatorNode extends TestCase {
 		
 		assertEquals(false, node.isAllowed(url1.getPath()));
 		assertEquals(false, node.isAllowed(url2.getPath()));
+	}
+	
+	@Test
+	public void testIsQueriable() {
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.SECOND, -3);
+		Date threeSecondsAgo = cal.getTime();
+		MercatorNode mn1 = new MercatorNode("a");
+		mn1.setCrawlDelay(2.0f);
+		mn1.setLastCrawledTime(threeSecondsAgo);
+		assertTrue(mn1.isQueriable());
+		
+		cal = Calendar.getInstance();
+		cal.add(Calendar.SECOND, -1);
+		Date oneSecondAgo = cal.getTime();
+		MercatorNode mn2 = new MercatorNode("a");
+		mn2.setCrawlDelay(2.0f);
+		mn2.setLastCrawledTime(oneSecondAgo);
+		assertFalse(mn2.isQueriable());
 	}
 }

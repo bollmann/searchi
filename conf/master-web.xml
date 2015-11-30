@@ -13,7 +13,7 @@
      
     <servlet>
         <servlet-name>CrawlerMaster</servlet-name>
-        <servlet-class>crawler.servlet.CrawlerMaster</servlet-class>
+        <servlet-class>crawler.servlet.CrawlerMaster2</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
     

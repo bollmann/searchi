@@ -67,7 +67,7 @@ public class QueueInfo {
 	}
 
 	public String toString() {
-		return name + " toRead:" + toRead + " toWrite:" + toWrite;
+		return name + " toRead:" + toRead + " toWrite:" + toWrite + " size:" + size;
 	}
 
 }
