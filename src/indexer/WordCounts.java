@@ -70,4 +70,12 @@ public class WordCounts implements Iterable<String> {
 	public Iterator<String> iterator() {
 		return wordCounts.keySet().iterator();
 	}
+	
+	public Map<String, Integer> getCounts() {
+		return wordCounts;
+	}
+	
+	public String getMaxWord() {
+		return maxWord;
+	}
 }
