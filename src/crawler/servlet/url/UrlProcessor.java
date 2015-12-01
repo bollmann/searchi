@@ -36,18 +36,19 @@ import db.wrappers.S3Wrapper;
 public class UrlProcessor {
 	private final Logger logger = Logger.getLogger(getClass());
 	private DiskBackedQueue<String> urlQueue = null;
+	private DynamoDBWrapper ddb = null;
+	private S3Wrapper s3 = null;
 
 	public UrlProcessor(DiskBackedQueue<String> urlQueue) {
 		this.urlQueue = urlQueue;
+
+		ddb = DynamoDBWrapper.getInstance(DynamoDBWrapper.US_EAST);
+		s3 = S3Wrapper.getInstance();
 	}
 
 	public List<String> handleURL(String url) throws IOException,
 			ParseException, QueueFullException {
 		System.out.println("Attempting to process " + url);
-
-		DynamoDBWrapper ddb = DynamoDBWrapper
-				.getInstance(DynamoDBWrapper.US_EAST);
-		S3Wrapper s3 = S3Wrapper.getInstance();
 
 		URLMetaInfo info = null;
 		try {
@@ -59,11 +60,12 @@ public class UrlProcessor {
 		URLContent urlContent = null;
 
 		if (info != null) {
-			logger.info("Not getting new data for " + url + " as it's already present in ddb");
-			 String content = s3.getItem(info.getId());
-			 Gson gson = new Gson();
-			 logger.debug("Parsing content to urlcontent:" + content);
-			 urlContent = gson.fromJson(content, URLContent.class);
+			logger.info("Not getting new data for " + url
+					+ " as it's already present in ddb");
+			String content = s3.getItem(info.getId());
+			Gson gson = new Gson();
+			logger.debug("Parsing content to urlcontent:" + content);
+			urlContent = gson.fromJson(content, URLContent.class);
 		} else {
 			logger.debug("Getting fresh data for:" + url);
 			urlContent = getNewContent(url);
@@ -98,7 +100,7 @@ public class UrlProcessor {
 					Date start = Calendar.getInstance().getTime();
 
 					URLMetaInfo toSave = new URLMetaInfo(url);
-//					toSave.setUrl(url);
+					// toSave.setUrl(url);
 					toSave.setLastCrawledOn(Calendar.getInstance().getTime());
 
 					toSave.setType(urlContent.getContentType());
@@ -247,7 +249,7 @@ public class UrlProcessor {
 				} catch (MalformedURLException e) {
 					// Not an absolute url. So add protocol and domain
 					// check for different derelativization
-					
+
 					// is top level domain
 					if (linkHref.startsWith("//")) {
 						linkHref = urlRoot.getProtocol() + ":" + linkHref;

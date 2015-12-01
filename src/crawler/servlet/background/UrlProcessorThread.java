@@ -22,6 +22,8 @@ import crawler.servlet.url.UrlProcessor;
 import crawler.threadpool.DiskBackedQueue;
 import crawler.threadpool.MercatorNode;
 import crawler.threadpool.MercatorQueue;
+import db.dbo.DomainInfo;
+import db.wrappers.DynamoDBWrapper;
 
 public class UrlProcessorThread extends Thread {
 	private final Logger logger = Logger.getLogger(getClass());
@@ -29,6 +31,7 @@ public class UrlProcessorThread extends Thread {
 	private Set<String> allowedDomains = null;
 	private MercatorQueue mq = null;
 	private WorkerStatus workerStatus = null;
+	private DynamoDBWrapper ddb = null;
 
 	public UrlProcessorThread(MercatorQueue mq, Set<String> allowedDomains,
 			DiskBackedQueue<String> urlQueue, WorkerStatus workerStatus) {
@@ -36,6 +39,8 @@ public class UrlProcessorThread extends Thread {
 		this.allowedDomains = allowedDomains;
 		this.urlQueue = urlQueue;
 		this.workerStatus = workerStatus;
+		ddb = DynamoDBWrapper
+				.getInstance(DynamoDBWrapper.US_EAST);
 	}
 
 	@Override
@@ -141,6 +146,16 @@ public class UrlProcessorThread extends Thread {
 			throws URISyntaxException {
 		MercatorNode node = new MercatorNode(Parser.getDomainForUrl(url));
 
+		// lookup ddb for domainInfo. If not there, then fetch it
+		
+		DomainInfo domainInfo = (DomainInfo) ddb.getItem(Parser.getDomainForUrl(url), DomainInfo.class);
+		
+		if(domainInfo != null) {
+			node.setDomainInfo(domainInfo);
+			node.setLastCrawledTime(Calendar.getInstance().getTime());
+			return node;
+		}
+		
 		String httpRobotsUrl = MercatorQueue.getRobotsTxtUrl(url);
 		logger.info("Getting robots.txt at " + httpRobotsUrl);
 		try {
@@ -160,9 +175,14 @@ public class UrlProcessorThread extends Thread {
 				node = Parser.parseRobotsContent(
 						Parser.getDomainForUrl(url),
 						new String(response.getBody()));
+				
+				DomainInfo newDomainInfo = node.getDomainInfo();
+				ddb.putItem(newDomainInfo);
 				return node;
 			} else {
 				// make default mn
+				DomainInfo newDomainInfo = node.getDomainInfo();
+				ddb.putItem(newDomainInfo);
 				return node;
 
 			}

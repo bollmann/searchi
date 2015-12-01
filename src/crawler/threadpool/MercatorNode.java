@@ -9,28 +9,34 @@ import java.util.Map.Entry;
 import org.apache.log4j.Logger;
 
 import crawler.errors.QueueFullException;
+import db.dbo.DomainInfo;
 
 public class MercatorNode {
 	private final Logger logger = Logger.getLogger(getClass());
 	private MercatorNode next = null;
-	private String domain;
-	private Date lastCrawledTime;
-	private float crawlDelay = 0.5f; // crawl delay default 2 secs
-	private String userAgent;
-	private Map<String, Boolean> pathAccessMap;
-	private Queue<String> urls;
-	private boolean isQueriable = false;
+	
+	DomainInfo domainInfo;
+	
+	public void setDomainInfo(DomainInfo domainInfo) {
+		this.domainInfo = domainInfo;
+	}
+	
+	public DomainInfo getDomainInfo() {
+		return domainInfo;
+	}
 
 	public Date getLastCrawledTime() {
-		return lastCrawledTime;
+		return domainInfo.getLastCrawledTime();
 	}
 
 	public void setLastCrawledTime(Date lastCrawledTime) {
-		this.lastCrawledTime = lastCrawledTime;
+		domainInfo.setLastCrawledTime(lastCrawledTime);
 	}
 
 	public boolean isQueriable() {
 		Date now = Calendar.getInstance().getTime();
+		Date lastCrawledTime = domainInfo.getLastCrawledTime();
+		float crawlDelay = domainInfo.getCrawlDelay();
 		logger.debug("Comparing now:" + now.getTime() + " and last crawled:" + lastCrawledTime.getTime()
 				+ " with diff:" + (now.getTime() - lastCrawledTime.getTime())/1000);
 		if((now.getTime() - lastCrawledTime.getTime())/1000 > crawlDelay) {
@@ -41,15 +47,15 @@ public class MercatorNode {
 	}
 
 	public void setQueriable(boolean isQueriable) {
-		this.isQueriable = isQueriable;
+		domainInfo.setQueriable(isQueriable);
 	}
 
 	public String getUserAgent() {
-		return userAgent;
+		return domainInfo.getUserAgent();
 	}
 
 	public void setUserAgent(String userAgent) {
-		this.userAgent = userAgent;
+		domainInfo.setUserAgent(userAgent);
 	}
 
 	public MercatorNode getNext() {
@@ -61,49 +67,32 @@ public class MercatorNode {
 	}
 
 	public String getDomain() {
-		return domain;
+		return domainInfo.getDomain();
 	}
 
 	public void setDomain(String domain) {
-		this.domain = domain;
+		domainInfo.setDomain(domain);
 	}
 
 	public float getCrawlDelay() {
-		return crawlDelay;
+		return domainInfo.getCrawlDelay();
 	}
 
 	public void setCrawlDelay(float crawlDelay) {
-		this.crawlDelay = crawlDelay;
-	}
-
-	public Queue<String> getUrls() {
-		return urls;
-	}
-
-	public synchronized void enqueueUrl(String url) {
-		try {
-			urls.enqueue(url);
-		} catch (QueueFullException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	public String dequeueUrl() throws IndexOutOfBoundsException {
-		return urls.dequeue();
+		domainInfo.setCrawlDelay(crawlDelay);
 	}
 
 	public void addDisallowPath(String path) {
-		pathAccessMap.put(path, false);
+		domainInfo.getPathAccessMap().put(path, false);
 	}
 
 	public void addAllowPath(String path) {
-		if (pathAccessMap.containsKey(path)) {
-			if (pathAccessMap.get(path)) // if path access is disallow, then
+		if (domainInfo.getPathAccessMap().containsKey(path)) {
+			if (domainInfo.getPathAccessMap().get(path)) // if path access is disallow, then
 											// cannot change
-				pathAccessMap.put(path, true);
+				domainInfo.getPathAccessMap().put(path, true);
 		} else {
-			pathAccessMap.put(path, true);
+			domainInfo.getPathAccessMap().put(path, true);
 		}
 	}
 
@@ -114,15 +103,15 @@ public class MercatorNode {
 	 * @return
 	 */
 	public boolean isAllowed(String path) {
-		if (pathAccessMap.containsKey(path)) { // if exact match then do
+		if (domainInfo.getPathAccessMap().containsKey(path)) { // if exact match then do
 												// whatever policy says
 			logger.debug("MercatorNode policy found exact match for:" + path
-					+ ":" + pathAccessMap.get(path));
-			return pathAccessMap.get(path);
+					+ ":" + domainInfo.getPathAccessMap().get(path));
+			return domainInfo.getPathAccessMap().get(path);
 		} else {
-			logger.debug("Going through pathAccessMap" + pathAccessMap
+			logger.debug("Going through pathAccessMap" + domainInfo.getPathAccessMap()
 					+ " to check for " + path);
-			for (Entry<String, Boolean> entry : pathAccessMap.entrySet()) {
+			for (Entry<String, Boolean> entry : domainInfo.getPathAccessMap().entrySet()) {
 				String key = entry.getKey();
 
 				logger.debug("Checking with policy:" + key + "="
@@ -145,21 +134,14 @@ public class MercatorNode {
 	}
 
 	public MercatorNode(String domain) {
-		this.domain = domain;
-		urls = new Queue<String>();
-		pathAccessMap = new HashMap<String, Boolean>();
-		lastCrawledTime = Calendar.getInstance().getTime();
+		domainInfo = new DomainInfo();
+		domainInfo.setDomain(domain);
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("MercatorNode: domain=").append(domain)
-				.append(" crawlDelay=").append(crawlDelay)
-				.append(" pathAccessInfo=").append(pathAccessMap)
-//				.append(" in queue:" + urls.toString());
-				.append(" in queue of size:" + urls.getSize());
-
+		sb.append("MercatorNode: " + domainInfo.toString());
 		return sb.toString();
 	}
 }

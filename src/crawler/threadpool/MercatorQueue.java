@@ -81,41 +81,41 @@ public class MercatorQueue {
 		return false;
 	}
 
-	/**
-	 * Finds the appropriate domain queue for the given complete url and adds it
-	 * there if not already visited. Otherwise you have to create a new
-	 * MercatorNode with the domain for this. Should use findQueueForDomain
-	 * {@link #findQueueForDomain(String)}
-	 * 
-	 * @param url
-	 *            the absolute url of the website page to be crawled
-	 * @throws MalformedURLException
-	 * @throws URISyntaxException
-	 */
-	public void enqueueUrl(String url) throws NoDomainConfigException,
-			URISyntaxException {
-		String domain = Parser.getDomainForUrl(url);
-		URI parsedUrl = new URI(url);
-		if (isDomainPresentForUrl(url)) {
-			MercatorNode node = domainNodeMap.get(domain);
-			// check allow and disallow for enqueueing
-			logger.debug("Checking if url:" + url + " is allowed for node:"
-					+ node.getDomain() + " - "
-					+ node.isAllowed(parsedUrl.getPath()));
-			if (node.isAllowed(parsedUrl.getPath())) {
-				logger.debug("Adding " + url + " to mq:" + node);
-				size++;
-				node.enqueueUrl(url);
-			} else {
-				System.out.println("URL " + url + " disallowed for domain "
-						+ domain);
-			}
-			frontier.add(url);
-		} else {
-			throw new NoDomainConfigException(
-					"No domain config exists for this url! Create a config first.");
-		}
-	}
+//	/**
+//	 * Finds the appropriate domain queue for the given complete url and adds it
+//	 * there if not already visited. Otherwise you have to create a new
+//	 * MercatorNode with the domain for this. Should use findQueueForDomain
+//	 * {@link #findQueueForDomain(String)}
+//	 * 
+//	 * @param url
+//	 *            the absolute url of the website page to be crawled
+//	 * @throws MalformedURLException
+//	 * @throws URISyntaxException
+//	 */
+//	public void enqueueUrl(String url) throws NoDomainConfigException,
+//			URISyntaxException {
+//		String domain = Parser.getDomainForUrl(url);
+//		URI parsedUrl = new URI(url);
+//		if (isDomainPresentForUrl(url)) {
+//			MercatorNode node = domainNodeMap.get(domain);
+//			// check allow and disallow for enqueueing
+//			logger.debug("Checking if url:" + url + " is allowed for node:"
+//					+ node.getDomain() + " - "
+//					+ node.isAllowed(parsedUrl.getPath()));
+//			if (node.isAllowed(parsedUrl.getPath())) {
+//				logger.debug("Adding " + url + " to mq:" + node);
+//				size++;
+//				node.enqueueUrl(url);
+//			} else {
+//				System.out.println("URL " + url + " disallowed for domain "
+//						+ domain);
+//			}
+//			frontier.add(url);
+//		} else {
+//			throw new NoDomainConfigException(
+//					"No domain config exists for this url! Create a config first.");
+//		}
+//	}
 
 	public void addUrlToFrontier(String url) {
 		synchronized (frontier) {
@@ -130,44 +130,44 @@ public class MercatorQueue {
 		return false;
 	}
 
-	public void checkAndNotifyQueues() {
-		Calendar cal = Calendar.getInstance();
-		Date now = cal.getTime();
-
-		MercatorNode node = head;
-		logger.debug("Checking and notifying. Head is " + head);
-		while (node != null) {
-			// synchronized (node) {
-			logger.debug("Inside check sync block. last crawled "
-					+ node.getLastCrawledTime() + " q size:"
-					+ node.getUrls().getSize());
-			if (node.getLastCrawledTime() != null
-					&& node.getUrls().getSize() != 0) {
-				Date lastCrawled = node.getLastCrawledTime();
-				long diff = (now.getTime() - lastCrawled.getTime()) / 1000;
-				logger.debug("Check and notify checking node:" + node
-						+ ". Time diff b/w now and last crawl time:" + diff);
-				if (diff > node.getCrawlDelay()) {
-					// dequeue from node and add to outgoing job queue
-
-					String url = node.dequeueUrl();
-					size--;
-					logger.debug("Dequeued url:" + url + " from node:" + node);
-
-					// synchronized (outgoingJobQueue) {
-					// outgoingJobQueue.enqueue(url);
-					// outgoingJobQueue.notify();
-					// urlsProcessed++;
-					// }
-
-				}
-			}
-
-			// } // end of synchronization
-
-			node = node.getNext();
-		}
-	}
+//	public void checkAndNotifyQueues() {
+//		Calendar cal = Calendar.getInstance();
+//		Date now = cal.getTime();
+//
+//		MercatorNode node = head;
+//		logger.debug("Checking and notifying. Head is " + head);
+//		while (node != null) {
+//			// synchronized (node) {
+//			logger.debug("Inside check sync block. last crawled "
+//					+ node.getLastCrawledTime() + " q size:"
+//					+ node.getUrls().getSize());
+//			if (node.getLastCrawledTime() != null
+//					&& node.getUrls().getSize() != 0) {
+//				Date lastCrawled = node.getLastCrawledTime();
+//				long diff = (now.getTime() - lastCrawled.getTime()) / 1000;
+//				logger.debug("Check and notify checking node:" + node
+//						+ ". Time diff b/w now and last crawl time:" + diff);
+//				if (diff > node.getCrawlDelay()) {
+//					// dequeue from node and add to outgoing job queue
+//
+//					String url = node.dequeueUrl();
+//					size--;
+//					logger.debug("Dequeued url:" + url + " from node:" + node);
+//
+//					// synchronized (outgoingJobQueue) {
+//					// outgoingJobQueue.enqueue(url);
+//					// outgoingJobQueue.notify();
+//					// urlsProcessed++;
+//					// }
+//
+//				}
+//			}
+//
+//			// } // end of synchronization
+//
+//			node = node.getNext();
+//		}
+//	}
 
 	public void addNode(MercatorNode node) {
 		if (!domainNodeMap.containsKey(node.getDomain())) {

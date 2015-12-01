@@ -58,7 +58,8 @@ public class SingleNodeCrawler extends HttpServlet {
 
 		s3.createBucket(s3.URL_BUCKET);
 		s3.createBucket(s3.URL_QUEUE_BUCKET);
-		ddb.createTable("URLMetaInfo", 15, 15, "url", "S");
+		ddb.createTable("URLMetaInfo", 30, 30, "url", "S");
+		ddb.createTable("DomainInfo", 15, 15, "domain", "S");
 
 		// look for queue in s3. If not there, then initialize to new
 
