@@ -1,9 +1,12 @@
 package crawler;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.text.ParseException;
 
 import org.apache.log4j.Logger;
+
+import com.google.gson.JsonSyntaxException;
 
 import crawler.threadpool.MercatorQueue;
 import crawler.threadpool.Queue;
@@ -43,7 +46,7 @@ public class XPathWorker extends Thread {
 			URLHandler uh = new URLHandler(mq, q);
 			try {
 				uh.handleURL(url);
-			} catch (IOException | ParseException e) {
+			} catch (IOException | ParseException | JsonSyntaxException | URISyntaxException e) {
 
 				e.printStackTrace();
 				continue;

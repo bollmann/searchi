@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import org.w3c.tidy.Tidy;
 
 import com.amazonaws.AmazonServiceException;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
 import crawler.clients.HttpClient;
 import crawler.dao.URLContent;
@@ -58,8 +60,10 @@ public class URLHandler {
 	 * @param q
 	 * @throws ParseException
 	 * @throws IOException
+	 * @throws URISyntaxException 
+	 * @throws JsonSyntaxException 
 	 */
-	public void handleURL(String url) throws IOException, ParseException {
+	public void handleURL(String url) throws IOException, ParseException, JsonSyntaxException, URISyntaxException {
 		if (!mq.isDomainPresentForUrl(url)) {
 			enqueueURL(url);
 			logger.info("Returning after enqueueing as domain not present");
@@ -160,7 +164,7 @@ public class URLHandler {
 	}
 
 	private URLContent getNewContent(String url) throws IOException,
-			ParseException {
+			ParseException, URISyntaxException {
 		System.out.println("Downloading new content for " + url);
 		// HEAD. check content
 		String content = null;
@@ -232,7 +236,7 @@ public class URLHandler {
 	}
 
 	private URLContent getPersistentContent(URLContent urlContent)
-			throws IOException, ParseException {
+			throws IOException, ParseException, URISyntaxException {
 		URLContent content = null;
 		// if present, check last crawled time
 		Date lastCrawled = urlContent.getCrawledOn();
@@ -268,7 +272,7 @@ public class URLHandler {
 		return content;
 	}
 
-	public void enqueueURL(String url) throws MalformedURLException {
+	public void enqueueURL(String url) throws MalformedURLException, URISyntaxException {
 		try {
 			synchronized (mq) {
 				mq.enqueueUrl(url);
@@ -322,7 +326,7 @@ public class URLHandler {
 	}
 
 	public void addNodeToMq(MercatorNode node, String url)
-			throws MalformedURLException, NoDomainConfigException {
+			throws MalformedURLException, NoDomainConfigException, URISyntaxException {
 		synchronized (mq) {
 			node.setLastCrawledTime(Calendar.getInstance().getTime());
 			mq.addNode(node);
