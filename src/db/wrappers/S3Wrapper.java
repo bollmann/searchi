@@ -6,7 +6,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -24,12 +26,15 @@ import com.amazonaws.services.s3.model.ListObjectsRequest;
 import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
+import com.google.gson.Gson;
+
+import crawler.dao.URLContent;
 
 public class S3Wrapper {
 	private final Logger logger = Logger.getLogger(getClass());
 	private static S3Wrapper instance;
 	private AmazonS3 s3client;
-	public final String URL_BUCKET = "cis455-url-content"; // cannot contain
+	public final String URL_BUCKET = "cis455-url-content-new"; // cannot contain
 															// uppercase
 															// letters. should
 															// be unique
@@ -148,6 +153,32 @@ public class S3Wrapper {
 		putItem(URL_BUCKET, key, content);
 	}
 
+
+//	public void putBatchItem(String key, String content) {
+//		synchronized (currentBatchId) {
+//			if (batchKeyValueMap.size() < BATCH_SIZE) {
+//				batchKeyValueMap.put(key, content);
+//			} else {
+//				// write all content out to s3
+//				StringBuilder sb = new StringBuilder();
+//				List<String> contentList = new ArrayList<String>(
+//						batchKeyValueMap.keySet());
+//				sb.append(new Gson().toJson(contentList));
+//				// for (Entry<String, String> entry :
+//				// batchKeyValueMap.entrySet()) {
+//				// sb.append(entry.getValue() + "\n");
+//				// }
+//				putItem(currentBatchId, sb.toString());
+//				logger.info("Wrote a batch " + currentBatchId + " of "
+//						+ batchKeyValueMap.size() + " items to s3 ");
+//				batchKeyValueMap.clear();
+//				currentBatchId = null;
+//			}
+//		}
+//
+//	}
+
+
 	public void putItem(String bucketName, String key, String content) {
 		ByteArrayInputStream bais = null;
 		try {
@@ -200,7 +231,7 @@ public class S3Wrapper {
 		Integer itemCount = 0;
 		try {
 //			System.out.println("Listing objects");
-
+			logger.info("Checking number of items in bucket " + bucketName);
 			ListObjectsRequest listObjectsRequest = new ListObjectsRequest()
 					.withBucketName(bucketName);
 			ObjectListing objectListing;
@@ -208,6 +239,9 @@ public class S3Wrapper {
 				objectListing = s3client.listObjects(listObjectsRequest);
 				for (S3ObjectSummary objectSummary : objectListing
 						.getObjectSummaries()) {
+					if(itemCount % 500 == 0) {
+						logger.info("Looked at " + itemCount + " items");
+					}
 //					System.out.println(" - " + objectSummary.getKey() + "  "
 //							+ "(size = " + objectSummary.getSize() + ")");
 					itemCount += 1;
@@ -236,4 +270,34 @@ public class S3Wrapper {
 		return itemCount;
 	}
 
+	public Integer getDuplicateUrlsInBucket(String bucketName) {
+		Set<String> urlsSeen = new HashSet<String>(300000);
+		Integer duplicateCount = 0, totalCount = 0;
+		ListObjectsRequest listObjectsRequest = new ListObjectsRequest()
+				.withBucketName(bucketName);
+		logger.info("Checking duplicates in " + bucketName);
+		ObjectListing objectListing;
+		do {
+			objectListing = s3client.listObjects(listObjectsRequest);
+			for (S3ObjectSummary objectSummary : objectListing
+					.getObjectSummaries()) {
+				totalCount++;
+				// System.out.println(" - " + objectSummary.getKey() + " "
+				// + "(size = " + objectSummary.getSize() + ")");
+				if (totalCount % 500 == 0) {
+					logger.info("Went through " + totalCount + " items in s3. Found " + duplicateCount + " duplicates.");
+				}
+				String content = getItem(URL_BUCKET, objectSummary.getKey());
+				URLContent urlContent = new Gson().fromJson(content,
+						URLContent.class);
+				if (urlsSeen.contains(urlContent.getUrl())) {
+					duplicateCount++;
+				} else {
+					urlsSeen.add(urlContent.getUrl());
+				}
+			}
+			listObjectsRequest.setMarker(objectListing.getNextMarker());
+		} while (objectListing.isTruncated());
+		return duplicateCount;
+	}
 }

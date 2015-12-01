@@ -5,7 +5,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -23,6 +26,7 @@ import crawler.parsers.Parser;
 import crawler.requests.Http10Request;
 import crawler.responses.Http10Response;
 import crawler.responses.HttpResponse;
+import crawler.threadpool.MercatorQueue;
 
 public class TestHttpClient extends TestCase {
 	
@@ -180,6 +184,24 @@ public class TestHttpClient extends TestCase {
 		} catch (IOException | ParseException e) {
 			// TODO Auto-generated catch block
 			 e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void testGetToRobotsOnDomain() {
+		String url = "http://www.google.com";
+		Http10Request request = new Http10Request();
+		try {
+			String robotsUrl = MercatorQueue.getRobotsTxtUrl(url);
+			Http10Response response = HttpClient.get(robotsUrl, request);
+			assertEquals(200, (int) response.getResponse().getResponseCode());
+			
+			robotsUrl = MercatorQueue.getRobotsTxtUrl("http://google.com");
+			response = HttpClient.get(robotsUrl, request);
+			assertEquals(200, (int) response.getResponse().getResponseCode());
+		} catch (URISyntaxException | UnknownHostException | MalformedURLException | ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 

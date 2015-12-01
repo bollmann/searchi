@@ -76,4 +76,12 @@ public class TestDiskBackedQueue extends TestCase {
 			assertEquals(String.valueOf(i), a);
 		}
 	}
+	
+	@Test
+	public void testGetWriteKeyAndGetReadKey() {
+		DiskBackedQueue<String> q = new DiskBackedQueue<String>("abc");
+		System.out.println(q.getWriteItemKey());
+		System.out.println(q.getReadItemKey());
+		
+	}
 }

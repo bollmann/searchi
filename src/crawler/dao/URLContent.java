@@ -6,6 +6,8 @@ import java.util.List;
 
 public class URLContent {
 
+	String id;
+	
 	String url;
 	
 	String content;
@@ -71,7 +73,6 @@ public class URLContent {
 	}
 	
 	public URLContent() {
-		
 	}
 
 }

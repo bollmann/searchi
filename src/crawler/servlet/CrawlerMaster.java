@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Type;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -31,8 +32,6 @@ import crawler.policies.FilePolicy;
 import crawler.requests.Http10Request;
 import crawler.requests.HttpRequest;
 import crawler.responses.HttpResponse;
-import crawler.servlet.multinodal.producer.UrlPoster;
-import crawler.servlet.multinodal.producer.UrlProducer;
 import crawler.servlet.multinodal.status.WorkerStatus;
 import crawler.threadpool.DiskBackedQueue;
 import crawler.threadpool.MercatorNode;
@@ -309,7 +308,7 @@ public class CrawlerMaster extends HttpServlet {
 					addNodeToMq(node, url);
 
 				}
-			} catch (MalformedURLException | NoDomainConfigException e1) {
+			} catch (NoDomainConfigException e1) {
 				logger.error("There's something wrong even after adding to MQ the new url hasn't been added to the apt queue!");
 				e1.printStackTrace();
 			} catch (IOException e1) {
@@ -318,13 +317,19 @@ public class CrawlerMaster extends HttpServlet {
 			} catch (ParseException e1) {
 				logger.error("Got a parse exception with url:" + url);
 				e1.printStackTrace();
+			} catch (URISyntaxException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 	}
 
 	public void addNodeToMq(MercatorNode node, String url)
-			throws MalformedURLException, NoDomainConfigException {
+			throws NoDomainConfigException, URISyntaxException {
 		synchronized (mq) {
 			node.setLastCrawledTime(Calendar.getInstance().getTime());
 			mq.addNode(node);

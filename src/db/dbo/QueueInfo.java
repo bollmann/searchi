@@ -7,13 +7,17 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 @DynamoDBTable(tableName = "QueueInfo")
 public class QueueInfo {
 	
-	private String name = "queueState";
+	private String name;
 	private int toRead = 0;
 	private int toWrite = 1;
 	private int size = 0;
 	
 	public QueueInfo() {
 		
+	}
+	
+	public QueueInfo(String name) {
+		this.name = name;
 	}
 	
 	@DynamoDBHashKey(attributeName = "name")

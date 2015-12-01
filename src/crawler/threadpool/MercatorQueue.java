@@ -1,7 +1,8 @@
 package crawler.threadpool;
 
 import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -13,7 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.apache.log4j.Logger;
 
 import crawler.errors.NoDomainConfigException;
-import crawler.errors.QueueFullException;
+import crawler.parsers.Parser;
 
 public class MercatorQueue {
 	private Integer size;
@@ -22,7 +23,7 @@ public class MercatorQueue {
 	MercatorNode head = null, last = null;
 	Set<String> frontier;
 	Map<String, MercatorNode> domainNodeMap;
-	private int MAX_INACTIVE_DOMAIN_INTERVAL = 60*60;
+	private int MAX_INACTIVE_DOMAIN_INTERVAL = 60 * 60;
 
 	public Integer getUrlsProcessed() {
 		return urlsProcessed;
@@ -63,11 +64,15 @@ public class MercatorQueue {
 	public void setLast(MercatorNode last) {
 		this.last = last;
 	}
+	
+	public static String getRobotsTxtUrl(String url) throws URISyntaxException {
+		URI uri = new URI(url);
+		return uri.getScheme() + "://"
+				+ uri.getHost() + "/robots.txt";
+	}
 
-	public boolean isDomainPresentForUrl(String url)
-			throws MalformedURLException {
-		URL parsedUrl = new URL(url);
-		String domain = parsedUrl.getHost();
+	public boolean isDomainPresentForUrl(String url) throws URISyntaxException {
+		String domain = Parser.getDomainForUrl(url);
 		logger.debug("Checking if url:" + url + " has mapped domain:" + domain
 				+ "?" + domainNodeMap.containsKey(domain));
 		if (domainNodeMap.containsKey(domain)) {
@@ -85,11 +90,12 @@ public class MercatorQueue {
 	 * @param url
 	 *            the absolute url of the website page to be crawled
 	 * @throws MalformedURLException
+	 * @throws URISyntaxException
 	 */
-	public void enqueueUrl(String url) throws MalformedURLException,
-			NoDomainConfigException {
-		URL parsedUrl = new URL(url);
-		String domain = parsedUrl.getHost();
+	public void enqueueUrl(String url) throws NoDomainConfigException,
+			URISyntaxException {
+		String domain = Parser.getDomainForUrl(url);
+		URI parsedUrl = new URI(url);
 		if (isDomainPresentForUrl(url)) {
 			MercatorNode node = domainNodeMap.get(domain);
 			// check allow and disallow for enqueueing

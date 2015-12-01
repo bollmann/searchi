@@ -8,6 +8,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -85,7 +87,7 @@ public class Parser {
 	public static String formEncoding = "application/x-www-form-urlencoded";
 	
 	public static String[] nonCrawlableUrlPatterns = {".*\\.jpg", ".*\\.php", 
-		".*\\.css", ".*\\.js", ".*\\.gif", ".*\\.png"};
+		".*\\.css", ".*\\.js", ".*\\.gif", ".*\\.png", ".*\\.less"};
 	/**
 	 * The Class Handler.
 	 */
@@ -1011,5 +1013,31 @@ public class Parser {
 			}
 		}
 		return answer;
+	}
+	
+	public static List<String> filterUrls(List<String> urls) {
+		List<String> filteredUrls = new ArrayList<String>();
+		for (String url : urls) {
+			if (isCrawlableUrl(url)) {
+				if (url.endsWith("/")) {
+					filteredUrls.add(url.substring(0, url.length() - 1));
+				} else if (url.endsWith("/#")) {
+					filteredUrls.add(url.substring(0, url.length() - 2));
+				} else {
+					filteredUrls.add(url);
+				}
+			}
+		}
+		return filteredUrls;
+	}
+	
+	public static String getDomainForUrl(String url) throws URISyntaxException {
+		URI uri = new URI(url);
+		String domain = uri.getHost();
+		if(domain == null) {
+			throw new URISyntaxException("Null host!", "");
+		}
+		String changed = domain.replaceAll("^[^.]*\\.(?=\\w+\\.\\w+$)", "");
+		return changed;
 	}
 }

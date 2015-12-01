@@ -12,28 +12,48 @@
      </servlet-mapping>
      
     <servlet>
-        <servlet-name>CrawlerMaster</servlet-name>
-        <servlet-class>crawler.servlet.CrawlerMaster2</servlet-class>
+        <servlet-name>SingleNodeCrawler</servlet-name>
+        <servlet-class>crawler.servlet.SingleNodeCrawler</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
     
     <servlet-mapping>
-        <servlet-name>CrawlerMaster</servlet-name>
+        <servlet-name>SingleNodeCrawler</servlet-name>
         <url-pattern>/master/*</url-pattern>
     </servlet-mapping>
     
     <context-param>
      	<param-name>flushData</param-name>
-     	<param-value>no</param-value>
+     	<param-value>yes</param-value>
      </context-param>
      
      <context-param>
      	<param-name>flushQueue</param-name>
-     	<param-value>no</param-value>
+     	<param-value>yes</param-value>
      </context-param>
      
      <context-param>
      	<param-name>maxUrls</param-name>
      	<param-value>10000</param-value>
+     </context-param>
+     
+          <context-param>
+     	<param-name>domain-range</param-name>
+     	<param-value>ad</param-value>
+     </context-param>
+     
+     <context-param>
+     	<param-name>domain-config</param-name>
+     	<param-value>conf/domains.csv</param-value>
+     </context-param>
+     
+          <context-param>
+     	<param-name>worker-port</param-name>
+     	<param-value>8081</param-value>
+     </context-param>
+     
+     <context-param>
+     	<param-name>worker-ip</param-name>
+     	<param-value>127.0.0.1</param-value>
      </context-param>
 </web-app>

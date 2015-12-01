@@ -246,7 +246,8 @@ public class DynamoDBWrapper {
 
 		    ScanResult result = client.scan(scanRequest);
 		    for (Map<String, AttributeValue> item : result.getItems()){
-//		        printItem(item);
+//		        System.out.println((item));
+//		    	item.size();
 		        rowCount += 1;
 		    }
 		    lastKeyEvaluated = result.getLastEvaluatedKey();

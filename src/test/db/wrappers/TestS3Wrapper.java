@@ -27,5 +27,12 @@ public class TestS3Wrapper extends TestCase {
 		Integer result = s3.getNumberOfItemsInBucket("cis455-url-content");
 		System.out.println(result);
 	}
+	
+	@Test
+	public void testFindDuplicateUrlsInBucket() {
+		S3Wrapper s3 = S3Wrapper.getInstance();
+		Integer count = s3.getDuplicateUrlsInBucket(s3.URL_BUCKET);
+		System.out.println(count);
+	}
 
 }

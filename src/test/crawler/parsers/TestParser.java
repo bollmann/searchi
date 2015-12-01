@@ -6,6 +6,8 @@ package test.crawler.parsers;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -32,6 +34,7 @@ import crawler.responses.HttpResponse;
 import crawler.responses.Response;
 import crawler.servlets.ServletContextImpl;
 import crawler.threadpool.MercatorNode;
+import crawler.threadpool.MercatorQueue;
 import crawler.webserver.HttpServer;
 
 // TODO: Auto-generated Javadoc
@@ -122,7 +125,7 @@ public class TestParser extends TestCase {
 			date = Parser.parseDate(date1);
 			cal = Calendar.getInstance(timeZone);
 			cal.setTime(date);
-			
+
 			System.out
 					.println("line4" + simpleDateFormat.format(cal.getTime()));
 			assertEquals(17, cal.get(Calendar.DAY_OF_MONTH));
@@ -307,63 +310,72 @@ public class TestParser extends TestCase {
 
 	}
 
-	
 	/**
 	 * Test matches.
 	 */
 	@Test
 	public void testMatches() {
-		Set<String> toMatchIn = new HashSet<String>() {{
-			add("/");
-			add("/someUrl");
-			add("/servletUrl/*");
-		}};
-				
+		Set<String> toMatchIn = new HashSet<String>() {
+			{
+				add("/");
+				add("/someUrl");
+				add("/servletUrl/*");
+			}
+		};
+
 		String toMatch = "/someUrl/abc";
 		assertEquals(null, Parser.longestUrlMatch(toMatch, toMatchIn));
-		
+
 		toMatch = "/someUrl";
 		assertEquals("/someUrl", Parser.longestUrlMatch(toMatch, toMatchIn));
-		
+
 		toMatch = "/servletUrl/abc";
-		assertEquals("/servletUrl/*", Parser.longestUrlMatch(toMatch, toMatchIn));
-		
+		assertEquals("/servletUrl/*",
+				Parser.longestUrlMatch(toMatch, toMatchIn));
+
 		toMatch = "/servletUrl/abc/abc";
-		assertEquals("/servletUrl/*", Parser.longestUrlMatch(toMatch, toMatchIn));
-		
+		assertEquals("/servletUrl/*",
+				Parser.longestUrlMatch(toMatch, toMatchIn));
+
 		toMatch = "/servletUrl";
-		assertEquals("/servletUrl/*", Parser.longestUrlMatch(toMatch, toMatchIn));
+		assertEquals("/servletUrl/*",
+				Parser.longestUrlMatch(toMatch, toMatchIn));
 	}
-	
+
 	/**
 	 * Test longest match.
 	 */
 	@Test
 	public void testLongestMatch() {
-		Set<String> toMatchIn = new HashSet<String>() {{
-			add("/");
-			add("/someUrl/*");
-			add("/someUrl/subUrl/*");
-		}};
+		Set<String> toMatchIn = new HashSet<String>() {
+			{
+				add("/");
+				add("/someUrl/*");
+				add("/someUrl/subUrl/*");
+			}
+		};
 		String toMatch = "/someUrl/abc";
 		assertEquals("/someUrl/*", Parser.longestUrlMatch(toMatch, toMatchIn));
-		
+
 		toMatch = "/someUrl";
 		assertEquals("/someUrl/*", Parser.longestUrlMatch(toMatch, toMatchIn));
-		
+
 		toMatch = "/someUrl/subUrl";
-		assertEquals("/someUrl/subUrl/*", Parser.longestUrlMatch(toMatch, toMatchIn));
-		
+		assertEquals("/someUrl/subUrl/*",
+				Parser.longestUrlMatch(toMatch, toMatchIn));
+
 		toMatch = "/";
 		assertEquals(null, Parser.longestUrlMatch(toMatch, toMatchIn));
-		
+
 		toMatch = "/someUrl/subUrl/abc";
-		assertEquals("/someUrl/subUrl/*", Parser.longestUrlMatch(toMatch, toMatchIn));
-		
+		assertEquals("/someUrl/subUrl/*",
+				Parser.longestUrlMatch(toMatch, toMatchIn));
+
 		toMatch = "/someUrl/subUrl/abc?abc=abc&abc=pqr";
-		assertEquals("/someUrl/subUrl/*", Parser.longestUrlMatch(toMatch, toMatchIn));
+		assertEquals("/someUrl/subUrl/*",
+				Parser.longestUrlMatch(toMatch, toMatchIn));
 	}
-	
+
 	/**
 	 * Test create context.
 	 */
@@ -379,9 +391,7 @@ public class TestParser extends TestCase {
 		assertEquals(true, fc.getInitParameter("param1").equals("value1"));
 		assertEquals(true, fc.getInitParameter("param2").equals("value2"));
 	}
-	
 
-	
 	/**
 	 * Test remove spaces outside spaces.
 	 */
@@ -390,28 +400,28 @@ public class TestParser extends TestCase {
 		String toTest = "abc";
 		String rToTest = Parser.removeSpacesOutsideQuotes(toTest);
 		assertEquals("abc", rToTest);
-		
+
 		toTest = "      a   bc       ";
 		rToTest = Parser.removeSpacesOutsideQuotes(toTest);
 		assertEquals("abc", rToTest);
-		
+
 		toTest = "      a   \" bc \"      ";
 		rToTest = Parser.removeSpacesOutsideQuotes(toTest);
 		assertEquals("a\" bc \"", rToTest);
-		
+
 		toTest = "      a   \" bc \"  \"  nc sdf \"    ";
 		rToTest = Parser.removeSpacesOutsideQuotes(toTest);
 		assertEquals("a\" bc \"\"  nc sdf \"", rToTest);
-		
+
 		toTest = "  <a>   \" bc \"  \"  nc sdf \"   </a> ";
 		rToTest = Parser.removeSpacesOutsideQuotes(toTest);
 		assertEquals("<a>\" bc \"\"  nc sdf \"</a>", rToTest);
-		
+
 		toTest = "contains(    	text(), 			\" oh no this is pretty bad\"";
 		rToTest = Parser.removeSpacesOutsideQuotes(toTest);
 		assertEquals("contains(text(),\" oh no this is pretty bad\"", rToTest);
 	}
-	
+
 	/**
 	 * Test parse response code.
 	 */
@@ -425,10 +435,10 @@ public class TestParser extends TestCase {
 			assertEquals("", e.getMessage());
 			e.printStackTrace();
 		}
-		assertEquals(200, (int)response.getResponseCode());
+		assertEquals(200, (int) response.getResponseCode());
 		assertEquals("OK", response.getResponseString());
 	}
-	
+
 	/**
 	 * Test parse response version.
 	 */
@@ -438,7 +448,7 @@ public class TestParser extends TestCase {
 		String version = Parser.parseResponseVersion(firstLine);
 		assertEquals(version, "HTTP/1.0");
 	}
-	
+
 	/**
 	 * Test is valid x path node name.
 	 */
@@ -451,23 +461,19 @@ public class TestParser extends TestCase {
 		n1 = "0abc";
 		assertEquals(false, Parser.isValidXPathNodeName(n1));
 	}
-	
+
 	@Test
 	public void testParseRobotsContent() {
 		String domain = "https://dbappserv.cis.upenn.edu";
-		String content = "User-agent: *\n"
-				+ "Disallow: /path\n"
-				+ "Disallow: /secondPath\n"
-				+ "\n";
+		String content = "User-agent: *\n" + "Disallow: /path\n"
+				+ "Disallow: /secondPath\n" + "\n";
 		MercatorNode node = Parser.parseRobotsContent(domain, content);
 		assertEquals(domain, node.getDomain());
 		assertEquals(false, node.isAllowed("/path"));
 		assertEquals(false, node.isAllowed("/secondPath"));
 		assertEquals(true, node.isAllowed("/"));
-		content = "User-agent: *\n"
-				+ "Disallow: /path\n"
-				+ "Disallow: /secondPath\n"
-				+ "\n"
+		content = "User-agent: *\n" + "Disallow: /path\n"
+				+ "Disallow: /secondPath\n" + "\n"
 				+ "User-agent: cis455crawler\n"
 				+ "Disallow: /path/someInnerPath\n"
 				+ "Disallow: /path/someSpecialPath";
@@ -479,7 +485,7 @@ public class TestParser extends TestCase {
 		assertEquals(false, node.isAllowed("/path/someInnerPath"));
 		assertEquals(false, node.isAllowed("/path/someInnerPath"));
 	}
-	
+
 	@Test
 	public void testAllowedContentTypes() {
 		String contentType = "text/html; abc";
@@ -495,7 +501,7 @@ public class TestParser extends TestCase {
 		contentType = "image/gif";
 		assertEquals(false, Parser.isAllowedCrawlContentType(contentType));
 	}
-	
+
 	@Test
 	public void testParseRobotsTxt() {
 		String robotsContent = "# These defaults shouldn't apply to your crawler\n"
@@ -525,7 +531,7 @@ public class TestParser extends TestCase {
 		}
 		assertEquals(false, node.isAllowed(url.getPath()));
 	}
-	
+
 	@Test
 	public void testCleanHtml() {
 		String content = "<html><body></body></html>";
@@ -536,7 +542,7 @@ public class TestParser extends TestCase {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		assertNotSame(content, out);
 	}
 
@@ -547,11 +553,48 @@ public class TestParser extends TestCase {
 		String url3 = "abc.gif";
 		String url4 = "abc.css";
 		String url5 = "abc.js";
-		
+
 		assertEquals(true, Parser.isCrawlableUrl(url1));
 		assertEquals(false, Parser.isCrawlableUrl(url2));
 		assertEquals(false, Parser.isCrawlableUrl(url3));
 		assertEquals(false, Parser.isCrawlableUrl(url4));
 		assertEquals(false, Parser.isCrawlableUrl(url5));
+	}
+
+	@Test
+	public void testGetDomainForUrl() {
+		String url = null;
+		try {
+			url = "http://ltg.wikipedia.org";
+			String domain = Parser.getDomainForUrl(url);
+			assertEquals("wikipedia.org", domain);
+
+			url = "wikipedia.org";
+			domain = Parser.getDomainForUrl(url);
+			assertEquals("wikipedia.org", domain);
+
+			url = "https://ltg.wikipedia.org/wiki/Suoku_puslopa";
+			assertEquals("wikipedia.com", Parser.getDomainForUrl(url));
+			
+			url = "http://www.wikipedia.com";
+			assertEquals("wikipedia.com", Parser.getDomainForUrl(url));
+		} catch (URISyntaxException e) {
+			
+		}
+
+		try {
+			URI uri = new URI(url);
+			System.out.println("Authority:" + uri.getAuthority());
+			System.out.println("Fragment:" + uri.getFragment());
+			System.out.println("Host:" + uri.getHost());
+			System.out.println("Path:" + uri.getPath());
+			System.out.println("Port:" + uri.getPort());
+			System.out.println("Query:" + uri.getQuery());
+			System.out.println("Raw Scheme:" + uri.getRawSchemeSpecificPart());
+			System.out.println("Scheme:" + uri.getScheme());
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

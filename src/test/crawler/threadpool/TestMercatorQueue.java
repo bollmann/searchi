@@ -1,6 +1,7 @@
 package test.crawler.threadpool;
 
-import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -92,14 +93,14 @@ public class TestMercatorQueue extends TestCase {
 	@Test
 	public void testEnqueueUrl() {
 		MercatorQueue queue = new MercatorQueue();
-		MercatorNode node = new MercatorNode("www.abc.com");
+		MercatorNode node = new MercatorNode("abc.com");
 		queue.addNode(node);
 		
 		assertEquals(0, node.getUrls().getSize());
 		String url1 = "http://www.abc.com/a";
 		try {
 			queue.enqueueUrl(url1);
-		} catch (MalformedURLException | NoDomainConfigException e) {
+		} catch (NoDomainConfigException | URISyntaxException e) {
 			assertEquals("", e.getMessage());
 			e.printStackTrace();
 		}
@@ -108,7 +109,7 @@ public class TestMercatorQueue extends TestCase {
 		assertEquals("http://www.abc.com/a", node.getUrls().dequeue());
 		assertEquals(true, queue.isVisited(url1));
 		
-		MercatorNode node2 = new MercatorNode("www.pqr.com");
+		MercatorNode node2 = new MercatorNode("pqr.com");
 		queue.addNode(node2);
 		
 		assertEquals(0, node2.getUrls().getSize());
@@ -116,7 +117,7 @@ public class TestMercatorQueue extends TestCase {
 		String url2 = "http://www.pqr.com/a";
 		try {
 			queue.enqueueUrl(url2);
-		} catch (MalformedURLException | NoDomainConfigException e) {
+		} catch (NoDomainConfigException | URISyntaxException e) {
 			assertEquals("", e.getMessage());
 			e.printStackTrace();
 		}
@@ -128,7 +129,7 @@ public class TestMercatorQueue extends TestCase {
 		String url3 = "http://www.pqr.com/a/b";
 		try {
 			queue.enqueueUrl(url3);
-		} catch (MalformedURLException | NoDomainConfigException e) {
+		} catch (NoDomainConfigException | URISyntaxException e) {
 			assertEquals("", e.getMessage());
 			e.printStackTrace();
 		}
@@ -141,7 +142,7 @@ public class TestMercatorQueue extends TestCase {
 	@Test
 	public void testEnqueueAndDequeueOrder() {
 		MercatorQueue queue = new MercatorQueue();
-		MercatorNode node = new MercatorNode("www.abc.com");
+		MercatorNode node = new MercatorNode("abc.com");
 		queue.addNode(node);
 		
 		assertEquals(0, node.getUrls().getSize());
@@ -152,7 +153,7 @@ public class TestMercatorQueue extends TestCase {
 			queue.enqueueUrl(url1);
 			queue.enqueueUrl(url2);
 			queue.enqueueUrl(url3);
-		} catch (MalformedURLException | NoDomainConfigException e) {
+		} catch (NoDomainConfigException | URISyntaxException e) {
 			assertEquals("", e.getMessage());
 			e.printStackTrace();
 		}
@@ -181,6 +182,20 @@ public class TestMercatorQueue extends TestCase {
 		queue1.cleanUp();
 		assertEquals(node11, queue1.getHead());
 		assertEquals(node13, queue1.getHead().getNext());
+	}
+	
+	
+	
+	@Test
+	public void testGetRobotsTxtUrl() {
+		String url = "http://www.google.com/search/abc?ascd=asdd";
+		
+		try {
+			assertEquals("http://www.google.com/robots.txt", MercatorQueue.getRobotsTxtUrl(url));
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

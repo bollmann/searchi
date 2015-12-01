@@ -26,7 +26,7 @@ public class ThreadPool {
 	private static ThreadPool threadPool;
 	
 	/** The Constant MAX_THREADS. */
-	public static final Integer MAX_THREADS = 200;
+	public static final Integer MAX_THREADS = 10;
 
 	/** The thread list. */
 	private List<MainHandler> threadList;

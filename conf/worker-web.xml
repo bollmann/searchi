@@ -13,13 +13,13 @@
 
 	<servlet>
         <servlet-name>CrawlerSlave</servlet-name>
-        <servlet-class>crawler.servlet.CrawlerSlave</servlet-class>
+        <servlet-class>crawler.servlet.SingleNodeCrawler</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
     
     <servlet-mapping>
         <servlet-name>CrawlerSlave</servlet-name>
-        <url-pattern>/worker/*</url-pattern>
+        <url-pattern>/crawler/*</url-pattern>
     </servlet-mapping>
     
      <context-param>
@@ -33,8 +33,15 @@
      </context-param>
      
      <context-param>
-     	<param-name>master</param-name>
-     	<param-value>127.0.0.1:8080</param-value>
+     	<param-name>domain-range</param-name>
+     	<param-value>ad</param-value>
      </context-param>
+     
+     <context-param>
+     	<param-name>domain-config</param-name>
+     	<param-value>conf/domains.csv</param-value>
+     </context-param>
+     
+     
 
 </web-app>

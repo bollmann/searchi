@@ -3,10 +3,10 @@ package crawler.threadpool;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.apache.log4j.Logger;
 
-import com.amazonaws.services.dynamodbv2.model.DescribeTableResult;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -36,24 +36,37 @@ public class DiskBackedQueue<T> {
 	S3Wrapper s3;
 	QueueInfo queueInfo;
 
-	public static String QUEUE_NAME = "queueState";
-
-	/**
-	 * Instantiates a new queue.
-	 */
-	public DiskBackedQueue() {
+	public void init(String queueName) {
 		inputList = new ArrayList<T>();
 		outputList = new ArrayList<T>();
 		ddb = DynamoDBWrapper.getInstance(DynamoDBWrapper.US_EAST);
 		ddb.createTable("QueueInfo", 5, 5, "name", "S");
-		queueInfo = (QueueInfo) ddb.getItem(QUEUE_NAME, QueueInfo.class);
+		logger.info("Looking for queueName:" + queueName);
+		queueInfo = (QueueInfo) ddb.getItem(queueName, QueueInfo.class);
 		if (queueInfo == null) {
 			logger.info("Creating new disk backed queue");
-			queueInfo = new QueueInfo();
+			queueInfo = new QueueInfo(queueName);
 		} else {
 			logger.info("Using existing queue");
 		}
 		s3 = S3Wrapper.getInstance();
+	}
+	/**
+	 * Instantiates a new queue.
+	 */
+	public DiskBackedQueue() {
+		init(UUID.randomUUID().toString());
+		
+	}
+	
+	public DiskBackedQueue(String prefix) {
+		init(prefix);
+	}
+	
+	public DiskBackedQueue(int size) {
+		init(UUID.randomUUID().toString());
+		inputList = new ArrayList<T>(size);
+		outputList = new ArrayList<T>(size);
 	}
 
 	public QueueInfo getQueueInfo() {
@@ -64,20 +77,7 @@ public class DiskBackedQueue<T> {
 		return pushToDiskLimit;
 	}
 
-	public DiskBackedQueue(int size) {
-		inputList = new ArrayList<T>(size);
-		outputList = new ArrayList<T>(size);
-		ddb = DynamoDBWrapper.getInstance(DynamoDBWrapper.US_EAST);
-		ddb.createTable("QueueInfo", 5, 5, "name", "S");
-		queueInfo = (QueueInfo) ddb.getItem(QUEUE_NAME, QueueInfo.class);
-		if (queueInfo == null) {
-			logger.info("Creating new disk backed queue");
-			queueInfo = new QueueInfo();
-		} else {
-			logger.info("Using existing queue");
-		}
-		s3 = S3Wrapper.getInstance();
-	}
+
 
 	/**
 	 * Sets the max queue size.
@@ -119,14 +119,23 @@ public class DiskBackedQueue<T> {
 		}
 
 	}
+	
+	public String getWriteItemKey() {
+		return queueInfo.getName() + "-" + queueInfo.getToWrite();
+	}
+	
+	public String getReadItemKey() {
+		return queueInfo.getName() + "-" + queueInfo.getToRead();
+	}
 
 	public void pushQueueToDisk(List<T> list) {
 		String content = new Gson().toJson(inputList);
 		logger.info("Pushing inputList of size " + inputList.size()
 				+ "  to queue!");
 		synchronized (queueInfo) {
-			s3.putItem(s3.URL_QUEUE_BUCKET,
-					String.valueOf(queueInfo.getToWrite()), content);
+			String writeItemKey = getWriteItemKey();
+			s3.putItem(s3.URL_QUEUE_BUCKET, writeItemKey, content);
+			
 			queueInfo.setToWrite(queueInfo.getToWrite() + 1);
 			if (queueInfo.getToRead() < 1) {
 				queueInfo.setToRead(queueInfo.getToRead() + 1);
@@ -156,10 +165,9 @@ public class DiskBackedQueue<T> {
 				synchronized (queueInfo) {
 					
 					String content = s3.getItem(s3.URL_QUEUE_BUCKET,
-							String.valueOf(queueInfo.getToRead()));
+							getReadItemKey());
 					s3.deleteItem(s3.URL_QUEUE_BUCKET,
-							String.valueOf(queueInfo.getToRead()));
-					queueInfo.setToRead(queueInfo.getToRead());
+							getReadItemKey());
 					Type listType = new TypeToken<List<T>>() {
 					}.getType();
 					outputList = new Gson().fromJson(content, listType);

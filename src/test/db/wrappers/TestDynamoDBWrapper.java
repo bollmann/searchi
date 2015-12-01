@@ -117,7 +117,7 @@ public class TestDynamoDBWrapper extends TestCase {
 	@Test
 	public void testGetNumberOfItemsInTable() {
 		DynamoDBWrapper ddb = DynamoDBWrapper.getInstance(DynamoDBWrapper.US_EAST);
-		Integer result = ddb.getNumberOfItemsInTable("URLMetaInfo");
+		Integer result = ddb.getNumberOfItemsInTable("URLMetaInfoCopy");
 		System.out.println(result);
 	}
 
