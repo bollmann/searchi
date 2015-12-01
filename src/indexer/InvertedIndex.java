@@ -22,13 +22,17 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 
+import db.wrappers.S3Wrapper;
+
 public class InvertedIndex {
 	private static Logger logger = Logger.getLogger(InvertedIndex.class);
 
 	public static final String CREDENTIALS_PROFILE = "default";
 	public static final String TABLE_NAME = "InvertedIndex";
+	public static final String S3_CRAWL_SNAPSHOT = "cis455-url-content-snapshot5";
 	
 	private DynamoDBMapper db;
+	private int corpusSize;
 	
 	public InvertedIndex() {
 		AWSCredentials credentials = new ProfileCredentialsProvider(CREDENTIALS_PROFILE).getCredentials();
@@ -36,7 +40,8 @@ public class InvertedIndex {
 		dbClient.setRegion(Region.getRegion(Regions.US_EAST_1));
 		
 		this.db = new DynamoDBMapper(dbClient);
-		// TODO: obtain the real corpus size here at the beginning once!
+		S3Wrapper s3 = S3Wrapper.getInstance();
+		this.corpusSize = s3.getNumberOfItemsInBucket(S3_CRAWL_SNAPSHOT);
 	}
 	
 	public List<InvertedIndexRow> getDocumentLocations(String word) {
@@ -83,9 +88,6 @@ public class InvertedIndex {
 	}
 	
 	public PriorityQueue<DocumentScore> rankDocuments(List<String> query) {
-		// TODO: query URLMetaInfo dynamoDB table for corpus size??
-		int corpusSize = 4000;
-		
 		WordCounts queryCounts = new WordCounts(query);
 		Map<String, DocumentScore> documentRanks = new HashMap<String, DocumentScore>();
 		for(String word: query) {
@@ -100,7 +102,7 @@ public class InvertedIndex {
 					rankedDoc.addFeatures(row);
 				}
 				double queryWeight = queryCounts.getTFIDF(word, corpusSize, rows.size());
-				double docWeight = row.getEuclideanTermFrequency();
+				double docWeight = row.getEuclideanTermFrequency(); // TODO: try other weighting functions!b
 				rankedDoc.setRank(rankedDoc.getRank() + queryWeight * docWeight);
 			}
 			logger.info(String.format("=> got %d documents for query word '%s'.", rows.size(), word));
@@ -109,9 +111,6 @@ public class InvertedIndex {
 	}
 	
 	public PriorityQueue<DocumentVector> lookupDocuments(List<String> query) {
-		// TODO: query URLMetaInfo dynamoDB table for real corpus size!
-		int corpusSize = 4000;
-		
 		List<InvertedIndexRow> candidates = new LinkedList<InvertedIndexRow>();
 		Map<String, Integer> dfs = new HashMap<String, Integer>();
 		for(String word: query) {
