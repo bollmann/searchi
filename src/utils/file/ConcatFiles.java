@@ -11,18 +11,18 @@ import java.util.Scanner;
 
 public class ConcatFiles {
 	
-	private String inpDir;
+	private String inDir;
 	private String outFilePrefix;
 	private int numFilesToCombine;
 
 	public ConcatFiles(String inpDir, String outFilePrefix, int numFiles) {
-		this.inpDir = inpDir;
+		this.inDir = inpDir;
 		this.outFilePrefix = outFilePrefix;
 		this.numFilesToCombine = numFiles;
 	}
 	
 	public void concat() throws ArrayIndexOutOfBoundsException, IOException {
-		File inputDir = new File(this.inpDir);
+		File inputDir = new File(this.inDir);
 
 		File[] files = inputDir.listFiles();
 		int prefixCount = 1;
@@ -43,12 +43,10 @@ public class ConcatFiles {
 	
 	public static void main(String[] args) throws IOException {
 		try {
-			
-			ConcatFiles concatUtil = new ConcatFiles(args[0], args[1],
-				Integer.parseInt(args[2]));
+			ConcatFiles concatUtil = new ConcatFiles(args[0], args[1], Integer.parseInt(args[2]));
 			concatUtil.concat();
 			
-		} catch (ArrayIndexOutOfBoundsException | FileNotFoundException e) {
+		} catch (ArrayIndexOutOfBoundsException | FileNotFoundException | NumberFormatException e) {
 			usage();
 			System.exit(1);
 		}
