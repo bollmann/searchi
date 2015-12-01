@@ -33,47 +33,9 @@ import crawler.dao.URLContent;
 public class InvertedIndexJob {
 	private static Logger logger = Logger.getLogger(InvertedIndexJob.class);
 
-	private static String extractLinks(Document doc) {
-		StringBuffer result = new StringBuffer();
-		for (Element link : doc.select("a[href]")) {
-			result.append(link.attr("href") + " ");
-			result.append(link.text() + " ");
-		}
-		return result.toString();
-	}
-
-	private static String extractMetaTags(Document doc) {
-		StringBuffer result = new StringBuffer();
-		for (Element metaTag : doc
-				.select("meta[name~=(keywords|description)][content]"))
-			result.append(metaTag.attr("content") + " ");
-		return result.toString();
-	}
-
+	/** Mapper Class for Document Indexer */
 	public static class DocumentIndexer extends
 			Mapper<LongWritable, Text, Text, Text> {
-
-		public static Map<String, WordCounts> computeCounts(URLContent page) {
-			Document doc = Jsoup.parse(page.getContent(), page.getUrl());
-			doc.select("script,style").remove();
-			
-			WordCounts linkCounts = new WordCounts(
-					new Tokenizer(doc.select("a[href]").text()).getTokens());
-			WordCounts metaTagCounts = new WordCounts(
-					new Tokenizer(extractMetaTags(doc)).getTokens());
-			WordCounts headerCounts = new WordCounts(
-					new Tokenizer(doc.select("title,h1,h2,h3,h4,h5,h6").text()).getTokens());
-			WordCounts normalCounts = new WordCounts(new Tokenizer(doc.select(
-					"title,body").text()).getTokens()).addCounts(metaTagCounts);
-
-			Map<String, WordCounts> allCounts = new HashMap<String, WordCounts>();
-			allCounts.put("linkCounts", linkCounts);
-			allCounts.put("metaTagCounts", metaTagCounts);
-			allCounts.put("headerCounts", headerCounts);
-			allCounts.put("normalCounts", normalCounts);
-			
-			return allCounts;
-		}
 		
 		@Override
 		public void map(LongWritable lineNr, Text jsonBlob, Context context)
@@ -81,7 +43,8 @@ public class InvertedIndexJob {
 			URLContent page = new Gson().fromJson(jsonBlob.toString(), URLContent.class);
 			Map<String, WordCounts> allCounts = computeCounts(page);
 			
-			for (String word : allCounts.get("normalCounts")) {
+			WordCounts wordCnts = allCounts.get("normalCounts");
+			for (String word : wordCnts) {
 				// value format: url max-tf euclid-tf total-counts# link-counts#
 				//               metatag-counts# header-counts#
 				String value = String.format("%s\t%f\t%f\t%d\t%d\t%d\t%d",
@@ -98,6 +61,7 @@ public class InvertedIndexJob {
 		}
 	}
 
+	/** Reducer Class for Corpus Indexer */
 	public static class CorpusIndexer extends Reducer<Text, Text, Text, Text> {
 		@Override
 		public void reduce(Text word, Iterable<Text> urls, Context context)
@@ -114,6 +78,7 @@ public class InvertedIndexJob {
 		}
 	}
 
+	/** Main Indexer MapReduce Job */
 	public static void main(String[] args) throws IOException,
 			ClassNotFoundException, InterruptedException {
 		logger.info(String.format(
@@ -139,4 +104,46 @@ public class InvertedIndexJob {
 
 		System.exit(job.waitForCompletion(true) ? 0 : 1);
 	}
+	
+	/** Calculating all counts for Page contents */
+	public static Map<String, WordCounts> computeCounts(URLContent page) {
+		Document doc = Jsoup.parse(page.getContent(), page.getUrl());
+		doc.select("script,style").remove();
+		
+		WordCounts linkCounts = new WordCounts(
+				new Tokenizer(doc.select("a[href]").text()).getTokens());
+		WordCounts metaTagCounts = new WordCounts(
+				new Tokenizer(extractMetaTags(doc)).getTokens());
+		WordCounts headerCounts = new WordCounts(
+				new Tokenizer(doc.select("title,h1,h2,h3,h4,h5,h6").text()).getTokens());
+		WordCounts normalCounts = new WordCounts(new Tokenizer(doc.select(
+				"title,body").text()).getTokens()).addCounts(metaTagCounts);
+
+		Map<String, WordCounts> allCounts = new HashMap<String, WordCounts>();
+		allCounts.put("linkCounts", linkCounts);
+		allCounts.put("metaTagCounts", metaTagCounts);
+		allCounts.put("headerCounts", headerCounts);
+		allCounts.put("normalCounts", normalCounts);
+		
+		return allCounts;
+	}
+	
+	@SuppressWarnings("unused")
+	private static String extractLinks(Document doc) {
+		StringBuffer result = new StringBuffer();
+		for (Element link : doc.select("a[href]")) {
+			result.append(link.attr("href") + " ");
+			result.append(link.text() + " ");
+		}
+		return result.toString();
+	}
+
+	private static String extractMetaTags(Document doc) {
+		StringBuffer result = new StringBuffer();
+		for (Element metaTag : doc
+				.select("meta[name~=(keywords|description)][content]"))
+			result.append(metaTag.attr("content") + " ");
+		return result.toString();
+	}
+	
 }
