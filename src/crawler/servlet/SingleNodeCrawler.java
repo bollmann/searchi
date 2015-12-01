@@ -109,7 +109,10 @@ public class SingleNodeCrawler extends HttpServlet {
 		// allowedDomains.add("reddit.com");
 
 		try {
-			allowedDomains = readDomainConfigFile(domainConfigFile);
+			for (String domainConfig : domainConfigFile.split(",")) {
+				logger.info("Reading domain config file:" + domainConfig);
+				allowedDomains = readDomainConfigFile(domainConfig);
+			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

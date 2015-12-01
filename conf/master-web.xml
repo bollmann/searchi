@@ -44,7 +44,7 @@
      
      <context-param>
      	<param-name>domain-config</param-name>
-     	<param-value>conf/domains1.csv</param-value>
+     	<param-value>conf/domains1.csv,conf/domains1-2.csv</param-value>
      </context-param>
      
           <context-param>
