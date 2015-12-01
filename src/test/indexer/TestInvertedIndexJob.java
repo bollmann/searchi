@@ -30,7 +30,7 @@ public class TestInvertedIndexJob extends TestCase {
 		URLContent page = new URLContent("http://www.schnitzel.com/");
 		page.setContent(content.toString());
 		
-		Map<String, WordCounts> allCounts = InvertedIndexJob.DocumentIndexer.computeCounts(page);
+		Map<String, WordCounts> allCounts = InvertedIndexJob.computeCounts(page);
 		
 		// link counts
 		Map<String, Integer> expLinkCounts = new HashMap<String, Integer>();
@@ -38,7 +38,7 @@ public class TestInvertedIndexJob extends TestCase {
 		expLinkCounts.put("schnitzel", 1);
 		expLinkCounts.put("in", 1);
 		expLinkCounts.put("link", 1);
-		
+
 		assertEquals(expLinkCounts, allCounts.get("linkCounts").getCounts());
 		
 		// header counts
@@ -79,7 +79,7 @@ public class TestInvertedIndexJob extends TestCase {
 		expNormalCounts.put("some", 2);
 		expNormalCounts.put("link", 1);
 		expNormalCounts.put("in", 1);
-		
+
 		assertEquals(expNormalCounts, allCounts.get("normalCounts").getCounts());
 	}
 }
