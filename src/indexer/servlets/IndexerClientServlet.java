@@ -3,7 +3,7 @@ package indexer.servlets;
 import indexer.DocumentScore;
 import indexer.DocumentVector;
 import indexer.InvertedIndex;
-import indexer.InvertedIndexRow;
+import indexer.dao.InvertedIndexRow;
 
 import java.io.IOException;
 import java.io.PrintWriter;
