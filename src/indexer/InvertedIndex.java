@@ -37,13 +37,17 @@ public class InvertedIndex {
 	private int corpusSize;
 	
 	public InvertedIndex() {
+		this.db = connectDB();
+		S3Wrapper s3 = S3Wrapper.getInstance();
+		this.corpusSize = s3.getNumberOfItemsInBucket(S3_CRAWL_SNAPSHOT);
+	}
+	
+	private static DynamoDBMapper connectDB() {
 		AWSCredentials credentials = new ProfileCredentialsProvider(CREDENTIALS_PROFILE).getCredentials();
 		AmazonDynamoDBClient dbClient = new AmazonDynamoDBClient(credentials);
 		dbClient.setRegion(Region.getRegion(Regions.US_EAST_1));
 		
-		this.db = new DynamoDBMapper(dbClient);
-		S3Wrapper s3 = S3Wrapper.getInstance();
-		this.corpusSize = s3.getNumberOfItemsInBucket(S3_CRAWL_SNAPSHOT);
+		return new DynamoDBMapper(dbClient);
 	}
 	
 	public List<InvertedIndexRow> getDocumentLocations(String word) {
@@ -55,7 +59,8 @@ public class InvertedIndex {
 		return db.query(InvertedIndexRow.class, query);
 	}
 	
-	public void importData(String fromFile, int batchSize) throws IOException {
+	public static void importData(String fromFile, int batchSize) throws IOException {
+		DynamoDBMapper db = connectDB();
 		BufferedReader br = new BufferedReader(new FileReader(new File(fromFile)));
 		String line = null;
 		List<InvertedIndexRow> items = new LinkedList<InvertedIndexRow>();
@@ -75,7 +80,7 @@ public class InvertedIndex {
 				
 				items.add(item);
 				if(items.size() >= batchSize) {
-					this.db.batchSave(items);
+					db.batchSave(items);
 					items = new LinkedList<InvertedIndexRow>();
 					logger.info(String.format("imported %d records into DynamoDB's 'inverted-index' table.", items.size()));
 				}
@@ -83,7 +88,7 @@ public class InvertedIndex {
 				logger.error(String.format("importing inverted index row '%s' failed.", line), e);
 			}
 		}
-		this.db.batchSave(items);
+		db.batchSave(items);
 		br.close();
 	}
 	
@@ -156,14 +161,14 @@ public class InvertedIndex {
 	}
 	
 	public static void main(String[] args) {
-		try {
-			InvertedIndex idx = new InvertedIndex();
-			
+		try {			
 			if(args[0].equals("import")) {
 				int batchSize = Integer.parseInt(args[2]);
 				System.out.println("importing with batchSize " + batchSize + "...");
-				idx.importData(args[1], Integer.parseInt(args[2]));
+				InvertedIndex.importData(args[1], Integer.parseInt(args[2]));
 			} else if(args[0].equals("query")) {
+				InvertedIndex idx = new InvertedIndex();
+
 				List<String> query = Arrays.asList(Arrays.copyOfRange(args, 1, args.length));
 				System.out.println("querying for words " + query + "...");
 
