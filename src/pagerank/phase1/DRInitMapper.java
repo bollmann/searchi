@@ -8,11 +8,12 @@ import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 
-import com.google.gson.Gson;
 import utils.string.StringUtils;
 
-public class PRInitMapper2 extends Mapper<LongWritable, Text, Text, Text> {
+import com.google.gson.Gson;
 
+public class DRInitMapper extends Mapper<LongWritable, Text, Text, Text> {
+	
 	private class PageBlob {
 		String url;
 		List<String> outgoingLinks;
@@ -25,9 +26,10 @@ public class PRInitMapper2 extends Mapper<LongWritable, Text, Text, Text> {
 		Gson gson = new Gson();
 		PageBlob blob = gson.fromJson(jsonBlob.toString(), PageBlob.class);
 
-		Text url = new Text(StringUtils.normalizeUrlToString(blob.url.trim()));
-		Text outLinks = new Text(StringUtils.listToString(
-				blob.outgoingLinks,	" ", Arrays.asList(blob.url.trim())));
+		String urlDomain = StringUtils.getDomainFromUrl(blob.url.trim());
+		Text url = new Text(urlDomain);
+		Text outLinks = new Text(StringUtils.listToDomainString(
+				blob.outgoingLinks,	" ", Arrays.asList(urlDomain)));
 
 		context.write(url, outLinks);
 	}

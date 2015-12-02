@@ -33,6 +33,7 @@ public final class PRInitJob extends Configured implements Tool {
         job.setJobName("PageRankInit");
         //job.setMapperClass(PRInitMapper.class);
         job.setMapperClass(PRInitMapper2.class);
+        //job.setMapperClass(DRInitMapper.class);
         job.setReducerClass(PRInitReducer.class);
 
         //job.setInputFormatClass(KeyValueTextInputFormat.class);
