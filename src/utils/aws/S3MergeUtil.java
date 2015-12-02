@@ -53,7 +53,11 @@ public final class S3MergeUtil {
 		String prefix, String outPrefix) throws IOException {
 		
 		ListObjectsRequest listObjectsRequest = 
-			new ListObjectsRequest().withBucketName(inpBucket).withPrefix(prefix);
+			new ListObjectsRequest().withBucketName(inpBucket);
+
+		if (prefix != null && !prefix.isEmpty()) {
+			listObjectsRequest.setPrefix(prefix);
+		}
 		
 		ObjectListing objectListing;
 
@@ -122,15 +126,16 @@ public final class S3MergeUtil {
 			System.exit(-1);
 		}
 		
-		String inpPrefix = "";
+		String outPrefix = "";
 		if (args.length > 3) {
-			inpPrefix = args[3].trim();
+			outPrefix = args[3].trim();
 		}
 		
-		String outPrefix = "";
+		String inpPrefix = "";
 		if (args.length > 4) {
-			outPrefix = args[4].trim();
+			inpPrefix = args[4].trim();
 		}
+
 		try {
 			utility.merge(args[0].trim(), args[1].trim(), Integer.parseInt(args[2].trim()),
 				inpPrefix, outPrefix);
@@ -140,10 +145,10 @@ public final class S3MergeUtil {
 		}
 	}
 	
-
 	private static void usage() {
 		logger.info("USAGE\n");
-		logger.info("java S3MergeUtil <S3InpBucket> <S3OutBucket> <MergeFactor>");
+		logger.info("java S3MergeUtil <S3InpBucket> <S3OutBucket> <MergeFactor> ");
+		logger.info("[outputPrefix] [inpPrefix]");
 	}
 
 	private String getContentAsString(S3ObjectInputStream is) 
@@ -153,7 +158,7 @@ public final class S3MergeUtil {
 		String res = "";
 		String line = "";
 		while((line = br.readLine()) != null) {
-			res += line;			
+			res += line;
 		}
 		return res;
 	}
