@@ -35,6 +35,7 @@ public class SingleNodeCrawler extends HttpServlet {
 	private MercatorQueue mq = null;
 	private DynamoDBWrapper ddb = null;
 	private S3Wrapper s3 = null;
+	private Set<String> blacklistedDomains;
 
 	public void initDB() {
 		ddb = DynamoDBWrapper.getInstance(DynamoDBWrapper.US_EAST);
@@ -102,16 +103,27 @@ public class SingleNodeCrawler extends HttpServlet {
 		/* ------------------------------ Domain Config ------------------------ */
 		// fill allowedDomains from config file
 		allowedDomains = new HashSet<String>();
+		blacklistedDomains = new HashSet<String>();
 		String domainConfigFile = getServletContext().getInitParameter(
 				"domain-config");
+		
+		String blackListConfigFile = getServletContext().getInitParameter(
+				"blacklist-config");
 
 		// allowedDomains.add("wikipedia.org");
 		// allowedDomains.add("reddit.com");
 
 		try {
+			// domain list
 			for (String domainConfig : domainConfigFile.split(",")) {
 				logger.info("Reading domain config file:" + domainConfig);
-				allowedDomains = readDomainConfigFile(domainConfig);
+				allowedDomains = readConfigFile(domainConfig, 2);
+			}
+			
+			// blacklisted domains
+			for (String blackListConfig : blackListConfigFile.split(",")) {
+				logger.info("Reading domain config file:" + blackListConfig);
+				allowedDomains = readConfigFile(blackListConfig, 1);
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -147,20 +159,20 @@ public class SingleNodeCrawler extends HttpServlet {
 		Integer maxProcessors = 200;
 		for (int i = 0; i < maxProcessors; i++) {
 			UrlProcessorThread processor = new UrlProcessorThread(mq,
-					allowedDomains, urlQueue, workerStatus);
+					allowedDomains, blacklistedDomains, urlQueue, workerStatus);
 			processor.start();
 		}
 
 	}
 
-	public Set<String> readDomainConfigFile(String fileName) throws IOException {
+	public Set<String> readConfigFile(String fileName, int field) throws IOException {
 		Set<String> result = new HashSet<String>();
 		String content = FilePolicy.readFile(fileName);
 		for (String line : content.split("\n")) {
-			if (line.split(",").length < 2) {
+			if (line.split(",").length < (field-1)) {
 				continue;
 			}
-			String domain = line.split(",")[1];
+			String domain = line.split(",")[field-1];
 			logger.debug("Read domain:" + domain);
 			result.add(domain);
 		}

@@ -29,14 +29,16 @@ public class UrlProcessorThread extends Thread {
 	private final Logger logger = Logger.getLogger(getClass());
 	private DiskBackedQueue<String> urlQueue = null;
 	private Set<String> allowedDomains = null;
+	private Set<String> blacklistedDomains = null;
 	private MercatorQueue mq = null;
 	private WorkerStatus workerStatus = null;
 	private DynamoDBWrapper ddb = null;
 
-	public UrlProcessorThread(MercatorQueue mq, Set<String> allowedDomains,
+	public UrlProcessorThread(MercatorQueue mq, Set<String> allowedDomains, Set<String> blacklistedDomains,
 			DiskBackedQueue<String> urlQueue, WorkerStatus workerStatus) {
 		this.mq = mq;
 		this.allowedDomains = allowedDomains;
+		this.blacklistedDomains = blacklistedDomains;
 		this.urlQueue = urlQueue;
 		this.workerStatus = workerStatus;
 		ddb = DynamoDBWrapper
@@ -82,7 +84,8 @@ public class UrlProcessorThread extends Thread {
 					} else {
 						if (mn.isAllowed(parsedUrl.getPath())
 								&& !mq.isVisited(url)
-								&& allowedDomains.contains(domain)) {
+								&& allowedDomains.contains(domain)
+								&& !blacklistedDomains.contains(domain)) {
 							logger.info("Allowing url " + url
 									+ " to be sent to workers");
 							synchronized (mn) {

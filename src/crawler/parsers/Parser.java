@@ -88,6 +88,21 @@ public class Parser {
 	
 	public static String[] nonCrawlableUrlPatterns = {".*\\.jpg", ".*\\.php", 
 		".*\\.css", ".*\\.js", ".*\\.gif", ".*\\.png", ".*\\.less"};
+	
+	public static List<String> mostCommonEnglishWords = new ArrayList<String>() {{
+		add("the");
+		add("be");
+		add("to");
+		add("of");
+		add("and");
+		add("a");
+		add("in");
+		add("that");
+		add("have");
+		add("I");
+	}};
+	
+	public static int englishWordCountHeuristic = 4;
 	/**
 	 * The Class Handler.
 	 */
@@ -1039,5 +1054,17 @@ public class Parser {
 		}
 		String changed = domain.replaceAll("^[^.]*\\.(?=\\w+\\.\\w+$)", "");
 		return changed;
+	}
+	
+	public static boolean isEnglishContent(String content) {
+		int englishWordCount = 0;
+		
+		for(String englishWord : mostCommonEnglishWords) {
+			if(content.contains(englishWord)) {
+				englishWordCount++;
+			}
+		}
+		
+		return (englishWordCount >= englishWordCountHeuristic);
 	}
 }
