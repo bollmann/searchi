@@ -43,15 +43,15 @@ public class InvertedIndexJob {
 			URLContent page = new Gson().fromJson(jsonBlob.toString(), URLContent.class);
 			Map<String, WordCounts> allCounts = computeCounts(page);
 			
-			WordCounts wordCnts = allCounts.get("normalCounts");
-			for (String word : wordCnts) {
+			WordCounts wordCounts = allCounts.get("totalCounts");
+			for (String word : wordCounts) {
 				// value format: url max-tf euclid-tf total-counts# link-counts#
 				//               metatag-counts# header-counts#
 				String value = String.format("%s\t%f\t%f\t%d\t%d\t%d\t%d",
 						page.getUrl(),
-						allCounts.get("normalCounts").getEuclideanTermFrequency(word),
-						allCounts.get("normalCounts").getMaximumTermFrequency(word),
-						allCounts.get("normalCounts").getCounts(word), 
+						allCounts.get("totalCounts").getEuclideanTermFrequency(word),
+						allCounts.get("totalCounts").getMaximumTermFrequency(word),
+						allCounts.get("totalCounts").getCounts(word), 
 						allCounts.get("linkCounts").getCounts(word),
 						allCounts.get("metaTagCounts").getCounts(word),
 						allCounts.get("headerCounts").getCounts(word));
@@ -116,14 +116,14 @@ public class InvertedIndexJob {
 				new Tokenizer(extractMetaTags(doc)).getTokens());
 		WordCounts headerCounts = new WordCounts(
 				new Tokenizer(doc.select("title,h1,h2,h3,h4,h5,h6").text()).getTokens());
-		WordCounts normalCounts = new WordCounts(new Tokenizer(doc.select(
+		WordCounts totalCounts = new WordCounts(new Tokenizer(doc.select(
 				"title,body").text()).getTokens()).addCounts(metaTagCounts);
 
 		Map<String, WordCounts> allCounts = new HashMap<String, WordCounts>();
 		allCounts.put("linkCounts", linkCounts);
 		allCounts.put("metaTagCounts", metaTagCounts);
 		allCounts.put("headerCounts", headerCounts);
-		allCounts.put("normalCounts", normalCounts);
+		allCounts.put("totalCounts", totalCounts);
 		
 		return allCounts;
 	}
