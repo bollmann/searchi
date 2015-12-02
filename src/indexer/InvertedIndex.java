@@ -55,7 +55,7 @@ public class InvertedIndex {
 		return db.query(InvertedIndexRow.class, query);
 	}
 	
-	public void importData(String fromFile) throws IOException {
+	public void importData(String fromFile, int batchSize) throws IOException {
 		BufferedReader br = new BufferedReader(new FileReader(new File(fromFile)));
 		String line = null;
 		List<InvertedIndexRow> items = new LinkedList<InvertedIndexRow>();
@@ -76,7 +76,7 @@ public class InvertedIndex {
 				item.setHeaderCount(Integer.parseInt(parts[7]));
 				
 				items.add(item);
-				if(items.size() >= 5000) {
+				if(items.size() >= batchSize) {
 					this.db.batchSave(items);
 					items = new LinkedList<InvertedIndexRow>();
 					logger.info(String.format("imported %d records into DynamoDB's 'inverted-index' table.", rowCount));
@@ -162,7 +162,7 @@ public class InvertedIndex {
 			InvertedIndex idx = new InvertedIndex();
 			
 			if(args[0].equals("import")) {
-				idx.importData(args[1]);
+				idx.importData(args[1], Integer.parseInt(args[2]));
 			} else if(args[0].equals("query")) {
 				List<String> query = Arrays.asList(Arrays.copyOfRange(args, 1, args.length));
 				PriorityQueue<DocumentScore> newResults = idx.rankDocuments(query);
@@ -183,7 +183,7 @@ public class InvertedIndex {
 					System.out.println(doc.toString());
 				}
 			} else {
-				System.out.println("usage: InvertedIndex import <fromdir>");
+				System.out.println("usage: InvertedIndex import <fromdir> <batchSize>");
 				System.out.println("       InvertedIndex query <word1> <word2> ... <wordN>");
 			}
 		} catch(Exception e) {
