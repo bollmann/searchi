@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<jardesc>
+    <jar path="searchi/domainrank.jar"/>
+    <options buildIfNeeded="true" compress="true" descriptionLocation="/searchi/build/pagerank/domainrnak.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="true" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
+    <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
+    <selectedProjects/>
+    <manifest generateManifest="true" mainClassHandleIdentifier="=searchi/src&lt;pagerank.phase2{PRComputeJob.java[PRComputeJob" manifestLocation="" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
+        <sealing sealJar="false">
+            <packagesToSeal/>
+            <packagesToUnSeal/>
+        </sealing>
+    </manifest>
+    <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
+        <javaElement handleIdentifier="=searchi/src&lt;pagerank.db.dao"/>
+        <javaElement handleIdentifier="=searchi/src&lt;pagerank.db.ddl"/>
+        <javaElement handleIdentifier="=searchi/src&lt;mapreduce.lib"/>
+        <javaElement handleIdentifier="=searchi/src&lt;pagerank.api"/>
+        <javaElement handleIdentifier="=searchi/src&lt;pagerank.phase2"/>
+        <javaElement handleIdentifier="=searchi/src&lt;pagerank.phase1"/>
+        <javaElement handleIdentifier="=searchi/src&lt;utils.file"/>
+        <javaElement handleIdentifier="=searchi/src&lt;db.wrappers"/>
+        <javaElement handleIdentifier="=searchi/src&lt;utils.aws"/>
+        <javaElement handleIdentifier="=searchi/src&lt;utils.string"/>
+    </selectedElements>
+</jardesc>
