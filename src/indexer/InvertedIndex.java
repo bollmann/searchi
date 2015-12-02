@@ -60,9 +60,7 @@ public class InvertedIndex {
 		String line = null;
 		List<InvertedIndexRow> items = new LinkedList<InvertedIndexRow>();
 		
-		int rowCount = 0;
 		while ((line = br.readLine()) != null) {
-			++rowCount;
 			try {
 				String parts[] = line.split("\t");
 				InvertedIndexRow item = new InvertedIndexRow();
@@ -79,7 +77,7 @@ public class InvertedIndex {
 				if(items.size() >= batchSize) {
 					this.db.batchSave(items);
 					items = new LinkedList<InvertedIndexRow>();
-					logger.info(String.format("imported %d records into DynamoDB's 'inverted-index' table.", rowCount));
+					logger.info(String.format("imported %d records into DynamoDB's 'inverted-index' table.", items.size()));
 				}
 			} catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
 				logger.error(String.format("importing inverted index row '%s' failed.", line), e);
@@ -162,9 +160,13 @@ public class InvertedIndex {
 			InvertedIndex idx = new InvertedIndex();
 			
 			if(args[0].equals("import")) {
+				int batchSize = Integer.parseInt(args[2]);
+				System.out.println("importing with batchSize " + batchSize + "...");
 				idx.importData(args[1], Integer.parseInt(args[2]));
 			} else if(args[0].equals("query")) {
 				List<String> query = Arrays.asList(Arrays.copyOfRange(args, 1, args.length));
+				System.out.println("querying for words " + query + "...");
+
 				PriorityQueue<DocumentScore> newResults = idx.rankDocuments(query);
 				
 				Iterator<DocumentScore> iter = newResults.iterator();
