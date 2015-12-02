@@ -81,8 +81,9 @@ public class InvertedIndex {
 				items.add(item);
 				if(items.size() >= batchSize) {
 					db.batchSave(items);
-					items = new LinkedList<InvertedIndexRow>();
 					logger.info(String.format("imported %d records into DynamoDB's 'inverted-index' table.", items.size()));
+
+					items = new LinkedList<InvertedIndexRow>();
 				}
 			} catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
 				logger.error(String.format("importing inverted index row '%s' failed.", line), e);
