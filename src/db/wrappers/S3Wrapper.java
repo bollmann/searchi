@@ -46,7 +46,7 @@ public class S3Wrapper {
 
 	private S3Wrapper() {
 		s3client = new AmazonS3Client(
-				new ProfileCredentialsProvider("shreejit"));
+				new ProfileCredentialsProvider("default"));
 		s3client.setRegion(Region.getRegion(Regions.US_EAST_1));
 	}
 

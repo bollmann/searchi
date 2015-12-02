@@ -1,4 +1,6 @@
-package indexer;
+package indexer.dao;
+
+import indexer.InvertedIndex;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;

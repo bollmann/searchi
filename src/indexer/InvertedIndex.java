@@ -1,5 +1,7 @@
 package indexer;
 
+import indexer.dao.InvertedIndexRow;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -22,21 +24,30 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 
+import db.wrappers.S3Wrapper;
+
 public class InvertedIndex {
 	private static Logger logger = Logger.getLogger(InvertedIndex.class);
 
 	public static final String CREDENTIALS_PROFILE = "default";
 	public static final String TABLE_NAME = "InvertedIndex";
+	public static final String S3_CRAWL_SNAPSHOT = "cis455-url-content-snapshot5";
 	
 	private DynamoDBMapper db;
+	private int corpusSize;
 	
 	public InvertedIndex() {
+		this.db = connectDB();
+		S3Wrapper s3 = S3Wrapper.getInstance();
+		this.corpusSize = s3.getNumberOfItemsInBucket(S3_CRAWL_SNAPSHOT);
+	}
+	
+	private static DynamoDBMapper connectDB() {
 		AWSCredentials credentials = new ProfileCredentialsProvider(CREDENTIALS_PROFILE).getCredentials();
 		AmazonDynamoDBClient dbClient = new AmazonDynamoDBClient(credentials);
 		dbClient.setRegion(Region.getRegion(Regions.US_EAST_1));
 		
-		this.db = new DynamoDBMapper(dbClient);
-		// TODO: obtain the real corpus size here at the beginning once!
+		return new DynamoDBMapper(dbClient);
 	}
 	
 	public List<InvertedIndexRow> getDocumentLocations(String word) {
@@ -48,14 +59,13 @@ public class InvertedIndex {
 		return db.query(InvertedIndexRow.class, query);
 	}
 	
-	public void importData(String fromFile) throws IOException {
+	public static void importData(String fromFile, int batchSize) throws IOException {
+		DynamoDBMapper db = connectDB();
 		BufferedReader br = new BufferedReader(new FileReader(new File(fromFile)));
 		String line = null;
 		List<InvertedIndexRow> items = new LinkedList<InvertedIndexRow>();
 		
-		int rowCount = 0;
 		while ((line = br.readLine()) != null) {
-			++rowCount;
 			try {
 				String parts[] = line.split("\t");
 				InvertedIndexRow item = new InvertedIndexRow();
@@ -69,23 +79,21 @@ public class InvertedIndex {
 				item.setHeaderCount(Integer.parseInt(parts[7]));
 				
 				items.add(item);
-				if(items.size() >= 5000) {
-					this.db.batchSave(items);
+				if(items.size() >= batchSize) {
+					db.batchSave(items);
+					logger.info(String.format("imported %d records into DynamoDB's 'inverted-index' table.", items.size()));
+
 					items = new LinkedList<InvertedIndexRow>();
-					logger.info(String.format("imported %d records into DynamoDB's 'inverted-index' table.", rowCount));
 				}
 			} catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
 				logger.error(String.format("importing inverted index row '%s' failed.", line), e);
 			}
 		}
-		this.db.batchSave(items);
+		db.batchSave(items);
 		br.close();
 	}
 	
 	public PriorityQueue<DocumentScore> rankDocuments(List<String> query) {
-		// TODO: query URLMetaInfo dynamoDB table for corpus size??
-		int corpusSize = 4000;
-		
 		WordCounts queryCounts = new WordCounts(query);
 		Map<String, DocumentScore> documentRanks = new HashMap<String, DocumentScore>();
 		for(String word: query) {
@@ -100,7 +108,7 @@ public class InvertedIndex {
 					rankedDoc.addFeatures(row);
 				}
 				double queryWeight = queryCounts.getTFIDF(word, corpusSize, rows.size());
-				double docWeight = row.getEuclideanTermFrequency();
+				double docWeight = row.getEuclideanTermFrequency(); // TODO: try other weighting functions!b
 				rankedDoc.setRank(rankedDoc.getRank() + queryWeight * docWeight);
 			}
 			logger.info(String.format("=> got %d documents for query word '%s'.", rows.size(), word));
@@ -109,9 +117,6 @@ public class InvertedIndex {
 	}
 	
 	public PriorityQueue<DocumentVector> lookupDocuments(List<String> query) {
-		// TODO: query URLMetaInfo dynamoDB table for real corpus size!
-		int corpusSize = 4000;
-		
 		List<InvertedIndexRow> candidates = new LinkedList<InvertedIndexRow>();
 		Map<String, Integer> dfs = new HashMap<String, Integer>();
 		for(String word: query) {
@@ -157,13 +162,17 @@ public class InvertedIndex {
 	}
 	
 	public static void main(String[] args) {
-		try {
-			InvertedIndex idx = new InvertedIndex();
-			
+		try {			
 			if(args[0].equals("import")) {
-				idx.importData(args[1]);
+				int batchSize = Integer.parseInt(args[2]);
+				System.out.println("importing with batchSize " + batchSize + "...");
+				InvertedIndex.importData(args[1], Integer.parseInt(args[2]));
 			} else if(args[0].equals("query")) {
+				InvertedIndex idx = new InvertedIndex();
+
 				List<String> query = Arrays.asList(Arrays.copyOfRange(args, 1, args.length));
+				System.out.println("querying for words " + query + "...");
+
 				PriorityQueue<DocumentScore> newResults = idx.rankDocuments(query);
 				
 				Iterator<DocumentScore> iter = newResults.iterator();
@@ -182,7 +191,7 @@ public class InvertedIndex {
 					System.out.println(doc.toString());
 				}
 			} else {
-				System.out.println("usage: InvertedIndex import <fromdir>");
+				System.out.println("usage: InvertedIndex import <fromdir> <batchSize>");
 				System.out.println("       InvertedIndex query <word1> <word2> ... <wordN>");
 			}
 		} catch(Exception e) {

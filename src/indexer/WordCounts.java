@@ -30,6 +30,7 @@ public class WordCounts implements Iterable<String> {
 		this.maxWord = (other.maxWord == null ? null : new String(other.maxWord));
 	}
 	
+	/** Adding word counts together. */ 
 	public WordCounts addCounts(WordCounts other) {
 		for(String word: other.wordCounts.keySet()) {
 			if(this.wordCounts.containsKey(word))
@@ -43,11 +44,12 @@ public class WordCounts implements Iterable<String> {
 		return this;
 	}
 	
+	/** Calculate TF for a word */
 	public double getMaximumTermFrequency(String word) {
 		double alpha = 0.5;
 		return alpha + (1 - alpha) * ((double) wordCounts.get(word) / wordCounts.get(maxWord));
 	}
-	
+	/** Get Euclidean Term Freq of a word */
 	public double getEuclideanTermFrequency(String word) {
 		int docSize = 0;
 		for(String w: wordCounts.keySet())
@@ -55,6 +57,7 @@ public class WordCounts implements Iterable<String> {
 		return getCounts(word) / Math.sqrt((double) docSize);
 	}
 	
+	/** Get counts of a word */
 	public int getCounts(String word) {
 		if(wordCounts.containsKey(word))
 			return wordCounts.get(word);
@@ -62,6 +65,7 @@ public class WordCounts implements Iterable<String> {
 			return 0;
 	}
 	
+	/** Get TF-IDF scores dfor a word - document */
 	public double getTFIDF(String word, int corpusSize, int df) {
 		return this.getMaximumTermFrequency(word) * Math.log((double) corpusSize / df);
 	}

@@ -1,5 +1,7 @@
 package indexer;
 
+import indexer.dao.InvertedIndexRow;
+
 import java.util.HashMap;
 import java.util.Map;
 
