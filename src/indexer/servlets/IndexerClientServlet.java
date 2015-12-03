@@ -99,7 +99,7 @@ public class IndexerClientServlet extends HttpServlet {
 			for (DocumentScore doc : iiObj.rankDocuments(query)) {
 				SearchResult sr = new SearchResult();
 				sr.setUrl(doc.getUrl());
-				sr.setRank(doc.getRank());
+				sr.setScore(doc.getRank());
 				sr.setSnippet(doc.toString());
 				buffer.append("<li>" + sr.toHtml() + "</li>");
 				indexerScore.put(doc.getUrl(), doc.getRank());
@@ -121,7 +121,7 @@ public class IndexerClientServlet extends HttpServlet {
 
 			logger.info("Page rank returned " + pageRankScore.size()
 					+ " results");
-			PriorityQueue<SearchResult> pqueue = SearchEngineUtils
+			List<SearchResult> pqueue = SearchEngineUtils
 					.convertScoreMapToPriorityQueue(pageRankScore);
 
 			resultCount = 0;
@@ -144,7 +144,7 @@ public class IndexerClientServlet extends HttpServlet {
 			/******************************** Final display *********************/
 			startTime = Calendar.getInstance().getTime();
 			Double[] weights = { 0.9, 0.1 };
-			PriorityQueue<SearchResult> result = SearchEngineUtils
+			List<SearchResult> result = SearchEngineUtils
 					.weightedMergeScores(indexerScore, pageRankScore, weights);
 			buffer.append("<br>Combined Results:<ol>");
 
@@ -152,7 +152,7 @@ public class IndexerClientServlet extends HttpServlet {
 			for (SearchResult doc : result) {
 				buffer.append("<li>" + doc.toHtml() + "</li>");
 				lookupList.add(doc.getUrl());
-				indexerScore.put(doc.getUrl(), doc.getRank());
+				indexerScore.put(doc.getUrl(), doc.getScore());
 				resultCount++;
 				if (resultCount > 10) {
 					break;

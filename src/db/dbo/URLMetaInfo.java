@@ -70,7 +70,7 @@ public class URLMetaInfo {
 	 * Do not delete. DynamoDBMapper needs this
 	 */
 	public URLMetaInfo() {
-		id = UUID.randomUUID().toString();
+//		id = UUID.randomUUID().toString();
 	}
 
 	@DynamoDBHashKey(attributeName = "url")

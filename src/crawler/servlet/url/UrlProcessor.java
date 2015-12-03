@@ -100,6 +100,8 @@ public class UrlProcessor {
 					Date start = Calendar.getInstance().getTime();
 
 					URLMetaInfo toSave = new URLMetaInfo(url);
+					logger.info("Saving data for " + url + "with id " + toSave.getId());
+					
 					// toSave.setUrl(url);
 					toSave.setLastCrawledOn(Calendar.getInstance().getTime());
 

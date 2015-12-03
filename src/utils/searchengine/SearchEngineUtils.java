@@ -2,18 +2,20 @@ package utils.searchengine;
 
 import indexer.servlets.SearchResult;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.PriorityQueue;
 
 import org.apache.log4j.Logger;
 
 public class SearchEngineUtils {
 	private final static Logger logger = Logger.getLogger(SearchEngineUtils.class);
-	public static PriorityQueue<SearchResult> weightedMergeScores(
+	public static List<SearchResult> weightedMergeScores(
 			Map<String, Double> map1, Map<String, Double> map2,
 			Double weights[]) {
-		PriorityQueue<SearchResult> resultQueue = new PriorityQueue<SearchResult>(
+		List<SearchResult> resultList = new ArrayList<SearchResult>(
 				1000);
 
 		for (Entry<String, Double> entry : map1.entrySet()) {
@@ -33,22 +35,23 @@ public class SearchEngineUtils {
 
 			SearchResult sr = new SearchResult();
 			sr.setUrl(entry.getKey());
-			sr.setRank(finalScore);
-			resultQueue.add(sr);
+			sr.setScore(finalScore);
+			resultList.add(sr);
 		}
-
-		return resultQueue;
+		Collections.sort(resultList);
+		return resultList;
 	}
 
-	public static PriorityQueue<SearchResult> convertScoreMapToPriorityQueue(
+	public static List<SearchResult> convertScoreMapToPriorityQueue(
 			Map<String, Double> scoreMap) {
-		PriorityQueue<SearchResult> pqueue = new PriorityQueue<SearchResult>();
+		List<SearchResult> list = new ArrayList<SearchResult>();
 		for (Entry<String, Double> entry : scoreMap.entrySet()) {
 			SearchResult sr = new SearchResult();
 			sr.setUrl(entry.getKey());
-			sr.setRank(entry.getValue());
-			pqueue.add(sr);
+			sr.setScore(entry.getValue());
+			list.add(sr);
 		}
-		return pqueue;
+		Collections.sort(list);
+		return list;
 	}
 }

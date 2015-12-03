@@ -3,7 +3,7 @@ package indexer.servlets;
 public class SearchResult implements Comparable<SearchResult> {
 	private String url;
 	private String snippet;
-	private Double rank;
+	private Double score;
 	
 	public String getUrl() {
 		return url;
@@ -17,22 +17,22 @@ public class SearchResult implements Comparable<SearchResult> {
 	public void setSnippet(String snippet) {
 		this.snippet = snippet;
 	}
-	public Double getRank() {
-		return rank;
+	public Double getScore() {
+		return score;
 	}
-	public void setRank(Double score) {
-		this.rank = score;
+	public void setScore(Double score) {
+		this.score = score;
 	}
 	
 	@Override
 	public String toString() {
-		return "url:" + url + "  rank:" + rank +  "\nsnippet:" + snippet;
+		return "url:" + url + "  rank:" + score +  "\nsnippet:" + snippet;
 	}
 	
 	public String toHtml() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<p>");
-		sb.append("<a href='"+ url + "'>" + url + "</a> : " + rank);
+		sb.append("<a href='"+ url + "'>" + url + "</a> : " + score);
 		sb.append("<br>" + snippet);
 		sb.append("</p>");
 		return sb.toString();
@@ -40,7 +40,7 @@ public class SearchResult implements Comparable<SearchResult> {
 	
 	@Override
 	public int compareTo(SearchResult other) {
-		return (-1) * Double.compare(rank, other.rank);
+		return (-1) * Double.compare(score, other.score);
 	}
 
 }
