@@ -43,9 +43,9 @@ public final class PageRankAPI {
 	 * @param List<String> pages
 	 * @return Map <String, Double> pageRanks
 	 */
-	public Map <String, Double> getPageRankBatch(List<String> pages) throws Exception {
+	public Map <String, Double> getPageRankBatch(List<String> pages) throws IllegalArgumentException {
 		if (pages == null || pages.isEmpty()) {
-			throw new Exception("Invalid page. Can't find pagerank score");
+			throw new IllegalArgumentException("Invalid page. Can't find pagerank score");
 		}
 		
 		List<Object> items = new ArrayList<>();

@@ -602,5 +602,7 @@ public class TestParser extends TestCase {
 	public void testIsEnglishContent() {
 		String content1 = "";
 		String content2 = "";
+		
+		
 	}
 }

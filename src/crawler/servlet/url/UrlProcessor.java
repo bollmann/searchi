@@ -214,6 +214,7 @@ public class UrlProcessor {
 		tidy.setQuiet(true);
 		tidy.setOnlyErrors(true);
 		ByteArrayInputStream inputStream = null;
+		
 		try {
 			inputStream = new ByteArrayInputStream(content.getBytes("UTF-8"));
 		} catch (UnsupportedEncodingException e) {

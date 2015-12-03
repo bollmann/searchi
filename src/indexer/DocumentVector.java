@@ -7,6 +7,30 @@ public class DocumentVector implements Comparable<DocumentVector> {
 	private Map<String, Double> wordFrequencies;
 	private double similarityScore;
 	
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public Map<String, Double> getWordFrequencies() {
+		return wordFrequencies;
+	}
+
+	public void setWordFrequencies(Map<String, Double> wordFrequencies) {
+		this.wordFrequencies = wordFrequencies;
+	}
+
+	public double getSimilarityScore() {
+		return similarityScore;
+	}
+
+	public void setSimilarityScore(double similarityScore) {
+		this.similarityScore = similarityScore;
+	}
+
 	public DocumentVector(Map<String, Double> wordFrequencies) {
 		this.wordFrequencies = wordFrequencies;
 		this.similarityScore = -1;
@@ -25,15 +49,7 @@ public class DocumentVector implements Comparable<DocumentVector> {
 		}
 		return dotproduct;
 	}
-	
-	public void setSimilarity(double sim) {
-		this.similarityScore = sim;
-	}
-	
-	public void setUrl(String u) {
-		this.url = u;
-	}
-	
+
 	public String toString() {
 		return String.format("URL %s: cosine similarity=%f; tfidfs=%s", url, similarityScore, wordFrequencies);
 	}

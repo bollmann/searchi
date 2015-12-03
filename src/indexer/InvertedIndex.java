@@ -39,7 +39,9 @@ public class InvertedIndex {
 	public InvertedIndex() {
 		this.db = connectDB();
 		S3Wrapper s3 = S3Wrapper.getInstance();
-		this.corpusSize = s3.getNumberOfItemsInBucket(S3_CRAWL_SNAPSHOT);
+		//TODO make this faster
+//		this.corpusSize = s3.getNumberOfItemsInBucket(S3_CRAWL_SNAPSHOT);
+		this.corpusSize = 113000;
 	}
 	
 	private static DynamoDBMapper connectDB() {
@@ -113,6 +115,8 @@ public class InvertedIndex {
 			}
 			logger.info(String.format("=> got %d documents for query word '%s'.", rows.size(), word));
 		}
+		
+		// works because DocumentScore implements comparable
 		return new PriorityQueue<DocumentScore>(documentRanks.values());
 	}
 	
@@ -143,7 +147,7 @@ public class InvertedIndex {
 		for(String doc: docs.keySet()) {
 			DocumentVector docVec = new DocumentVector(docs.get(doc));
 			docVec.setUrl(doc);
-			docVec.setSimilarity(DocumentVector.cosineSimilarity(docVec, queryVector));
+			docVec.setSimilarityScore(DocumentVector.cosineSimilarity(docVec, queryVector));
 			ranks.add(docVec);
 		}
 		return ranks;
