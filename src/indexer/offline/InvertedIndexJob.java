@@ -1,10 +1,17 @@
 package indexer.offline;
 
+import indexer.InvertedIndex;
 import indexer.WordCounts;
+import indexer.dao.DocumentFeatures;
+import indexer.dao.DocumentFeaturesMarshaller;
+import indexer.dao.InvertedIndexRow;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -26,6 +33,7 @@ import org.jsoup.nodes.Element;
 
 import utils.file.FileUtils;
 
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.google.gson.Gson;
 
 import crawler.dao.URLContent;
@@ -63,17 +71,42 @@ public class InvertedIndexJob {
 
 	/** Reducer Class for Corpus Indexer */
 	public static class CorpusIndexer extends Reducer<Text, Text, Text, Text> {
+		public static final int MAX_ENTRIES_PER_ROW = 2;
+		public static final int ROWS_PER_BATCH_WRITE = 1;
+
+		private DynamoDBMapper db;
+		
+		public CorpusIndexer() {
+			this.db = InvertedIndex.connectDB();
+		}
+		
 		@Override
 		public void reduce(Text word, Iterable<Text> urls, Context context)
 				throws IOException, InterruptedException {
 			Set<String> seenURLs = new HashSet<String>();
+			List<InvertedIndexRow> rows = new ArrayList<InvertedIndexRow>();
+			
+			int page = 0;
+			for (Text stats: urls) {
+				List<DocumentFeatures> docs = new ArrayList<DocumentFeatures>();
 
-			for (Text stats : urls) {
-				String value = stats.toString();
-				String parts[] = value.split("\t");
-				if (!seenURLs.contains(parts[0]))
-					context.write(word, new Text(value));
-				seenURLs.add(parts[0]);
+				for (int i = 0; i < MAX_ENTRIES_PER_ROW; ++i) {
+					DocumentFeaturesMarshaller m = new DocumentFeaturesMarshaller();
+					DocumentFeatures features = m.unmarshall(DocumentFeatures.class, stats.toString());
+					logger.info("unmarshalled object: " + features.toString());
+					
+					if(!seenURLs.contains(features.getUrl()))
+						docs.add(features);
+				}
+				InvertedIndexRow row = new InvertedIndexRow(word.toString(), page, docs);
+				logger.info("adding new row: " + row.toString());
+				rows.add(row);
+				++page;
+				
+				if(rows.size() >= ROWS_PER_BATCH_WRITE) {
+					this.db.batchSave(rows);
+					rows = new LinkedList<InvertedIndexRow>();
+				}
 			}
 		}
 	}
