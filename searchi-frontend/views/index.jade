@@ -14,16 +14,26 @@ nav.navbar.navbar-default.navbar-fixed-top
         span.icon-bar
         span.icon-bar
         span.icon-bar
-      a.navbar-brand(href='#') Searchi
+      a.navbar-brand(href='http://127.0.0.1:3000/') Searchi
     #navbar1.collapse.navbar-collapse
       ul.nav.navbar-nav.navbar-right
         form.navbar-form.navbar-left(role='search')
           .form-group
-            input#searchBox.form-control(type='search', size='80', placeholder='Enter your search query')
+            input#searchBox.form-control(type='search', size='80', required='required', placeholder='Enter your search query')
           button#searchButton.btn.btn-default(type='button')
             i.glyphicon.glyphicon-search
 .container
-  h1#searchResults Starting info, maybe instructions or some shit
+  p.lead#searchResults Starting info, maybe instructions or some shit
+  .list-group
+    a.list-group-item(href='http://www.google.com') 
+      h4 Google - http://www.google.com
+      p Result1 Description here
+    a.list-group-item(href='http://www.yahoo.com')
+      h4 Yahoo - http://www.yahoo.com
+      p Result2 Description here
+    a.list-group-item(href='http://www.wikipedia.org')
+      h4 Wikipedia - http://www.wikipedia.org
+      p Result3 Description here    
 script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js')
 script(src='js/bootstrap.min.js')
 script(src='js/index.js')

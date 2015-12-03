@@ -29,6 +29,10 @@ public class SearchResult implements Comparable<SearchResult> {
 		return "url:" + url + "  rank:" + rank +  "\nsnippet:" + snippet;
 	}
 	
+	public String toJSONString() {
+		return "{\"url\": " + url + " \"rank\": " + rank + " \"snippet\": " + snippet + " }";
+	}
+	
 	public String toHtml() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<p>");
