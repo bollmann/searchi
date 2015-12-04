@@ -3,8 +3,17 @@ package indexer.servlets;
 import indexer.DocumentScore;
 import indexer.InvertedIndex;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.Socket;
+import java.net.URL;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -32,13 +41,35 @@ public class SearchEngineInterface extends HttpServlet {
 	private final Logger logger = Logger.getLogger(getClass());
 	InvertedIndex iiObj = null;
 	Gson gson = null;
+	URL frontendIP = null;
 	
 	@Override
 	public void init() {
 		iiObj = new InvertedIndex();
 		gson = new Gson();
+		try {
+			frontendIP = new URL(getFrontendIP());
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
 	}
-
+	
+	private String getFrontendIP(){
+		try{
+			System.out.println(new File(".").getAbsolutePath());
+			BufferedReader a = new BufferedReader(new FileReader(new File("/home/cis455/git/searchi/conf/ip_config")));
+			String line;
+			while((line = a.readLine()) != null)
+				if(line.startsWith("frontend")){
+					System.out.println(line.split(" = ")[1].trim());
+					return line.split(" = ")[1].trim();
+				}
+		} catch (IOException e){
+			System.out.println(e.getMessage());
+		}
+		return null;
+	}
+	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
@@ -136,10 +167,25 @@ public class SearchEngineInterface extends HttpServlet {
 		} catch (IllegalArgumentException e) {
 		} finally {
 			String searchResultsJSON = gson.toJson(searchResultMap);
-			resp.setContentType("application/json");
-			resp.setContentLength(searchResultsJSON.getBytes().length);
 			PrintWriter out = resp.getWriter();
-			out.print(searchResultsJSON);
+			out.append(searchResultsJSON);
+			out.flush();
+			out.close();
+//			System.out.println("Sending POST request");
+//			System.out.println("to " + frontendIP.toString());
+//			
+			//Socket s = new Socket(frontendIP.getHost(), Integer.valueOf(frontendIP.getPort()));
+			//PrintWriter out = new PrintWriter(s.getOutputStream(), true);
+		    
+//			out.append("POST / HTTP/1.0\r\n");
+//			out.append("Host: 127.0.0.1\r\n");
+//		    out.append("Content-Type: application/json\r\n");
+//		    out.append("Content-Length: " + String.valueOf(searchResultsJSON.getBytes().length) + "\r\n");
+//			out.append("Connection: close\r\n");
+//		    out.append("\r\n");
+//		    out.append(searchResultsJSON);
+//		    out.flush();  //sends request
+//		    out.close();
 		}
 	}
 }

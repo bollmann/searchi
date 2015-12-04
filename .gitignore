@@ -3,3 +3,4 @@
 /bin
 *.war
 .DS_Store
+/bin/
