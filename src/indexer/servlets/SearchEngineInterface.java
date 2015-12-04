@@ -101,7 +101,7 @@ public class SearchEngineInterface extends HttpServlet {
 			for (DocumentScore doc : iiObj.rankDocuments(query)) {
 				SearchResult sr = new SearchResult();
 				sr.setUrl(doc.getUrl());
-				sr.setRank(doc.getRank());
+				sr.setScore(doc.getRank());
 				sr.setSnippet(doc.toString());
 				indexerResultMap.put(String.valueOf(resultCount), sr.toMap());
 				indexerScore.put(doc.getUrl(), doc.getRank());
@@ -121,7 +121,7 @@ public class SearchEngineInterface extends HttpServlet {
 			pageRankScore = pra.getPageRankBatch(lookupList);
 			Map<String, Map<String, String>> pageRankResultMap = new HashMap<String, Map<String, String>>();
 			
-			PriorityQueue<SearchResult> pqueue = SearchEngineUtils
+			List<SearchResult> pqueue = SearchEngineUtils
 					.convertScoreMapToPriorityQueue(pageRankScore);
 
 			resultCount = 0;
@@ -142,14 +142,14 @@ public class SearchEngineInterface extends HttpServlet {
 			startTime = Calendar.getInstance().getTime();
 			Double[] weights = { 0.9, 0.1 };
 			Map<String, Map<String, String>> combinedResultMap = new HashMap<String, Map<String, String>>();
-			PriorityQueue<SearchResult> result = SearchEngineUtils
+			List<SearchResult> result = SearchEngineUtils
 					.weightedMergeScores(indexerScore, pageRankScore, weights);
 			
 			resultCount = 0;
 			for (SearchResult doc : result) {
 				combinedResultMap.put(String.valueOf(resultCount), doc.toMap());
 				lookupList.add(doc.getUrl());
-				indexerScore.put(doc.getUrl(), doc.getRank());
+				indexerScore.put(doc.getUrl(), doc.getScore());
 				resultCount++;
 				if (resultCount > 10) {
 					break;

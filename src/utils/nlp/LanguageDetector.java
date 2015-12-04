@@ -1,12 +1,7 @@
 package utils.nlp;
 
-import indexer.offline.Tokenizer;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-
-import me.champeau.ld.UberLanguageDetector;
 
 import org.apache.log4j.Logger;
 

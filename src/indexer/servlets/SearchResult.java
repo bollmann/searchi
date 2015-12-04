@@ -34,7 +34,7 @@ public class SearchResult implements Comparable<SearchResult> {
 	public HashMap<String, String> toMap() {
 		HashMap<String, String> map = new HashMap<String, String>();
 		map.put("url", url);
-		map.put("rank", String.valueOf(rank));
+		map.put("rank", String.valueOf(score));
 		map.put("snippet", snippet);
 		return map;
 	}
