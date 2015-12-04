@@ -34,5 +34,11 @@
 			<attribute name="javadoc_location" value="jar:file:lib/aws-java-sdk-1.10.33-javadoc.jar/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="/home/cis455/workspace/searchi/lib/jlangdetect-0.1-javadoc.jar"/>
+	<classpathentry kind="lib" path="/home/cis455/workspace/searchi/lib/jlangdetect-0.3.jar"/>
+	<classpathentry kind="lib" path="/home/cis455/workspace/searchi/lib/jlangdetect-extra-0.3.jar"/>
+	<classpathentry kind="lib" path="/home/cis455/workspace/searchi/lib/jlangdetect-europarl-0.3.jar"/>
+	<classpathentry kind="lib" path="/home/cis455/workspace/searchi/lib/jlangdetect-0.3-javadoc.jar"/>
+	<classpathentry kind="lib" path="/home/cis455/workspace/searchi/lib/jlangdetect-0.3-sources.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

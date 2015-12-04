@@ -121,10 +121,10 @@ public class SingleNodeCrawler extends HttpServlet {
 			}
 			
 			// blacklisted domains
-			for (String blackListConfig : blackListConfigFile.split(",")) {
-				logger.info("Reading domain config file:" + blackListConfig);
-				allowedDomains = readConfigFile(blackListConfig, 1);
-			}
+//			for (String blackListConfig : blackListConfigFile.split(",")) {
+//				logger.info("Reading domain config file:" + blackListConfig);
+//				allowedDomains = readConfigFile(blackListConfig, 1);
+//			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

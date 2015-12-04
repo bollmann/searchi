@@ -17,6 +17,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.tidy.Tidy;
 
+import utils.nlp.LanguageDetector;
+
 import com.amazonaws.AmazonServiceException;
 import com.google.gson.Gson;
 
@@ -62,10 +64,11 @@ public class UrlProcessor {
 		if (info != null) {
 			logger.info("Not getting new data for " + url
 					+ " as it's already present in ddb");
-			String content = s3.getItem(info.getId());
-			Gson gson = new Gson();
-			logger.debug("Parsing content to urlcontent:" + content);
-			urlContent = gson.fromJson(content, URLContent.class);
+			// String content = s3.getItem(info.getId());
+			// Gson gson = new Gson();
+			// logger.debug("Parsing content to urlcontent:" + content);
+			// urlContent = gson.fromJson(content, URLContent.class);
+			return new ArrayList<String>();
 		} else {
 			logger.debug("Getting fresh data for:" + url);
 			urlContent = getNewContent(url);
@@ -100,8 +103,9 @@ public class UrlProcessor {
 					Date start = Calendar.getInstance().getTime();
 
 					URLMetaInfo toSave = new URLMetaInfo(url);
-					logger.info("Saving data for " + url + "with id " + toSave.getId());
-					
+					logger.info("Saving data for " + url + "with id "
+							+ toSave.getId());
+
 					// toSave.setUrl(url);
 					toSave.setLastCrawledOn(Calendar.getInstance().getTime());
 
@@ -175,6 +179,9 @@ public class UrlProcessor {
 				content = new String(response.getBody());
 
 				// file handling logic
+				if(!LanguageDetector.isEnglish(content)) {
+					return null;
+				}
 
 				urlContent = new URLContent();
 				urlContent.setUrl(url);
@@ -216,7 +223,7 @@ public class UrlProcessor {
 		tidy.setQuiet(true);
 		tidy.setOnlyErrors(true);
 		ByteArrayInputStream inputStream = null;
-		
+
 		try {
 			inputStream = new ByteArrayInputStream(content.getBytes("UTF-8"));
 		} catch (UnsupportedEncodingException e) {
