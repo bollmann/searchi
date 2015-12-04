@@ -6,17 +6,26 @@
  <web-app>
      <display-name>Test servlet for CIS455</display-name>
      
-    
 	<servlet>
         <servlet-name>SearchServlet</servlet-name>
         <servlet-class>indexer.servlets.IndexerClientServlet</servlet-class>
     </servlet>
-    
+ 
+ 	<servlet>
+        <servlet-name>SearchEngineInterface</servlet-name>
+        <servlet-class>indexer.servlets.SearchEngineInterface</servlet-class>
+    </servlet>
+       
     <servlet-mapping>
         <servlet-name>SearchServlet</servlet-name>
         <url-pattern>/search/*</url-pattern>
     </servlet-mapping>
-
+    
+    <servlet-mapping>
+        <servlet-name>SearchEngineInterface</servlet-name>
+        <url-pattern>/searchInterface</url-pattern>
+    </servlet-mapping>
+    
      <context-param>
      	<param-name>BDBStore</param-name>
      	<param-value>resources/BDBStore</param-value>

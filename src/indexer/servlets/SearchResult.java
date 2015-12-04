@@ -1,5 +1,7 @@
 package indexer.servlets;
 
+import java.util.HashMap;
+
 public class SearchResult implements Comparable<SearchResult> {
 	private String url;
 	private String snippet;
@@ -27,6 +29,14 @@ public class SearchResult implements Comparable<SearchResult> {
 	@Override
 	public String toString() {
 		return "url:" + url + "  rank:" + score +  "\nsnippet:" + snippet;
+	}
+	
+	public HashMap<String, String> toMap() {
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("url", url);
+		map.put("rank", String.valueOf(rank));
+		map.put("snippet", snippet);
+		return map;
 	}
 	
 	public String toHtml() {

@@ -101,7 +101,7 @@
 				<include name="WEB-INF/web.xml" />
 			</fileset>
 		</jar>
-		<delete dir="${build.target.dir}" />
+		<delete dir="${build.target.dir}"/>
 	</target>
 
 	<target name="all">
