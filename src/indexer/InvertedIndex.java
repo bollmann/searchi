@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -26,6 +27,7 @@ import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
+import com.google.gson.Gson;
 
 import db.wrappers.S3Wrapper;
 
@@ -49,7 +51,7 @@ public class InvertedIndex {
 		AWSCredentials credentials = new ProfileCredentialsProvider(CREDENTIALS_PROFILE).getCredentials();
 		AmazonDynamoDBClient dbClient = new AmazonDynamoDBClient(credentials);
 		dbClient.setRegion(Region.getRegion(Regions.US_EAST_1));
-		logger.info("Initializing the mapper to " + dbClient);
+		
 		return new DynamoDBMapper(dbClient);
 	}
 	
@@ -62,39 +64,28 @@ public class InvertedIndex {
 		return db.query(InvertedIndexRow.class, query);
 	}
 	
-//	public static void importData(String fromFile, int batchSize) throws IOException {
-//		DynamoDBMapper db = connectDB();
-//		BufferedReader br = new BufferedReader(new FileReader(new File(fromFile)));
-//		String line = null;
-//		List<InvertedIndexRow> items = new LinkedList<InvertedIndexRow>();
-//		
-//		while ((line = br.readLine()) != null) {
-//			try {
-//				String parts[] = line.split("\t");
-//				InvertedIndexRow item = new InvertedIndexRow();
-//				item.setWord(parts[0]);
-//				item.setUrl(parts[1]);
-//				item.setMaximumTermFrequency(Double.parseDouble(parts[2]));
-//				item.setEuclideanTermFrequency(Double.parseDouble(parts[3]));
-//				item.setWordCount(Integer.parseInt(parts[4]));
-//				item.setLinkCount(Integer.parseInt(parts[5]));
-//				item.setMetaTagCount(Integer.parseInt(parts[6]));
-//				item.setHeaderCount(Integer.parseInt(parts[7]));
-//				
-//				items.add(item);
-//				if(items.size() >= batchSize) {
-//					db.batchSave(items);
-//					logger.info(String.format("imported %d records into DynamoDB's 'inverted-index' table.", items.size()));
-//
-//					items = new LinkedList<InvertedIndexRow>();
-//				}
-//			} catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
-//				logger.error(String.format("importing inverted index row '%s' failed.", line), e);
-//			}
-//		}
-//		db.batchSave(items);
-//		br.close();
-//	}
+	public static void importData(String fromFile, int batchSize) throws IOException {
+		DynamoDBMapper db = connectDB();
+		BufferedReader br = new BufferedReader(new FileReader(new File(fromFile)));
+		String line = null;
+		List<InvertedIndexRow> rows = new LinkedList<InvertedIndexRow>();
+		
+		Gson gson = new Gson();
+		while ((line = br.readLine()) != null) {
+			InvertedIndexRow row = gson.fromJson(line, InvertedIndexRow.class);
+			rows.add(row);
+			if (rows.size() >= batchSize) {
+				db.batchSave(rows);
+				logger.info(String
+						.format("imported %d records into DynamoDB's 'inverted-index' table.",
+								rows.size()));
+
+				rows = new LinkedList<InvertedIndexRow>();
+			}
+		}
+		db.batchSave(rows);
+		br.close();
+	}
 	
 	public PriorityQueue<DocumentScore> rankDocuments(List<String> query) {
 		WordCounts queryCounts = new WordCounts(query);
@@ -102,7 +93,7 @@ public class InvertedIndex {
 		for(String word: query) {
 			// TODO: optimize based on different table layout, multi-thread requests, etc.
 			List<InvertedIndexRow> rows = getDocumentLocations(word);
-			Set<DocumentFeatures> docs = new HashSet<DocumentFeatures>();
+			List<DocumentFeatures> docs = new ArrayList<DocumentFeatures>();
 			for(InvertedIndexRow row: rows)
 				docs.addAll(row.getFeatures());
 
@@ -173,8 +164,7 @@ public class InvertedIndex {
 			if(args[0].equals("import")) {
 				int batchSize = Integer.parseInt(args[2]);
 				System.out.println("importing with batchSize " + batchSize + "...");
-				System.out.println("DEPRECATED! Is done by the InvertedIndexJob now!");
-				//InvertedIndex.importData(args[1], Integer.parseInt(args[2]));
+				InvertedIndex.importData(args[1], Integer.parseInt(args[2]));
 			} else if(args[0].equals("query")) {
 				InvertedIndex idx = new InvertedIndex();
 
