@@ -43,9 +43,9 @@ public class IndexerClientServlet extends HttpServlet {
 		for(String word: queryStr.split(" "))
 			query.add(word);
 		InvertedIndex iiObj = new InvertedIndex();
-		for(DocumentVector doc: iiObj.lookupDocuments(query)){
-			buffer.append("<li>" + doc.toString() + "</li>");
-		}
+//		for(DocumentVector doc: iiObj.lookupDocuments(query)){
+//			buffer.append("<li>" + doc.toString() + "</li>");
+//		}
 		buffer.append("</ol><br>Using rankDocuments():<ol>" );
 		for(DocumentScore doc: iiObj.rankDocuments(query)){
 			buffer.append("<li>" + doc.toString() + "</li>");

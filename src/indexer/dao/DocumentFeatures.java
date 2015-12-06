@@ -7,7 +7,6 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIgnore;
 /**
  * The counts of some word within the given document.
  */
-@DynamoDBDocument
 public class DocumentFeatures {
 	/**
 	 * the document.

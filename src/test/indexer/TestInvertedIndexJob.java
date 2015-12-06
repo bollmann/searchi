@@ -5,6 +5,7 @@ import java.util.Map;
 
 import indexer.WordCounts;
 import indexer.offline.InvertedIndexJob;
+import indexer.offline.InvertedIndexJob.Feature;
 import junit.framework.TestCase;
 
 import org.junit.Test;
@@ -30,7 +31,7 @@ public class TestInvertedIndexJob extends TestCase {
 		URLContent page = new URLContent("http://www.schnitzel.com/");
 		page.setContent(content.toString());
 		
-		Map<String, WordCounts> allCounts = InvertedIndexJob.computeCounts(page);
+		Map<Feature, WordCounts> allCounts = InvertedIndexJob.computeCounts(page);
 		
 		// link counts
 		Map<String, Integer> expLinkCounts = new HashMap<String, Integer>();

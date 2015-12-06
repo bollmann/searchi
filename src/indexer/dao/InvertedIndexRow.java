@@ -20,15 +20,24 @@ import com.amazonaws.services.dynamodbv2.datamodeling.JsonMarshaller;
 public class InvertedIndexRow {
 	private String word;
 	private int page;
-	private List<DocumentFeatures> features;
-	
-	private JsonMarshaller<DocumentFeatures> marshaller;
+	@DynamoDBIgnore
+	private ArrayList<DocumentFeatures> features;
+	private String something;
+
+	@DynamoDBAttribute(attributeName="something")
+	public String getSomething() {
+		return something;
+	}
+
+	public void setSomething(String something) {
+		this.something = something;
+	}
 
 	public InvertedIndexRow() {
-		marshaller = new JsonMarshaller<DocumentFeatures>();
+		features = new ArrayList<DocumentFeatures>();
 	}
 	
-	public InvertedIndexRow(String word, int page, List<DocumentFeatures> features) {
+	public InvertedIndexRow(String word, int page, ArrayList<DocumentFeatures> features) {
 		this.word = word;
 		this.page = page;
 		this.features = features;
@@ -42,37 +51,43 @@ public class InvertedIndexRow {
 	public int getPage() { return page; }
 	public void setPage(int pid) { page = pid; }
 	
-	@DynamoDBAttribute(attributeName="docs")
-	public Set<String> marshallFeatures() {
-		Set<String> res = new HashSet<String>();
-		for(DocumentFeatures feature: features)
-			res.add(marshaller.marshall(feature));
-		return res;
+//	@DynamoDBAttribute(attributeName="features")
+//	@DynamoDBMarshalling(marshallerClass=DocumentFeaturesMarshaller.class)
+	public ArrayList<DocumentFeatures> getFeatures() {
+		return features;
+	}
+	public void setFeatures(ArrayList<DocumentFeatures> features) {
+		this.features = features;
 	}
 	
-	public void unmarshallFeatures(Set<String> jsonFeatures) {
-		features = new ArrayList<DocumentFeatures>();
-		for(String jsonFeature: jsonFeatures)
-			features.add(marshaller.unmarshall(DocumentFeatures.class, jsonFeature));
-	}
-
-//	@DynamoDBAttribute(attributeName="test")
-//	@DynamoDBMarshalling(marshallerClass=DocumentFeaturesMarshaller.class)
-//	public DocumentFeatures getTest() { return features.get(0); }
-//	public void setTest(DocumentFeatures f) { features = new ArrayList<DocumentFeatures>(); features.add(f); }
-
 	@DynamoDBIgnore
 	public String toString() {
 		return String.format("word = %s, page = %d, features = %s", word, page, features);
 	}
 
-	@DynamoDBIgnore
-	public List<DocumentFeatures> getFeatures() {
-		return features;
-	}
+//	@DynamoDBIgnore
+//	public List<DocumentFeatures> getFeatures() {
+//		return features;
+//	}
+//	
+//	@DynamoDBIgnore
+//	public void setFeatures(List<DocumentFeatures> fs) {
+//		features = fs;
+//	}
 	
-	@DynamoDBIgnore
-	public void setFeatures(List<DocumentFeatures> fs) {
-		features = fs;
-	}
+//	@DynamoDBAttribute(attributeName="docs")
+//	public String marshallFeatures() {
+//		String res = new HashSet<String>();
+//		for(DocumentFeatures feature: features)
+//			res.add(marshaller.marshall(feature));
+//		return res;
+//	}
+//	@DynamoDBAttribute(attributeName="docs")
+//	public void unmarshallFeatures(String rawFeatures) {
+//		Class<List<DocumentFeatures>> clazz = (Class) List.class;
+//		List<DocumentFeatures> features = marshaller.unmarshall(clazz, rawFeatures);
+//		features = new ArrayList<DocumentFeatures>();
+//		for(String rawFeature: rawFeatures)
+//			features.add(marshaller.unmarshall(DocumentFeatures.class, rawFeature));
+//	}
 }

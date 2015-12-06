@@ -49,7 +49,7 @@ public class InvertedIndex {
 		AWSCredentials credentials = new ProfileCredentialsProvider(CREDENTIALS_PROFILE).getCredentials();
 		AmazonDynamoDBClient dbClient = new AmazonDynamoDBClient(credentials);
 		dbClient.setRegion(Region.getRegion(Regions.US_EAST_1));
-		
+		logger.info("Initializing the mapper to " + dbClient);
 		return new DynamoDBMapper(dbClient);
 	}
 	
