@@ -83,4 +83,26 @@ public class TestInvertedIndexJob extends TestCase {
 
 		assertEquals(expNormalCounts, allCounts.get("normalCounts").getCounts());
 	}
+	
+
+	@Test
+	public void testSaveInvertedIndexRow() {
+		for (int i = 0; i < 10; i++) {
+			DynamoDBMapper db = InvertedIndex.connectDB();
+			List<DocumentFeatures> features = new ArrayList<DocumentFeatures>();
+			DocumentFeatures feat1 = new DocumentFeatures();
+			feat1.setEuclideanTermFrequency(0.0);
+			feat1.setHeaderCount(1);
+			feat1.setLinkCount(2);
+			feat1.setMaximumTermFrequency(3.0);
+			feat1.setMetaTagCount(4);
+			feat1.setTotalCount(5);
+			feat1.setUrl("this/url");
+			features.add(feat1);
+			features.add(feat1);
+
+			InvertedIndexRow row = new InvertedIndexRow("abc" + i, i, features);
+			db.save(row);
+		}
+	}
 }

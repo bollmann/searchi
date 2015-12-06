@@ -1,9 +1,7 @@
 package indexer.dao;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
@@ -11,7 +9,6 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIgnore;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMarshalling;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
-import com.amazonaws.services.dynamodbv2.datamodeling.JsonMarshaller;
 
 /**
  * Models an Item (row) from the Inverted Index.
@@ -20,18 +17,8 @@ import com.amazonaws.services.dynamodbv2.datamodeling.JsonMarshaller;
 public class InvertedIndexRow {
 	private String word;
 	private int page;
-	@DynamoDBIgnore
-	private ArrayList<DocumentFeatures> features;
-	private String something;
+	private List<DocumentFeatures> features;
 
-	@DynamoDBAttribute(attributeName="something")
-	public String getSomething() {
-		return something;
-	}
-
-	public void setSomething(String something) {
-		this.something = something;
-	}
 
 	public InvertedIndexRow() {
 		features = new ArrayList<DocumentFeatures>();
@@ -51,12 +38,12 @@ public class InvertedIndexRow {
 	public int getPage() { return page; }
 	public void setPage(int pid) { page = pid; }
 	
-//	@DynamoDBAttribute(attributeName="features")
-//	@DynamoDBMarshalling(marshallerClass=DocumentFeaturesMarshaller.class)
-	public ArrayList<DocumentFeatures> getFeatures() {
+	@DynamoDBAttribute(attributeName="features")
+	@DynamoDBMarshalling(marshallerClass=DocumentFeaturesMarshaller.class)
+	public List<DocumentFeatures> getFeatures() {
 		return features;
 	}
-	public void setFeatures(ArrayList<DocumentFeatures> features) {
+	public void setFeatures(List<DocumentFeatures> features) {
 		this.features = features;
 	}
 	
