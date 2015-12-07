@@ -13,7 +13,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 /**
  * Models an Item (row) from the Inverted Index.
  */
-@DynamoDBTable(tableName="ii2")
+@DynamoDBTable(tableName="InvertedIndex")
 public class InvertedIndexRow {
 	private String word;
 	private int page;
