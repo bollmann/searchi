@@ -1,24 +1,19 @@
 package indexer.offline;
 
-import indexer.InvertedIndex;
 import indexer.WordCounts;
 import indexer.dao.DocumentFeatures;
-import indexer.dao.DocumentFeaturesMarshaller;
 import indexer.dao.InvertedIndexRow;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
@@ -34,8 +29,6 @@ import org.jsoup.nodes.Element;
 
 import utils.file.FileUtils;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-import com.amazonaws.services.ec2.model.BatchState;
 import com.google.gson.Gson;
 
 import crawler.dao.URLContent;
@@ -44,23 +37,24 @@ public class InvertedIndexJob {
 	public static enum Feature {
 		TOTAL_COUNTS, HEADER_COUNTS, LINK_COUNTS, META_TAG_COUNTS
 	};
-	
+
 	private static Logger logger = Logger.getLogger(InvertedIndexJob.class);
 
 	/** Mapper Class for Document Indexer */
 	public static class DocumentIndexer extends
 			Mapper<LongWritable, Text, Text, Text> {
-		
+
 		@Override
 		public void map(LongWritable lineNr, Text jsonBlob, Context context)
 				throws IOException, InterruptedException {
-			URLContent page = new Gson().fromJson(jsonBlob.toString(), URLContent.class);
+			URLContent page = new Gson().fromJson(jsonBlob.toString(),
+					URLContent.class);
 			Map<Feature, WordCounts> allCounts = computeCounts(page);
-			
+
 			WordCounts wordCounts = allCounts.get(Feature.TOTAL_COUNTS);
 			for (String word : wordCounts) {
 				DocumentFeatures doc = new DocumentFeatures();
-				
+
 				doc.setUrl(page.getUrl());
 				doc.setEuclideanTermFrequency(allCounts.get(
 						Feature.TOTAL_COUNTS).getEuclideanTermFrequency(word));
@@ -79,48 +73,42 @@ public class InvertedIndexJob {
 	}
 
 	/** Reducer Class for Corpus Indexer */
-	public static class CorpusIndexer extends Reducer<Text, Text, Text, Text> {
-		public static final int MAX_ENTRIES_PER_ROW = 2;
-		public static final int ROWS_PER_BATCH_WRITE = 1;
+	public static class CorpusIndexer extends
+			Reducer<Text, Text, NullWritable, Text> {
+		public static final int MAX_ENTRIES_PER_ROW = 400;
 
-		private DynamoDBMapper db;
-		
-		public CorpusIndexer() {
-			this.db = InvertedIndex.connectDB();
-		}
-		
-		@Override
-		public void reduce(Text word, Iterable<Text> jsonFeatures, Context context)
+		private void writeRow(String word, int page,
+				List<DocumentFeatures> docs, Context context)
 				throws IOException, InterruptedException {
-			List<InvertedIndexRow> rows = new ArrayList<InvertedIndexRow>();
+			InvertedIndexRow row = new InvertedIndexRow(word, page, docs);
+
+			NullWritable key = NullWritable.get();
+			Text value = new Text(new Gson().toJson(row));
+			context.write(key, value);
+		}
+
+		@Override
+		public void reduce(Text word, Iterable<Text> jsonFeatures,
+				Context context) throws IOException, InterruptedException {
 			ArrayList<DocumentFeatures> docs = new ArrayList<DocumentFeatures>();
 
-			int page = 0; int entryPos = 0;			
-			for (Text jsonFeature: jsonFeatures) {
-				DocumentFeatures features = new Gson().fromJson(jsonFeature.toString(), DocumentFeatures.class);
-				if(entryPos < MAX_ENTRIES_PER_ROW) {					
+			int page = 0; int entryPos = 0;
+			for (Text jsonFeature : jsonFeatures) {
+				DocumentFeatures features = new Gson().fromJson(
+						jsonFeature.toString(), DocumentFeatures.class);
+				if (entryPos < MAX_ENTRIES_PER_ROW) {
 					docs.add(features);
-					entryPos++;
+					++entryPos;
 				} else {
-//					InvertedIndexRow row = new InvertedIndexRow(word.toString(), page, docs);
-					InvertedIndexRow row = new InvertedIndexRow(word.toString(), page, docs);
-					row.setSomething("something");
+					writeRow(word.toString(), page, docs, context);
 
-					//rows.add(row);
-					logger.info("Trying to write " + row);
-					this.db.save(row);					
-					++page;
-					entryPos = 0;
+					++page; entryPos = 0;
 					docs = new ArrayList<DocumentFeatures>();
 				}
-				
-//				if(rows.size() >= ROWS_PER_BATCH_WRITE) {
-//					logger.info("adding the following rows to dynamoDB:\n" + rows.toString());
-//					this.db.batchSave(rows);
-//					rows = new LinkedList<InvertedIndexRow>();
-//					logger.info("done.");
-//				}
 			}
+			
+			if(docs.size() > 0)
+				writeRow(word.toString(), page, docs, context);
 		}
 	}
 
@@ -150,18 +138,18 @@ public class InvertedIndexJob {
 
 		System.exit(job.waitForCompletion(true) ? 0 : 1);
 	}
-	
+
 	/** Calculating all counts for Page contents */
 	public static Map<Feature, WordCounts> computeCounts(URLContent page) {
 		Document doc = Jsoup.parse(page.getContent(), page.getUrl());
 		doc.select("script,style").remove();
-		
-		WordCounts linkCounts = new WordCounts(
-				new Tokenizer(doc.select("a[href]").text()).getTokens());
-		WordCounts metaTagCounts = new WordCounts(
-				new Tokenizer(extractMetaTags(doc)).getTokens());
-		WordCounts headerCounts = new WordCounts(
-				new Tokenizer(doc.select("title,h1,h2,h3,h4,h5,h6").text()).getTokens());
+
+		WordCounts linkCounts = new WordCounts(new Tokenizer(doc.select(
+				"a[href]").text()).getTokens());
+		WordCounts metaTagCounts = new WordCounts(new Tokenizer(
+				extractMetaTags(doc)).getTokens());
+		WordCounts headerCounts = new WordCounts(new Tokenizer(doc.select(
+				"title,h1,h2,h3,h4,h5,h6").text()).getTokens());
 		WordCounts totalCounts = new WordCounts(new Tokenizer(doc.select(
 				"title,body").text()).getTokens()).addCounts(metaTagCounts);
 
@@ -170,10 +158,10 @@ public class InvertedIndexJob {
 		allCounts.put(Feature.META_TAG_COUNTS, metaTagCounts);
 		allCounts.put(Feature.HEADER_COUNTS, headerCounts);
 		allCounts.put(Feature.TOTAL_COUNTS, totalCounts);
-		
+
 		return allCounts;
 	}
-	
+
 	@SuppressWarnings("unused")
 	private static String extractLinks(Document doc) {
 		StringBuffer result = new StringBuffer();
@@ -191,5 +179,5 @@ public class InvertedIndexJob {
 			result.append(metaTag.attr("content") + " ");
 		return result.toString();
 	}
-	
+
 }
