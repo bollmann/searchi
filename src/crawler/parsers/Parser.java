@@ -79,6 +79,7 @@ public class Parser {
 	public static String absoluteUrlRegex = ".*(http|https)://.*";
 	
 	public static String[] allowedCrawlCotentTypes = {"text/html.*", "text/plain.*"
+		, "application/pdf.*"
 //		, "text/xml.*", "application/xml.*", ".*\\+xml.*"
 		};
 	

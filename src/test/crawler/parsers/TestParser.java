@@ -490,16 +490,19 @@ public class TestParser extends TestCase {
 	public void testAllowedContentTypes() {
 		String contentType = "text/html; abc";
 		assertEquals(true, Parser.isAllowedCrawlContentType(contentType));
+		contentType = "application/pdf";
+		assertEquals(true, Parser.isAllowedCrawlContentType(contentType));
 		contentType = "text/xml; abc";
-		assertEquals(true, Parser.isAllowedCrawlContentType(contentType));
+		assertEquals(false, Parser.isAllowedCrawlContentType(contentType));
 		contentType = "application/xml";
-		assertEquals(true, Parser.isAllowedCrawlContentType(contentType));
+		assertEquals(false, Parser.isAllowedCrawlContentType(contentType));
 		contentType = "application/xhtml+xml";
-		assertEquals(true, Parser.isAllowedCrawlContentType(contentType));
+		assertEquals(false, Parser.isAllowedCrawlContentType(contentType));
 		contentType = "mimetype/xhtml+xml";
-		assertEquals(true, Parser.isAllowedCrawlContentType(contentType));
+		assertEquals(false, Parser.isAllowedCrawlContentType(contentType));
 		contentType = "image/gif";
 		assertEquals(false, Parser.isAllowedCrawlContentType(contentType));
+		
 	}
 
 	@Test

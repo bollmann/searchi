@@ -12,10 +12,12 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.apache.tika.exception.TikaException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.tidy.Tidy;
+import org.xml.sax.SAXException;
 
 import utils.nlp.LanguageDetector;
 
@@ -27,6 +29,7 @@ import crawler.dao.URLContent;
 import crawler.errors.QueueFullException;
 import crawler.info.URLInfo;
 import crawler.parsers.Parser;
+import crawler.parsers.PdfUtils;
 import crawler.requests.Http10Request;
 import crawler.requests.HttpRequest;
 import crawler.responses.HttpResponse;
@@ -132,7 +135,7 @@ public class UrlProcessor {
 		return links;
 	}
 
-	private URLContent getNewContent(String url) throws IOException,
+	public URLContent getNewContent(String url) throws IOException,
 			ParseException, QueueFullException {
 		System.out.println("Downloading new content for " + url);
 		// HEAD. check content
@@ -174,10 +177,14 @@ public class UrlProcessor {
 				request.setMethod("GET");
 				request.setHeader("User-Agent", "cis455crawler");
 				request.setHeader("Accept",
-						"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
+						"text/html,application/pdf,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
 				response = HttpClient.genericGet(url, request);
+				
 				content = new String(response.getBody());
-
+				logger.info("Content type:" + response.getHeader("Content-Type") + " and body " + content);
+				if(response.getHeader("Content-Type").equals("application/pdf")) {
+					content = "<html><body>" + content + "</body></html>";
+				}
 				// file handling logic
 				if(!LanguageDetector.isEnglish(content)) {
 					return null;

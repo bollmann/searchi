@@ -6,6 +6,7 @@ package crawler.clients;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
@@ -24,6 +25,11 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.http.Cookie;
 
 import org.apache.log4j.Logger;
+import org.apache.tika.exception.TikaException;
+import org.apache.tika.metadata.Metadata;
+import org.apache.tika.parser.AutoDetectParser;
+import org.apache.tika.sax.BodyContentHandler;
+import org.xml.sax.SAXException;
 
 import crawler.info.URLInfo;
 import crawler.parsers.Parser;
@@ -198,15 +204,9 @@ public class HttpClient {
 						+ entry.getValue());
 			}
 
-			int length = Integer.MAX_VALUE;
-			if (response.containsHeader("Content-Length")) {
-				length = Integer.parseInt(response.getHeader("Content-Length"));
-			}
-
-			String body = extractBody(length, br);
-			logger.debug("Https get body:" + body);
+			String body = parseBodyFromResponse(response, conn.getInputStream(), br);
 			response.setBody(body.getBytes());
-		} catch (IOException e) {
+		} catch (IOException | SAXException | TikaException e) {
 
 		} finally {
 			if (br != null) {
@@ -471,11 +471,13 @@ public class HttpClient {
 			if (response.containsHeader("Content-Length")) {
 				length = Integer.parseInt(response.getHeader("Content-Length"));
 			}
-
-			String body = extractBody(length, br);
+			
+			String body = parseBodyFromResponse(response, conn.getInputStream(), br);
+			
+			
 			logger.debug("Https get body:" + body);
 			response.setBody(body.getBytes());
-		} catch (IOException e) {
+		} catch (IOException | SAXException | TikaException e) {
 
 		} finally {
 			if (br != null) {
@@ -539,6 +541,31 @@ public class HttpClient {
 			logger.error("Client got url with incorrect protocol");
 		}
 		return response;
+	}
+	
+	public static String parseBodyFromResponse(HttpResponse response, InputStream input, BufferedReader br) throws IOException, SAXException, TikaException {
+		
+		String body = null;
+		int length = Integer.MAX_VALUE;
+		if (response.containsHeader("Content-Length")) {
+			length = Integer.parseInt(response.getHeader("Content-Length"));
+		}
+		if(response.containsHeader("Content-Type") && response.getHeader("Content-Type").equals("application/pdf")) {
+			BodyContentHandler textHandler = new BodyContentHandler();
+			Metadata metadata = new Metadata();
+			AutoDetectParser parser = new AutoDetectParser();
+			parser.parse(input, textHandler, metadata);
+			StringBuilder sb = new StringBuilder();
+			sb.append(textHandler.toString());
+			for (String name : metadata.names()) {
+//				System.out.println(name + " : " + metadata.get(name));
+				sb.append("\n" + name + ":" + metadata.get(name));
+			}
+			body = sb.toString();
+		} else {
+			body = extractBody(length, br);
+		}
+		return body;
 	}
 	
 }
