@@ -1,16 +1,19 @@
 package indexer.offline;
 
 import indexer.WordCounts;
+import indexer.dao.DocumentFeatures;
+import indexer.dao.InvertedIndexRow;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
@@ -31,50 +34,81 @@ import com.google.gson.Gson;
 import crawler.dao.URLContent;
 
 public class InvertedIndexJob {
+	public static enum Feature {
+		TOTAL_COUNTS, HEADER_COUNTS, LINK_COUNTS, META_TAG_COUNTS
+	};
+
 	private static Logger logger = Logger.getLogger(InvertedIndexJob.class);
 
 	/** Mapper Class for Document Indexer */
 	public static class DocumentIndexer extends
 			Mapper<LongWritable, Text, Text, Text> {
-		
+
 		@Override
 		public void map(LongWritable lineNr, Text jsonBlob, Context context)
 				throws IOException, InterruptedException {
-			URLContent page = new Gson().fromJson(jsonBlob.toString(), URLContent.class);
-			Map<String, WordCounts> allCounts = computeCounts(page);
-			
-			WordCounts wordCounts = allCounts.get("totalCounts");
-			for (String word : wordCounts) {
-				// value format: url max-tf euclid-tf total-counts# link-counts#
-				//               metatag-counts# header-counts#
-				String value = String.format("%s\t%f\t%f\t%d\t%d\t%d\t%d",
-						page.getUrl(),
-						allCounts.get("totalCounts").getEuclideanTermFrequency(word),
-						allCounts.get("totalCounts").getMaximumTermFrequency(word),
-						allCounts.get("totalCounts").getCounts(word), 
-						allCounts.get("linkCounts").getCounts(word),
-						allCounts.get("metaTagCounts").getCounts(word),
-						allCounts.get("headerCounts").getCounts(word));
+			URLContent page = new Gson().fromJson(jsonBlob.toString(),
+					URLContent.class);
+			Map<Feature, WordCounts> allCounts = computeCounts(page);
 
-				context.write(new Text(word), new Text(value));
+			WordCounts wordCounts = allCounts.get(Feature.TOTAL_COUNTS);
+			for (String word : wordCounts) {
+				DocumentFeatures doc = new DocumentFeatures();
+
+				doc.setUrl(page.getUrl());
+				doc.setEuclideanTermFrequency(allCounts.get(
+						Feature.TOTAL_COUNTS).getEuclideanTermFrequency(word));
+				doc.setMaximumTermFrequency(allCounts.get(Feature.TOTAL_COUNTS)
+						.getMaximumTermFrequency(word));
+				doc.setTotalCount(allCounts.get(Feature.TOTAL_COUNTS)
+						.getCounts(word));
+				doc.setHeaderCount(allCounts.get(Feature.HEADER_COUNTS)
+						.getCounts(word));
+				doc.setLinkCount(allCounts.get(Feature.LINK_COUNTS).getCounts(
+						word));
+
+				context.write(new Text(word), new Text(new Gson().toJson(doc)));
 			}
 		}
 	}
 
 	/** Reducer Class for Corpus Indexer */
-	public static class CorpusIndexer extends Reducer<Text, Text, Text, Text> {
-		@Override
-		public void reduce(Text word, Iterable<Text> urls, Context context)
-				throws IOException, InterruptedException {
-			Set<String> seenURLs = new HashSet<String>();
+	public static class CorpusIndexer extends
+			Reducer<Text, Text, NullWritable, Text> {
+		public static final int MAX_ENTRIES_PER_ROW = 400;
 
-			for (Text stats : urls) {
-				String value = stats.toString();
-				String parts[] = value.split("\t");
-				if (!seenURLs.contains(parts[0]))
-					context.write(word, new Text(value));
-				seenURLs.add(parts[0]);
+		private void writeRow(String word, int page,
+				List<DocumentFeatures> docs, Context context)
+				throws IOException, InterruptedException {
+			InvertedIndexRow row = new InvertedIndexRow(word, page, docs);
+
+			NullWritable key = NullWritable.get();
+			Text value = new Text(new Gson().toJson(row));
+			context.write(key, value);
+		}
+
+		@Override
+		public void reduce(Text word, Iterable<Text> jsonFeatures,
+				Context context) throws IOException, InterruptedException {
+			ArrayList<DocumentFeatures> docs = new ArrayList<DocumentFeatures>();
+
+			int page = 0; int entryPos = 0;
+			for (Text jsonFeature : jsonFeatures) {
+				DocumentFeatures features = new Gson().fromJson(
+						jsonFeature.toString(), DocumentFeatures.class);
+				if (entryPos < MAX_ENTRIES_PER_ROW) {
+					docs.add(features);
+					++entryPos;
+				} else {
+					writeRow(word.toString(), page, docs, context);
+
+					++page; entryPos = 0;
+					docs = new ArrayList<DocumentFeatures>();
+				}
 			}
+			
+			if(docs.size() > 0)
+				writeRow(word.toString(), page, docs, context);
 		}
 	}
 
@@ -104,30 +138,30 @@ public class InvertedIndexJob {
 
 		System.exit(job.waitForCompletion(true) ? 0 : 1);
 	}
-	
+
 	/** Calculating all counts for Page contents */
-	public static Map<String, WordCounts> computeCounts(URLContent page) {
+	public static Map<Feature, WordCounts> computeCounts(URLContent page) {
 		Document doc = Jsoup.parse(page.getContent(), page.getUrl());
 		doc.select("script,style").remove();
-		
-		WordCounts linkCounts = new WordCounts(
-				new Tokenizer(doc.select("a[href]").text()).getTokens());
-		WordCounts metaTagCounts = new WordCounts(
-				new Tokenizer(extractMetaTags(doc)).getTokens());
-		WordCounts headerCounts = new WordCounts(
-				new Tokenizer(doc.select("title,h1,h2,h3,h4,h5,h6").text()).getTokens());
+
+		WordCounts linkCounts = new WordCounts(new Tokenizer(doc.select(
+				"a[href]").text()).getTokens());
+		WordCounts metaTagCounts = new WordCounts(new Tokenizer(
+				extractMetaTags(doc)).getTokens());
+		WordCounts headerCounts = new WordCounts(new Tokenizer(doc.select(
+				"title,h1,h2,h3,h4,h5,h6").text()).getTokens());
 		WordCounts totalCounts = new WordCounts(new Tokenizer(doc.select(
 				"title,body").text()).getTokens()).addCounts(metaTagCounts);
 
-		Map<String, WordCounts> allCounts = new HashMap<String, WordCounts>();
-		allCounts.put("linkCounts", linkCounts);
-		allCounts.put("metaTagCounts", metaTagCounts);
-		allCounts.put("headerCounts", headerCounts);
-		allCounts.put("totalCounts", totalCounts);
-		
+		Map<Feature, WordCounts> allCounts = new HashMap<Feature, WordCounts>();
+		allCounts.put(Feature.LINK_COUNTS, linkCounts);
+		allCounts.put(Feature.META_TAG_COUNTS, metaTagCounts);
+		allCounts.put(Feature.HEADER_COUNTS, headerCounts);
+		allCounts.put(Feature.TOTAL_COUNTS, totalCounts);
+
 		return allCounts;
 	}
-	
+
 	@SuppressWarnings("unused")
 	private static String extractLinks(Document doc) {
 		StringBuffer result = new StringBuffer();
@@ -145,5 +179,5 @@ public class InvertedIndexJob {
 			result.append(metaTag.attr("content") + " ");
 		return result.toString();
 	}
-	
+
 }
