@@ -1,5 +1,6 @@
 package indexer;
 
+import indexer.dao.DocumentFeatures;
 import indexer.dao.InvertedIndexRow;
 
 import java.util.HashMap;
@@ -16,20 +17,20 @@ public class DocumentScore implements Comparable<DocumentScore> {
 	private Map<String, Integer> linkCounts;
 	private Map<String, Integer> headerCounts;
 
-	public DocumentScore(InvertedIndexRow row) {
-		this.url = new String(row.getUrl());
+	public DocumentScore(String word, DocumentFeatures features) {
+		this.url = new String(features.getUrl());
 		this.rank = 0.0;
 		this.totalCounts = new HashMap<String, Integer>();
 		this.linkCounts = new HashMap<String, Integer>();
 		this.headerCounts = new HashMap<String, Integer>();
 
-		addFeatures(row);
+		addFeatures(word, features);
 	}
 
-	public void addFeatures(InvertedIndexRow row) {
-		this.totalCounts.put(row.getWord(), row.getWordCount());
-		this.linkCounts.put(row.getWord(), row.getLinkCount());
-		this.headerCounts.put(row.getWord(), row.getHeaderCount());
+	public void addFeatures(String word, DocumentFeatures features) {
+		this.totalCounts.put(word, features.getTotalCount());
+		this.linkCounts.put(word, features.getLinkCount());
+		this.headerCounts.put(word, features.getHeaderCount());
 	}
 
 	public String getUrl() {

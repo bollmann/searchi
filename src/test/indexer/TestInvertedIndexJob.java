@@ -1,13 +1,21 @@
 package test.indexer;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import indexer.InvertedIndex;
 import indexer.WordCounts;
+import indexer.dao.DocumentFeatures;
+import indexer.dao.InvertedIndexRow;
 import indexer.offline.InvertedIndexJob;
+import indexer.offline.InvertedIndexJob.Feature;
 import junit.framework.TestCase;
 
 import org.junit.Test;
+
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 
 import crawler.dao.URLContent;
 
@@ -30,7 +38,7 @@ public class TestInvertedIndexJob extends TestCase {
 		URLContent page = new URLContent("http://www.schnitzel.com/");
 		page.setContent(content.toString());
 		
-		Map<String, WordCounts> allCounts = InvertedIndexJob.computeCounts(page);
+		Map<Feature, WordCounts> allCounts = InvertedIndexJob.computeCounts(page);
 		
 		// link counts
 		Map<String, Integer> expLinkCounts = new HashMap<String, Integer>();
@@ -81,5 +89,27 @@ public class TestInvertedIndexJob extends TestCase {
 		expNormalCounts.put("in", 1);
 
 		assertEquals(expNormalCounts, allCounts.get("normalCounts").getCounts());
+	}
+	
+
+	@Test
+	public void testSaveInvertedIndexRow() {
+		for (int i = 0; i < 10; i++) {
+			DynamoDBMapper db = InvertedIndex.connectDB();
+			List<DocumentFeatures> features = new ArrayList<DocumentFeatures>();
+			DocumentFeatures feat1 = new DocumentFeatures();
+			feat1.setEuclideanTermFrequency(0.0);
+			feat1.setHeaderCount(1);
+			feat1.setLinkCount(2);
+			feat1.setMaximumTermFrequency(3.0);
+			feat1.setMetaTagCount(4);
+			feat1.setTotalCount(5);
+			feat1.setUrl("this/url");
+			features.add(feat1);
+			features.add(feat1);
+
+			InvertedIndexRow row = new InvertedIndexRow("abc" + i, i, features);
+			db.save(row);
+		}
 	}
 }
