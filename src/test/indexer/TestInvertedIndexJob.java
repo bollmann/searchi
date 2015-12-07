@@ -1,14 +1,21 @@
 package test.indexer;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import indexer.InvertedIndex;
 import indexer.WordCounts;
+import indexer.dao.DocumentFeatures;
+import indexer.dao.InvertedIndexRow;
 import indexer.offline.InvertedIndexJob;
 import indexer.offline.InvertedIndexJob.Feature;
 import junit.framework.TestCase;
 
 import org.junit.Test;
+
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 
 import crawler.dao.URLContent;
 
