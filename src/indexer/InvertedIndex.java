@@ -36,7 +36,7 @@ public class InvertedIndex {
 
 	public static final String CREDENTIALS_PROFILE = "default";
 	public static final String TABLE_NAME = "InvertedIndex";
-	public static final String S3_CRAWL_SNAPSHOT = "cis455-url-content-snapshot5";
+	public static final String S3_CRAWL_SNAPSHOT = "cis455-url-content-snapshot6";
 
 	private DynamoDBMapper db;
 	private int corpusSize;
@@ -98,8 +98,11 @@ public class InvertedIndex {
 			// requests, etc.
 			List<InvertedIndexRow> rows = getDocumentLocations(word);
 			List<DocumentFeatures> docs = new ArrayList<DocumentFeatures>();
-			for (InvertedIndexRow row : rows)
+			for (InvertedIndexRow row : rows) {
+
+				logger.info("row features: " + row.getFeatures());
 				docs.addAll(row.getFeatures());
+			}
 
 			for (DocumentFeatures features : docs) {
 				DocumentScore rankedDoc = documentRanks.get(features.getUrl());

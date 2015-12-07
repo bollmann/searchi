@@ -51,30 +51,4 @@ public class InvertedIndexRow {
 	public String toString() {
 		return String.format("word = %s, page = %d, features = %s", word, page, features);
 	}
-
-//	@DynamoDBIgnore
-//	public List<DocumentFeatures> getFeatures() {
-//		return features;
-//	}
-//	
-//	@DynamoDBIgnore
-//	public void setFeatures(List<DocumentFeatures> fs) {
-//		features = fs;
-//	}
-	
-//	@DynamoDBAttribute(attributeName="docs")
-//	public String marshallFeatures() {
-//		String res = new HashSet<String>();
-//		for(DocumentFeatures feature: features)
-//			res.add(marshaller.marshall(feature));
-//		return res;
-//	}
-//	@DynamoDBAttribute(attributeName="docs")
-//	public void unmarshallFeatures(String rawFeatures) {
-//		Class<List<DocumentFeatures>> clazz = (Class) List.class;
-//		List<DocumentFeatures> features = marshaller.unmarshall(clazz, rawFeatures);
-//		features = new ArrayList<DocumentFeatures>();
-//		for(String rawFeature: rawFeatures)
-//			features.add(marshaller.unmarshall(DocumentFeatures.class, rawFeature));
-//	}
 }
