@@ -1,13 +1,14 @@
 package indexer.dao;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBDocument;
+import java.util.HashSet;
+import java.util.Set;
+
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIgnore;
 
 /**
  * The counts of some word within the given document.
  */
-public class DocumentFeatures {
+public final class DocumentFeatures implements Comparable<DocumentFeatures> {
 	/**
 	 * the document.
 	 */
@@ -19,6 +20,10 @@ public class DocumentFeatures {
 	private int linkCount;
 	private int metaTagCount;
 	private int headerCount;
+	private Set<Integer> positions;
+
+	@DynamoDBIgnore
+	private double tfIdf;
 	
 	public String getUrl() { return url; }
 	public void setUrl(String url) { this.url = url; }
@@ -49,10 +54,29 @@ public class DocumentFeatures {
 		this.headerCount = headerCount;
 	}
 	
+	public Set<Integer> getPositions() { return this.positions; }
+	public void setPositions(Set<Integer> pos) {
+		this.positions = new HashSet<>(pos);
+	}
+
 	public String toString() {
 		return String.format("url = %s, maxtf = %f, euclidtf = %f, totalCount = %d," + 
-				"linkCount = %d, metaTagCount = %d, headerCount = %d", 
-				url, maximumTermFrequency, euclideanTermFrequency, totalCount,
-				linkCount, metaTagCount, headerCount);
+			"linkCount = %d, metaTagCount = %d, headerCount = %d, wordPositions = %s",
+			url, maximumTermFrequency, euclideanTermFrequency, totalCount,
+			linkCount, metaTagCount, headerCount, positions.toString());
+	}
+
+	public void setTfIdf(double idf) {
+		this.tfIdf = maximumTermFrequency * idf;
+	}
+
+	public double getTfIdf() {
+		return this.tfIdf;
+	}
+
+	@Override
+	@DynamoDBIgnore
+	public int compareTo(DocumentFeatures o) {
+		return (int) (-1000 * (tfIdf - o.tfIdf));
 	}
 }
