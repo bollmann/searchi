@@ -102,12 +102,10 @@ public class InvertedIndexJob {
 					docs.add(features);
 					entryPos++;
 				} else {
-//					InvertedIndexRow row = new InvertedIndexRow(word.toString(), page, docs);
 					InvertedIndexRow row = new InvertedIndexRow(word.toString(), page, docs);
-					row.setSomething("something");
 
-					//rows.add(row);
-					logger.info("Trying to write " + row);
+					rows.add(row);
+//					logger.info("Trying to write " + row);
 					this.db.save(row);					
 					++page;
 					entryPos = 0;

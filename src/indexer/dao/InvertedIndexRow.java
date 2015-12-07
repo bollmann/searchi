@@ -24,7 +24,7 @@ public class InvertedIndexRow {
 		features = new ArrayList<DocumentFeatures>();
 	}
 	
-	public InvertedIndexRow(String word, int page, ArrayList<DocumentFeatures> features) {
+	public InvertedIndexRow(String word, int page, List<DocumentFeatures> features) {
 		this.word = word;
 		this.page = page;
 		this.features = features;
