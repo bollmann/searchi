@@ -121,16 +121,19 @@ public class InvertedIndexJob {
 			int docSize = seenURLs.size();
 			final float idf = (float) Math.log(corpusSize / docSize);
 			
+			// add tf idf values as well.
+			for(DocumentFeatures doc: docs)
+				doc.setTfidf(doc.getMaximumTermFrequency() * idf);
+			
 			Collections.sort(docs, new Comparator<DocumentFeatures>() {
 				@Override
 				public int compare(DocumentFeatures o1, DocumentFeatures o2) {
-					// also record the computed tfidf as a feature.
-					float tfidf1 = o1.getMaximumTermFrequency() * idf;
-					float tfidf2 = o2.getMaximumTermFrequency() * idf;
-					o1.setTfidf(tfidf1);
-					o2.setTfidf(tfidf2);
-					
-					return (int) (-1000 * (tfidf1 - tfidf2));
+					if (o1.getTfidf() > o2.getTfidf())
+						return -1;
+					else if (o1.getTfidf() < o2.getTfidf())
+						return 1;
+					else 
+						return 0;
 				}
 			});
 
@@ -233,5 +236,4 @@ public class InvertedIndexJob {
 			result.append(metaTag.attr("content") + " ");
 		return result.toString();
 	}
-
 }
