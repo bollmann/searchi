@@ -115,22 +115,22 @@ public class WordCounts implements Iterable<String> {
 	}
 	
 	/** Calculate TF for a word */
-	public double getMaximumTermFrequency(String word) {
-		double alpha = 0.5;
+	public float getMaximumTermFrequency(String word) {
+		float alpha = 0.5F;
 		int nValue = getNGramSize(word);
 		return alpha + (1 - alpha) * 
-			((double) wordCounts.get(word) / wordCounts.get(nGramMaxWords.get(nValue)));
+			((float) wordCounts.get(word) / wordCounts.get(nGramMaxWords.get(nValue)));
 	}
 	
 	/** Get Euclidean Term Freq of a word */
-	public double getEuclideanTermFrequency(String word) {
+	public float getEuclideanTermFrequency(String word) {
 		int nValue = getNGramSize(word);
 		
 		int docSize = 0;		
 		for (String nGram : nGrams.get(nValue)) {
 			docSize += Math.pow(wordCounts.get(nGram), 2.0);
 		}		
-		return getCounts(word) / Math.sqrt((double) docSize);
+		return (float) (getCounts(word) / Math.sqrt((double) docSize));
 	}
 	
 	/** Get counts of a word */

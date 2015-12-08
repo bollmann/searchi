@@ -59,7 +59,7 @@ public class InvertedIndexJob {
 			Map<Feature, WordCounts> allCounts = computeCounts(page);
 
 			WordCounts wordCounts = allCounts.get(Feature.TOTAL_COUNTS);
-			for (String word : wordCounts) {
+			for (String word: wordCounts) {
 				DocumentFeatures doc = new DocumentFeatures();
 
 				doc.setUrl(page.getUrl());
@@ -105,7 +105,7 @@ public class InvertedIndexJob {
 				Context context) throws IOException, InterruptedException {
 			
 			List<DocumentFeatures> docs = new ArrayList<DocumentFeatures>();			
-			Set<String> seenURLs = new HashSet<String>();			
+			Set<String> seenURLs = new HashSet<String>();	
 									
 			for (Text jsonFeature: jsonFeatures) {
 				DocumentFeatures features = new Gson().fromJson(
@@ -119,13 +119,18 @@ public class InvertedIndexJob {
 			}
 
 			int docSize = seenURLs.size();
-			final double idf = Math.log(corpusSize / docSize);
-
+			final float idf = (float) Math.log(corpusSize / docSize);
+			
 			Collections.sort(docs, new Comparator<DocumentFeatures>() {
 				@Override
 				public int compare(DocumentFeatures o1, DocumentFeatures o2) {
-					return (int)(-1000 *(o1.getMaximumTermFrequency() * idf)
-						- (o2.getMaximumTermFrequency() * idf));
+					// also record the computed tfidf as a feature.
+					float tfidf1 = o1.getMaximumTermFrequency() * idf;
+					float tfidf2 = o2.getMaximumTermFrequency() * idf;
+					o1.setTfidf(tfidf1);
+					o2.setTfidf(tfidf2);
+					
+					return (int) (-1000 * (tfidf1 - tfidf2));
 				}
 			});
 
@@ -134,14 +139,13 @@ public class InvertedIndexJob {
 			for (int i = 0; i < topK && i < docs.size(); ++i ) {
 				if (entryPos < MAX_ENTRIES_PER_ROW) {
 					docsToWrite.add(docs.get(i));
-					++entryPos;
-					
+					++entryPos;		
 				} else {
 					writeRow(word.toString(), page, docsToWrite, context);
-					++page; entryPos = 0;
+					++page; 
+					entryPos = 0;
 					docsToWrite = new ArrayList<DocumentFeatures>();
 				}
-
 			}
 			if (docsToWrite.size() > 0) {
 				writeRow(word.toString(), page, docsToWrite, context);
@@ -181,7 +185,7 @@ public class InvertedIndexJob {
 		Document doc = Jsoup.parse(page.getContent(), page.getUrl());
 		doc.select("script,style").remove();
 		
-		final int NGRAM_SIZE = 2;
+		final int NGRAM_SIZE = 1;
 		
 		List<String> linkTokens = new Tokenizer(
             doc.select("a[href]").text()).getTokens();		

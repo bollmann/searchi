@@ -12,8 +12,9 @@ public final class DocumentFeatures {
 	 */
 	private String url;
 	
-	private double maximumTermFrequency;
-	private double euclideanTermFrequency;
+	private float maximumTermFrequency;
+	private float euclideanTermFrequency;
+	private float tfidf;
 	private int totalCount;
 	private int linkCount;
 	private int metaTagCount;
@@ -23,16 +24,22 @@ public final class DocumentFeatures {
 	public String getUrl() { return url; }
 	public void setUrl(String url) { this.url = url; }
 	
-	public double getMaximumTermFrequency() { return maximumTermFrequency; }
-	public void setMaximumTermFrequency(double maximumTermFrequency) {
+	public float getMaximumTermFrequency() { return maximumTermFrequency; }
+	public void setMaximumTermFrequency(float maximumTermFrequency) {
 		this.maximumTermFrequency = maximumTermFrequency;
 	}
 	
-	public double getEuclideanTermFrequency() { return euclideanTermFrequency; }
-	public void setEuclideanTermFrequency(double euclideanTermFrequency) {
+	public float getEuclideanTermFrequency() { return euclideanTermFrequency; }
+	public void setEuclideanTermFrequency(float euclideanTermFrequency) {
 		this.euclideanTermFrequency = euclideanTermFrequency;
 	}
 	
+	public float getTfidf() {
+		return tfidf;
+	}
+	public void setTfidf(float tfidf) {
+		this.tfidf = tfidf;
+	}
 	public int getTotalCount() { return totalCount; }
 	public void setTotalCount(int totalCount) {
 		this.totalCount = totalCount;

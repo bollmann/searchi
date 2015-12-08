@@ -121,10 +121,10 @@ public class TestInvertedIndexJob extends TestCase {
 			DynamoDBMapper db = InvertedIndex.connectDB();
 			List<DocumentFeatures> features = new ArrayList<DocumentFeatures>();
 			DocumentFeatures feat1 = new DocumentFeatures();
-			feat1.setEuclideanTermFrequency(0.0);
+			feat1.setEuclideanTermFrequency(0.0F);
 			feat1.setHeaderCount(1);
 			feat1.setLinkCount(2);
-			feat1.setMaximumTermFrequency(3.0);
+			feat1.setMaximumTermFrequency(3.0F);
 			feat1.setMetaTagCount(4);
 			feat1.setTotalCount(5);
 			feat1.setUrl("this/url");
