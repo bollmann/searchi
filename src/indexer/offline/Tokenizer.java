@@ -17,6 +17,7 @@ import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 
 public class Tokenizer {
+	private static final int MAX_TOKEN_SIZE = 20;
 	private static StanfordCoreNLP instance = null;
 	private Annotation atext;
 	
@@ -28,7 +29,7 @@ public class Tokenizer {
 	public List<String> getTokens() {
 		List<String> tokens = new ArrayList<String>();
 		for(CoreLabel token: atext.get(CoreAnnotations.TokensAnnotation.class)) {
-			if(token.toString().matches("[a-zA-Z]+"))
+			if(token.toString().matches("[a-zA-Z]+") && token.size() <= MAX_TOKEN_SIZE)
 				tokens.add(token.toString().toLowerCase());
 		}
 		return tokens;
