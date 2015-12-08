@@ -1,0 +1,57 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+		<style type="text/css">
+
+			body {
+				margin:0;
+				padding:0px;
+			}
+
+		</style>
+
+		<meta name="robots" content="noindex,nofollow"> 
+
+	</head>
+
+	<body>
+
+		<script>
+
+			var currentTime = new Date();	
+
+			function handleMouseOver(id) {
+				if ( ! interactions[id].awaiting ) {
+					interactions[id].awaiting = true;
+					currentTime = new Date();	
+					interactions[id].awaitingSince = currentTime.getTime() / 1000;
+				} else {
+					currentTime = new Date();	
+					var timeNow = currentTime.getTime() / 1000;
+					if ( ( ( timeNow - interactions[id].awaitingSince ) > 1 ) && ( ! interactions[id].interacted ) ) {
+						interactions[id].interacted = true;
+						document.getElementById('mouseinteraction').src='https://ad.ad-srv.net/interaction.php?c='+interactions[id].c+'&h='+interactions[id].h;
+					}
+				}
+			}
+			
+			var interactions = new Array();
+			interactions.push({awaiting:false,awaitingSince:0,interacted:false,c:'392597',h:'b2a9a112a3bb'});
+
+		</script>
+
+		<table border="0" cellpadding="0" cellspacing="0" height="600" width="160">
+			
+				<tbody><tr>
+					<td onmousemove="handleMouseOver(0)" align="center" height="600" width="160"><script type="text/javascript" src="request_content_data_003/view.asp"></script><iframe src="request_content_data_003/pvdi.html" marginwidth="0" marginheight="0" scrolling="no" style="width:0px; height:0px;" frameborder="0" height="1" width="1"></iframe><iframe src="request_content_data_003/a.html" marginwidth="0" marginheight="0" scrolling="no" style="width:0px; height:0px;" frameborder="0" height="1" width="1"></iframe><a href="https://partners.webmasterplan.com/click.asp?type=b5&amp;bnb=5&amp;ref=573557&amp;js=1&amp;site=13015&amp;b=5&amp;target=_blank&amp;title=Damenschuhe+bei+Peter+Kaiser&amp;subid=148145631333534106-657057-&amp;PURL=http%3a%2f%2fn6.ad.ad-srv.net%2fc%2fczhwjoc084two5b%3ftprde%3d" target="_blank"><img src="request_content_data_003/160x600.gif" title="Damenschuhe bei Peter Kaiser" alt="Damenschuhe bei Peter Kaiser" border="0"></a><noscript><a href="http://n6.ad.ad-srv.net/c/czhwjoc084two5b?tprd=http://partners.webmasterplan.com/click.asp?ref=573557&site=13015&type=b5&bnb=5&subid=148145631333534106-657057-" target="_blank">
+<img src="http://banners.webmasterplan.com/view.asp?ref=573557&site=13015&b=5" border="0" alt="Damenschuhe bei Peter Kaiser" title="Damenschuhe bei Peter Kaiser" width="160" height="600" /></a><br /></noscript></td>
+				</tr>
+			
+		</tbody></table>
+		
+		<img style="position:absolute;visibility:hidden" id="mouseinteraction" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==">
+
+	
+	
+
+</body></html>

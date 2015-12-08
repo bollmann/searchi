@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1252"><script type="text/javascript">
+    
+      (function() {
+        var relegateNavigation = '';
+        var handleClickTagMessage = function(e) {
+          try {
+            var eventData = JSON.parse(e.data);
+          } catch (err) {
+            return;
+          }
+          if (eventData.isInitClickTag) {
+            if (eventData.clickTags) {
+              for (var i = 0; i < eventData.clickTags.length; i++) {
+                var clkTag = eventData.clickTags[i];
+                window[clkTag.name] = clkTag.url;
+              }
+            } else if (eventData.clickTag) {
+              window.clickTag = eventData.clickTag;
+            }
+            relegateNavigation = eventData.relegateNavigation;
+          }
+        };
+
+        if (open.call) {
+          window.open = function(open) {
+            return function(url, name, features) {
+              if (relegateNavigation === 'parent') {
+                var message = {'clickTag': url, 'isPostClickTag': true};
+                parent.postMessage(JSON.stringify(message), '*');
+              } else {
+                var args = [url, name];
+                if (features) {
+                  args.push(features);
+                }
+                open.apply(window, args);
+              }
+            };
+          }(window.open);
+        }
+
+        if (window.addEventListener) {
+          window.addEventListener(
+              'message', handleClickTagMessage, false);
+        } else {
+          window.attachEvent('onmessage', handleClickTagMessage);
+        }
+      })();
+    
+  </script>
+	<title>15624_ACQ_WhatYouLoveIntl_HM_CA_EN_7999_400VC_SLP_FreeIntlCalls_11082015_728x90</title> 
+
+	<link rel="stylesheet" href="15624_ACQ_WhatYouLove_HM_NATL_EN_7999_400VC_SLP_11082015_728x90_/style.css">
+	<script src="15624_ACQ_WhatYouLove_HM_NATL_EN_7999_400VC_SLP_11082015_728x90_/Enabler.js"></script>
+	<script src="15624_ACQ_WhatYouLove_HM_NATL_EN_7999_400VC_SLP_11082015_728x90_/TweenLite.js"></script>
+	<script src="15624_ACQ_WhatYouLove_HM_NATL_EN_7999_400VC_SLP_11082015_728x90_/EasePack.js"></script>
+	<script src="15624_ACQ_WhatYouLove_HM_NATL_EN_7999_400VC_SLP_11082015_728x90_/CSSPlugin.js"></script>
+	<script type="text/javascript">
+	// If true, start function. If false, listen for INIT.
+		window.onload = function() {
+		  if (Enabler.isInitialized()) {
+		    enablerInitHandler();
+		  } else {
+		    Enabler.addEventListener(studio.events.StudioEvent.INIT, enablerInitHandler);
+		  }
+		}
+
+		function enablerInitHandler() {
+		  // Start ad, initialize animation,
+		  // load in your image assets, call Enabler methods,
+		  // and/or include other Studio modules.
+		  // Also, you can start the Polite Load
+		}
+		var clickTag = "http://www.verizonwireless.com/landingpages/verizon-plan/ ";
+	</script>
+</head>
+<body>
+	<div id="container">
+		<div id="ad">
+			<div id="banner">
+			
+				<div style="display: block;" id="frame1">
+					<div style="opacity: 0; top: 0px; left: -250px; transform: matrix(1, 0, 0, 1, 0, 0);" id="item_1_1"></div>
+					<div style="opacity: 0; top: 19px; left: 52px; transform: matrix(1, 0, 0, 1, 0, 0);" id="item_1_2" class="red font-neue-bold">Bring home more of what</div>
+					<div style="opacity: 0; top: 45px; left: 52px; transform: matrix(1, 0, 0, 1, 0, 0);" id="item_1_3" class="red font-neue-bold">you love, with Fios.</div>
+				</div>
+
+				<div style="display: block;" id="frame2">
+					<div style="opacity: 0; top: 3px; left: 490px; transform: matrix(0.7, 0, 0, 0.7, 0, 0);" id="item_2_1"></div>
+					<div style="opacity: 0; top: 34px; left: 52px; transform: matrix(1, 0, 0, 1, 0, 0);" id="item_2_2" class="red font-neue-bold">Fast speeds of 50 Mbps.</div>
+				</div>
+
+				<div style="display: block;" id="frame3">
+					<div style="opacity: 0; top: 3px; left: 490px; transform: matrix(0.7, 0, 0, 0.7, 0, 0);" id="item_3_1" class="red font-neue-bold"></div>
+					<div style="opacity: 0; top: 19px; left: 52px; transform: matrix(1, 0, 0, 1, 0, 0);" id="item_3_2" class="red font-neue-bold">Spanish Language Package</div>
+					<div style="opacity: 0; top: 45px; left: 52px; transform: matrix(1, 0, 0, 1, 0, 0);" id="item_3_3" class="red font-neue-bold">included for 12 months.</div>
+				</div>
+
+				<div style="display: block;" id="frame4">
+					<div style="opacity: 1; top: 0px; left: -100px; transform: matrix(1, 0, 0, 1, 0, 0);" id="item_4_1"></div>
+					<div style="opacity: 1.00033; top: 34px; left: 37px; transform: translate3d(0px, 0px, 0px);" id="item_4_2" class="red font-neue-bold">Plus, a $400 bonus.</div>
+				</div>
+
+				<div id="frame5">
+					<div style="opacity: 0; top: 8px; left: 102px; transform: matrix(1, 0, 0, 1, 0, 0);" id="item_5_1" class="black font-neue-bold">Fios 50 Mbps Internet + Custom TV + Phone</div>
+					<div style="opacity: 0; top: 30px; left: 125px; transform: matrix(1, 0, 0, 1, 0, 0);" id="item_5_2" class="font-neue-bold">$</div> <!-- dollar -->
+					<div style="opacity: 0; top: 26px; left: 117px; transform: matrix(0, 0, 0, 0, 0, 0);" id="item_5_3" class="font-neue-medium"></div>	<!-- dollar circle -->
+					<div style="opacity: 0; top: 18px; left: 123px; transform: matrix(1, 0, 0, 1, 0, 0);" id="item_5_4" class="red font-neue-bold">79.99</div>	
+					<div style="opacity: 0; top: 28px; left: 261px; transform: matrix(1, 0, 0, 1, 0, 0);" id="item_5_5" class="black font-neue-bold">/mo.</div>
+					<div style="opacity: 0; top: 45px; left: 330px; transform: matrix(1, 0, 0, 1, 0, 0);" id="item_5_6" class="black font-neue">for year 1. Year 2, $99.99/mo. w/ 2-year agmt.</div>
+					<div style="opacity: 0; top: 58px; left: 330px; transform: matrix(1, 0, 0, 1, 0, 0);" id="item_5_7" class="black font-neue">Add $30/mo. base Fios equipment package.</div>
+					<div style="opacity: 0; top: 72px; left: 330px; transform: matrix(1, 0, 0, 1, 0, 0);" id="item_5_8" class="black font-neue">Taxes, FDV &amp; other fees apply.</div>
+					<div style="opacity: 0; top: 24px; left: 40px; transform: matrix(1, 0, 0, 1, 0, 0);" id="logoEnd"> <!-- logo -->
+						<div id="logo"></div>
+						<div id="logo_2"></div>
+					</div>
+					<!-- <div id="legal_btn" class="font-neue">Detalles de oferta</div> -->
+					<div style="opacity: 0; top: 29px; left: 579px; transform: matrix(1, 0, 0, 1, 0, 0);" id="cta">
+						<div id="ctaText">Get Fios</div>
+						<div id="ctaRollOver"></div>
+					</div>
+				</div>
+
+			<!-- 	<div id="legal" class="font-neue">
+				<p>Detalles de oferta<br/>La oferta del primer mes gratis se aplica a trav&eacute;s de un cr&eacute;dito de 1 mes en la factura. Se aplica una cuota de hasta $165 por cancelaci&oacute;n prematura con acuerdo por 2 a&ntilde;os. Se aplica un cargo de hasta $150 por configuraci&oacute;n, una cuota de $10 al mes por el router, y otras cuotas, impuestos, cargos por equipo y t&eacute;rminos.</p>
+			</div> -->
+				<div id="hotSpot" onclick="clickThru()"></div>
+
+			</div>	
+		</div>
+	</div>
+	<script src="15624_ACQ_WhatYouLove_HM_NATL_EN_7999_400VC_SLP_11082015_728x90_/script.js"></script>
+
+
+</body></html>

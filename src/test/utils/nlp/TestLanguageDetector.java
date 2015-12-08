@@ -32,4 +32,17 @@ public class TestLanguageDetector extends TestCase {
 		assertFalse(LanguageDetector.isEnglish(contentFail));
 		assertTrue(LanguageDetector.isEnglish(contentPass));
 	}
+	
+	@Test
+	public void testIsEnglishWithMeere() {
+		String content = null;
+		try {
+			content = FilePolicy.readFile("testcontent/meere.html");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		assertTrue(LanguageDetector.isEnglish(content));
+	}
 }

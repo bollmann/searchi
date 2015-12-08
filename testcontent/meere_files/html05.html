@@ -1,0 +1,16 @@
+
+
+sb_redirect_click = ""; // 3rd-party clicktracking
+aff_pubid = "657057"; // Pads EndPub ID
+aff_pubsub = ""; // EndPub SubID
+sb_subid = "657057-"; // your own tracking-sub-id, max. 64 chars: a-z, A-Z, 0-9 and: +-_.,:;/|
+sb_url_base = "http://ad.ad-srv.net/zone/cf35umorzusn";
+sb_url = sb_url_base;
+sb_url = sb_url  + "?subid=" + encodeURIComponent(sb_subid);
+sb_url = sb_url  + "&extVar[]=pAdsPublisherId:" + encodeURIComponent(aff_pubid);
+sb_url = sb_url  + "&extVar[]=pAdsPublisherSubId:" + encodeURIComponent(aff_pubsub);
+sb_url = sb_url  + "&redirectClick=" + encodeURIComponent(sb_redirect_click);
+
+document.write('<scr'+'ipt src="'+sb_url+'"></scr'+'ipt>');
+
+

@@ -21,7 +21,7 @@ public class LanguageDetector {
 			add("to");
 			add("of");
 			add("and");
-//			add("a");
+			// add("a");
 			add("in");
 			add("that");
 			add("have");
@@ -31,19 +31,43 @@ public class LanguageDetector {
 
 	public static int englishWordCountHeuristic = 4;
 
+	public static boolean hasEnglishHeader(String content) {
+		if (content.contains("<meta http-equiv=\"Content-Language\"")) {
+			if (content
+					.contains("<meta http-equiv=\"Content-Language\" content=\"en\"")) {
+				return true;
+
+			} else {
+				return false;
+			}
+		}
+		if (content.contains("lang=\"")) {
+//			logger.info("Content contains lang");
+			if (content.contains("lang=\"en\"")) {
+//				logger.info("Content contains lang=\"en\"");
+				return true;
+			} else {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	public static boolean isEnglish(String content) {
+
 		int englishWordCount = 0;
 		Set<String> seenWords = new HashSet<String>();
 		for (String englishWord : mostCommonEnglishWords) {
-			if (content.toLowerCase().contains(" " + englishWord + " ") && !seenWords.contains(englishWord)) {
+			if (content.toLowerCase().contains(" " + englishWord + " ")
+					&& !seenWords.contains(englishWord)) {
 				englishWordCount++;
 				seenWords.add(englishWord);
-//				logger.info("Found " + englishWord + " in content. Total count " + englishWordCount);
+				// logger.info("Found " + englishWord +
+				// " in content. Total count " + englishWordCount);
 				continue;
 			}
 		}
-
-		return (englishWordCount >= englishWordCountHeuristic);
+		return (englishWordCount >= englishWordCountHeuristic) && hasEnglishHeader(content);
 	}
 
 }

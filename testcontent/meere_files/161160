@@ -1,0 +1,1 @@
+var yl=yl||{};yl.YpResult=yl.YpResult||function(){var a={};return{add:function(b){a[b.id]=b},get:function(b){return a[b]},getAll:function(){return a}}}();

@@ -1,0 +1,25 @@
+
+
+var affilinet_randomnumber = Math.floor(Math.random()*10000000000)
+
+document.writeln('<'+'script type=\"text/javascript\" src=\"http://ad.yieldlab.net/yp/161160?ts='+affilinet_randomnumber+'\"><'+'/script>');
+document.writeln('<'+'script>');
+document.writeln('sb_redirect_click = \"\"; // 3rd-party clicktracking');
+document.writeln('aff_pubid = \"657057\"; // Pads EndPub ID');
+document.writeln('aff_pubsub = \"\"; // EndPub SubID');
+document.writeln('sb_subid = \"657057-\"; // your own tracking-sub-id, max. 64 chars: a-z, A-Z, 0-9 and: +-_.,:;/|');
+document.writeln('sb_url_base = \"http://ad.ad-srv.net/zone/9eywvqw29t6c\";');
+document.writeln('sb_url = sb_url_base;');
+document.writeln('sb_url = sb_url  + \"?subid=\" + encodeURIComponent(sb_subid);');
+document.writeln('sb_url = sb_url  + \"&extVar[]=pAdsPublisherId:\" + encodeURIComponent(aff_pubid);');
+document.writeln('sb_url = sb_url  + \"&extVar[]=pAdsPublisherSubId:\" + encodeURIComponent(aff_pubsub);');
+document.writeln('if(yl && yl.YpResult && yl.YpResult.get(161160) && yl.YpResult.get(161160).price){');
+document.writeln('sb_url = sb_url  + \"&&extCfg[advEcpm][]=27995:\"+(yl.YpResult.get(161160).price/100);');
+document.writeln('sb_url = sb_url  + \"&extVar[]=pAdsYlBid:1\";');
+document.writeln('}');
+document.writeln('sb_url = sb_url  + \"&redirectClick=\" + encodeURIComponent(sb_redirect_click);');
+document.writeln('document.write(\'<scr\'+\'ipt src=\"\'+sb_url+\'\"></scr\'+\'ipt>\');');
+document.writeln('<'+'/script>');
+
+
+
