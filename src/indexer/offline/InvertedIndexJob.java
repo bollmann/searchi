@@ -62,7 +62,7 @@ public class InvertedIndexJob {
             if (!LanguageDetector.isEnglish(page.getContent()))
             	return;
             
-			Map<Feature, WordCounts> allCounts = computeCounts(page);
+			Map<Feature, WordCounts> allCounts = computeCounts(page, 1);
 
 			WordCounts wordCounts = allCounts.get(Feature.TOTAL_COUNTS);
 			for (String word : wordCounts) {
@@ -191,31 +191,30 @@ public class InvertedIndexJob {
 	}
 	
 	/** Calculating all counts for tokens and ngrams for Page contents */
-	public static Map<Feature, WordCounts> computeCounts(URLContent page) {
+	public static Map<Feature, WordCounts> computeCounts(URLContent page, int nGramSize) {
 		Document doc = Jsoup.parse(page.getContent(), page.getUrl());
 		doc.select("script,style").remove();
-		
-		final int NGRAM_SIZE = 1;
-		
+				
 		List<String> linkTokens = new Tokenizer(
-            doc.select("a[href]").text()).getTokens();		
+            doc.select("a[href]").text().replace(".", " ")).getTokens();		
 		WordCounts linkCounts = new WordCounts(
-            StringUtils.getNgrams(linkTokens, 1, NGRAM_SIZE), NGRAM_SIZE);
+            StringUtils.getNgrams(linkTokens, 1, nGramSize), nGramSize);
 		
 		List<String> metaTagTokens = new Tokenizer(
             extractMetaTags(doc)).getTokens();		
 		WordCounts metaTagCounts = new WordCounts(
-            StringUtils.getNgrams(metaTagTokens, 1, NGRAM_SIZE), NGRAM_SIZE);
+            StringUtils.getNgrams(metaTagTokens, 1, nGramSize), nGramSize);
 		
 		List<String> headerTokens = new Tokenizer(
-            doc.select("title,h1,h2,h3,h4,h5,h6").text()).getTokens();		
+            doc.select("title,h1,h2,h3,h4,h5,h6").text().replace(".", " ")).getTokens();		
 		WordCounts headerCounts = new WordCounts(
-            StringUtils.getNgrams(headerTokens, 1, NGRAM_SIZE), NGRAM_SIZE);
+            StringUtils.getNgrams(headerTokens, 1, nGramSize), nGramSize);
 		
 		List<String> normalTokens = new Tokenizer(
-            doc.select("title,body").text()).getTokens();
+            doc.select("title,body").text().replace(".", " ")).getTokens();
+		logger.info("Normal tokens:" + normalTokens);
 		WordCounts totalCounts = new WordCounts(
-            StringUtils.getNgrams(normalTokens, 1, NGRAM_SIZE), NGRAM_SIZE).addCounts(metaTagCounts);
+            StringUtils.getNgrams(normalTokens, 1, nGramSize), nGramSize).addCounts(metaTagCounts);
 		
 		Map<Feature, WordCounts> allCounts = new HashMap<Feature, WordCounts>();
 		allCounts.put(Feature.LINK_COUNTS, linkCounts);

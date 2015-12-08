@@ -1,6 +1,7 @@
 package pagerank.phase1;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,7 +17,7 @@ public class DRInitMapper extends Mapper<LongWritable, Text, Text, Text> {
 	
 	private class PageBlob {
 		String url;
-		List<String> outgoingLinks;
+		List<String> outgoingLinks = new ArrayList<String>();
 	}
 
 	@Override

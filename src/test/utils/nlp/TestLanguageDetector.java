@@ -23,4 +23,13 @@ public class TestLanguageDetector extends TestCase {
 		assertFalse(LanguageDetector.isEnglish(content));
 
 	}
+	
+	@Test
+	public void testIsEnglishChecksDifferentWords() {
+		String contentPass = "the the to be of and";
+		String contentFail = " I I of of";
+		
+		assertFalse(LanguageDetector.isEnglish(contentFail));
+		assertTrue(LanguageDetector.isEnglish(contentPass));
+	}
 }

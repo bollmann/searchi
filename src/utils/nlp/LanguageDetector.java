@@ -1,7 +1,9 @@
 package utils.nlp;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -19,7 +21,7 @@ public class LanguageDetector {
 			add("to");
 			add("of");
 			add("and");
-			add("a");
+//			add("a");
 			add("in");
 			add("that");
 			add("have");
@@ -31,11 +33,12 @@ public class LanguageDetector {
 
 	public static boolean isEnglish(String content) {
 		int englishWordCount = 0;
-
+		Set<String> seenWords = new HashSet<String>();
 		for (String englishWord : mostCommonEnglishWords) {
-			if (content.contains(" " + englishWord + " ")) {
+			if (content.toLowerCase().contains(" " + englishWord + " ") && !seenWords.contains(englishWord)) {
 				englishWordCount++;
-				logger.info("Found " + englishWord + " in content. Total count " + englishWordCount);
+				seenWords.add(englishWord);
+//				logger.info("Found " + englishWord + " in content. Total count " + englishWordCount);
 				continue;
 			}
 		}

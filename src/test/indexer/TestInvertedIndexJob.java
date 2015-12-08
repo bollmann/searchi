@@ -1,15 +1,16 @@
 package test.indexer;
 
-import indexer.InvertedIndex;
 import indexer.WordCounts;
-import indexer.dao.DocumentFeatures;
-import indexer.dao.InvertedIndexRow;
 import indexer.offline.InvertedIndexJob;
 import indexer.offline.InvertedIndexJob.Feature;
 import indexer.offline.Tokenizer;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,9 +19,8 @@ import junit.framework.TestCase;
 
 import org.junit.Test;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-
 import crawler.dao.URLContent;
+import crawler.policies.FilePolicy;
 import edu.stanford.nlp.util.StringUtils;
 
 public class TestInvertedIndexJob extends TestCase {
@@ -42,7 +42,7 @@ public class TestInvertedIndexJob extends TestCase {
 		URLContent page = new URLContent("http://www.schnitzel.com/");
 		page.setContent(content.toString());
 		
-		Map<Feature, WordCounts> allCounts = InvertedIndexJob.computeCounts(page);
+		Map<Feature, WordCounts> allCounts = InvertedIndexJob.computeCounts(page, 1);
 		
 		// link counts
 		Map<String, Integer> expLinkCounts = new HashMap<String, Integer>();
@@ -114,25 +114,129 @@ public class TestInvertedIndexJob extends TestCase {
 		}
 		assertEquals(bigrams, StringUtils.getNgrams(tokens, 1, 2));
 	}
-
+	
 	@Test
-	public void testSaveInvertedIndexRow() {
-		for (int i = 0; i < 10; i++) {
-			DynamoDBMapper db = InvertedIndex.connectDB();
-			List<DocumentFeatures> features = new ArrayList<DocumentFeatures>();
-			DocumentFeatures feat1 = new DocumentFeatures();
-			feat1.setEuclideanTermFrequency(0.0F);
-			feat1.setHeaderCount(1);
-			feat1.setLinkCount(2);
-			feat1.setMaximumTermFrequency(3.0F);
-			feat1.setMetaTagCount(4);
-			feat1.setTotalCount(5);
-			feat1.setUrl("this/url");
-			features.add(feat1);
-			features.add(feat1);
-
-			InvertedIndexRow row = new InvertedIndexRow("abc" + i, i, features);
-			db.save(row);
-		}
+	public void testComputeCountsUnigram() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("<html><body>");
+		sb.append("Two words. <b><p>Other words</p></b>");
+		sb.append("<a href='http://www.google.com'>Link link text</a>");
+		sb.append("</body></html>");
+		URLContent content = new URLContent();
+		content.setContent(sb.toString());
+		content.setUrl("http://www.google.com");
+		Map<Feature, WordCounts> wordCounts = InvertedIndexJob.computeCounts(content, 1);
+		System.out.println(wordCounts);
+		
+		//total counts
+		assertEquals(1, (int) wordCounts.get(Feature.TOTAL_COUNTS).getWordCounts().get("two"));
+		assertTrue(wordCounts.get(Feature.TOTAL_COUNTS).getWordPos().get("two").contains(1));
+		
+		assertEquals(1, (int) wordCounts.get(Feature.TOTAL_COUNTS).getWordCounts().get("words"));
+		assertTrue(wordCounts.get(Feature.TOTAL_COUNTS).getWordPos().get("words").contains(2));
+		
+		//link counts
+		assertEquals(2, (int) wordCounts.get(Feature.LINK_COUNTS).getWordCounts().get("link"));
+		assertTrue(wordCounts.get(Feature.LINK_COUNTS).getWordPos().get("text").contains(3));
+		assertEquals(1, (int) wordCounts.get(Feature.LINK_COUNTS).getWordCounts().get("text"));
+		assertTrue(wordCounts.get(Feature.LINK_COUNTS).getWordPos().get("link").contains(1));
+		assertTrue(wordCounts.get(Feature.LINK_COUNTS).getWordPos().get("link").contains(2));
 	}
+	
+	@Test
+	public void testStringUtilsGetUnigrams() {
+		List<String> lineTokens = Arrays.asList("This is a test sentence".split(" "));
+		Collection<String> nGrams = StringUtils.getNgrams(lineTokens, 1, 1);
+		List<String> nGramList = new ArrayList<String>(nGrams);
+		assertEquals("This", nGramList.get(0));
+		assertEquals("is", nGramList.get(1));
+		assertEquals("a", nGramList.get(2));
+		assertEquals("test", nGramList.get(3));
+		assertEquals("sentence", nGramList.get(4));
+	}
+	
+	@Test
+	public void testStringUtilsGetBigrams() {
+		List<String> lineTokens = Arrays.asList("This is a test sentence".split(" "));
+		Collection<String> nGrams = StringUtils.getNgrams(lineTokens, 2, 2);
+		List<String> nGramList = new ArrayList<String>(nGrams);
+		assertEquals("This is", nGramList.get(0));
+		assertEquals("is a", nGramList.get(1));
+		assertEquals("a test", nGramList.get(2));
+		assertEquals("test sentence", nGramList.get(3));
+	}
+	
+	@Test
+	public void testComputeCountsBigram() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("<html><body>");
+		sb.append("Two words. New York City.");
+		sb.append("<a href='http://www.google.com'>Link link text</a>");
+		sb.append("</body></html>");
+		URLContent content = new URLContent();
+		content.setContent(sb.toString());
+		content.setUrl("http://www.google.com");
+		Map<Feature, WordCounts> wordCounts = InvertedIndexJob.computeCounts(content, 2);
+//		System.out.println(wordCounts);
+		
+		//total counts
+		assertEquals(1, (int) wordCounts.get(Feature.TOTAL_COUNTS).getWordCounts().get("two"));
+		assertEquals(1, (int) wordCounts.get(Feature.TOTAL_COUNTS).getWordCounts().get("two words"));
+		assertTrue(wordCounts.get(Feature.TOTAL_COUNTS).getWordPos().get("two").contains(1));
+		
+		assertEquals(1, (int) wordCounts.get(Feature.TOTAL_COUNTS).getWordCounts().get("words"));
+		assertTrue(wordCounts.get(Feature.TOTAL_COUNTS).getWordPos().get("words").contains(2));
+		
+		//link counts
+		assertEquals(2, (int) wordCounts.get(Feature.LINK_COUNTS).getWordCounts().get("link"));
+		assertTrue(wordCounts.get(Feature.LINK_COUNTS).getWordPos().get("text").contains(3));
+		assertEquals(1, (int) wordCounts.get(Feature.LINK_COUNTS).getWordCounts().get("text"));
+		assertTrue(wordCounts.get(Feature.LINK_COUNTS).getWordPos().get("link").contains(1));
+		assertTrue(wordCounts.get(Feature.LINK_COUNTS).getWordPos().get("link").contains(2));
+	}
+	
+	@Test
+	public void testPerformanceForLargeHtmlFiles() {
+		String content = null;
+		try {
+			content = FilePolicy.readFile("testcontent/Wiki-html-file.html");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		URLContent urlContent = new URLContent();
+		urlContent.setContent(content);
+		urlContent.setUrl("http://www.google.com");
+		Date start = Calendar.getInstance().getTime();
+		Map<Feature, WordCounts> wordCounts = InvertedIndexJob.computeCounts(urlContent, 3);
+		Date end = Calendar.getInstance().getTime();
+		long timeTakenForBigram = (end.getTime() - start.getTime());
+		start = Calendar.getInstance().getTime();
+		wordCounts = InvertedIndexJob.computeCounts(urlContent, 1);
+		end = Calendar.getInstance().getTime();
+		long timeTakenForUnigram = (end.getTime() - start.getTime());
+		System.out.println("Time taken for unigram:" + timeTakenForUnigram + " and bigram:" + timeTakenForBigram);
+	}
+
+//	@Test
+//	public void testSaveInvertedIndexRow() {
+//		for (int i = 0; i < 10; i++) {
+//			DynamoDBMapper db = InvertedIndex.connectDB();
+//			List<DocumentFeatures> features = new ArrayList<DocumentFeatures>();
+//			DocumentFeatures feat1 = new DocumentFeatures();
+//			feat1.setEuclideanTermFrequency(0.0F);
+//			feat1.setHeaderCount(1);
+//			feat1.setLinkCount(2);
+//			feat1.setMaximumTermFrequency(3.0F);
+//			feat1.setMetaTagCount(4);
+//			feat1.setTotalCount(5);
+//			feat1.setUrl("this/url");
+//			features.add(feat1);
+//			features.add(feat1);
+//
+//			InvertedIndexRow row = new InvertedIndexRow("abc" + i, i, features);
+//			db.save(row);
+//		}
+//	}
 }
