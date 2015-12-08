@@ -80,8 +80,7 @@ public class InvertedIndex {
 			rows.add(row);
 			if (rows.size() >= batchSize) {
 				db.batchSave(rows);
-				logger.info(String
-						.format("imported %d records into DynamoDB's 'inverted-index' table.",
+				logger.info(String.format("imported %d records into DynamoDB's 'inverted-index' table.",
 								rows.size()));
 
 				rows = new LinkedList<InvertedIndexRow>();
@@ -121,7 +120,7 @@ public class InvertedIndex {
 		return docs;
 	}
 	
-	public List<DocumentScore> rankDocuments(List<String> query) {
+	public List<DocumentScore> rankDocumentsBy(List<String> query, Comparator<DocumentScore> ranking) {
 		WordCounts queryCounts = new WordCounts(query);
 		Map<String, DocumentScore> documentRanks = new HashMap<String, DocumentScore>();
 
@@ -148,20 +147,30 @@ public class InvertedIndex {
 				rankedDoc.setRank(rankedDoc.getRank() + queryWeight * docWeight);
 			}
 			logger.info(String.format(
-					"=> got %d documents for query word '%s'.", rows.size(),
+					"=> got %d rows for query word '%s'.", rows.size(),
 					word));
 		}
-		
-		List<DocumentScore> documentScoreList = new ArrayList<DocumentScore>(
-				documentRanks.values());
-		Collections.sort(documentScoreList, new Comparator<DocumentScore>() {
+		List<DocumentScore> results = new ArrayList<DocumentScore>(documentRanks.values());
+		Collections.sort(results, ranking);
+		return results;
+	}
+	
+	public List<DocumentScore> rankDocuments(List<String> query) {
+		Comparator<DocumentScore> ranking = new Comparator<DocumentScore>() {
 			@Override
-			public int compare(DocumentScore arg0, DocumentScore arg1) {
-				return (-1) * Double.compare(arg0.getRank(), arg1.getRank());
+			public int compare(DocumentScore s1, DocumentScore s2) {
+				Map<String, DocumentFeatures> s1Words = s1.getWordFeatures();
+				Map<String, DocumentFeatures> s2Words = s2.getWordFeatures();
+				
+				if (s1Words.size() > s2Words.size())
+					return -1;
+				else if (s1Words.size() < s2Words.size())
+					return 1;
+				else 
+					return (-1) * Double.compare(s1.getRank(), s2.getRank());
 			}
-
-		});
-		return documentScoreList;
+		};
+		return rankDocumentsBy(query, ranking);
 	}
 	
 	public static void main(String[] args) {
