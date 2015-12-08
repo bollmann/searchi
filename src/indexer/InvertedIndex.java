@@ -131,7 +131,6 @@ public class InvertedIndex {
 			List<InvertedIndexRow> rows = getDocumentLocations(word);
 			List<DocumentFeatures> docs = new ArrayList<DocumentFeatures>();
 			for(InvertedIndexRow row: rows) {
-				logger.info("row features: " + row.getFeatures());
 				docs.addAll(row.getFeatures());
 			}
 

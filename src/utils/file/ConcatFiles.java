@@ -1,10 +1,13 @@
 package utils.file;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 import java.util.Scanner;
@@ -25,6 +28,7 @@ public class ConcatFiles {
 		File inputDir = new File(this.inDir);
 
 		File[] files = inputDir.listFiles();
+		int lineNr = 1;
 		int prefixCount = 1;
 		for (int i = 0; i < files.length; i += this.numFilesToCombine) {
 			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
@@ -32,8 +36,13 @@ public class ConcatFiles {
 					prefixCount)), Charset.forName("UTF-8")));
 
 			for (int j = 0; j < this.numFilesToCombine && i + j < files.length; ++j) {
-				writer.write(new Scanner(files[i + j], "UTF-8").useDelimiter(
-					"\\Z").next() + "\n");
+				BufferedReader br = new BufferedReader(new InputStreamReader(
+					new FileInputStream(files[i+j])));
+				
+				writer.write(Integer.toString(lineNr) +"\t" + br.readLine() + "\n");
+				lineNr++;
+				br.close();
+				files[i+j].delete();
 			}
 				
 			writer.close();

@@ -13,24 +13,16 @@ public class DocumentScore implements Comparable<DocumentScore> {
 	/*
 	 * Feature counts of words occurring in this document.
 	 */
-	private Map<String, Integer> totalCounts;
-	private Map<String, Integer> linkCounts;
-	private Map<String, Integer> headerCounts;
+	private Map<String, DocumentFeatures> wordFeatures;
 
 	public DocumentScore(String word, DocumentFeatures features) {
 		this.url = new String(features.getUrl());
-		this.rank = 0.0;
-		this.totalCounts = new HashMap<String, Integer>();
-		this.linkCounts = new HashMap<String, Integer>();
-		this.headerCounts = new HashMap<String, Integer>();
-
+		this.wordFeatures = new HashMap<String, DocumentFeatures>();
 		addFeatures(word, features);
 	}
 
 	public void addFeatures(String word, DocumentFeatures features) {
-		this.totalCounts.put(word, features.getTotalCount());
-		this.linkCounts.put(word, features.getLinkCount());
-		this.headerCounts.put(word, features.getHeaderCount());
+		wordFeatures.put(word, features);
 	}
 
 	public String getUrl() {
@@ -45,18 +37,6 @@ public class DocumentScore implements Comparable<DocumentScore> {
 		return rank;
 	}
 
-	public Map<String, Integer> getTotalCounts() {
-		return totalCounts;
-	}
-
-	public Map<String, Integer> getLinkCounts() {
-		return linkCounts;
-	}
-
-	public Map<String, Integer> getHeaderCounts() {
-		return headerCounts;
-	}
-
 	@Override
 	public int compareTo(DocumentScore other) {
 		return (-1) * Double.compare(this.rank, other.rank);
@@ -65,13 +45,11 @@ public class DocumentScore implements Comparable<DocumentScore> {
 	@Override
 	public String toString() {
 		StringBuffer fmt = new StringBuffer();
-		fmt.append("URL %s ; rank=%f\n");
-		fmt.append("totalWordCounts=%s\n");
-		fmt.append("headerCounts=%s\n");
-		fmt.append("linkCounts=%s\n");
+		fmt.append(String.format("URL %s ; rank=%f\n", this.url, this.rank));
+		for(String word: wordFeatures.keySet())
+			fmt.append(String.format("%s features=%s\n", word, wordFeatures.get(word)));
 		
-		return String.format(fmt.toString(), this.url, this.rank,
-				this.totalCounts, this.headerCounts, this.linkCounts);
+		return fmt.toString();
 	}
 
 }
