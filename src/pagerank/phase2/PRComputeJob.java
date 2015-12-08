@@ -45,7 +45,7 @@ public final class PRComputeJob extends Configured implements Tool {
 	public static void main(String [] args) throws Exception {
 		logger.info("Starting page rank on Map Reduce");
 		
-		int numIter = 15;
+		int numIter = 5;
 		if (args.length > 2) {
 			numIter = Integer.parseInt(args[2]);
 		}
@@ -79,7 +79,7 @@ public final class PRComputeJob extends Configured implements Tool {
 		}
 		
 		logger.info("Starting the final aggregation phase of page rank");
-		jobArgs[0] = input;
+		jobArgs[0] = tempOut;
 		jobArgs[1]= out;
 		res = ToolRunner.run(new PRFinalAggJob(), jobArgs);
 		

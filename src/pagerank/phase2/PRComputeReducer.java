@@ -7,8 +7,8 @@ import org.apache.hadoop.mapreduce.Reducer;
 
 public class PRComputeReducer extends Reducer<Text, Text, Text, Text>{
 	
-	private static final String DELIM_SINGLE_HASH = "#";
 	private static final String DELIM_PR_LINKS = "###";
+	private static final String DUMMY_ACC_PAGE = "DUMMY_ACC_PAGE";
 	
 	@Override
 	public void reduce(Text key, Iterable<Text> values, Context context)

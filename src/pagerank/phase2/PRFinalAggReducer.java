@@ -11,9 +11,12 @@ public class PRFinalAggReducer extends Reducer<Text, Text, Text, Text> {
 	public void reduce(Text key, Iterable<Text> values, Context context) 
 		throws IOException, InterruptedException {
 		
+		double pageRank = 0.0;
+		
 		for (Text value : values) {
-			context.write(key, value);
+			pageRank += new Double(value.toString());			
 		}
+		context.write(key, new Text(Double.toString(pageRank)));
 	}
 
 }
