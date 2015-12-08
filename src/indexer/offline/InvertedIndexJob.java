@@ -32,6 +32,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import utils.file.FileUtils;
+import utils.nlp.LanguageDetector;
 
 import com.google.gson.Gson;
 
@@ -56,10 +57,15 @@ public class InvertedIndexJob {
 			
             URLContent page = new Gson().fromJson(jsonBlob.toString(),
 					URLContent.class);
+            
+            // Check if the content is not English
+            if (!LanguageDetector.isEnglish(page.getContent()))
+            	return;
+            
 			Map<Feature, WordCounts> allCounts = computeCounts(page);
 
 			WordCounts wordCounts = allCounts.get(Feature.TOTAL_COUNTS);
-			for (String word: wordCounts) {
+			for (String word : wordCounts) {
 				DocumentFeatures doc = new DocumentFeatures();
 
 				doc.setUrl(page.getUrl());
@@ -78,6 +84,7 @@ public class InvertedIndexJob {
                 doc.setPositions(wordCounts.getPosition(word));
 
 				context.write(new Text(word), new Text(new Gson().toJson(doc)));
+				
 			}
 		}
 	}
