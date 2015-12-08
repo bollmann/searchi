@@ -3,12 +3,10 @@ package indexer.dao;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIgnore;
-
 /**
  * The counts of some word within the given document.
  */
-public final class DocumentFeatures implements Comparable<DocumentFeatures> {
+public final class DocumentFeatures {
 	/**
 	 * the document.
 	 */
@@ -21,9 +19,6 @@ public final class DocumentFeatures implements Comparable<DocumentFeatures> {
 	private int metaTagCount;
 	private int headerCount;
 	private Set<Integer> positions;
-
-	@DynamoDBIgnore
-	private double tfIdf;
 	
 	public String getUrl() { return url; }
 	public void setUrl(String url) { this.url = url; }
@@ -64,19 +59,5 @@ public final class DocumentFeatures implements Comparable<DocumentFeatures> {
 			"linkCount = %d, metaTagCount = %d, headerCount = %d, wordPositions = %s",
 			url, maximumTermFrequency, euclideanTermFrequency, totalCount,
 			linkCount, metaTagCount, headerCount, positions.toString());
-	}
-
-	public void setTfIdf(double idf) {
-		this.tfIdf = maximumTermFrequency * idf;
-	}
-
-	public double getTfIdf() {
-		return this.tfIdf;
-	}
-
-	@Override
-	@DynamoDBIgnore
-	public int compareTo(DocumentFeatures o) {
-		return (int) (-1000 * (tfIdf - o.tfIdf));
 	}
 }

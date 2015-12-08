@@ -107,21 +107,19 @@ public class InvertedIndexJob {
 			List<DocumentFeatures> docs = new ArrayList<DocumentFeatures>();			
 			Set<String> seenURLs = new HashSet<String>();			
 									
-			for (Text jsonFeature : jsonFeatures) {
+			for (Text jsonFeature: jsonFeatures) {
 				DocumentFeatures features = new Gson().fromJson(
 						jsonFeature.toString(), DocumentFeatures.class);
 				
-				if (seenURLs.contains(features.getUrl())) {
+				if (seenURLs.contains(features.getUrl()))
 					continue;
-				}
-				seenURLs.add(features.getUrl());
 
-				features.setTfIdf(Math.log(corpusSize));
+				seenURLs.add(features.getUrl());
 				docs.add(features);	
 			}
 
 			int docSize = seenURLs.size();
-			final double idf = Math.log(corpusSize/docSize);
+			final double idf = Math.log(corpusSize / docSize);
 
 			Collections.sort(docs, new Comparator<DocumentFeatures>() {
 				@Override
@@ -133,7 +131,7 @@ public class InvertedIndexJob {
 
 			List<DocumentFeatures> docsToWrite = new ArrayList<DocumentFeatures>();
 			int page = 0; int entryPos = 0;
-			for (int i = 0 ; i < topK && i < docs.size(); ++i ) {
+			for (int i = 0; i < topK && i < docs.size(); ++i ) {
 				if (entryPos < MAX_ENTRIES_PER_ROW) {
 					docsToWrite.add(docs.get(i));
 					++entryPos;
@@ -183,26 +181,28 @@ public class InvertedIndexJob {
 		Document doc = Jsoup.parse(page.getContent(), page.getUrl());
 		doc.select("script,style").remove();
 		
+		final int NGRAM_SIZE = 2;
+		
 		List<String> linkTokens = new Tokenizer(
             doc.select("a[href]").text()).getTokens();		
 		WordCounts linkCounts = new WordCounts(
-            StringUtils.getNgrams(linkTokens, 1, 3), 3);
+            StringUtils.getNgrams(linkTokens, 1, NGRAM_SIZE), NGRAM_SIZE);
 		
 		List<String> metaTagTokens = new Tokenizer(
             extractMetaTags(doc)).getTokens();		
 		WordCounts metaTagCounts = new WordCounts(
-            StringUtils.getNgrams(metaTagTokens, 1, 3), 3);
+            StringUtils.getNgrams(metaTagTokens, 1, NGRAM_SIZE), NGRAM_SIZE);
 		
 		List<String> headerTokens = new Tokenizer(
             doc.select("title,h1,h2,h3,h4,h5,h6").text()).getTokens();		
 		WordCounts headerCounts = new WordCounts(
-            StringUtils.getNgrams(headerTokens, 1, 3), 3);
+            StringUtils.getNgrams(headerTokens, 1, NGRAM_SIZE), NGRAM_SIZE);
 		
 		List<String> normalTokens = new Tokenizer(
             doc.select("title,body").text()).getTokens();
 		WordCounts totalCounts = new WordCounts(
-            StringUtils.getNgrams(normalTokens, 1, 3), 3).addCounts(metaTagCounts);
-
+            StringUtils.getNgrams(normalTokens, 1, NGRAM_SIZE), NGRAM_SIZE).addCounts(metaTagCounts);
+		
 		Map<Feature, WordCounts> allCounts = new HashMap<Feature, WordCounts>();
 		allCounts.put(Feature.LINK_COUNTS, linkCounts);
 		allCounts.put(Feature.META_TAG_COUNTS, metaTagCounts);

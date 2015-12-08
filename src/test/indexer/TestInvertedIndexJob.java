@@ -1,16 +1,19 @@
 package test.indexer;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import indexer.InvertedIndex;
 import indexer.WordCounts;
 import indexer.dao.DocumentFeatures;
 import indexer.dao.InvertedIndexRow;
 import indexer.offline.InvertedIndexJob;
 import indexer.offline.InvertedIndexJob.Feature;
+import indexer.offline.Tokenizer;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import junit.framework.TestCase;
 
 import org.junit.Test;
@@ -18,6 +21,7 @@ import org.junit.Test;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 
 import crawler.dao.URLContent;
+import edu.stanford.nlp.util.StringUtils;
 
 public class TestInvertedIndexJob extends TestCase {
 	
@@ -91,6 +95,25 @@ public class TestInvertedIndexJob extends TestCase {
 		assertEquals(expNormalCounts, allCounts.get("normalCounts").getCounts());
 	}
 	
+	@Test
+	public void testGetNGrams() {
+		final String input = "Hello world. This is a test";
+		List<String> tokens = new Tokenizer(input).getTokens();
+		Collection<String> ngrams = StringUtils.getNgrams(tokens, 1, 1);
+		
+		// unigrams
+		assertEquals(tokens, ngrams);
+		
+		// bigrams
+		List<String> bigrams = new ArrayList<>();
+		for(int i = 1; i < tokens.size(); ++i) {
+			bigrams.add(tokens.get(i - 1));
+			bigrams.add(tokens.get(i - 1) + " " + tokens.get(i));
+			if(i == tokens.size() - 1)
+				bigrams.add(tokens.get(i));
+		}
+		assertEquals(bigrams, StringUtils.getNgrams(tokens, 1, 2));
+	}
 
 	@Test
 	public void testSaveInvertedIndexRow() {

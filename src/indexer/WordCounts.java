@@ -9,7 +9,7 @@ import java.util.Set;
 public class WordCounts implements Iterable<String> {
 	private Map<String, Integer> wordCounts;
 	private Map<String, Set<Integer>> wordPos;
-	private Map<Integer, Set<String> > nGrams;
+	private Map<Integer, Set<String>> nGrams;
 	private Map<Integer, Integer> nGramCounts;
 	private Map<Integer, String> nGramMaxWords;
 	
@@ -43,7 +43,7 @@ public class WordCounts implements Iterable<String> {
 				wordPos.get(word).add((int) (index / maxN) + 1); 
 			}
 			
-			int nValue = getNValForNGram(word);
+			int nValue = getNGramSize(word);
 			if (nGrams.get(nValue) == null) {
 				nGrams.put(nValue, new HashSet<String>());
 			}
@@ -86,7 +86,12 @@ public class WordCounts implements Iterable<String> {
 			
 			// Doesn't include other's word pos
 			
-			int nValue = getNValForNGram(word);
+			int nValue = getNGramSize(word);
+			if (nGrams.get(nValue) == null) {
+				nGrams.put(nValue, new HashSet<String>());
+			}
+			nGrams.get(nValue).add(word);
+			
 			Integer nCnts = nGramCounts.get(nValue);
 			if (nCnts == null) {
 				nGramCounts.put(nValue, other.wordCounts.get(word));
@@ -112,14 +117,14 @@ public class WordCounts implements Iterable<String> {
 	/** Calculate TF for a word */
 	public double getMaximumTermFrequency(String word) {
 		double alpha = 0.5;
-		int nValue = getNValForNGram(word);
+		int nValue = getNGramSize(word);
 		return alpha + (1 - alpha) * 
 			((double) wordCounts.get(word) / wordCounts.get(nGramMaxWords.get(nValue)));
 	}
 	
 	/** Get Euclidean Term Freq of a word */
 	public double getEuclideanTermFrequency(String word) {
-		int nValue = getNValForNGram(word);
+		int nValue = getNGramSize(word);
 		
 		int docSize = 0;		
 		for (String nGram : nGrams.get(nValue)) {
@@ -158,7 +163,7 @@ public class WordCounts implements Iterable<String> {
 		return nGramMaxWords.get(nValue);
 	}
 	
-	private int getNValForNGram(String word) {
+	private int getNGramSize(String word) {
 		return word.split(" ").length;
 	}
 }

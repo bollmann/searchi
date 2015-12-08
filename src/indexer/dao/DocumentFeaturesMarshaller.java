@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMarshaller;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 public class DocumentFeaturesMarshaller implements
 		DynamoDBMarshaller<List<DocumentFeatures>> {
@@ -18,6 +19,6 @@ public class DocumentFeaturesMarshaller implements
 	public List<DocumentFeatures> unmarshall(
 			Class<List<DocumentFeatures>> clazz, String jsonFeatures) {
 		Gson gson = new Gson();
-		return gson.fromJson(jsonFeatures, clazz);
+		return gson.fromJson(jsonFeatures, new TypeToken<List<DocumentFeatures>>(){}.getType());
 	}
 }
