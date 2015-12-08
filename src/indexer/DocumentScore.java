@@ -36,6 +36,10 @@ public class DocumentScore implements Comparable<DocumentScore> {
 	public double getRank() {
 		return rank;
 	}
+	
+	public Map<String, DocumentFeatures> getWordFeatures() {
+		return wordFeatures;
+	}
 
 	@Override
 	public int compareTo(DocumentScore other) {

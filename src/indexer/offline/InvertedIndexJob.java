@@ -58,13 +58,13 @@ public class InvertedIndexJob {
             URLContent page = new Gson().fromJson(jsonBlob.toString(),
 					URLContent.class);
             
-            // Check if the content is not English
+            // only proceed if the content is english
             if (!LanguageDetector.isEnglish(page.getContent()))
             	return;
             
 			Map<Feature, WordCounts> allCounts = computeCounts(page, 1);
-
 			WordCounts wordCounts = allCounts.get(Feature.TOTAL_COUNTS);
+			
 			for (String word : wordCounts) {
 				DocumentFeatures doc = new DocumentFeatures();
 
