@@ -1,6 +1,5 @@
 package indexer.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
@@ -18,11 +17,8 @@ public class InvertedIndexRow {
 	private String word;
 	private int page;
 	private List<DocumentFeatures> features;
-
-
-	public InvertedIndexRow() {
-		features = new ArrayList<DocumentFeatures>();
-	}
+	
+	public InvertedIndexRow() { }
 	
 	public InvertedIndexRow(String word, int page, List<DocumentFeatures> features) {
 		this.word = word;

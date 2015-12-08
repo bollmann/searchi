@@ -1,33 +1,79 @@
 package indexer;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 public class WordCounts implements Iterable<String> {
 	private Map<String, Integer> wordCounts;
-	private String maxWord;
+	private Map<String, Set<Integer>> wordPos;
+	private Map<Integer, Set<String>> nGrams;
+	private Map<Integer, Integer> nGramCounts;
+	private Map<Integer, String> nGramMaxWords;
 	
-	public WordCounts(Iterable<String> words) {
-		wordCounts = new HashMap<String, Integer>();
-		maxWord = null;
+	public WordCounts (Iterable<String> words) {
+		initCounts(words, 1);
+	}
+	
+	public WordCounts (Iterable<String> words, int maxN) {
+		initCounts(words, maxN);
+	}
+	
+	public void initCounts(Iterable<String> words, int maxN) {
+		wordCounts = new HashMap<>();
+		wordPos = new HashMap<>();
+		nGrams = new HashMap<>();
+		nGramCounts = new HashMap<>();
+		nGramMaxWords = new HashMap<>();
 		
+		int index = 0;
 		for(String word: words) {
 			Integer counts = wordCounts.get(word);
 			if (counts == null)
 				wordCounts.put(word, 1);
 			else
 				wordCounts.put(word, counts + 1);
+			
+			if (!wordPos.containsKey(word)) {
+				wordPos.put(word, new HashSet<Integer>());
+			}
+			if (wordPos.get(word).size() <= 5) {
+				wordPos.get(word).add((int) (index / maxN) + 1); 
+			}
+			
+			int nValue = getNGramSize(word);
+			if (nGrams.get(nValue) == null) {
+				nGrams.put(nValue, new HashSet<String>());
+			}
+			nGrams.get(nValue).add(word);
+			
+			Integer nCnts = nGramCounts.get(nValue);
+			if (nCnts == null) {
+				nGramCounts.put(nValue, 1);
+			}
+			else {
+				nGramCounts.put(nValue, nCnts + 1);
+			}
 
 			// update maxWord, if necessary:
-			if (maxWord == null || wordCounts.get(maxWord) < wordCounts.get(word))
-				maxWord = word;			
+			String maxNWord = nGramMaxWords.get(nValue);
+			if (maxNWord == null || wordCounts.get(maxNWord) < wordCounts.get(word))
+				nGramMaxWords.put(nValue, word);
+			
+			index++;
 		}
 	}
 	
 	public WordCounts(WordCounts other) {
 		this.wordCounts = new HashMap<String, Integer>(other.wordCounts);
-		this.maxWord = (other.maxWord == null ? null : new String(other.maxWord));
+		for (String key : other.wordPos.keySet()) {
+			this.wordPos.put(key, new HashSet<>(other.wordPos.get(key)));
+		}		
+		this.nGramCounts = new HashMap<>(other.nGramCounts);
+		this.nGramMaxWords = new HashMap<>(other.nGramMaxWords);
+		
 	}
 	
 	/** Adding word counts together. */ 
@@ -38,23 +84,53 @@ public class WordCounts implements Iterable<String> {
 			else
 				this.wordCounts.put(word, other.wordCounts.get(word));
 			
-			if(maxWord == null || wordCounts.get(maxWord) < wordCounts.get(word))
-				maxWord = word;			
+			// Doesn't include other's word pos
+			
+			int nValue = getNGramSize(word);
+			if (nGrams.get(nValue) == null) {
+				nGrams.put(nValue, new HashSet<String>());
+			}
+			nGrams.get(nValue).add(word);
+			
+			Integer nCnts = nGramCounts.get(nValue);
+			if (nCnts == null) {
+				nGramCounts.put(nValue, other.wordCounts.get(word));
+			}
+			else {
+				nGramCounts.put(nValue, nCnts + other.wordCounts.get(word));
+			}
+			
+			String maxNWord = nGramMaxWords.get(nValue);
+			if (maxNWord == null || wordCounts.get(maxNWord) < wordCounts.get(word))
+				nGramMaxWords.put(nValue, word);
 		}
 		return this;
 	}
 	
-	/** Calculate TF for a word */
-	public double getMaximumTermFrequency(String word) {
-		double alpha = 0.5;
-		return alpha + (1 - alpha) * ((double) wordCounts.get(word) / wordCounts.get(maxWord));
+	public Set<Integer> getPosition(String word) {
+		if (!wordPos.containsKey(word)) {
+			return new HashSet<>();
+		}
+		return wordPos.get(word);
 	}
+	
+	/** Calculate TF for a word */
+	public float getMaximumTermFrequency(String word) {
+		float alpha = 0.5F;
+		int nValue = getNGramSize(word);
+		return alpha + (1 - alpha) * 
+			((float) wordCounts.get(word) / wordCounts.get(nGramMaxWords.get(nValue)));
+	}
+	
 	/** Get Euclidean Term Freq of a word */
-	public double getEuclideanTermFrequency(String word) {
-		int docSize = 0;
-		for(String w: wordCounts.keySet())
-			docSize += Math.pow(wordCounts.get(w), 2.0);
-		return getCounts(word) / Math.sqrt((double) docSize);
+	public float getEuclideanTermFrequency(String word) {
+		int nValue = getNGramSize(word);
+		
+		int docSize = 0;		
+		for (String nGram : nGrams.get(nValue)) {
+			docSize += Math.pow(wordCounts.get(nGram), 2.0);
+		}		
+		return (float) (getCounts(word) / Math.sqrt((double) docSize));
 	}
 	
 	/** Get counts of a word */
@@ -80,6 +156,14 @@ public class WordCounts implements Iterable<String> {
 	}
 	
 	public String getMaxWord() {
-		return maxWord;
+		return getMaxNWord(1);
+	}
+	
+	public String getMaxNWord(int nValue) {
+		return nGramMaxWords.get(nValue);
+	}
+	
+	private int getNGramSize(String word) {
+		return word.split(" ").length;
 	}
 }

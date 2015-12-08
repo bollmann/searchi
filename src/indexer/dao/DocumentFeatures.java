@@ -1,38 +1,45 @@
 package indexer.dao;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBDocument;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIgnore;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * The counts of some word within the given document.
  */
-public class DocumentFeatures {
+public final class DocumentFeatures {
 	/**
 	 * the document.
 	 */
 	private String url;
 	
-	private double maximumTermFrequency;
-	private double euclideanTermFrequency;
+	private float maximumTermFrequency;
+	private float euclideanTermFrequency;
+	private float tfidf;
 	private int totalCount;
 	private int linkCount;
 	private int metaTagCount;
 	private int headerCount;
+	private Set<Integer> positions;
 	
 	public String getUrl() { return url; }
 	public void setUrl(String url) { this.url = url; }
 	
-	public double getMaximumTermFrequency() { return maximumTermFrequency; }
-	public void setMaximumTermFrequency(double maximumTermFrequency) {
+	public float getMaximumTermFrequency() { return maximumTermFrequency; }
+	public void setMaximumTermFrequency(float maximumTermFrequency) {
 		this.maximumTermFrequency = maximumTermFrequency;
 	}
 	
-	public double getEuclideanTermFrequency() { return euclideanTermFrequency; }
-	public void setEuclideanTermFrequency(double euclideanTermFrequency) {
+	public float getEuclideanTermFrequency() { return euclideanTermFrequency; }
+	public void setEuclideanTermFrequency(float euclideanTermFrequency) {
 		this.euclideanTermFrequency = euclideanTermFrequency;
 	}
 	
+	public float getTfidf() {
+		return tfidf;
+	}
+	public void setTfidf(float tfidf) {
+		this.tfidf = tfidf;
+	}
 	public int getTotalCount() { return totalCount; }
 	public void setTotalCount(int totalCount) {
 		this.totalCount = totalCount;
@@ -49,10 +56,15 @@ public class DocumentFeatures {
 		this.headerCount = headerCount;
 	}
 	
+	public Set<Integer> getPositions() { return this.positions; }
+	public void setPositions(Set<Integer> pos) {
+		this.positions = new HashSet<>(pos);
+	}
+
 	public String toString() {
 		return String.format("url = %s, maxtf = %f, euclidtf = %f, totalCount = %d," + 
-				"linkCount = %d, metaTagCount = %d, headerCount = %d", 
-				url, maximumTermFrequency, euclideanTermFrequency, totalCount,
-				linkCount, metaTagCount, headerCount);
+			"linkCount = %d, metaTagCount = %d, headerCount = %d, wordPositions = %s",
+			url, maximumTermFrequency, euclideanTermFrequency, totalCount,
+			linkCount, metaTagCount, headerCount, positions.toString());
 	}
 }

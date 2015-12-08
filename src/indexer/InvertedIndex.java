@@ -12,13 +12,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.PriorityQueue;
-import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -73,8 +70,7 @@ public class InvertedIndex {
 	public static void importData(String fromFile, int batchSize)
 			throws IOException {
 		DynamoDBMapper db = connectDB();
-		BufferedReader br = new BufferedReader(new FileReader(
-				new File(fromFile)));
+		BufferedReader br = new BufferedReader(new FileReader(new File(fromFile)));
 		String line = null;
 		List<InvertedIndexRow> rows = new LinkedList<InvertedIndexRow>();
 		
@@ -99,7 +95,7 @@ public class InvertedIndex {
 			List<String> query) {
 		Map<String, InvertedIndexRow> wordDocumentInfoMap = new HashMap<String, InvertedIndexRow>();
 
-		for (String word : query) {
+		for (String word: query) {
 			// TODO: optimize based on different table layout, multi-thread
 			// requests, etc.
 			List<InvertedIndexRow> rows = getDocumentLocations(word);
@@ -115,6 +111,16 @@ public class InvertedIndex {
 		return wordDocumentInfoMap;
 	}
 
+	public List<DocumentFeatures> getDocumentsForWord(String word) {
+		List<InvertedIndexRow> rows = getDocumentLocations(word);
+		List<DocumentFeatures> docs = new ArrayList<DocumentFeatures>();
+		for(InvertedIndexRow row: rows) {
+			logger.info("row features: " + row.getFeatures());
+			docs.addAll(row.getFeatures());
+		}
+		return docs;
+	}
+	
 	public List<DocumentScore> rankDocuments(List<String> query) {
 		WordCounts queryCounts = new WordCounts(query);
 		Map<String, DocumentScore> documentRanks = new HashMap<String, DocumentScore>();
