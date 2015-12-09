@@ -15,8 +15,6 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 
-import utils.db.DynamoDBUtils;
-
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.model.ProvisionedThroughput;
 import com.google.gson.Gson;
