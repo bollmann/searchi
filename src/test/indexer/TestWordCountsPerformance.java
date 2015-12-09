@@ -59,7 +59,7 @@ public class TestWordCountsPerformance {
 				for (String word : wordCounts) {
 					DocumentFeatures doc = new DocumentFeatures();
 
-					doc.setUrl(page.getUrl());
+					doc.setDocId(page.getUrl());
 					doc.setEuclideanTermFrequency(allCounts.get(
 						Feature.TOTAL_COUNTS).getEuclideanTermFrequency(word));
 					doc.setMaximumTermFrequency(allCounts.get(Feature.TOTAL_COUNTS)

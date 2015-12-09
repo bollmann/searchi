@@ -122,7 +122,7 @@ public class InvertedIndex {
 	
 	public List<DocumentScore> rankDocumentsBy(List<String> query, Comparator<DocumentScore> ranking) {
 		WordCounts queryCounts = new WordCounts(query);
-		Map<String, DocumentScore> documentRanks = new HashMap<String, DocumentScore>();
+		Map<Integer, DocumentScore> documentRanks = new HashMap<Integer, DocumentScore>();
 
 		for (String word: query) {
 			// TODO: optimize based on different table
@@ -134,10 +134,10 @@ public class InvertedIndex {
 			}
 
 			for(DocumentFeatures features: docs) {
-				DocumentScore rankedDoc = documentRanks.get(features.getUrl());
+				DocumentScore rankedDoc = documentRanks.get(features.getDocId());
 				if(rankedDoc == null) {
 					rankedDoc = new DocumentScore(word, features);
-					documentRanks.put(features.getUrl(), rankedDoc);
+					documentRanks.put(features.getDocId(), rankedDoc);
 				} else {
 					rankedDoc.addFeatures(word, features);
 				}

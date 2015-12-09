@@ -10,7 +10,7 @@ public final class DocumentFeatures {
 	/**
 	 * the document.
 	 */
-	private String url;
+	private int docId;
 	
 	private float maximumTermFrequency;
 	private float euclideanTermFrequency;
@@ -21,8 +21,8 @@ public final class DocumentFeatures {
 	private int headerCount;
 	private Set<Integer> positions;
 	
-	public String getUrl() { return url; }
-	public void setUrl(String url) { this.url = url; }
+	public int getDocId() { return docId; }
+	public void setDocId(int docId) { this.docId = docId; }
 	
 	public float getMaximumTermFrequency() { return maximumTermFrequency; }
 	public void setMaximumTermFrequency(float maximumTermFrequency) {
@@ -62,9 +62,9 @@ public final class DocumentFeatures {
 	}
 
 	public String toString() {
-		return String.format("{url: %s, maxtf: %f, euclidtf: %f, totalCount: %d," + 
+		return String.format("{docId: %d, maxtf: %f, euclidtf: %f, totalCount: %d," + 
 			"linkCount: %d, metaTagCount: %d, headerCount: %d, wordPositions: %s}",
-			url, maximumTermFrequency, euclideanTermFrequency, totalCount,
+			docId, maximumTermFrequency, euclideanTermFrequency, totalCount,
 			linkCount, metaTagCount, headerCount, positions.toString());
 	}
 }

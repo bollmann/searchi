@@ -53,7 +53,7 @@ public class InvertedIndexJob {
 			Mapper<Text, Text, Text, Text> {
 
 		@Override
-		public void map(Text key, Text jsonBlob, Context context)
+		public void map(Text docId, Text jsonBlob, Context context)
 				throws IOException, InterruptedException {
 			
             URLContent page = new Gson().fromJson(jsonBlob.toString(),
@@ -69,7 +69,7 @@ public class InvertedIndexJob {
 			for (String word : wordCounts) {
 				DocumentFeatures doc = new DocumentFeatures();
 
-				doc.setUrl(page.getUrl());
+				doc.setDocId(Integer.parseInt(docId.toString()));
 				doc.setEuclideanTermFrequency(allCounts.get(
 					Feature.TOTAL_COUNTS).getEuclideanTermFrequency(word));
 				doc.setMaximumTermFrequency(allCounts.get(Feature.TOTAL_COUNTS)
@@ -93,7 +93,7 @@ public class InvertedIndexJob {
 	/** Reducer Class for Corpus Indexer */
 	public static class CorpusIndexer extends
 			Reducer<Text, Text, NullWritable, Text> {
-		public static final int MAX_ENTRIES_PER_ROW = 400;
+		public static final int MAX_ENTRIES_PER_ROW = 800;
 		// TODO - Pass it as argument from Task Runner using Forward Index
 		private static final int corpusSize = 100000;
 		private static final int topK = 2000;
@@ -113,20 +113,20 @@ public class InvertedIndexJob {
 				Context context) throws IOException, InterruptedException {
 			
 			List<DocumentFeatures> docs = new ArrayList<DocumentFeatures>();			
-			Set<String> seenURLs = new HashSet<String>();	
+			Set<Integer> seenDocs = new HashSet<Integer>();	
 									
 			for (Text jsonFeature: jsonFeatures) {
 				DocumentFeatures features = new Gson().fromJson(
 						jsonFeature.toString(), DocumentFeatures.class);
 				
-				if (seenURLs.contains(features.getUrl()))
+				if (seenDocs.contains(features.getDocId()))
 					continue;
 
-				seenURLs.add(features.getUrl());
+				seenDocs.add(features.getDocId());
 				docs.add(features);	
 			}
 
-			int docSize = seenURLs.size();
+			int docSize = seenDocs.size();
 			final float idf = (float) Math.log(corpusSize / docSize);
 			
 			// add tf idf values as well.
