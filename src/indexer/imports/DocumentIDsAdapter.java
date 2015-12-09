@@ -1,12 +1,13 @@
 package indexer.imports;
 
+import indexer.dao.DocumentIDRow;
+
 import org.apache.log4j.Logger;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
 import crawler.dao.URLContent;
-import indexer.dao.DocumentIDRow;
 
 public class DocumentIDsAdapter implements FileToDatabaseAdapter<DocumentIDRow> {
 	private static Logger logger = Logger.getLogger(DocumentIDsAdapter.class);
@@ -30,5 +31,4 @@ public class DocumentIDsAdapter implements FileToDatabaseAdapter<DocumentIDRow> 
 			throw e;
 		}
 	}
-
 }

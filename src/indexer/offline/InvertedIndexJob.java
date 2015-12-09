@@ -38,6 +38,7 @@ import utils.nlp.LanguageDetector;
 import com.google.gson.Gson;
 
 import crawler.dao.URLContent;
+import db.wrappers.DynamoDBWrapper;
 import edu.stanford.nlp.util.StringUtils;
 
 public class InvertedIndexJob {
@@ -58,11 +59,7 @@ public class InvertedIndexJob {
 			
             URLContent page = new Gson().fromJson(jsonBlob.toString(),
 					URLContent.class);
-            
-            // only proceed if the content is english
-            if (!LanguageDetector.isEnglish(page.getContent()))
-            	return;
-            
+
 			Map<Feature, WordCounts> allCounts = computeCounts(page, 1);
 			WordCounts wordCounts = allCounts.get(Feature.TOTAL_COUNTS);
 			
@@ -84,8 +81,7 @@ public class InvertedIndexJob {
                     .getCounts(word));
                 doc.setPositions(wordCounts.getPosition(word));
 
-				context.write(new Text(word), new Text(new Gson().toJson(doc)));
-				
+				context.write(new Text(word), new Text(new Gson().toJson(doc)));	
 			}
 		}
 	}
@@ -94,10 +90,8 @@ public class InvertedIndexJob {
 	public static class CorpusIndexer extends
 			Reducer<Text, Text, NullWritable, Text> {
 		public static final int MAX_ENTRIES_PER_ROW = 800;
-		// TODO - Pass it as argument from Task Runner using Forward Index
-		private static final int corpusSize = 100000;
 		private static final int topK = 2000;
-
+		
 		private void writeRow(String word, int page,
 				List<DocumentFeatures> docs, Context context)
 				throws IOException, InterruptedException {
@@ -111,9 +105,9 @@ public class InvertedIndexJob {
 		@Override
 		public void reduce(Text word, Iterable<Text> jsonFeatures,
 				Context context) throws IOException, InterruptedException {
-			
 			List<DocumentFeatures> docs = new ArrayList<DocumentFeatures>();			
-			Set<Integer> seenDocs = new HashSet<Integer>();	
+			Set<Integer> seenDocs = new HashSet<Integer>();
+			int corpusSize = context.getConfiguration().getInt("corpusSize", 100000);
 									
 			for (Text jsonFeature: jsonFeatures) {
 				DocumentFeatures features = new Gson().fromJson(
@@ -168,12 +162,14 @@ public class InvertedIndexJob {
 	public static void main(String[] args) throws IOException,
 			ClassNotFoundException, InterruptedException {
 		logger.info(String.format(
-				"starting job with args: inputdir=%s, outputdir=%s", args[0],
-				args[1]));
+				"starting job with args: inputdir=%s, outputdir=%s, corpusSize=%s", args[0],
+				args[1], args[2]));
 
 		FileUtils.deleteIfExists(java.nio.file.Paths.get(args[1]));
-
+		int corpusSize = Integer.parseInt(args[2]);
+		
 		Configuration conf = new Configuration();
+		conf.setInt("corpusSize", corpusSize);
 		Job job = Job.getInstance(conf, "build inverted index");
 		job.setJarByClass(InvertedIndexJob.class);
 
