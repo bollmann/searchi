@@ -120,7 +120,7 @@ public class SearchEngineInterface extends HttpServlet {
 			for (DocumentScore doc : rankedDocs) {
 				SearchResult sr = new SearchResult();
 				// lookup for id
-				String url = dId.getUrlFor(doc.getDocId());
+				String url = dId.getURLFor(doc.getDocId());
 				sr.setUrl(url);
 				sr.setScore(doc.getScore());
 				sr.setSnippet(doc.toString());

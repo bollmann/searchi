@@ -146,7 +146,7 @@ public class IndexerClientServlet extends HttpServlet {
 			for (DocumentScore doc : combinedRankedDocs) {
 				SearchResult sr = new SearchResult();
 				// lookup id to get document
-				String url = dId.getUrlFor(doc.getDocId());
+				String url = dId.getURLFor(doc.getDocId());
 				sr.setUrl(url);
 				sr.setScore(doc.getScore());
 				sr.setSnippet(tfIdfRankedDocs.get(url).toString());
