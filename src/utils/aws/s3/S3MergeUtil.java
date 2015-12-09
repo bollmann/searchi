@@ -1,4 +1,4 @@
-package utils.aws;
+package utils.aws.s3;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
@@ -20,18 +22,29 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
+import com.google.gson.Gson;
+
 
 public final class S3MergeUtil {
+
+	private class PageBlob {
+		String url;
+	}
+	
 	private static final String DEFAULT_CLIENT = "default";
 	private static final Logger logger = Logger.getLogger(S3MergeUtil.class);
+	private static S3MergeUtil utilIns = null;
 	
 	private AmazonS3Client s3client;
-	private static S3MergeUtil utilIns = null;
+	private Map<String, Integer> urlMap;
+	
 	
 	private S3MergeUtil(String client) {
 		s3client = new AmazonS3Client(
 				new ProfileCredentialsProvider(client));
 		s3client.setRegion(Region.getRegion(Regions.US_EAST_1));
+		
+		urlMap = new HashMap<>();
 	}
 	
 	public static S3MergeUtil getInstance(String client) {
@@ -77,8 +90,13 @@ public final class S3MergeUtil {
 				if (counter != 0) {
 					contents.append("\n");
 				}
-				contents.append(getContentAsString(obj.getObjectContent()));
+				
+				String contentString = getContentAsString(obj.getObjectContent());				
+				contents.append(contentString);
 				counter++;
+				
+				
+				checkDuplicates(contentString);
 				
 				if (counter == mergeFactor) {
 					InputStream mergedContentIStream = new ByteArrayInputStream(
@@ -113,10 +131,12 @@ public final class S3MergeUtil {
 			mergedContentIStream,
 			metadata));
 		
+		//Write out duplicates
+		writeDuplicates(outBucket);
+		
+		
 	}
 	
-	
-
 	public static void main(String [] args) throws NumberFormatException, IOException {
 		S3MergeUtil utility = S3MergeUtil.getInstance(DEFAULT_CLIENT);
 		
@@ -150,6 +170,27 @@ public final class S3MergeUtil {
 		logger.info("java S3MergeUtil <S3InpBucket> <S3OutBucket> <MergeFactor> ");
 		logger.info("[outputPrefix] [inpPrefix]");
 	}
+	
+
+	private void writeDuplicates(String outBucket) {
+		StringBuffer dupBuilder = new StringBuffer("Duplicate values if any\n");
+		for(String key : urlMap.keySet()) {
+			dupBuilder.append(key + " -- " + urlMap.get(key)+"\n");
+		}
+		
+		InputStream mergedContentIStream = new ByteArrayInputStream(
+				dupBuilder.toString().getBytes(StandardCharsets.UTF_8));
+			ObjectMetadata metadata = new ObjectMetadata();
+			metadata.setContentLength(dupBuilder.toString().getBytes(
+				StandardCharsets.UTF_8).length);
+			
+			s3client.putObject(new PutObjectRequest(
+				outBucket,
+				"duplicateLog",
+				mergedContentIStream,
+				metadata));
+
+	}
 
 	private String getContentAsString(S3ObjectInputStream is) 
 			throws IOException {
@@ -161,6 +202,23 @@ public final class S3MergeUtil {
 			res += line;
 		}
 		return res;
+	}
+	
+	private void checkDuplicates(String content) {
+		Gson gson = new Gson();
+		PageBlob blob = gson.fromJson(content.trim(), PageBlob.class);
+		if (blob == null || blob.url == null) {
+			return;
+		}
+		String url = blob.url.trim();
+		
+		if (!urlMap.containsKey(url)) {
+			urlMap.put(url, 1);
+			return;
+		}
+		System.out.println("Found duplicate url - " + url);
+		urlMap.put(url, urlMap.get(url) + 1);
+		
 	}
 
 }

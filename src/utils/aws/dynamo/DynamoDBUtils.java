@@ -1,4 +1,4 @@
-package utils.db;
+package utils.aws.dynamo;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
