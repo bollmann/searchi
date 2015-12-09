@@ -42,6 +42,10 @@ public class DynamoDBWrapper {
 		return mapper;
 	}
 	
+	public DynamoDB getDynamoDB() {
+		return dynamoDB;
+	}
+	
 	public AmazonDynamoDBClient getClient() {
 		return client;
 	}

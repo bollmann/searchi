@@ -1,5 +1,6 @@
 package indexer.dao;
 
+
 import java.util.List;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;

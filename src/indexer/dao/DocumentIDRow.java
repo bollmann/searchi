@@ -3,11 +3,11 @@ package indexer.dao;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 
 @DynamoDBTable(tableName="DocumentIDs")
-public class DocumentIDEntry {
+public class DocumentIDRow {
 	private int docId;
 	private String url;
 	
-	public DocumentIDEntry(int id, String u) {
+	public DocumentIDRow(int id, String u) {
 		docId = id;
 		url = u;
 	}
