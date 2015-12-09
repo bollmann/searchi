@@ -43,6 +43,7 @@ public class TestLanguageDetector extends TestCase {
 			e.printStackTrace();
 		}
 		
-		assertTrue(LanguageDetector.isEnglish(content));
+		assertFalse(LanguageDetector.isEnglish(content));
 	}
+	
 }

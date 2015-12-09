@@ -1,17 +1,11 @@
 package utils.file;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.nio.charset.Charset;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.google.gson.Gson;
@@ -21,7 +15,6 @@ public final class FindDuplicates {
 	
 	private class PageBlob {
 		String url;
-		List<String> outgoingLinks;
 	}
 	
 	public static void main(String [] args) throws JsonSyntaxException, IOException {
@@ -53,8 +46,7 @@ public final class FindDuplicates {
 					mp.put(url, 1);
 				}
 			}
-			br.close();
-				
+			br.close();				
 		}
 	}
 }
