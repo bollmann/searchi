@@ -71,7 +71,7 @@ public class DynamoImporter<T> implements Runnable {
 		DynamoDBWrapper wrapper = DynamoDBWrapper
 				.getInstance(DynamoDBWrapper.US_EAST);
 		if (wrapper.describeTable(adapter.getTableName()) == null)
-			wrapper.createTable(adapter.getTableName(), 5, 100, "docId", "N");
+			wrapper.createTable(adapter.getTableName(), 5, 400, "docId", "N");
 		TableDescription tableInfo = wrapper.getDynamoDB()
 				.getTable(adapter.getTableName()).describe();
 		if (tableInfo.getProvisionedThroughput().getWriteCapacityUnits() != 100L)
