@@ -115,6 +115,7 @@ public class IndexerClientServlet extends HttpServlet {
 			Map<String, DocumentScore> linkCountRankedDocs = Ranker.rankDocumentsOnLinkCount(documentList);
 			Map<String, DocumentScore> metaCountRankedDocs = Ranker.rankDocumentsOnMetaCount(documentList);
 			Map<String, DocumentScore> totalCountRankedDocs = Ranker.rankDocumentsOnTotalCount(documentList);
+			Map<String, DocumentScore> queryWordPresenceRankedDocs = Ranker.rankDocumentsOnQueryWordPresenceCount(documentList, query);
 			
 			List<Map<String, DocumentScore>> rankedLists = new ArrayList<>();
 			rankedLists.add(tfIdfRankedDocs);
@@ -122,6 +123,7 @@ public class IndexerClientServlet extends HttpServlet {
 			rankedLists.add(linkCountRankedDocs);
 			rankedLists.add(metaCountRankedDocs);
 			rankedLists.add(totalCountRankedDocs);
+			rankedLists.add(queryWordPresenceRankedDocs);
 			
 			List<Double> rankWeights = new ArrayList<>();
 			rankWeights.add(1.0); // tfidf
@@ -129,6 +131,7 @@ public class IndexerClientServlet extends HttpServlet {
 			rankWeights.add(1.0); // linkCounts
 			rankWeights.add(1.0); // metaCounts
 			rankWeights.add(1.0); // totalCounts
+			rankWeights.add(4.0); // query word counts
 			List<DocumentScore> combinedRankedDocs = Ranker.combineRankedListsWithWeights(rankedLists, rankWeights);
 			
 			endTime = Calendar.getInstance().getTime();
@@ -146,7 +149,7 @@ public class IndexerClientServlet extends HttpServlet {
 				indexerScore.put(doc.getUrl(), (double) doc.getScore());
 				lookupList.add(doc.getUrl());
 				resultCount++;
-				if (resultCount > 10) {
+				if (resultCount > 40) {
 					break;
 				}
 			}

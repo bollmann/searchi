@@ -43,8 +43,6 @@ public class Ranker {
 			int corpusSize, Map<String, Integer> wordDfs) {
 		List<DocumentScore> documentListCopy = new ArrayList<DocumentScore>(
 				documentList);
-//		Collections.sort(documentListCopy,
-//				DocumentScoreComparators.getTfIdfComparator(query, corpusSize, wordDfs));
 		Map<String, DocumentScore> resultList = new HashMap<String, DocumentScore>();
 		for (int i = 0; i < documentListCopy.size(); i++) {
 			DocumentScore score = documentListCopy.get(i);
@@ -59,8 +57,6 @@ public class Ranker {
 			List<DocumentScore> documentList) {
 		List<DocumentScore> documentListCopy = new ArrayList<DocumentScore>(
 				documentList);
-//		Collections.sort(documentListCopy,
-//				DocumentScoreComparators.getTotalCountComparator());
 		Map<String, DocumentScore> resultList = new HashMap<String, DocumentScore>();
 		for (int i = 0; i < documentListCopy.size(); i++) {
 			DocumentScore score = documentListCopy.get(i);
@@ -76,8 +72,6 @@ public class Ranker {
 			List<DocumentScore> documentList) {
 		List<DocumentScore> documentListCopy = new ArrayList<DocumentScore>(
 				documentList);
-//		Collections.sort(documentListCopy,
-//				DocumentScoreComparators.getLinkCountsComparator());
 		Map<String, DocumentScore> resultList = new HashMap<String, DocumentScore>();
 		for (int i = 0; i < documentListCopy.size(); i++) {
 			DocumentScore score = documentListCopy.get(i);
@@ -92,8 +86,6 @@ public class Ranker {
 			List<DocumentScore> documentList) {
 		List<DocumentScore> documentListCopy = new ArrayList<DocumentScore>(
 				documentList);
-//		Collections.sort(documentListCopy,
-//				DocumentScoreComparators.getMetaTagCountsComparator());
 		Map<String, DocumentScore> resultList = new HashMap<String, DocumentScore>();
 		for (int i = 0; i < documentListCopy.size(); i++) {
 			DocumentScore score = documentListCopy.get(i);
@@ -108,13 +100,25 @@ public class Ranker {
 			List<DocumentScore> documentList) {
 		List<DocumentScore> documentListCopy = new ArrayList<DocumentScore>(
 				documentList);
-//		Collections.sort(documentListCopy,
-//				DocumentScoreComparators.getHeaderCountComparator());
 		Map<String, DocumentScore> resultList = new HashMap<String, DocumentScore>();
 		for (int i = 0; i < documentListCopy.size(); i++) {
 			DocumentScore score = documentListCopy.get(i);
 			score.setScore(DocumentFeatureCombinators.combineHeaderCounts(score
 					.getWordFeatures()));
+			resultList.put(score.getUrl(), score);
+		}
+		return resultList;
+	}
+	
+	public static Map<String, DocumentScore> rankDocumentsOnQueryWordPresenceCount(
+			List<DocumentScore> documentList, List<String> query) {
+		List<DocumentScore> documentListCopy = new ArrayList<DocumentScore>(
+				documentList);
+		Map<String, DocumentScore> resultList = new HashMap<String, DocumentScore>();
+		for (int i = 0; i < documentListCopy.size(); i++) {
+			DocumentScore score = documentListCopy.get(i);
+			score.setScore(DocumentFeatureCombinators.combineQueryWordPresenceCounts(score
+					.getWordFeatures(), query));
 			resultList.put(score.getUrl(), score);
 		}
 		return resultList;

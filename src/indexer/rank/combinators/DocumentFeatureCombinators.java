@@ -79,5 +79,10 @@ public class DocumentFeatureCombinators {
 		}
 		return result;
 	}
+	
+	public static int combineQueryWordPresenceCounts(
+			Map<String, DocumentFeatures> wordFeatures, List<String> query) {
+		return query.size() - wordFeatures.size();
+	}
 
 }
