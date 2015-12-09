@@ -17,7 +17,7 @@ public final class PageRankAPI {
 	public PageRankAPI() {
 		this.dynamoWrapper = DynamoDBWrapper.getInstance(
 			DynamoDBWrapper.US_EAST,
-			DynamoDBWrapper.CLIENT_DEFAULT);
+			DynamoDBWrapper.CLIENT_PROFILE);
 	}
 	
 	/**
