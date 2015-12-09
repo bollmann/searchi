@@ -13,7 +13,7 @@ public final class PRCreateTable {
 	public static void main(String [] args) {
 		
 		DynamoDBWrapper dynamoWrapper = DynamoDBWrapper.getInstance(
-			DynamoDBWrapper.US_EAST, DynamoDBWrapper.CLIENT_DEFAULT);
+			DynamoDBWrapper.US_EAST, DynamoDBWrapper.CLIENT_PROFILE);
 		
 		dynamoWrapper.createTable(
 			PR_TABLE_NAME,

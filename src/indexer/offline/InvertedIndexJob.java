@@ -23,6 +23,7 @@ import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.input.KeyValueTextInputFormat;
 import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
@@ -37,6 +38,7 @@ import utils.nlp.LanguageDetector;
 import com.google.gson.Gson;
 
 import crawler.dao.URLContent;
+import db.wrappers.DynamoDBWrapper;
 import edu.stanford.nlp.util.StringUtils;
 
 public class InvertedIndexJob {
@@ -49,26 +51,22 @@ public class InvertedIndexJob {
 	
 	/** Mapper Class for Document Indexer */
 	public static class DocumentIndexer extends
-			Mapper<LongWritable, Text, Text, Text> {
+			Mapper<Text, Text, Text, Text> {
 
 		@Override
-		public void map(LongWritable lineNr, Text jsonBlob, Context context)
+		public void map(Text docId, Text jsonBlob, Context context)
 				throws IOException, InterruptedException {
 			
             URLContent page = new Gson().fromJson(jsonBlob.toString(),
 					URLContent.class);
-            
-            // only proceed if the content is english
-            if (!LanguageDetector.isEnglish(page.getContent()))
-            	return;
-            
+
 			Map<Feature, WordCounts> allCounts = computeCounts(page, 1);
 			WordCounts wordCounts = allCounts.get(Feature.TOTAL_COUNTS);
 			
 			for (String word : wordCounts) {
 				DocumentFeatures doc = new DocumentFeatures();
 
-				doc.setUrl(page.getUrl());
+				doc.setDocId(Integer.parseInt(docId.toString()));
 				doc.setEuclideanTermFrequency(allCounts.get(
 					Feature.TOTAL_COUNTS).getEuclideanTermFrequency(word));
 				doc.setMaximumTermFrequency(allCounts.get(Feature.TOTAL_COUNTS)
@@ -83,8 +81,7 @@ public class InvertedIndexJob {
                     .getCounts(word));
                 doc.setPositions(wordCounts.getPosition(word));
 
-				context.write(new Text(word), new Text(new Gson().toJson(doc)));
-				
+				context.write(new Text(word), new Text(new Gson().toJson(doc)));	
 			}
 		}
 	}
@@ -92,11 +89,9 @@ public class InvertedIndexJob {
 	/** Reducer Class for Corpus Indexer */
 	public static class CorpusIndexer extends
 			Reducer<Text, Text, NullWritable, Text> {
-		public static final int MAX_ENTRIES_PER_ROW = 400;
-		// TODO - Pass it as argument from Task Runner using Forward Index
-		private static final int corpusSize = 100000;
+		public static final int MAX_ENTRIES_PER_ROW = 800;
 		private static final int topK = 2000;
-
+		
 		private void writeRow(String word, int page,
 				List<DocumentFeatures> docs, Context context)
 				throws IOException, InterruptedException {
@@ -110,22 +105,22 @@ public class InvertedIndexJob {
 		@Override
 		public void reduce(Text word, Iterable<Text> jsonFeatures,
 				Context context) throws IOException, InterruptedException {
-			
 			List<DocumentFeatures> docs = new ArrayList<DocumentFeatures>();			
-			Set<String> seenURLs = new HashSet<String>();	
+			Set<Integer> seenDocs = new HashSet<Integer>();
+			int corpusSize = context.getConfiguration().getInt("corpusSize", 100000);
 									
 			for (Text jsonFeature: jsonFeatures) {
 				DocumentFeatures features = new Gson().fromJson(
 						jsonFeature.toString(), DocumentFeatures.class);
 				
-				if (seenURLs.contains(features.getUrl()))
+				if (seenDocs.contains(features.getDocId()))
 					continue;
 
-				seenURLs.add(features.getUrl());
+				seenDocs.add(features.getDocId());
 				docs.add(features);	
 			}
 
-			int docSize = seenURLs.size();
+			int docSize = seenDocs.size();
 			final float idf = (float) Math.log(corpusSize / docSize);
 			
 			// add tf idf values as well.
@@ -167,12 +162,14 @@ public class InvertedIndexJob {
 	public static void main(String[] args) throws IOException,
 			ClassNotFoundException, InterruptedException {
 		logger.info(String.format(
-				"starting job with args: inputdir=%s, outputdir=%s", args[0],
-				args[1]));
+				"starting job with args: inputdir=%s, outputdir=%s, corpusSize=%s", args[0],
+				args[1], args[2]));
 
 		FileUtils.deleteIfExists(java.nio.file.Paths.get(args[1]));
-
+		int corpusSize = Integer.parseInt(args[2]);
+		
 		Configuration conf = new Configuration();
+		conf.setInt("corpusSize", corpusSize);
 		Job job = Job.getInstance(conf, "build inverted index");
 		job.setJarByClass(InvertedIndexJob.class);
 
@@ -182,7 +179,7 @@ public class InvertedIndexJob {
 
 		job.setReducerClass(CorpusIndexer.class);
 
-		job.setInputFormatClass(TextInputFormat.class);
+		job.setInputFormatClass(KeyValueTextInputFormat.class);
 		job.setOutputFormatClass(TextOutputFormat.class);
 		FileInputFormat.addInputPath(job, new Path(args[0]));
 		FileOutputFormat.setOutputPath(job, new Path(args[1]));
@@ -199,22 +196,26 @@ public class InvertedIndexJob {
             doc.select("a[href]").text().replace(".", " ")).getTokens();		
 		WordCounts linkCounts = new WordCounts(
             StringUtils.getNgrams(linkTokens, 1, nGramSize), nGramSize);
+		linkCounts.computeNormalDocSizes();
 		
 		List<String> metaTagTokens = new Tokenizer(
             extractMetaTags(doc)).getTokens();		
 		WordCounts metaTagCounts = new WordCounts(
             StringUtils.getNgrams(metaTagTokens, 1, nGramSize), nGramSize);
+		metaTagCounts.computeNormalDocSizes();
 		
 		List<String> headerTokens = new Tokenizer(
             doc.select("title,h1,h2,h3,h4,h5,h6").text().replace(".", " ")).getTokens();		
 		WordCounts headerCounts = new WordCounts(
             StringUtils.getNgrams(headerTokens, 1, nGramSize), nGramSize);
+		headerCounts.computeNormalDocSizes();
 		
 		List<String> normalTokens = new Tokenizer(
             doc.select("title,body").text().replace(".", " ")).getTokens();
-		logger.info("Normal tokens:" + normalTokens);
+		// logger.info("Normal tokens:" + normalTokens);
 		WordCounts totalCounts = new WordCounts(
             StringUtils.getNgrams(normalTokens, 1, nGramSize), nGramSize).addCounts(metaTagCounts);
+		totalCounts.computeNormalDocSizes();
 		
 		Map<Feature, WordCounts> allCounts = new HashMap<Feature, WordCounts>();
 		allCounts.put(Feature.LINK_COUNTS, linkCounts);

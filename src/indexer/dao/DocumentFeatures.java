@@ -10,8 +10,8 @@ public final class DocumentFeatures {
 	/**
 	 * the document.
 	 */
-	private String url;
-	
+	private int docId;
+
 	private float maximumTermFrequency;
 	private float euclideanTermFrequency;
 	private float tfidf;
@@ -20,55 +20,90 @@ public final class DocumentFeatures {
 	private int metaTagCount;
 	private int headerCount;
 	private Set<Integer> positions;
-	
+
 	public DocumentFeatures() {
-		positions = new HashSet<Integer>();
+		this.positions = new HashSet<Integer>();
 	}
-	
-	public String getUrl() { return url; }
-	public void setUrl(String url) { this.url = url; }
-	
-	public float getMaximumTermFrequency() { return maximumTermFrequency; }
+
+	public int getDocId() {
+		return docId;
+	}
+
+	public void setDocId(int docId) {
+		this.docId = docId;
+	}
+
+	public float getMaximumTermFrequency() {
+		return maximumTermFrequency;
+	}
+
 	public void setMaximumTermFrequency(float maximumTermFrequency) {
 		this.maximumTermFrequency = maximumTermFrequency;
 	}
-	
-	public float getEuclideanTermFrequency() { return euclideanTermFrequency; }
+
+	public float getEuclideanTermFrequency() {
+		return euclideanTermFrequency;
+	}
+
 	public void setEuclideanTermFrequency(float euclideanTermFrequency) {
 		this.euclideanTermFrequency = euclideanTermFrequency;
 	}
-	
+
 	public float getTfidf() {
 		return tfidf;
 	}
+
 	public void setTfidf(float tfidf) {
 		this.tfidf = tfidf;
 	}
-	public int getTotalCount() { return totalCount; }
+
+	public int getTotalCount() {
+		return totalCount;
+	}
+
 	public void setTotalCount(int totalCount) {
 		this.totalCount = totalCount;
 	}
-	
-	public int getLinkCount() { return linkCount; }
-	public void setLinkCount(int linkCount) { this.linkCount = linkCount; }
-	
-	public int getMetaTagCount() { return metaTagCount; }
-	public void setMetaTagCount(int metaTagCount) { this.metaTagCount = metaTagCount; }
-	
-	public int getHeaderCount() { return headerCount; }
+
+	public int getLinkCount() {
+		return linkCount;
+	}
+
+	public void setLinkCount(int linkCount) {
+		this.linkCount = linkCount;
+	}
+
+	public int getMetaTagCount() {
+		return metaTagCount;
+	}
+
+	public void setMetaTagCount(int metaTagCount) {
+		this.metaTagCount = metaTagCount;
+	}
+
+	public int getHeaderCount() {
+		return headerCount;
+	}
+
 	public void setHeaderCount(int headerCount) {
 		this.headerCount = headerCount;
 	}
-	
-	public Set<Integer> getPositions() { return this.positions; }
+
+	public Set<Integer> getPositions() {
+		return this.positions;
+	}
+
 	public void setPositions(Set<Integer> pos) {
 		this.positions = new HashSet<>(pos);
 	}
 
 	public String toString() {
-		return String.format("{url: %s, maxtf: %f, euclidtf: %f, tfidf: %f, totalCount: %d," + 
-			"linkCount: %d, metaTagCount: %d, headerCount: %d, wordPositions: %s}",
-			url, maximumTermFrequency, euclideanTermFrequency, tfidf, totalCount,
-			linkCount, metaTagCount, headerCount, positions.toString());
+
+		return String
+				.format("{docId: %d, maxtf: %f, euclidtf: %f, tfidf: %f, totalCount: %d,"
+						+ "linkCount: %d, metaTagCount: %d, headerCount: %d, wordPositions: %s}",
+						docId, maximumTermFrequency, euclideanTermFrequency,
+						tfidf, totalCount, linkCount, metaTagCount,
+						headerCount, positions.toString());
 	}
 }

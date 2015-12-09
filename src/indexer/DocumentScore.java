@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DocumentScore implements Comparable<DocumentScore> {
-	private String url;
+	private int docId;
 	private float score;
 
 	/*
@@ -14,13 +14,13 @@ public class DocumentScore implements Comparable<DocumentScore> {
 	 */
 	private Map<String, DocumentFeatures> wordFeatures;
 
-	public DocumentScore(String url) {
-		this.url = new String(url);
+	public DocumentScore(int docId) {
+		this.docId = docId;
 		this.wordFeatures = new HashMap<String, DocumentFeatures>();
 	}
 	
 	public DocumentScore(String word, DocumentFeatures features) {
-		this.url = new String(features.getUrl());
+		this.docId = features.getDocId();
 		this.wordFeatures = new HashMap<String, DocumentFeatures>();
 		addFeatures(word, features);
 	}
@@ -29,8 +29,8 @@ public class DocumentScore implements Comparable<DocumentScore> {
 		wordFeatures.put(word, features);
 	}
 
-	public String getUrl() {
-		return url;
+	public int getDocId() {
+		return docId;
 	}
 
 	public void setScore(float score) {
@@ -57,7 +57,7 @@ public class DocumentScore implements Comparable<DocumentScore> {
 	@Override
 	public String toString() {
 		StringBuffer fmt = new StringBuffer();
-		fmt.append(String.format("URL %s ; score=%f\n", this.url, this.score));
+		fmt.append(String.format("DocID %d ; score=%f\n", this.docId, this.score));
 		for(String word: wordFeatures.keySet())
 			fmt.append(String.format("%s features=%s\n", word, wordFeatures.get(word)));
 		

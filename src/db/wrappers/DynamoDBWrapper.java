@@ -36,11 +36,18 @@ public class DynamoDBWrapper {
 	private Date startTime;
 
 	public static final String US_EAST = "http://dynamodb.us-east-1.amazonaws.com";
-	public static final String CLIENT_SHREEJIT = "shreejit";
-	public static final String CLIENT_DEFAULT = "default";
+	public static final String CLIENT_PROFILE = "default";
 
 	public DynamoDBMapper getMapper() {
 		return mapper;
+	}
+	
+	public DynamoDB getDynamoDB() {
+		return dynamoDB;
+	}
+	
+	public AmazonDynamoDBClient getClient() {
+		return client;
 	}
 
 	public String getEndPoint() {
@@ -96,8 +103,8 @@ public class DynamoDBWrapper {
 
 		if (client == null) {
 			Logger.getLogger(DynamoDBWrapper.class).warn(
-					"Setting client to " + CLIENT_SHREEJIT);
-			client = CLIENT_SHREEJIT;
+					"Setting client to " + CLIENT_PROFILE);
+			client = CLIENT_PROFILE;
 		}
 
 		wrapper = new DynamoDBWrapper(endPoint, client);

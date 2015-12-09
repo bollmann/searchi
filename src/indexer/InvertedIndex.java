@@ -52,7 +52,7 @@ public class InvertedIndex {
 	public int getCorpusSize() {
 		return corpusSize;
 	}
-	
+
 	public static DynamoDBMapper connectDB() {
 		AWSCredentials credentials = new ProfileCredentialsProvider(
 				CREDENTIALS_PROFILE).getCredentials();
@@ -114,14 +114,15 @@ public class InvertedIndex {
 		}
 		return wordDocumentInfoMap;
 	}
-	
+
 	public Map<String, List<DocumentFeatures>> getInvertedIndexForQueryMultiThreaded(
 			List<String> query) {
 		Map<String, List<DocumentFeatures>> wordDocumentInfoMap = new HashMap<String, List<DocumentFeatures>>();
-		
+
 		ExecutorService es = Executors.newFixedThreadPool(query.size());
 		for (String word : query) {
-			InvertedIndexFetcher f = new InvertedIndexFetcher(wordDocumentInfoMap, word);
+			InvertedIndexFetcher f = new InvertedIndexFetcher(
+					wordDocumentInfoMap, word);
 			es.execute(f);
 			f.start();
 		}
@@ -132,7 +133,7 @@ public class InvertedIndex {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return wordDocumentInfoMap;
 	}
 

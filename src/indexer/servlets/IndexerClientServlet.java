@@ -110,14 +110,14 @@ public class IndexerClientServlet extends HttpServlet {
 			
 			/****************************** Add rankers and combine them here *************/
 			startTime = Calendar.getInstance().getTime();
-			Map<String, DocumentScore> tfIdfRankedDocs = Ranker.rankDocumentsOnTfIdf(documentList, query, iiObj.getCorpusSize(), wordDfs);
-			Map<String, DocumentScore> headerCountRankedDocs = Ranker.rankDocumentsOnHeaderCount(documentList);
-			Map<String, DocumentScore> linkCountRankedDocs = Ranker.rankDocumentsOnLinkCount(documentList);
-			Map<String, DocumentScore> metaCountRankedDocs = Ranker.rankDocumentsOnMetaCount(documentList);
-			Map<String, DocumentScore> totalCountRankedDocs = Ranker.rankDocumentsOnTotalCount(documentList);
-			Map<String, DocumentScore> queryWordPresenceRankedDocs = Ranker.rankDocumentsOnQueryWordPresenceCount(documentList, query);
+			Map<Integer, DocumentScore> tfIdfRankedDocs = Ranker.rankDocumentsOnTfIdf(documentList, query, iiObj.getCorpusSize(), wordDfs);
+			Map<Integer, DocumentScore> headerCountRankedDocs = Ranker.rankDocumentsOnHeaderCount(documentList);
+			Map<Integer, DocumentScore> linkCountRankedDocs = Ranker.rankDocumentsOnLinkCount(documentList);
+			Map<Integer, DocumentScore> metaCountRankedDocs = Ranker.rankDocumentsOnMetaCount(documentList);
+			Map<Integer, DocumentScore> totalCountRankedDocs = Ranker.rankDocumentsOnTotalCount(documentList);
+			Map<Integer, DocumentScore> queryWordPresenceRankedDocs = Ranker.rankDocumentsOnQueryWordPresenceCount(documentList, query);
 			
-			List<Map<String, DocumentScore>> rankedLists = new ArrayList<>();
+			List<Map<Integer, DocumentScore>> rankedLists = new ArrayList<>();
 			rankedLists.add(tfIdfRankedDocs);
 			rankedLists.add(headerCountRankedDocs);
 			rankedLists.add(linkCountRankedDocs);
@@ -142,6 +142,7 @@ public class IndexerClientServlet extends HttpServlet {
 			int resultCount = 0;
 			for (DocumentScore doc : combinedRankedDocs) {
 				SearchResult sr = new SearchResult();
+				// lookup id to get document
 				sr.setUrl(doc.getUrl());
 				sr.setScore(doc.getScore());
 				sr.setSnippet(tfIdfRankedDocs.get(doc.getUrl()).toString());

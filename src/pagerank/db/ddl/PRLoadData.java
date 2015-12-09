@@ -40,7 +40,7 @@ public final class PRLoadData {
 		}		
 		
 		DynamoDBWrapper dynamo = DynamoDBWrapper.getInstance(
-				DynamoDBWrapper.US_EAST, DynamoDBWrapper.CLIENT_DEFAULT);
+				DynamoDBWrapper.US_EAST, DynamoDBWrapper.CLIENT_PROFILE);
 		
 		List<Object> items = new LinkedList<>();
 		

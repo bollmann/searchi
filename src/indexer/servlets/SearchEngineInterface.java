@@ -3,6 +3,7 @@ package indexer.servlets;
 import indexer.DocumentScore;
 import indexer.InvertedIndex;
 import indexer.dao.DocumentFeatures;
+import indexer.rank.comparators.DocumentScoreComparators;
 import indexer.ranking.Ranker;
 
 import java.io.BufferedReader;
@@ -19,6 +20,7 @@ import java.net.URL;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -104,8 +106,10 @@ public class SearchEngineInterface extends HttpServlet {
 		
 		/****************************** Add rankers and combine them here *************/
 		
-		List<DocumentScore> tfIdfRankedDocs = Ranker.rankDocumentsOnTfIdf(documentList, query, iiObj.getCorpusSize(), wordDfs);
+		Map<Integer, DocumentScore> tfIdfRankedDocs = Ranker.rankDocumentsOnTfIdf(documentList, query, iiObj.getCorpusSize(), wordDfs);
 		
+		List<DocumentScore> rankedDocs = new ArrayList<>(tfIdfRankedDocs.values());
+		Collections.sort(rankedDocs, DocumentScoreComparators.getTfIdfComparator(query, iiObj.getCorpusSize(), wordDfs));
 		/****************************** End of secret sauce ****************************/
 		
 		try {
@@ -116,8 +120,9 @@ public class SearchEngineInterface extends HttpServlet {
 			
 			
 			int resultCount = 0;
-			for (DocumentScore doc : tfIdfRankedDocs) {
+			for (DocumentScore doc : rankedDocs) {
 				SearchResult sr = new SearchResult();
+				// lookup for id
 				sr.setUrl(doc.getUrl());
 				sr.setScore(doc.getScore());
 				sr.setSnippet(doc.toString());
