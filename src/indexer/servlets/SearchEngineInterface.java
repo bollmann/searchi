@@ -2,6 +2,7 @@ package indexer.servlets;
 
 import indexer.DocumentScore;
 import indexer.InvertedIndex;
+import indexer.api.DocumentIDs;
 import indexer.dao.DocumentFeatures;
 import indexer.rank.comparators.DocumentScoreComparators;
 import indexer.ranking.Ranker;
@@ -10,12 +11,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.net.Socket;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.ArrayList;
@@ -26,7 +23,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.PriorityQueue;
 import java.util.Map.Entry;
 
 import javax.servlet.ServletException;
@@ -118,17 +114,19 @@ public class SearchEngineInterface extends HttpServlet {
 			Map<String, Map<String, String>> indexerResultMap = new HashMap<String, Map<String, String>>();
 			Map<String, String> timeMap = new HashMap<String, String>();
 			
+			DocumentIDs dId = new DocumentIDs();
 			
 			int resultCount = 0;
 			for (DocumentScore doc : rankedDocs) {
 				SearchResult sr = new SearchResult();
 				// lookup for id
-				sr.setUrl(doc.getUrl());
+				String url = dId.getUrlFor(doc.getDocId());
+				sr.setUrl(url);
 				sr.setScore(doc.getScore());
 				sr.setSnippet(doc.toString());
 				indexerResultMap.put(String.valueOf(resultCount), sr.toMap());
-				indexerScore.put(doc.getUrl(), (double) doc.getScore());
-				lookupList.add(doc.getUrl());
+				indexerScore.put(url, (double) doc.getScore());
+				lookupList.add(url);
 				resultCount++;
 				if (resultCount > 10) {
 					break;

@@ -2,6 +2,7 @@ package indexer.servlets;
 
 import indexer.DocumentScore;
 import indexer.InvertedIndex;
+import indexer.api.DocumentIDs;
 import indexer.dao.DocumentFeatures;
 import indexer.ranking.Ranker;
 
@@ -139,16 +140,19 @@ public class IndexerClientServlet extends HttpServlet {
 					+ printTimeDiff(startTime, endTime));
 			/****************************** End of secret sauce ****************************/
 			
+			DocumentIDs dId = new DocumentIDs();
+			
 			int resultCount = 0;
 			for (DocumentScore doc : combinedRankedDocs) {
 				SearchResult sr = new SearchResult();
 				// lookup id to get document
-				sr.setUrl(doc.getUrl());
+				String url = dId.getUrlFor(doc.getDocId());
+				sr.setUrl(url);
 				sr.setScore(doc.getScore());
-				sr.setSnippet(tfIdfRankedDocs.get(doc.getUrl()).toString());
+				sr.setSnippet(tfIdfRankedDocs.get(url).toString());
 				buffer.append("<li>" + sr.toHtml() + "</li>");
-				indexerScore.put(doc.getUrl(), (double) doc.getScore());
-				lookupList.add(doc.getUrl());
+				indexerScore.put(url, (double) doc.getScore());
+				lookupList.add(url);
 				resultCount++;
 				if (resultCount > 40) {
 					break;
