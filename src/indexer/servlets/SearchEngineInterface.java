@@ -106,6 +106,7 @@ public class SearchEngineInterface extends HttpServlet {
 		
 		List<DocumentScore> tfIdfRankedDocs = Ranker.rankDocumentsOnTfIdf(documentList, query, iiObj.getCorpusSize(), wordDfs);
 		
+		/****************************** End of secret sauce ****************************/
 		
 		try {
 			/******************************** Indexer results *********************/

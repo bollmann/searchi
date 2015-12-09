@@ -109,7 +109,7 @@ public class InvertedIndex {
 			for (InvertedIndexRow row : rows) {
 				featureList.addAll(row.getFeatures());
 			}
-			
+			logger.info("Found " + rows.size() + " rows for " + word);
 			wordDocumentInfoMap.put(word, featureList);
 		}
 		return wordDocumentInfoMap;

@@ -93,11 +93,15 @@ public class IndexerClientServlet extends HttpServlet {
 		try {
 			/******************************** Indexer display *********************/
 
-			Date startTime = Calendar.getInstance().getTime();
+			
 			buffer.append("<br>Using Indexer Ranking:");
 			buffer.append("<ol>");
 
+			Date startTime = Calendar.getInstance().getTime();
 			Map<String, List<DocumentFeatures>> invertedIndex = iiObj.getInvertedIndexForQueryMultiThreaded(query);
+			Date endTime = Calendar.getInstance().getTime();
+			logger.info("Indexer fetch took "
+					+ printTimeDiff(startTime, endTime));
 			Map<String, Integer> wordDfs = new HashMap<String, Integer>();
 			for(Entry<String, List<DocumentFeatures>> entry : invertedIndex.entrySet()) {
 				wordDfs.put(entry.getKey(), entry.getValue().size());
@@ -105,17 +109,39 @@ public class IndexerClientServlet extends HttpServlet {
 			List<DocumentScore> documentList = Ranker.getDocumentScoresForQueryAndInvertedIndex(query, invertedIndex);
 			
 			/****************************** Add rankers and combine them here *************/
+			startTime = Calendar.getInstance().getTime();
+			Map<String, DocumentScore> tfIdfRankedDocs = Ranker.rankDocumentsOnTfIdf(documentList, query, iiObj.getCorpusSize(), wordDfs);
+			Map<String, DocumentScore> headerCountRankedDocs = Ranker.rankDocumentsOnHeaderCount(documentList);
+			Map<String, DocumentScore> linkCountRankedDocs = Ranker.rankDocumentsOnLinkCount(documentList);
+			Map<String, DocumentScore> metaCountRankedDocs = Ranker.rankDocumentsOnMetaCount(documentList);
+			Map<String, DocumentScore> totalCountRankedDocs = Ranker.rankDocumentsOnTotalCount(documentList);
 			
-			List<DocumentScore> tfIdfRankedDocs = Ranker.rankDocumentsOnTfIdf(documentList, query, iiObj.getCorpusSize(), wordDfs);
+			List<Map<String, DocumentScore>> rankedLists = new ArrayList<>();
+			rankedLists.add(tfIdfRankedDocs);
+			rankedLists.add(headerCountRankedDocs);
+			rankedLists.add(linkCountRankedDocs);
+			rankedLists.add(metaCountRankedDocs);
+			rankedLists.add(totalCountRankedDocs);
 			
+			List<Double> rankWeights = new ArrayList<>();
+			rankWeights.add(1.0); // tfidf
+			rankWeights.add(1.0); // headerCounts
+			rankWeights.add(1.0); // linkCounts
+			rankWeights.add(1.0); // metaCounts
+			rankWeights.add(1.0); // totalCounts
+			List<DocumentScore> combinedRankedDocs = Ranker.combineRankedListsWithWeights(rankedLists, rankWeights);
+			
+			endTime = Calendar.getInstance().getTime();
+			logger.info("Indexer ranking took "
+					+ printTimeDiff(startTime, endTime));
 			/****************************** End of secret sauce ****************************/
 			
 			int resultCount = 0;
-			for (DocumentScore doc : tfIdfRankedDocs) {
+			for (DocumentScore doc : combinedRankedDocs) {
 				SearchResult sr = new SearchResult();
 				sr.setUrl(doc.getUrl());
 				sr.setScore(doc.getScore());
-				sr.setSnippet(doc.toString());
+				sr.setSnippet(tfIdfRankedDocs.get(doc.getUrl()).toString());
 				buffer.append("<li>" + sr.toHtml() + "</li>");
 				indexerScore.put(doc.getUrl(), (double) doc.getScore());
 				lookupList.add(doc.getUrl());
@@ -125,9 +151,7 @@ public class IndexerClientServlet extends HttpServlet {
 				}
 			}
 			buffer.append("</ol>");
-			Date endTime = Calendar.getInstance().getTime();
-			logger.info("Indexer ranking took "
-					+ printTimeDiff(startTime, endTime));
+			
 
 			/******************************** Page Rank display *********************/
 
@@ -139,6 +163,9 @@ public class IndexerClientServlet extends HttpServlet {
 			List<SearchResult> pqueue = SearchEngineUtils
 					.convertScoreMapToPriorityQueue(pageRankScore);
 
+			endTime = Calendar.getInstance().getTime();
+			logger.info("Page ranking took "
+					+ printTimeDiff(startTime, endTime));
 			resultCount = 0;
 			buffer.append("<br>Using Page Ranking:");
 			buffer.append("<ol>");
@@ -152,9 +179,7 @@ public class IndexerClientServlet extends HttpServlet {
 			}
 			buffer.append("</ol>");
 
-			endTime = Calendar.getInstance().getTime();
-			logger.info("Page ranking took "
-					+ printTimeDiff(startTime, endTime));
+			
 
 			/******************************** Final display *********************/
 			startTime = Calendar.getInstance().getTime();

@@ -2,10 +2,12 @@ package test.indexer.ranking;
 
 import indexer.DocumentScore;
 import indexer.dao.DocumentFeatures;
+import indexer.rank.comparators.DocumentScoreComparators;
 import indexer.ranking.Ranker;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -84,7 +86,9 @@ public class TestRanker extends TestCase {
 		}};
 		
 		int corpusSize = 2000;
-		List<DocumentScore> result = Ranker.rankDocumentsOnTfIdf(scores, query, corpusSize, wordDfs);
+		Map<String, DocumentScore> resultMap = Ranker.rankDocumentsOnTfIdf(scores, query, corpusSize, wordDfs);
+		List<DocumentScore> result = new ArrayList<>(resultMap.values());
+		Collections.sort(result, DocumentScoreComparators.getTfIdfComparator(query, corpusSize, wordDfs));
 		System.out.println(result);
 		// TODO not sure about scores
 		assertEquals("1", result.get(0).getUrl());
@@ -105,7 +109,9 @@ public class TestRanker extends TestCase {
 		
 		scores.add(score1);
 		scores.add(score2);
-		List<DocumentScore> resultList = Ranker.rankDocumentsOnTotalCount(scores);
+		Map<String, DocumentScore> resultMap = Ranker.rankDocumentsOnTotalCount(scores);
+		List<DocumentScore> resultList = new ArrayList<DocumentScore>(resultMap.values());
+		Collections.sort(resultList, DocumentScoreComparators.getTotalCountComparator());
 		assertEquals("2", resultList.get(0).getUrl());
 		assertEquals(2.0f, resultList.get(0).getScore());
 		assertEquals("1", resultList.get(1).getUrl());
@@ -134,7 +140,9 @@ public class TestRanker extends TestCase {
 		
 		scores.add(score1);
 		scores.add(score2);
-		List<DocumentScore> resultList = Ranker.rankDocumentsOnTotalCount(scores);
+		Map<String, DocumentScore> resultMap = Ranker.rankDocumentsOnTotalCount(scores);
+		List<DocumentScore> resultList = new ArrayList<DocumentScore>(resultMap.values());
+		Collections.sort(resultList, DocumentScoreComparators.getTotalCountComparator());
 		assertEquals("1", resultList.get(0).getUrl());
 		assertEquals(6.0f, resultList.get(0).getScore());
 		assertEquals("2", resultList.get(1).getUrl());
@@ -155,7 +163,9 @@ public class TestRanker extends TestCase {
 		
 		scores.add(score1);
 		scores.add(score2);
-		List<DocumentScore> resultList = Ranker.rankDocumentsOnLinkCount(scores);
+		Map<String, DocumentScore> resultMap = Ranker.rankDocumentsOnLinkCount(scores);
+		List<DocumentScore> resultList = new ArrayList<DocumentScore>(resultMap.values());
+		Collections.sort(resultList, DocumentScoreComparators.getTotalCountComparator());
 		assertEquals("2", resultList.get(0).getUrl());
 		assertEquals(2.0f, resultList.get(0).getScore());
 		assertEquals("1", resultList.get(1).getUrl());
@@ -183,7 +193,9 @@ public class TestRanker extends TestCase {
 		
 		scores.add(score1);
 		scores.add(score2);
-		List<DocumentScore> resultList = Ranker.rankDocumentsOnLinkCount(scores);
+		Map<String, DocumentScore> resultMap = Ranker.rankDocumentsOnLinkCount(scores);
+		List<DocumentScore> resultList = new ArrayList<DocumentScore>(resultMap.values());
+		Collections.sort(resultList, DocumentScoreComparators.getTotalCountComparator());
 		assertEquals("2", resultList.get(0).getUrl());
 		assertEquals(5.0f, resultList.get(0).getScore());
 		assertEquals("1", resultList.get(1).getUrl());
@@ -204,7 +216,9 @@ public class TestRanker extends TestCase {
 		
 		scores.add(score1);
 		scores.add(score2);
-		List<DocumentScore> resultList = Ranker.rankDocumentsOnMetaCount(scores);
+		Map<String, DocumentScore> resultMap = Ranker.rankDocumentsOnMetaCount(scores);
+		List<DocumentScore> resultList = new ArrayList<DocumentScore>(resultMap.values());
+		Collections.sort(resultList, DocumentScoreComparators.getTotalCountComparator());
 		assertEquals("2", resultList.get(0).getUrl());
 		assertEquals(2.0f, resultList.get(0).getScore());
 		assertEquals("1", resultList.get(1).getUrl());
@@ -226,10 +240,67 @@ public class TestRanker extends TestCase {
 		
 		scores.add(score1);
 		scores.add(score2);
-		List<DocumentScore> resultList = Ranker.rankDocumentsOnHeaderCount(scores);
+		Map<String, DocumentScore> resultMap = Ranker.rankDocumentsOnHeaderCount(scores);
+		List<DocumentScore> resultList = new ArrayList<DocumentScore>(resultMap.values());
+		Collections.sort(resultList, DocumentScoreComparators.getTotalCountComparator());
 		assertEquals("2", resultList.get(0).getUrl());
 		assertEquals(2.0f, resultList.get(0).getScore());
 		assertEquals("1", resultList.get(1).getUrl());
 		assertEquals(1.0f, resultList.get(1).getScore());
+	}
+	
+	@Test
+	public void testCombineRankedListsWithWeights() {
+		Map<String, DocumentScore> map1 = new HashMap<String, DocumentScore>();
+		DocumentScore score11 = new DocumentScore("1");
+		score11.setScore(11f);
+		DocumentScore score12 = new DocumentScore("2");
+		score12.setScore(12f);
+		DocumentScore score13 = new DocumentScore("3");
+		score13.setScore(13f);
+		map1.put(score11.getUrl(), score11);
+		map1.put(score12.getUrl(), score12);
+		map1.put(score13.getUrl(), score13);
+		
+		Map<String, DocumentScore> map2 = new HashMap<String, DocumentScore>();
+		DocumentScore score21 = new DocumentScore("1");
+		score21.setScore(21f);
+		DocumentScore score22 = new DocumentScore("2");
+		score22.setScore(22f);
+		DocumentScore score23 = new DocumentScore("3");
+		score23.setScore(23f);
+		map2.put(score21.getUrl(), score21);
+		map2.put(score22.getUrl(), score22);
+		map2.put(score23.getUrl(), score23);
+		
+		Map<String, DocumentScore> map3 = new HashMap<String, DocumentScore>();
+		DocumentScore score31 = new DocumentScore("1");
+		score31.setScore(31f);
+		DocumentScore score32 = new DocumentScore("2");
+		score32.setScore(32f);
+		DocumentScore score33 = new DocumentScore("3");
+		score33.setScore(33f);
+		map3.put(score31.getUrl(), score31);
+		map3.put(score32.getUrl(), score32);
+		map3.put(score33.getUrl(), score33);
+		
+		List<Map<String, DocumentScore>> combinedMapList = new ArrayList<Map<String, DocumentScore>>();
+		combinedMapList.add(map1);
+		combinedMapList.add(map2);
+		combinedMapList.add(map3);
+		
+		List<Double> weights = new ArrayList<Double>() {{
+			add(2.0);
+			add(3.0);
+			add(4.0);
+		}};
+		
+		List<DocumentScore> result = Ranker.combineRankedListsWithWeights(combinedMapList, weights);
+		assertEquals("3", result.get(0).getUrl());
+		assertEquals(227, Math.round(result.get(0).getScore())); // 13*2 + 23*3 + 33*4
+		assertEquals("2", result.get(1).getUrl());
+		assertEquals(218, Math.round(result.get(1).getScore())); // 12*2 + 22*3 + 32*4
+		assertEquals("1", result.get(2).getUrl());
+		assertEquals(209, Math.round(result.get(2).getScore())); // 11*2 + 21*3 + 31*4
 	}
 }
