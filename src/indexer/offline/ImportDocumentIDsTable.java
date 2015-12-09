@@ -6,7 +6,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -45,6 +44,7 @@ public class ImportDocumentIDsTable implements Runnable {
 			String line = null;
 			
 			List<DocumentIDEntry> entries = new ArrayList<>();
+			int importedLines = 0;
 			while( (line = in.readLine()) != null) {
 				String parts[] = line.split("\t");
 				int docId = Integer.parseInt(parts[0]);
@@ -57,7 +57,9 @@ public class ImportDocumentIDsTable implements Runnable {
 					db.batchSave(entries);
 					entries = new ArrayList<>();
 				}
+				++importedLines;
 			}
+			logger.info("Done. Saved " + importedLines + " rows in table " + DOCUMENT_ID_TABLE + ".");
 			in.close();
 		} catch (FileNotFoundException e) {
 			logger.error("file " + this.input.getName() + " not found: ", e);
@@ -76,7 +78,9 @@ public class ImportDocumentIDsTable implements Runnable {
 			int batchSize = Integer.parseInt(args[1]);
 			
 			DynamoDBWrapper wrapper = DynamoDBWrapper.getInstance(DynamoDBWrapper.US_EAST);
-			wrapper.createTable(DOCUMENT_ID_TABLE, 5, 100, "docId", "N");
+			if(wrapper.describeTable(DOCUMENT_ID_TABLE) == null)
+				wrapper.createTable(DOCUMENT_ID_TABLE, 5, 100, "docId", "N");
+			wrapper.getClient().updateTable(DOCUMENT_ID_TABLE, new ProvisionedThroughput(5L, 5L));
 			
 			ExecutorService executor = Executors.newFixedThreadPool(NUMBER_THREADS);
 			for(File file: inputDir.listFiles()) {
