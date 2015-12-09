@@ -6,7 +6,10 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
+
 public class WordCounts implements Iterable<String> {
+	private final Logger logger = Logger.getLogger(getClass());
 	private Map<String, Integer> wordCounts;
 	private Map<String, Set<Integer>> wordPos;
 	private Map<Integer, Set<String>> nGrams;
@@ -196,6 +199,7 @@ public class WordCounts implements Iterable<String> {
 
 	/** Get TF-IDF scores for a word - document */
 	public double getTFIDF(String word, int corpusSize, int df) {
+		logger.info("Calculating TfIdf " + getMaximumTermFrequency(word) + " * log(" + corpusSize + "/" + df + ")");
 		return this.getMaximumTermFrequency(word)
 				* Math.log((double) corpusSize / df);
 	}

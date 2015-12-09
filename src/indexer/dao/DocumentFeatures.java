@@ -66,9 +66,9 @@ public final class DocumentFeatures {
 	}
 
 	public String toString() {
-		return String.format("{url: %s, maxtf: %f, euclidtf: %f, totalCount: %d," + 
+		return String.format("{url: %s, maxtf: %f, euclidtf: %f, tfidf: %f, totalCount: %d," + 
 			"linkCount: %d, metaTagCount: %d, headerCount: %d, wordPositions: %s}",
-			url, maximumTermFrequency, euclideanTermFrequency, totalCount,
+			url, maximumTermFrequency, euclideanTermFrequency, tfidf, totalCount,
 			linkCount, metaTagCount, headerCount, positions.toString());
 	}
 }

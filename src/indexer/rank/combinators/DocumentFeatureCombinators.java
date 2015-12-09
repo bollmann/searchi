@@ -22,11 +22,17 @@ public class DocumentFeatureCombinators {
 		WordCounts queryCounts = new WordCounts(query);
 		for (String queryWord : query) {
 			DocumentFeatures feature = wordFeatures.get(queryWord);
+			logger.info("Combiner looking for word:" + queryWord + " and got feature:" + feature);
 			if (feature != null) {
+				
 				double queryWeight = queryCounts.getTFIDF(queryWord,
 						corpusSize, wordDfs.get(queryWord));
-				double docWeight = feature.getEuclideanTermFrequency();
+//				double docWeight = feature.getEuclideanTermFrequency();
+				
+				double docWeight = feature.getTfidf();
+				
 				result += queryWeight * docWeight;
+				logger.info("queryWeight is " + queryWeight + " and docweight is tfidf=" + docWeight + " and result is " + result);
 			}
 		}
 		return result;
@@ -82,7 +88,7 @@ public class DocumentFeatureCombinators {
 	
 	public static int combineQueryWordPresenceCounts(
 			Map<String, DocumentFeatures> wordFeatures, List<String> query) {
-		return query.size() - wordFeatures.size();
+		return wordFeatures.size();
 	}
 
 }

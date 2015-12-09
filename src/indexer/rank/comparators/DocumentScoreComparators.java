@@ -91,6 +91,21 @@ public class DocumentScoreComparators {
 		};
 		return comparator;
 	}
+	
+	public static Comparator<DocumentScore> getQueryWordPresenceComparator(final List<String> query) {
+		Comparator<DocumentScore> comparator = new Comparator<DocumentScore>() {
+			@Override
+			public int compare(DocumentScore o1, DocumentScore o2) {
+				float metaTagCount1 = DocumentFeatureCombinators
+						.combineQueryWordPresenceCounts(o1.getWordFeatures(), query);
+				float metaTagCount2 = DocumentFeatureCombinators
+						.combineQueryWordPresenceCounts(o2.getWordFeatures(), query);
+				return (-1) * Float.compare(metaTagCount1, metaTagCount2);
+			}
+
+		};
+		return comparator;
+	}
 
 	// public static int getPairwisePositions(List<Integer> queryPositions) {
 	// StringUtils

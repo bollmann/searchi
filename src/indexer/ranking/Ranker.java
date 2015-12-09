@@ -41,87 +41,99 @@ public class Ranker {
 	public static Map<String, DocumentScore> rankDocumentsOnTfIdf(
 			List<DocumentScore> documentList, List<String> query,
 			int corpusSize, Map<String, Integer> wordDfs) {
-		List<DocumentScore> documentListCopy = new ArrayList<DocumentScore>(
-				documentList);
-		Map<String, DocumentScore> resultList = new HashMap<String, DocumentScore>();
-		for (int i = 0; i < documentListCopy.size(); i++) {
-			DocumentScore score = documentListCopy.get(i);
-			score.setScore(DocumentFeatureCombinators.combineTfIdfs(score
-					.getWordFeatures(), query, corpusSize, wordDfs));
-			resultList.put(score.getUrl(), score);
+		Map<String, DocumentScore> resultMap = new HashMap<String, DocumentScore>();
+		for (DocumentScore score : documentList) {
+			logger.info("Looking at " + score.getUrl());
+			float scoreValue = DocumentFeatureCombinators.combineTfIdfs(score
+					.getWordFeatures(), query, corpusSize, wordDfs);
+			DocumentScore newScore = new DocumentScore(score.getUrl());
+			
+			newScore.setScore(scoreValue);
+			newScore.setWordFeatures(score.getWordFeatures());
+			resultMap.put(newScore.getUrl(), newScore);
+			logger.info("Setting scoreValue of " + newScore.getUrl() + " to " + scoreValue + ". Resultmap now " + resultMap);
 		}
-		return resultList;
+		return resultMap;
 	}
 
 	public static Map<String, DocumentScore> rankDocumentsOnTotalCount(
 			List<DocumentScore> documentList) {
-		List<DocumentScore> documentListCopy = new ArrayList<DocumentScore>(
-				documentList);
-		Map<String, DocumentScore> resultList = new HashMap<String, DocumentScore>();
-		for (int i = 0; i < documentListCopy.size(); i++) {
-			DocumentScore score = documentListCopy.get(i);
-//			logger.info("Setting scores for " + score.getUrl());
-			score.setScore(DocumentFeatureCombinators.combineTotalCounts(score
-					.getWordFeatures()));
-			resultList.put(score.getUrl(), score);
+		Map<String, DocumentScore> resultMap = new HashMap<String, DocumentScore>();
+		for (DocumentScore score : documentList) {
+			logger.info("Looking at " + score.getUrl());
+			float scoreValue = DocumentFeatureCombinators.combineTotalCounts(score.getWordFeatures());
+			DocumentScore newScore = new DocumentScore(score.getUrl());
+			
+			newScore.setScore(scoreValue);
+			newScore.setWordFeatures(score.getWordFeatures());
+			resultMap.put(newScore.getUrl(), newScore);
+			logger.info("Setting scoreValue of " + newScore.getUrl() + " to " + scoreValue + ". Resultmap now " + resultMap);
 		}
-		return resultList;
+		return resultMap;
 	}
 
 	public static Map<String, DocumentScore> rankDocumentsOnLinkCount(
 			List<DocumentScore> documentList) {
-		List<DocumentScore> documentListCopy = new ArrayList<DocumentScore>(
-				documentList);
-		Map<String, DocumentScore> resultList = new HashMap<String, DocumentScore>();
-		for (int i = 0; i < documentListCopy.size(); i++) {
-			DocumentScore score = documentListCopy.get(i);
-			score.setScore(DocumentFeatureCombinators.combineLinkCounts(score
-					.getWordFeatures()));
-			resultList.put(score.getUrl(), score);
+		Map<String, DocumentScore> resultMap = new HashMap<String, DocumentScore>();
+		for (DocumentScore score : documentList) {
+			logger.info("Looking at " + score.getUrl());
+			float scoreValue = DocumentFeatureCombinators.combineLinkCounts(score.getWordFeatures());
+			DocumentScore newScore = new DocumentScore(score.getUrl());
+			
+			newScore.setScore(scoreValue);
+			newScore.setWordFeatures(score.getWordFeatures());
+			resultMap.put(newScore.getUrl(), newScore);
+			logger.info("Setting scoreValue of " + newScore.getUrl() + " to " + scoreValue + ". Resultmap now " + resultMap);
 		}
-		return resultList;
+		return resultMap;
 	}
 
 	public static Map<String, DocumentScore> rankDocumentsOnMetaCount(
 			List<DocumentScore> documentList) {
-		List<DocumentScore> documentListCopy = new ArrayList<DocumentScore>(
-				documentList);
-		Map<String, DocumentScore> resultList = new HashMap<String, DocumentScore>();
-		for (int i = 0; i < documentListCopy.size(); i++) {
-			DocumentScore score = documentListCopy.get(i);
-			score.setScore(DocumentFeatureCombinators
-					.combineMetaTagCounts(score.getWordFeatures()));
-			resultList.put(score.getUrl(), score);
+		Map<String, DocumentScore> resultMap = new HashMap<String, DocumentScore>();
+		for (DocumentScore score : documentList) {
+			logger.info("Looking at " + score.getUrl());
+			float scoreValue = DocumentFeatureCombinators.combineMetaTagCounts(score.getWordFeatures());
+			DocumentScore newScore = new DocumentScore(score.getUrl());
+			
+			newScore.setScore(scoreValue);
+			newScore.setWordFeatures(score.getWordFeatures());
+			resultMap.put(newScore.getUrl(), newScore);
+			logger.info("Setting scoreValue of " + newScore.getUrl() + " to " + scoreValue + ". Resultmap now " + resultMap);
 		}
-		return resultList;
+		return resultMap;
 	}
 
 	public static Map<String, DocumentScore> rankDocumentsOnHeaderCount(
 			List<DocumentScore> documentList) {
-		List<DocumentScore> documentListCopy = new ArrayList<DocumentScore>(
-				documentList);
-		Map<String, DocumentScore> resultList = new HashMap<String, DocumentScore>();
-		for (int i = 0; i < documentListCopy.size(); i++) {
-			DocumentScore score = documentListCopy.get(i);
-			score.setScore(DocumentFeatureCombinators.combineHeaderCounts(score
-					.getWordFeatures()));
-			resultList.put(score.getUrl(), score);
+		Map<String, DocumentScore> resultMap = new HashMap<String, DocumentScore>();
+		for (DocumentScore score : documentList) {
+			logger.info("Looking at " + score.getUrl());
+			float scoreValue = DocumentFeatureCombinators.combineHeaderCounts(score.getWordFeatures());
+			DocumentScore newScore = new DocumentScore(score.getUrl());
+			
+			newScore.setScore(scoreValue);
+			newScore.setWordFeatures(score.getWordFeatures());
+			resultMap.put(newScore.getUrl(), newScore);
+			logger.info("Setting scoreValue of " + newScore.getUrl() + " to " + scoreValue + ". Resultmap now " + resultMap);
 		}
-		return resultList;
+		return resultMap;
 	}
 	
 	public static Map<String, DocumentScore> rankDocumentsOnQueryWordPresenceCount(
 			List<DocumentScore> documentList, List<String> query) {
-		List<DocumentScore> documentListCopy = new ArrayList<DocumentScore>(
-				documentList);
-		Map<String, DocumentScore> resultList = new HashMap<String, DocumentScore>();
-		for (int i = 0; i < documentListCopy.size(); i++) {
-			DocumentScore score = documentListCopy.get(i);
-			score.setScore(DocumentFeatureCombinators.combineQueryWordPresenceCounts(score
-					.getWordFeatures(), query));
-			resultList.put(score.getUrl(), score);
+		Map<String, DocumentScore> resultMap = new HashMap<String, DocumentScore>();
+		for (DocumentScore score : documentList) {
+			logger.info("Looking at " + score.getUrl());
+			float scoreValue = DocumentFeatureCombinators.combineQueryWordPresenceCounts(score.getWordFeatures(), query);
+			DocumentScore newScore = new DocumentScore(score.getUrl());
+			
+			newScore.setScore(scoreValue);
+			newScore.setWordFeatures(score.getWordFeatures());
+			resultMap.put(newScore.getUrl(), newScore);
+			logger.info("Setting scoreValue of " + newScore.getUrl() + " to " + scoreValue + ". Resultmap now " + resultMap);
 		}
-		return resultList;
+		return resultMap;
 	}
 	
 	public static List<DocumentScore> combineRankedListsWithWeights(List<Map<String, DocumentScore>> rankedLists,
