@@ -5,6 +5,7 @@ import db.wrappers.DynamoDBWrapper;
 public final class PRCreateTable {
 	
 	public static final String PR_TABLE_NAME = "PageRank";
+	public static final String DR_TABLE_NAME = "DomainRank";
 	private static final String PARTITION_KEY = "Page";
 	private static final String PARTITION_KEY_TYPE = "S";
 	private static final int READ_CAP_UNITS = 1;
