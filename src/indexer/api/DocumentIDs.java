@@ -32,7 +32,7 @@ public class DocumentIDs {
 		return docIDs;
 	}
 	
-	public String getUrlFor(int docId) {
+	public String getURLFor(int docId) {
 		return docIDs.get(docId);
 	}
 }
