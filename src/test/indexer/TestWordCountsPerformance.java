@@ -58,7 +58,6 @@ public class TestWordCountsPerformance {
 				Integer id = 0;
 				for (String word : wordCounts) {
 					DocumentFeatures doc = new DocumentFeatures();
-
 					doc.setDocId(id);
 					id++;
 					doc.setEuclideanTermFrequency(allCounts.get(
