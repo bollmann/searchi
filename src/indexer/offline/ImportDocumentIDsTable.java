@@ -61,7 +61,7 @@ public class ImportDocumentIDsTable implements Runnable {
 			in.close();
 		} catch (FileNotFoundException e) {
 			logger.error("file " + this.input.getName() + " not found: ", e);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			logger.error("error while reading file " + this.input.getName() + ": ", e);
 		}
 	}
