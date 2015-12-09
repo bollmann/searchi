@@ -12,6 +12,7 @@ public class WordCounts implements Iterable<String> {
 	private Map<Integer, Set<String>> nGrams;
 	private Map<Integer, Integer> nGramCounts;
 	private Map<Integer, String> nGramMaxWords;
+	private Map<Integer, Integer> ngramNormalizedDocSize;
 
 	public Map<String, Integer> getWordCounts() {
 		return wordCounts;
@@ -78,6 +79,7 @@ public class WordCounts implements Iterable<String> {
 		nGrams = new HashMap<>();
 		nGramCounts = new HashMap<>();
 		nGramMaxWords = new HashMap<>();
+		ngramNormalizedDocSize = new HashMap<>();
 
 		int index = 0;
 		for (String word : words) {
@@ -115,6 +117,7 @@ public class WordCounts implements Iterable<String> {
 
 			index++;
 		}
+		
 	}
 
 	public WordCounts(WordCounts other) {
@@ -122,8 +125,10 @@ public class WordCounts implements Iterable<String> {
 		for (String key : other.wordPos.keySet()) {
 			this.wordPos.put(key, new HashSet<>(other.wordPos.get(key)));
 		}
+		this.nGrams = new HashMap<>(other.nGrams);
 		this.nGramCounts = new HashMap<>(other.nGramCounts);
 		this.nGramMaxWords = new HashMap<>(other.nGramMaxWords);
+		this.ngramNormalizedDocSize = new HashMap<>(other.ngramNormalizedDocSize);
 	}
 
 	/** Adding word counts together. */
@@ -157,6 +162,18 @@ public class WordCounts implements Iterable<String> {
 		}
 		return this;
 	}
+	
+	public void computeNormalDocSizes() {
+		for (int nValue : nGramCounts.keySet()) {
+			Set<String> ngrams = nGrams.get(nValue);
+			int docSize = 0;
+			for (String nGram : ngrams) {
+				docSize += Math.pow(wordCounts.get(nGram), 2.0);
+			}
+			ngramNormalizedDocSize.put(nValue,docSize);
+		}
+		
+	}
 
 	public Set<Integer> getPosition(String word) {
 		if (!wordPos.containsKey(word)) {
@@ -169,20 +186,15 @@ public class WordCounts implements Iterable<String> {
 	public float getMaximumTermFrequency(String word) {
 		float alpha = 0.5F;
 		int nValue = getNGramSize(word);
-		return alpha
-				+ (1 - alpha)
-				* ((float) wordCounts.get(word) / wordCounts.get(nGramMaxWords
-						.get(nValue)));
+		float tf = ((float) wordCounts.get(word) / wordCounts.get(nGramMaxWords.get(nValue)));
+		return alpha + (1 - alpha) * tf; 
 	}
 
 	/** Get Euclidean Term Freq of a word */
 	public float getEuclideanTermFrequency(String word) {
 		int nValue = getNGramSize(word);
-
-		int docSize = 0;
-		for (String nGram : nGrams.get(nValue)) {
-			docSize += Math.pow(wordCounts.get(nGram), 2.0);
-		}
+		
+		int docSize = ngramNormalizedDocSize.get(nValue);
 		return (float) (getCounts(word) / Math.sqrt((double) docSize));
 	}
 

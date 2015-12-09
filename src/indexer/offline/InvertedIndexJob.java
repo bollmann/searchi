@@ -23,6 +23,7 @@ import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.input.KeyValueTextInputFormat;
 import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
@@ -49,10 +50,10 @@ public class InvertedIndexJob {
 	
 	/** Mapper Class for Document Indexer */
 	public static class DocumentIndexer extends
-			Mapper<LongWritable, Text, Text, Text> {
+			Mapper<Text, Text, Text, Text> {
 
 		@Override
-		public void map(LongWritable lineNr, Text jsonBlob, Context context)
+		public void map(Text key, Text jsonBlob, Context context)
 				throws IOException, InterruptedException {
 			
             URLContent page = new Gson().fromJson(jsonBlob.toString(),
@@ -182,7 +183,7 @@ public class InvertedIndexJob {
 
 		job.setReducerClass(CorpusIndexer.class);
 
-		job.setInputFormatClass(TextInputFormat.class);
+		job.setInputFormatClass(KeyValueTextInputFormat.class);
 		job.setOutputFormatClass(TextOutputFormat.class);
 		FileInputFormat.addInputPath(job, new Path(args[0]));
 		FileOutputFormat.setOutputPath(job, new Path(args[1]));
@@ -199,22 +200,26 @@ public class InvertedIndexJob {
             doc.select("a[href]").text().replace(".", " ")).getTokens();		
 		WordCounts linkCounts = new WordCounts(
             StringUtils.getNgrams(linkTokens, 1, nGramSize), nGramSize);
+		linkCounts.computeNormalDocSizes();
 		
 		List<String> metaTagTokens = new Tokenizer(
             extractMetaTags(doc)).getTokens();		
 		WordCounts metaTagCounts = new WordCounts(
             StringUtils.getNgrams(metaTagTokens, 1, nGramSize), nGramSize);
+		metaTagCounts.computeNormalDocSizes();
 		
 		List<String> headerTokens = new Tokenizer(
             doc.select("title,h1,h2,h3,h4,h5,h6").text().replace(".", " ")).getTokens();		
 		WordCounts headerCounts = new WordCounts(
             StringUtils.getNgrams(headerTokens, 1, nGramSize), nGramSize);
+		headerCounts.computeNormalDocSizes();
 		
 		List<String> normalTokens = new Tokenizer(
             doc.select("title,body").text().replace(".", " ")).getTokens();
-		logger.info("Normal tokens:" + normalTokens);
+		// logger.info("Normal tokens:" + normalTokens);
 		WordCounts totalCounts = new WordCounts(
             StringUtils.getNgrams(normalTokens, 1, nGramSize), nGramSize).addCounts(metaTagCounts);
+		totalCounts.computeNormalDocSizes();
 		
 		Map<Feature, WordCounts> allCounts = new HashMap<Feature, WordCounts>();
 		allCounts.put(Feature.LINK_COUNTS, linkCounts);
