@@ -1,5 +1,6 @@
 package pagerank.api;
 
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.Map;
 import pagerank.db.dao.DRDao;
 import pagerank.db.dao.PRDao;
 import pagerank.db.ddl.PRCreateTable;
+import utils.string.StringUtils;
 import db.wrappers.DynamoDBWrapper;
 
 public final class PageRankAPI {
@@ -72,10 +74,12 @@ public final class PageRankAPI {
 	 * @param String page
 	 * @return double domainRank
 	 */
-	public double getDomainRank(String domain) throws Exception {
-		if (domain == null || domain.isEmpty()) {
+	public double getDomainRank(String page) throws Exception {
+		if (page == null || page.isEmpty()) {
 			throw new Exception("Invalid page. Can't find domainrank score");
 		}
+		
+		String domain = StringUtils.getDomainFromUrl(page.trim());	
 		
 		DRDao domainRank = (DRDao) dynamoWrapper.getItem(domain, DRDao.class); 
 		if (domainRank == null) {
@@ -87,18 +91,20 @@ public final class PageRankAPI {
 	
 	/**
 	 * Batch Get for DomainRank scores of multiple domains
-	 * @param List<String> domains
+	 * @param List<String> pages
 	 * @return Map <String, Double> domainRanks
+	 * @throws MalformedURLException 
 	 */
-	public Map <String, Double> getDomainRankBatch(List<String> domains) throws IllegalArgumentException {
-		if (domains == null || domains.isEmpty()) {
+	public Map <String, Double> getDomainRankBatch(List<String> pages) 
+			throws IllegalArgumentException, MalformedURLException {
+		if (pages == null || pages.isEmpty()) {
 			throw new IllegalArgumentException("Invalid domain. Can't find domainrank score");
 		}
 		
 		List<Object> items = new ArrayList<>();
-		for (String domain : domains) {
+		for (String page : pages) {
 			DRDao dao = new DRDao();
-			dao.setDomain(domain);
+			dao.setDomain(StringUtils.getDomainFromUrl(page.trim()));
 			dao.setDomainScore(-1.0);
 			items.add(dao);
 		}
