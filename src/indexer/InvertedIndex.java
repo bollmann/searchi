@@ -9,13 +9,14 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 
@@ -48,6 +49,10 @@ public class InvertedIndex {
 		this.corpusSize = 113000;
 	}
 
+	public int getCorpusSize() {
+		return corpusSize;
+	}
+	
 	public static DynamoDBMapper connectDB() {
 		AWSCredentials credentials = new ProfileCredentialsProvider(
 				CREDENTIALS_PROFILE).getCredentials();
@@ -70,17 +75,19 @@ public class InvertedIndex {
 	public static void importData(String fromFile, int batchSize)
 			throws IOException {
 		DynamoDBMapper db = connectDB();
-		BufferedReader br = new BufferedReader(new FileReader(new File(fromFile)));
+		BufferedReader br = new BufferedReader(new FileReader(
+				new File(fromFile)));
 		String line = null;
 		List<InvertedIndexRow> rows = new LinkedList<InvertedIndexRow>();
-		
+
 		Gson gson = new Gson();
 		while ((line = br.readLine()) != null) {
 			InvertedIndexRow row = gson.fromJson(line, InvertedIndexRow.class);
 			rows.add(row);
 			if (rows.size() >= batchSize) {
 				db.batchSave(rows);
-				logger.info(String.format("imported %d records into DynamoDB's 'inverted-index' table.",
+				logger.info(String
+						.format("imported %d records into DynamoDB's 'inverted-index' table.",
 								rows.size()));
 
 				rows = new LinkedList<InvertedIndexRow>();
@@ -90,89 +97,45 @@ public class InvertedIndex {
 		br.close();
 	}
 
-	public Map<String, InvertedIndexRow> getInvertedIndexForQuery(
+	public Map<String, List<DocumentFeatures>> getInvertedIndexForQuery(
 			List<String> query) {
-		Map<String, InvertedIndexRow> wordDocumentInfoMap = new HashMap<String, InvertedIndexRow>();
+		Map<String, List<DocumentFeatures>> wordDocumentInfoMap = new HashMap<String, List<DocumentFeatures>>();
 
-		for (String word: query) {
+		for (String word : query) {
 			// TODO: optimize based on different table layout, multi-thread
 			// requests, etc.
 			List<InvertedIndexRow> rows = getDocumentLocations(word);
+			List<DocumentFeatures> featureList = new ArrayList<DocumentFeatures>();
 			for (InvertedIndexRow row : rows) {
-				wordDocumentInfoMap.put(word, row);
+				featureList.addAll(row.getFeatures());
 			}
-			// all urls of a word have been processed here
-
-			logger.info(String.format(
-					"=> got %d documents for query word '%s'.", rows.size(),
-					word));
+			
+			wordDocumentInfoMap.put(word, featureList);
 		}
 		return wordDocumentInfoMap;
 	}
-
-	public List<DocumentFeatures> getDocumentsForWord(String word) {
-		List<InvertedIndexRow> rows = getDocumentLocations(word);
-		List<DocumentFeatures> docs = new ArrayList<DocumentFeatures>();
-		for(InvertedIndexRow row: rows) {
-			logger.info("row features: " + row.getFeatures());
-			docs.addAll(row.getFeatures());
+	
+	public Map<String, List<DocumentFeatures>> getInvertedIndexForQueryMultiThreaded(
+			List<String> query) {
+		Map<String, List<DocumentFeatures>> wordDocumentInfoMap = new HashMap<String, List<DocumentFeatures>>();
+		
+		ExecutorService es = Executors.newFixedThreadPool(query.size());
+		for (String word : query) {
+			InvertedIndexFetcher f = new InvertedIndexFetcher(wordDocumentInfoMap, word);
+			es.execute(f);
+			f.start();
 		}
-		return docs;
-	}
-	
-	public List<DocumentScore> rankDocumentsBy(List<String> query, Comparator<DocumentScore> ranking) {
-		WordCounts queryCounts = new WordCounts(query);
-		Map<String, DocumentScore> documentRanks = new HashMap<String, DocumentScore>();
-
-		for (String word: query) {
-			// TODO: optimize based on different table
-			// layout, multi-thread requests, etc.
-			List<InvertedIndexRow> rows = getDocumentLocations(word);
-			List<DocumentFeatures> docs = new ArrayList<DocumentFeatures>();
-			for(InvertedIndexRow row: rows) {
-				docs.addAll(row.getFeatures());
-			}
-
-			for(DocumentFeatures features: docs) {
-				DocumentScore rankedDoc = documentRanks.get(features.getUrl());
-				if(rankedDoc == null) {
-					rankedDoc = new DocumentScore(word, features);
-					documentRanks.put(features.getUrl(), rankedDoc);
-				} else {
-					rankedDoc.addFeatures(word, features);
-				}
-
-				double queryWeight = queryCounts.getTFIDF(word, corpusSize, docs.size());
-				double docWeight = features.getEuclideanTermFrequency(); // TODO: try other weighting functions!
-				rankedDoc.setRank(rankedDoc.getRank() + queryWeight * docWeight);
-			}
-			logger.info(String.format(
-					"=> got %d rows for query word '%s'.", rows.size(),
-					word));
+		es.shutdown();
+		try {
+			boolean finshed = es.awaitTermination(1, TimeUnit.MINUTES);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		List<DocumentScore> results = new ArrayList<DocumentScore>(documentRanks.values());
-		Collections.sort(results, ranking);
-		return results;
+		
+		return wordDocumentInfoMap;
 	}
-	
-	public List<DocumentScore> rankDocuments(List<String> query) {
-		Comparator<DocumentScore> ranking = new Comparator<DocumentScore>() {
-			@Override
-			public int compare(DocumentScore s1, DocumentScore s2) {
-				Map<String, DocumentFeatures> s1Words = s1.getWordFeatures();
-				Map<String, DocumentFeatures> s2Words = s2.getWordFeatures();
-				
-				if (s1Words.size() > s2Words.size())
-					return -1;
-				else if (s1Words.size() < s2Words.size())
-					return 1;
-				else 
-					return (-1) * Double.compare(s1.getRank(), s2.getRank());
-			}
-		};
-		return rankDocumentsBy(query, ranking);
-	}
-	
+
 	public static void main(String[] args) {
 		try {
 			if (args[0].equals("import")) {
@@ -187,7 +150,7 @@ public class InvertedIndex {
 						args.length));
 				System.out.println("querying for words " + query + "...");
 
-				List<DocumentScore> newResults = idx.rankDocuments(query);
+				List<DocumentScore> newResults = null;
 
 				Iterator<DocumentScore> iter = newResults.iterator();
 				for (int i = 0; i < 10 && iter.hasNext(); ++i) {

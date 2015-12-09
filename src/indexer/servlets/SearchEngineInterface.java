@@ -2,6 +2,8 @@ package indexer.servlets;
 
 import indexer.DocumentScore;
 import indexer.InvertedIndex;
+import indexer.dao.DocumentFeatures;
+import indexer.ranking.Ranker;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -23,6 +25,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
+import java.util.Map.Entry;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -57,7 +60,7 @@ public class SearchEngineInterface extends HttpServlet {
 	private String getFrontendIP(){
 		try{
 			System.out.println(new File(".").getAbsolutePath());
-			BufferedReader a = new BufferedReader(new FileReader(new File("/home/cis455/git/searchi/conf/ip_config")));
+			BufferedReader a = new BufferedReader(new FileReader(new File("conf/ip_config")));
 			String line;
 			while((line = a.readLine()) != null)
 				if(line.startsWith("frontend")){
@@ -92,19 +95,33 @@ public class SearchEngineInterface extends HttpServlet {
 		Map<String, Map<String, Map<String, String>>> searchResultMap = new HashMap<String, Map<String, Map<String, String>>>();
 		PageRankAPI pra = new PageRankAPI();
 		List<String> lookupList = new ArrayList<String>(1000);
+		Map<String, List<DocumentFeatures>> invertedIndex = iiObj.getInvertedIndexForQueryMultiThreaded(query);
+		Map<String, Integer> wordDfs = new HashMap<String, Integer>();
+		for(Entry<String, List<DocumentFeatures>> entry : invertedIndex.entrySet()) {
+			wordDfs.put(entry.getKey(), entry.getValue().size());
+		}
+		List<DocumentScore> documentList = Ranker.getDocumentScoresForQueryAndInvertedIndex(query, invertedIndex);
+		
+		/****************************** Add rankers and combine them here *************/
+		
+		List<DocumentScore> tfIdfRankedDocs = Ranker.rankDocumentsOnTfIdf(documentList, query, iiObj.getCorpusSize(), wordDfs);
+		
+		
 		try {
 			/******************************** Indexer results *********************/
 			Date startTime = Calendar.getInstance().getTime();
 			Map<String, Map<String, String>> indexerResultMap = new HashMap<String, Map<String, String>>();
 			Map<String, String> timeMap = new HashMap<String, String>();
+			
+			
 			int resultCount = 0;
-			for (DocumentScore doc : iiObj.rankDocuments(query)) {
+			for (DocumentScore doc : tfIdfRankedDocs) {
 				SearchResult sr = new SearchResult();
 				sr.setUrl(doc.getUrl());
-				sr.setScore(doc.getRank());
+				sr.setScore(doc.getScore());
 				sr.setSnippet(doc.toString());
 				indexerResultMap.put(String.valueOf(resultCount), sr.toMap());
-				indexerScore.put(doc.getUrl(), doc.getRank());
+				indexerScore.put(doc.getUrl(), (double) doc.getScore());
 				lookupList.add(doc.getUrl());
 				resultCount++;
 				if (resultCount > 10) {

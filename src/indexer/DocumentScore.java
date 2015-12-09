@@ -1,20 +1,24 @@
 package indexer;
 
 import indexer.dao.DocumentFeatures;
-import indexer.dao.InvertedIndexRow;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class DocumentScore implements Comparable<DocumentScore> {
 	private String url;
-	private double rank;
+	private float score;
 
 	/*
 	 * Feature counts of words occurring in this document.
 	 */
 	private Map<String, DocumentFeatures> wordFeatures;
 
+	public DocumentScore(String url) {
+		this.url = new String(url);
+		this.wordFeatures = new HashMap<String, DocumentFeatures>();
+	}
+	
 	public DocumentScore(String word, DocumentFeatures features) {
 		this.url = new String(features.getUrl());
 		this.wordFeatures = new HashMap<String, DocumentFeatures>();
@@ -29,12 +33,12 @@ public class DocumentScore implements Comparable<DocumentScore> {
 		return url;
 	}
 
-	public void setRank(double r) {
-		this.rank = r;
+	public void setScore(float score) {
+		this.score = score;
 	}
 
-	public double getRank() {
-		return rank;
+	public float getScore() {
+		return score;
 	}
 	
 	public Map<String, DocumentFeatures> getWordFeatures() {
@@ -43,13 +47,13 @@ public class DocumentScore implements Comparable<DocumentScore> {
 
 	@Override
 	public int compareTo(DocumentScore other) {
-		return (-1) * Double.compare(this.rank, other.rank);
+		return (-1) * Float.compare(this.score, other.score);
 	}
 
 	@Override
 	public String toString() {
 		StringBuffer fmt = new StringBuffer();
-		fmt.append(String.format("URL %s ; rank=%f\n", this.url, this.rank));
+		fmt.append(String.format("URL %s ; score=%f\n", this.url, this.score));
 		for(String word: wordFeatures.keySet())
 			fmt.append(String.format("%s features=%s\n", word, wordFeatures.get(word)));
 		

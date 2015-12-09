@@ -2,6 +2,8 @@ package indexer.servlets;
 
 import indexer.DocumentScore;
 import indexer.InvertedIndex;
+import indexer.dao.DocumentFeatures;
+import indexer.ranking.Ranker;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,7 +15,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.PriorityQueue;
+import java.util.Map.Entry;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -95,14 +97,27 @@ public class IndexerClientServlet extends HttpServlet {
 			buffer.append("<br>Using Indexer Ranking:");
 			buffer.append("<ol>");
 
+			Map<String, List<DocumentFeatures>> invertedIndex = iiObj.getInvertedIndexForQueryMultiThreaded(query);
+			Map<String, Integer> wordDfs = new HashMap<String, Integer>();
+			for(Entry<String, List<DocumentFeatures>> entry : invertedIndex.entrySet()) {
+				wordDfs.put(entry.getKey(), entry.getValue().size());
+			}
+			List<DocumentScore> documentList = Ranker.getDocumentScoresForQueryAndInvertedIndex(query, invertedIndex);
+			
+			/****************************** Add rankers and combine them here *************/
+			
+			List<DocumentScore> tfIdfRankedDocs = Ranker.rankDocumentsOnTfIdf(documentList, query, iiObj.getCorpusSize(), wordDfs);
+			
+			/****************************** End of secret sauce ****************************/
+			
 			int resultCount = 0;
-			for (DocumentScore doc : iiObj.rankDocuments(query)) {
+			for (DocumentScore doc : tfIdfRankedDocs) {
 				SearchResult sr = new SearchResult();
 				sr.setUrl(doc.getUrl());
-				sr.setScore(doc.getRank());
+				sr.setScore(doc.getScore());
 				sr.setSnippet(doc.toString());
 				buffer.append("<li>" + sr.toHtml() + "</li>");
-				indexerScore.put(doc.getUrl(), doc.getRank());
+				indexerScore.put(doc.getUrl(), (double) doc.getScore());
 				lookupList.add(doc.getUrl());
 				resultCount++;
 				if (resultCount > 10) {
@@ -152,7 +167,6 @@ public class IndexerClientServlet extends HttpServlet {
 			for (SearchResult doc : result) {
 				buffer.append("<li>" + doc.toHtml() + "</li>");
 				lookupList.add(doc.getUrl());
-				indexerScore.put(doc.getUrl(), doc.getScore());
 				resultCount++;
 				if (resultCount > 10) {
 					break;

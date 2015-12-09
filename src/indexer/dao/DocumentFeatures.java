@@ -21,6 +21,10 @@ public final class DocumentFeatures {
 	private int headerCount;
 	private Set<Integer> positions;
 	
+	public DocumentFeatures() {
+		positions = new HashSet<Integer>();
+	}
+	
 	public String getUrl() { return url; }
 	public void setUrl(String url) { this.url = url; }
 	

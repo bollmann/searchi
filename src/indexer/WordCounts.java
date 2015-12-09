@@ -194,7 +194,7 @@ public class WordCounts implements Iterable<String> {
 			return 0;
 	}
 
-	/** Get TF-IDF scores dfor a word - document */
+	/** Get TF-IDF scores for a word - document */
 	public double getTFIDF(String word, int corpusSize, int df) {
 		return this.getMaximumTermFrequency(word)
 				* Math.log((double) corpusSize / df);

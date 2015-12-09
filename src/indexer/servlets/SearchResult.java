@@ -5,7 +5,7 @@ import java.util.HashMap;
 public class SearchResult implements Comparable<SearchResult> {
 	private String url;
 	private String snippet;
-	private Double score;
+	private double score;
 	
 	public String getUrl() {
 		return url;
@@ -19,10 +19,10 @@ public class SearchResult implements Comparable<SearchResult> {
 	public void setSnippet(String snippet) {
 		this.snippet = snippet;
 	}
-	public Double getScore() {
+	public double getScore() {
 		return score;
 	}
-	public void setScore(Double score) {
+	public void setScore(double score) {
 		this.score = score;
 	}
 	
