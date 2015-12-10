@@ -53,22 +53,21 @@ public class WordCounts implements Iterable<String> {
 		int index = 0;
 		for (String word : words) {
 			totalWords++;
-			if (dict != null && !dict.contains(word)) {
-				continue;
-			}
+			if (dict != null && !dict.contains(word))
+				totalWordsEnglish++;
 			
 			Integer counts = wordCounts.get(word);
 			if (counts == null)
 				wordCounts.put(word, 1);
 			else
 				wordCounts.put(word, counts + 1);
-//
-//			if (!wordPos.containsKey(word)) {
-//				wordPos.put(word, new HashSet<Integer>());
-//			}
-//			if (wordPos.get(word).size() <= 5) {
-//				wordPos.get(word).add((int) (index / maxN) + 1);
-//			}
+
+			if (!wordPos.containsKey(word)) {
+				wordPos.put(word, new HashSet<Integer>());
+			}
+			if (wordPos.get(word).size() <= 5) {
+				wordPos.get(word).add((int) (index / maxN) + 1);
+			}
 
 			int nValue = getNGramSize(word);
 			if (nGrams.get(nValue) == null) {
@@ -92,14 +91,13 @@ public class WordCounts implements Iterable<String> {
 			index++;
 			totalWordsEnglish++;
 		}
-		
 	}
 
 	public WordCounts(WordCounts other) {
 		this.wordCounts = new HashMap<String, Integer>(other.wordCounts);
-//		for (String key : other.wordPos.keySet()) {
-//			this.wordPos.put(key, new HashSet<>(other.wordPos.get(key)));
-//		}
+		for (String key : other.wordPos.keySet()) {
+			this.wordPos.put(key, new HashSet<>(other.wordPos.get(key)));
+		}
 		this.nGrams = new HashMap<>(other.nGrams);
 		this.nGramCounts = new HashMap<>(other.nGramCounts);
 		this.nGramMaxWords = new HashMap<>(other.nGramMaxWords);
