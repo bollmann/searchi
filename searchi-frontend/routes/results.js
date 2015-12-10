@@ -1,9 +1,9 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET home page. */
 router.get('/', function(req, res, next) {
-  	res.render('index');
+	var q = decodeURI(req.query.q);
+  	res.render('resultsLoading', {q: q});
 });
 
 module.exports = router;

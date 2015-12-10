@@ -1,0 +1,12 @@
+Request
+GET /1.1/search/tweets.json?q=obama&count=10 HTTP/1.1
+
+Authorization:
+    OAuth oauth_consumer_key="DC0sePOBbQ8bYdC8r4Smg",oauth_signature_method="HMAC-SHA1",oauth_timestamp="1449644670",oauth_nonce="2318680570",oauth_version="1.0",oauth_token="86738676-6UeGFxZOG9l7tN8VZRLu9ZNsvrf5JCbw50AZJVjlg",oauth_signature="MUNn1fp5LI6mDFUIzPkz%2FwQc6k4%3D"
+Host:
+    api.twitter.com
+X-Target-URI:
+    https://api.twitter.com
+Connection:
+    Keep-Alive
+

@@ -1,0 +1,8 @@
+if weather.weather
+  .well
+    p.lead #{weather.main.temp} F at #{weather.name}, #{weather.sys.country}
+    p.small
+      for condition in weather.weather
+        b
+          span= condition.main 
+        //- img(src='http://openweathermap.org/img/w/' + condition.icon + '.png')

@@ -1,0 +1,12 @@
+.list-group
+  each tweet in tweets
+    a.list-group-item(href='http://twitter.com/' + tweet.user.screen_name + '/status/' + tweet.id_str)
+      .media
+        .media-left
+          img.media-object(src=tweet.user.profile_image_url)
+        .media-body
+          h4.media-heading #{tweet.user.name}   
+            small 
+              @#{tweet.user.screen_name}  at 
+              span= tweet.created_at.substr(4, 12)
+          p.lead #{tweet.text}

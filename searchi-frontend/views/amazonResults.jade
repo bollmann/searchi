@@ -1,0 +1,12 @@
+.list-group#amazonResults
+  each item in apparel
+    if item.DetailPageURL
+      a.list-group-item('href'=item.DetailPageURL)
+        .media
+          .media-left
+            img.media-object(src='images/thumbnail.png' asin=item.ASIN)
+          .media-body
+            span.badge= item.ItemAttributes.ProductGroup
+            p.lead= item.ItemAttributes.Title
+            if item.ItemAttributes.Manufacturer
+              p.small by #{item.ItemAttributes.Manufacturer} 

@@ -1,0 +1,28 @@
+ul.nav.nav-pills(role='tablist')
+  li.active(role='presentation')
+    a(href='#indexer', aria-controls='indexer', role='tab', data-toggle='tab') Indexer
+  li(role='presentation')
+    a(href='#pagerank', aria-controls='pagerank', role='tab', data-toggle='tab') PageRank
+  li(role='presentation')
+    a(href='#combined', aria-controls='combined', role='tab', data-toggle='tab') Combined
+// Tab panes
+.tab-content
+  #indexer.tab-pane.active(role='tabpanel')
+
+  //-   br
+  //-   //- h1.small= indexer.time.time
+  //-   ul.list-group
+  //-     each val, key in indexer
+  //-       li.list-group-item= val.url
+  //- #pagerank.tab-pane(role='tabpanel')
+  //-   br 
+  //-   //- h1.small= pagerank.time.time
+  //-   ul.list-group
+  //-     each val, key in pagerank
+  //-       li.list-group-item= val.url
+  //- #combined.tab-pane(role='tabpanel')
+  //-   br
+  //-   // h1.small= combined.time.time
+  //-   ul.list-group
+  //-     each val, key in combined
+  //-       li.list-group-item= val.url

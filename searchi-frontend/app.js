@@ -5,8 +5,13 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var routes = require('./routes/index');
+var index = require('./routes/index');
 var search = require('./routes/search');
+var results = require('./routes/results');
+var twitter = require('./routes/twitter');
+var amazon = require('./routes/amazon');
+var amazonImg = require('./routes/amazonImg');
+var weather = require('./routes/weather')
 var app = express();
 
 // view engine setup
@@ -21,8 +26,13 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
+app.use('/', index);
 app.use('/search', search);
+app.use('/results', results);
+app.use('/twitter', twitter);
+app.use('/amazon', amazon);
+app.use('/amazonImg', amazonImg);
+app.use('/weather', weather);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -39,8 +49,7 @@ if (app.get('env') === 'development') {
   app.use(function(err, req, res, next) {
     res.status(err.status || 500);
     res.render('error', {
-      message: err.message,
-      error: err
+      url: req.url
     });
   });
 }
@@ -50,8 +59,7 @@ if (app.get('env') === 'development') {
 app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error', {
-    message: err.message,
-    error: {}
+    url: req.url
   });
 });
 
