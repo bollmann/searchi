@@ -16,10 +16,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
+import utils.file.FilePolicy;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import crawler.policies.FilePolicy;
 import crawler.servlet.background.UrlProcessorThread;
 import crawler.servlet.multinodal.status.WorkerStatus;
 import crawler.threadpool.DiskBackedQueue;

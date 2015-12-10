@@ -1,7 +1,7 @@
 /*
  * Written by Shreejit Gangadharan
  */
-package crawler.policies;
+package utils.file;
 
 import java.io.File;
 import java.io.FileInputStream;

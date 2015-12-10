@@ -20,8 +20,9 @@ import java.util.regex.Pattern;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
+import utils.file.FilePolicy;
+
 import crawler.parsers.Parser;
-import crawler.policies.FilePolicy;
 import crawler.responses.Http10Response;
 import crawler.responses.HttpResponse;
 import crawler.threadpool.Queue;

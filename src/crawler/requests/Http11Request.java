@@ -25,8 +25,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 
+import utils.file.FilePolicy;
+
 import crawler.parsers.Parser;
-import crawler.policies.FilePolicy;
 import crawler.responses.Http11Response;
 import crawler.responses.HttpResponse;
 import crawler.threadpool.Queue;
