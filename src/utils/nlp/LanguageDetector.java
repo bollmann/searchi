@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.jsoup.Jsoup;
 
 public class LanguageDetector {
 
@@ -58,11 +59,10 @@ public class LanguageDetector {
 
 	public static boolean hasEnglishHeader(String content) {
 
-		if (content.matches("<meta http-equiv=\"Content-Language\"")) {
+		if (content.contains("<meta http-equiv=\"Content-Language\"")) {
 			if (content
 					.contains("<meta http-equiv=\"Content-Language\" content=\"en\"")) {
 				return true;
-
 			} else {
 				return false;
 			}
@@ -79,8 +79,8 @@ public class LanguageDetector {
 		return true;
 	}
 
-	public static boolean isEnglish(String content) {
-
+	public static boolean isEnglish(String page) {
+		String content = Jsoup.parse(page).select("body").text();
 		int englishWordCount = 0;
 		Set<String> seenWords = new HashSet<String>();
         String contentLower = content.toLowerCase();
@@ -89,10 +89,9 @@ public class LanguageDetector {
 			if (contentLower.contains(" " + englishWord + " ")
 					&& !seenWords.contains(baseWord.get(englishWord))) {
 				englishWordCount++;
-
 				seenWords.add(englishWord);
-//				 logger.info("Found " + englishWord +
-//				     " in content. Total count " + englishWordCount);
+				 logger.info("Found " + englishWord +
+				   " in content. Total count " + englishWordCount);
 				continue;
 			}
             if (englishWordCount >= englishWordCountHeuristic) {

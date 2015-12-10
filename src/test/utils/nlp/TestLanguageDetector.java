@@ -46,4 +46,10 @@ public class TestLanguageDetector extends TestCase {
 		assertFalse(LanguageDetector.isEnglish(content));
 	}
 	
+	@Test
+	public void testIsEnglishForFrenchPage() throws IOException {
+		String content = FilePolicy.readFile("testcontent/some-french-page.html");
+		assertFalse(LanguageDetector.isEnglish(content));
+	}
+	
 }
