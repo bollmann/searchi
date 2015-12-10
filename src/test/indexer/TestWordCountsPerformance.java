@@ -3,23 +3,15 @@ package test.indexer;
 import indexer.WordCounts;
 import indexer.dao.DocumentFeatures;
 import indexer.offline.InvertedIndexJob;
-import indexer.offline.InvertedIndexJob.Feature;
+import indexer.offline.InvertedIndexJob.FeatureType;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.nio.charset.Charset;
-import java.sql.Date;
 import java.util.Map;
 
-import org.apache.hadoop.io.Text;
-import org.joda.time.DateTime;
 import org.junit.Test;
 
 import com.google.gson.Gson;
@@ -51,26 +43,26 @@ public class TestWordCountsPerformance {
 						URLContent.class);
 				
 				InvertedIndexJob job = new InvertedIndexJob();
-				Map<Feature, WordCounts> allCounts = job.computeCounts(page, 1);
+				Map<FeatureType, WordCounts> allCounts = job.computeCounts(page, 1);
 
 				
-				WordCounts wordCounts = allCounts.get(Feature.TOTAL_COUNTS);
+				WordCounts wordCounts = allCounts.get(FeatureType.TOTAL_COUNTS);
 				Integer id = 0;
 				for (String word : wordCounts) {
 					DocumentFeatures doc = new DocumentFeatures();
 					doc.setDocId(id);
 					id++;
 					doc.setEuclideanTermFrequency(allCounts.get(
-						Feature.TOTAL_COUNTS).getEuclideanTermFrequency(word));
-					doc.setMaximumTermFrequency(allCounts.get(Feature.TOTAL_COUNTS)
+						FeatureType.TOTAL_COUNTS).getEuclideanTermFrequency(word));
+					doc.setMaximumTermFrequency(allCounts.get(FeatureType.TOTAL_COUNTS)
 						.getMaximumTermFrequency(word));
-					doc.setTotalCount(allCounts.get(Feature.TOTAL_COUNTS)
+					doc.setTotalCount(allCounts.get(FeatureType.TOTAL_COUNTS)
 						.getCounts(word));
-					doc.setHeaderCount(allCounts.get(Feature.HEADER_COUNTS)
+					doc.setHeaderCount(allCounts.get(FeatureType.HEADER_COUNTS)
 						.getCounts(word));
-					doc.setLinkCount(allCounts.get(Feature.LINK_COUNTS)
+					doc.setLinkCount(allCounts.get(FeatureType.LINK_COUNTS)
 	                    .getCounts(word));
-	                doc.setMetaTagCount(allCounts.get(Feature.META_TAG_COUNTS)
+	                doc.setMetaTagCount(allCounts.get(FeatureType.META_TAG_COUNTS)
 	                    .getCounts(word));
 	                doc.setPositions(wordCounts.getPosition(word));
 				}
