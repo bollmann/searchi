@@ -1,5 +1,6 @@
 package indexer;
 
+import indexer.clients.InvertedIndexClient;
 import indexer.dao.DocumentFeatures;
 import indexer.dao.InvertedIndexRow;
 
@@ -20,7 +21,8 @@ public class InvertedIndexFetcher extends Thread {
 	
 	@Override
 	public void run() {
-		InvertedIndex ii = new InvertedIndex();
+		InvertedIndexClient ii = InvertedIndexClient.getInstance();
+//		logger.info("Fetcher found " + ii.getCache().size() + " in cache of iiclient id " + ii.hashCode());
 		List<InvertedIndexRow> rows = ii.getDocumentLocations(word);
 		List<DocumentFeatures> featureList = new ArrayList<DocumentFeatures>();
 		for (InvertedIndexRow row : rows) {

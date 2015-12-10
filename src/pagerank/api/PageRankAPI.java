@@ -13,43 +13,48 @@ import utils.string.StringUtils;
 import db.wrappers.DynamoDBWrapper;
 
 public final class PageRankAPI {
-	
+
 	private DynamoDBWrapper dynamoWrapper;
-	
+
 	public PageRankAPI() {
 		this.dynamoWrapper = DynamoDBWrapper.getInstance(
-			DynamoDBWrapper.US_EAST,
-			DynamoDBWrapper.CLIENT_PROFILE);
+				DynamoDBWrapper.US_EAST, DynamoDBWrapper.CLIENT_PROFILE);
 	}
-	
+
 	/**
 	 * Get PageRank score for specified page
-	 * @param String page
+	 * 
+	 * @param String
+	 *            page
 	 * @return double pageRank
 	 */
 	public double getPageRank(String page) throws Exception {
 		if (page == null || page.isEmpty()) {
 			throw new Exception("Invalid page. Can't find pagerank score");
 		}
-		
-		PRDao pageRank = (PRDao) dynamoWrapper.getItem(page, PRDao.class); 
+
+		PRDao pageRank = (PRDao) dynamoWrapper.getItem(page, PRDao.class);
 		if (pageRank == null) {
 			throw new Exception("Pagerank not found for specified page");
 		}
-		
-		return pageRank.getPageScore(); 		
+
+		return pageRank.getPageScore();
 	}
-	
+
 	/**
 	 * Batch Get for PageRank scores of multiple pages
-	 * @param List<String> pages
+	 * 
+	 * @param List
+	 *            <String> pages
 	 * @return Map <String, Double> pageRanks
 	 */
-	public Map <String, Double> getPageRankBatch(List<String> pages) throws IllegalArgumentException {
+	public Map<String, Double> getPageRankBatch(List<String> pages)
+			throws IllegalArgumentException {
 		if (pages == null || pages.isEmpty()) {
-			throw new IllegalArgumentException("Invalid page. Can't find pagerank score");
+			throw new IllegalArgumentException(
+					"Invalid page. Can't find pagerank score");
 		}
-		
+
 		List<Object> items = new ArrayList<>();
 		for (String page : pages) {
 			PRDao dao = new PRDao();
@@ -57,50 +62,62 @@ public final class PageRankAPI {
 			dao.setPageScore(-1.0);
 			items.add(dao);
 		}
-		
-		List<Object> pageRankItems = dynamoWrapper.getBatchItem(items).get(PRCreateTable.PR_TABLE_NAME);
+		List<Object> pageRankItems = new ArrayList<>();
+		try {
+			pageRankItems = dynamoWrapper.getBatchItem(items).get(
+					PRCreateTable.PR_TABLE_NAME);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new HashMap<String, Double>();
+		}
 		Map<String, Double> pageRanks = new HashMap<>();
-		for (Object pageObj: pageRankItems) {
+		for (Object pageObj : pageRankItems) {
 			PRDao pageDAO = (PRDao) pageObj;
-			if (pageDAO == null || pageDAO.getPageScore() < 0) continue;
-			
+			if (pageDAO == null || pageDAO.getPageScore() < 0)
+				continue;
+
 			pageRanks.put(pageDAO.getPage(), pageDAO.getPageScore());
 		}
 		return pageRanks;
 	}
-	
+
 	/**
 	 * Get DomainRank score for specified page
-	 * @param String page
+	 * 
+	 * @param String
+	 *            page
 	 * @return double domainRank
 	 */
 	public double getDomainRank(String page) throws Exception {
 		if (page == null || page.isEmpty()) {
 			throw new Exception("Invalid page. Can't find domainrank score");
 		}
-		
-		String domain = StringUtils.getDomainFromUrl(page.trim());	
-		
-		DRDao domainRank = (DRDao) dynamoWrapper.getItem(domain, DRDao.class); 
+
+		String domain = StringUtils.getDomainFromUrl(page.trim());
+
+		DRDao domainRank = (DRDao) dynamoWrapper.getItem(domain, DRDao.class);
 		if (domainRank == null) {
 			throw new Exception("DomainRank not found for specified page");
 		}
-		
-		return domainRank.getDomainScore(); 		
+
+		return domainRank.getDomainScore();
 	}
-	
+
 	/**
 	 * Batch Get for DomainRank scores of multiple domains
-	 * @param List<String> pages
+	 * 
+	 * @param List
+	 *            <String> pages
 	 * @return Map <String, Double> domainRanks
-	 * @throws MalformedURLException 
+	 * @throws MalformedURLException
 	 */
-	public Map <String, Double> getDomainRankBatch(List<String> pages) 
+	public Map<String, Double> getDomainRankBatch(List<String> pages)
 			throws IllegalArgumentException, MalformedURLException {
 		if (pages == null || pages.isEmpty()) {
-			throw new IllegalArgumentException("Invalid domain. Can't find domainrank score");
+			throw new IllegalArgumentException(
+					"Invalid domain. Can't find domainrank score");
 		}
-		
+
 		List<Object> items = new ArrayList<>();
 		for (String page : pages) {
 			DRDao dao = new DRDao();
@@ -108,17 +125,18 @@ public final class PageRankAPI {
 			dao.setDomainScore(-1.0);
 			items.add(dao);
 		}
-		
-		List<Object> domainRankItems = dynamoWrapper.getBatchItem(items).get(PRCreateTable.DR_TABLE_NAME);
+
+		List<Object> domainRankItems = dynamoWrapper.getBatchItem(items).get(
+				PRCreateTable.DR_TABLE_NAME);
 		Map<String, Double> domainRanks = new HashMap<>();
-		for (Object domainObj: domainRankItems) {
+		for (Object domainObj : domainRankItems) {
 			DRDao domainDAO = (DRDao) domainObj;
-			if (domainDAO == null || domainDAO.getDomainScore() < 0) continue;
-			
+			if (domainDAO == null || domainDAO.getDomainScore() < 0)
+				continue;
+
 			domainRanks.put(domainDAO.getDomain(), domainDAO.getDomainScore());
 		}
 		return domainRanks;
 	}
-	
-	
+
 }

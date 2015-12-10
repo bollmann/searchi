@@ -29,8 +29,8 @@ public class SearchEngineUtils {
 				map2Weight = 0.0;
 				map2Score = 0.0;
 			}
-			logger.info("Applying " + map1Weight + " to indexer score " + map1Score 
-					+ " and " + map2Weight + " to pagerank score " + map2Score);
+//			logger.info("Applying " + map1Weight + " to indexer score " + map1Score 
+//					+ " and " + map2Weight + " to pagerank score " + map2Score);
 			Double finalScore = (map1Weight * map1Score) + (map2Weight * map2Score);
 
 			SearchResult sr = new SearchResult();

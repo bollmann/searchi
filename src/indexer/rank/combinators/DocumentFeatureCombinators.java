@@ -22,7 +22,7 @@ public class DocumentFeatureCombinators {
 		WordCounts queryCounts = new WordCounts(query);
 		for (String queryWord : query) {
 			DocumentFeatures feature = wordFeatures.get(queryWord);
-			logger.info("Combiner looking for word:" + queryWord + " and got feature:" + feature);
+//			logger.info("Combiner looking for word:" + queryWord + " and got feature:" + feature);
 			if (feature != null) {
 				
 				double queryWeight = queryCounts.getTFIDF(queryWord,
@@ -32,7 +32,7 @@ public class DocumentFeatureCombinators {
 				double docWeight = feature.getTfidf();
 				
 				result += queryWeight * docWeight;
-				logger.info("queryWeight is " + queryWeight + " and docweight is tfidf=" + docWeight + " and result is " + result);
+//				logger.info("queryWeight is " + queryWeight + " and docweight is tfidf=" + docWeight + " and result is " + result);
 			}
 		}
 		return result;
@@ -42,9 +42,6 @@ public class DocumentFeatureCombinators {
 			Map<String, DocumentFeatures> wordFeatures) {
 		int result = 0;
 		for (Entry<String, DocumentFeatures> entry : wordFeatures.entrySet()) {
-			// logger.info("Adding total count:" +
-			// entry.getValue().getTotalCount() + " for word " +
-			// entry.getKey());
 			result += entry.getValue().getTotalCount();
 		}
 		return result;

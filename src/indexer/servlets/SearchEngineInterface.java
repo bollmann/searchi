@@ -1,8 +1,8 @@
 package indexer.servlets;
 
 import indexer.DocumentScore;
-import indexer.InvertedIndex;
 import indexer.api.DocumentIDs;
+import indexer.clients.InvertedIndexClient;
 import indexer.dao.DocumentFeatures;
 import indexer.rank.comparators.DocumentScoreComparators;
 import indexer.ranking.Ranker;
@@ -40,13 +40,11 @@ import com.google.gson.Gson;
 @SuppressWarnings("serial")
 public class SearchEngineInterface extends HttpServlet {
 	private final Logger logger = Logger.getLogger(getClass());
-	InvertedIndex iiObj = null;
 	Gson gson = null;
 	URL frontendIP = null;
 	
 	@Override
 	public void init() {
-		iiObj = new InvertedIndex();
 		gson = new Gson();
 		try {
 			frontendIP = new URL(getFrontendIP());
@@ -86,14 +84,14 @@ public class SearchEngineInterface extends HttpServlet {
 		queryStr = URLDecoder.decode(queryStr, "UTF-8");
 		for(String word: queryStr.split(" "))
 			query.add(word);
-		
+		InvertedIndexClient iic = InvertedIndexClient.getInstance();
 		logger.info("Recieved query: " + query.toString());
 		Map<String, Double> indexerScore = new HashMap<String, Double>(1000);
 		Map<String, Double> pageRankScore = null;
 		Map<String, Map<String, Map<String, String>>> searchResultMap = new HashMap<String, Map<String, Map<String, String>>>();
 		PageRankAPI pra = new PageRankAPI();
 		List<String> lookupList = new ArrayList<String>(1000);
-		Map<String, List<DocumentFeatures>> invertedIndex = iiObj.getInvertedIndexForQueryMultiThreaded(query);
+		Map<String, List<DocumentFeatures>> invertedIndex = iic.getInvertedIndexForQueryMultiThreaded(query);
 		Map<String, Integer> wordDfs = new HashMap<String, Integer>();
 		for(Entry<String, List<DocumentFeatures>> entry : invertedIndex.entrySet()) {
 			wordDfs.put(entry.getKey(), entry.getValue().size());
@@ -102,10 +100,10 @@ public class SearchEngineInterface extends HttpServlet {
 		
 		/****************************** Add rankers and combine them here *************/
 		
-		Map<Integer, DocumentScore> tfIdfRankedDocs = Ranker.rankDocumentsOnTfIdf(documentList, query, iiObj.getCorpusSize(), wordDfs);
+		Map<Integer, DocumentScore> tfIdfRankedDocs = Ranker.rankDocumentsOnTfIdf(documentList, query, iic.getCorpusSize(), wordDfs);
 		
 		List<DocumentScore> rankedDocs = new ArrayList<>(tfIdfRankedDocs.values());
-		Collections.sort(rankedDocs, DocumentScoreComparators.getTfIdfComparator(query, iiObj.getCorpusSize(), wordDfs));
+		Collections.sort(rankedDocs, DocumentScoreComparators.getTfIdfComparator(query, iic.getCorpusSize(), wordDfs));
 		/****************************** End of secret sauce ****************************/
 		
 		try {

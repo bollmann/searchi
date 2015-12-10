@@ -1,6 +1,6 @@
 package test.indexer;
 
-import indexer.InvertedIndex;
+import indexer.clients.InvertedIndexClient;
 import indexer.dao.DocumentFeatures;
 
 import java.util.Arrays;
@@ -13,15 +13,15 @@ import junit.framework.TestCase;
 
 import org.junit.Test;
 
-public class TestInvertedIndex extends TestCase {
+public class TestInvertedIndexClient extends TestCase {
 	
 	@Test
 	public void testInvertedIndexForQuery() {
-		InvertedIndex ii = new InvertedIndex();
+		InvertedIndexClient iic = InvertedIndexClient.getInstance();
 		List<String> query = Arrays.asList("some available query on barrack obama".split(" "));
 		Date start, end;
 		start = Calendar.getInstance().getTime();
-		Map<String, List<DocumentFeatures>> results = ii.getInvertedIndexForQuery(query);
+		Map<String, List<DocumentFeatures>> results = iic.getInvertedIndexForQueryMultiThreaded(query);
 		end = Calendar.getInstance().getTime();
 		System.out.println("Time taken for single threaded: " + (end.getTime() - start.getTime()));
 //		System.out.println(results.size());
@@ -31,7 +31,7 @@ public class TestInvertedIndex extends TestCase {
 		assertFalse(results.get("query").size() == 0);
 		
 		start = Calendar.getInstance().getTime();
-		results = ii.getInvertedIndexForQueryMultiThreaded(query);
+		results = iic.getInvertedIndexForQueryMultiThreaded(query);
 		end = Calendar.getInstance().getTime();
 		System.out.println("Time taken for multi threaded: " + (end.getTime() - start.getTime()));
 //		System.out.println(results.size());

@@ -44,8 +44,13 @@ public class Ranker {
 			List<DocumentScore> documentList, List<String> query,
 			int corpusSize, Map<String, Integer> wordDfs) {
 		Map<Integer, DocumentScore> resultMap = new HashMap<Integer, DocumentScore>();
+		int i = 0;
 		for (DocumentScore score : documentList) {
-			logger.info("Looking at " + score.getDocId());
+			i++;
+			if(i % 500 == 0) {
+				logger.info("Ranked " + i + " documents");
+			}
+//			logger.info("Looking at " + score.getDocId());
 			float scoreValue = DocumentFeatureCombinators.combineTfIdfs(
 					score.getWordFeatures(), query, corpusSize, wordDfs);
 			DocumentScore newScore = new DocumentScore(score.getDocId());
@@ -53,8 +58,8 @@ public class Ranker {
 			newScore.setScore(scoreValue);
 			newScore.setWordFeatures(score.getWordFeatures());
 			resultMap.put(newScore.getDocId(), newScore);
-			logger.info("Setting scoreValue of " + newScore.getDocId() + " to "
-					+ scoreValue + ". Resultmap now " + resultMap);
+//			logger.info("Setting scoreValue of " + newScore.getDocId() + " to "
+//					+ scoreValue + ". Resultmap now " + resultMap);
 		}
 		return resultMap;
 	}
@@ -63,7 +68,7 @@ public class Ranker {
 			List<DocumentScore> documentList) {
 		Map<Integer, DocumentScore> resultMap = new HashMap<Integer, DocumentScore>();
 		for (DocumentScore score : documentList) {
-			logger.info("Looking at " + score.getDocId());
+//			logger.info("Looking at " + score.getDocId());
 			float scoreValue = DocumentFeatureCombinators
 					.combineTotalCounts(score.getWordFeatures());
 			DocumentScore newScore = new DocumentScore(score.getDocId());
@@ -71,8 +76,8 @@ public class Ranker {
 			newScore.setScore(scoreValue);
 			newScore.setWordFeatures(score.getWordFeatures());
 			resultMap.put(newScore.getDocId(), newScore);
-			logger.info("Setting scoreValue of " + newScore.getDocId() + " to "
-					+ scoreValue + ". Resultmap now " + resultMap);
+//			logger.info("Setting scoreValue of " + newScore.getDocId() + " to "
+//					+ scoreValue + ". Resultmap now " + resultMap);
 		}
 		return resultMap;
 	}
@@ -81,7 +86,7 @@ public class Ranker {
 			List<DocumentScore> documentList) {
 		Map<Integer, DocumentScore> resultMap = new HashMap<Integer, DocumentScore>();
 		for (DocumentScore score : documentList) {
-			logger.info("Looking at " + score.getDocId());
+//			logger.info("Looking at " + score.getDocId());
 			float scoreValue = DocumentFeatureCombinators
 					.combineLinkCounts(score.getWordFeatures());
 			DocumentScore newScore = new DocumentScore(score.getDocId());
@@ -89,8 +94,8 @@ public class Ranker {
 			newScore.setScore(scoreValue);
 			newScore.setWordFeatures(score.getWordFeatures());
 			resultMap.put(newScore.getDocId(), newScore);
-			logger.info("Setting scoreValue of " + newScore.getDocId() + " to "
-					+ scoreValue + ". Resultmap now " + resultMap);
+//			logger.info("Setting scoreValue of " + newScore.getDocId() + " to "
+//					+ scoreValue + ". Resultmap now " + resultMap);
 		}
 		return resultMap;
 	}
@@ -99,7 +104,7 @@ public class Ranker {
 			List<DocumentScore> documentList) {
 		Map<Integer, DocumentScore> resultMap = new HashMap<Integer, DocumentScore>();
 		for (DocumentScore score : documentList) {
-			logger.info("Looking at " + score.getDocId());
+//			logger.info("Looking at " + score.getDocId());
 			float scoreValue = DocumentFeatureCombinators
 					.combineMetaTagCounts(score.getWordFeatures());
 			DocumentScore newScore = new DocumentScore(score.getDocId());
@@ -107,8 +112,8 @@ public class Ranker {
 			newScore.setScore(scoreValue);
 			newScore.setWordFeatures(score.getWordFeatures());
 			resultMap.put(newScore.getDocId(), newScore);
-			logger.info("Setting scoreValue of " + newScore.getDocId() + " to "
-					+ scoreValue + ". Resultmap now " + resultMap);
+//			logger.info("Setting scoreValue of " + newScore.getDocId() + " to "
+//					+ scoreValue + ". Resultmap now " + resultMap);
 		}
 		return resultMap;
 	}
@@ -117,7 +122,7 @@ public class Ranker {
 			List<DocumentScore> documentList) {
 		Map<Integer, DocumentScore> resultMap = new HashMap<Integer, DocumentScore>();
 		for (DocumentScore score : documentList) {
-			logger.info("Looking at " + score.getDocId());
+//			logger.info("Looking at " + score.getDocId());
 			float scoreValue = DocumentFeatureCombinators
 					.combineHeaderCounts(score.getWordFeatures());
 			DocumentScore newScore = new DocumentScore(score.getDocId());
@@ -125,8 +130,8 @@ public class Ranker {
 			newScore.setScore(scoreValue);
 			newScore.setWordFeatures(score.getWordFeatures());
 			resultMap.put(newScore.getDocId(), newScore);
-			logger.info("Setting scoreValue of " + newScore.getDocId() + " to "
-					+ scoreValue + ". Resultmap now " + resultMap);
+//			logger.info("Setting scoreValue of " + newScore.getDocId() + " to "
+//					+ scoreValue + ". Resultmap now " + resultMap);
 		}
 		return resultMap;
 	}
@@ -135,7 +140,7 @@ public class Ranker {
 			List<DocumentScore> documentList, List<String> query) {
 		Map<Integer, DocumentScore> resultMap = new HashMap<Integer, DocumentScore>();
 		for (DocumentScore score : documentList) {
-			logger.info("Looking at " + score.getDocId());
+//			logger.info("Looking at " + score.getDocId());
 			float scoreValue = DocumentFeatureCombinators
 					.combineQueryWordPresenceCounts(score.getWordFeatures(),
 							query);
@@ -144,8 +149,8 @@ public class Ranker {
 			newScore.setScore(scoreValue);
 			newScore.setWordFeatures(score.getWordFeatures());
 			resultMap.put(newScore.getDocId(), newScore);
-			logger.info("Setting scoreValue of " + newScore.getDocId() + " to "
-					+ scoreValue + ". Resultmap now " + resultMap);
+//			logger.info("Setting scoreValue of " + newScore.getDocId() + " to "
+//					+ scoreValue + ". Resultmap now " + resultMap);
 		}
 		return resultMap;
 	}

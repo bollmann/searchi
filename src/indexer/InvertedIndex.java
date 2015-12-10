@@ -1,22 +1,15 @@
 package indexer;
 
-import indexer.dao.DocumentFeatures;
 import indexer.dao.InvertedIndexRow;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 
@@ -26,7 +19,6 @@ import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.google.gson.Gson;
 
 import db.wrappers.S3Wrapper;
@@ -63,15 +55,6 @@ public class InvertedIndex {
 		return new DynamoDBMapper(dbClient);
 	}
 
-	public List<InvertedIndexRow> getDocumentLocations(String word) {
-		InvertedIndexRow item = new InvertedIndexRow();
-		item.setWord(word);
-
-		DynamoDBQueryExpression<InvertedIndexRow> query = new DynamoDBQueryExpression<InvertedIndexRow>()
-				.withHashKeyValues(item);
-		return db.query(InvertedIndexRow.class, query);
-	}
-
 	public static void importData(String fromFile, int batchSize)
 			throws IOException {
 		DynamoDBMapper db = connectDB();
@@ -95,46 +78,6 @@ public class InvertedIndex {
 		}
 		db.batchSave(rows);
 		br.close();
-	}
-
-	public Map<String, List<DocumentFeatures>> getInvertedIndexForQuery(
-			List<String> query) {
-		Map<String, List<DocumentFeatures>> wordDocumentInfoMap = new HashMap<String, List<DocumentFeatures>>();
-
-		for (String word : query) {
-			// TODO: optimize based on different table layout, multi-thread
-			// requests, etc.
-			List<InvertedIndexRow> rows = getDocumentLocations(word);
-			List<DocumentFeatures> featureList = new ArrayList<DocumentFeatures>();
-			for (InvertedIndexRow row : rows) {
-				featureList.addAll(row.getFeatures());
-			}
-			logger.info("Found " + rows.size() + " rows for " + word);
-			wordDocumentInfoMap.put(word, featureList);
-		}
-		return wordDocumentInfoMap;
-	}
-
-	public Map<String, List<DocumentFeatures>> getInvertedIndexForQueryMultiThreaded(
-			List<String> query) {
-		Map<String, List<DocumentFeatures>> wordDocumentInfoMap = new HashMap<String, List<DocumentFeatures>>();
-
-		ExecutorService es = Executors.newFixedThreadPool(query.size());
-		for (String word : query) {
-			InvertedIndexFetcher f = new InvertedIndexFetcher(
-					wordDocumentInfoMap, word);
-			es.execute(f);
-			f.start();
-		}
-		es.shutdown();
-		try {
-			boolean finshed = es.awaitTermination(1, TimeUnit.MINUTES);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return wordDocumentInfoMap;
 	}
 
 	public static void main(String[] args) {
