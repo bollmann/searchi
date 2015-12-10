@@ -75,7 +75,10 @@
 
 	<target name="inverted-index" depends="compile-all">
 		<jar basedir="bin" destfile="InvertedIndexJob.jar" includes="db/**.class,crawler/dao/*.class,indexer/**/*.class,indexer/*.class,utils/**/*.class">
-			<fileset dir="." includes="lib/*.jar,lib/**/*.jar" />
+			<fileset dir=".">
+				<include name="lib/*.jar" />
+				<include name="resources/dict/all-english" />
+			</fileset>
 			<manifest>
 				<attribute name="Main-Class" value="indexer.offline.InvertedIndexJob" />
 			</manifest>

@@ -8,7 +8,7 @@ import junit.framework.TestCase;
 
 import org.junit.Test;
 
-import crawler.policies.FilePolicy;
+import utils.file.FilePolicy;
 import utils.nlp.LanguageDetector;
 
 public class TestLanguageDetector extends TestCase {

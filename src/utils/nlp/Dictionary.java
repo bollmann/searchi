@@ -6,7 +6,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import crawler.policies.FilePolicy;
+import utils.file.FilePolicy;
+
 
 public class Dictionary {
 	private static final String DIR_PATH = "resources/dict/all-english";	

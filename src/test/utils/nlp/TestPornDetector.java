@@ -6,8 +6,8 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
+import utils.file.FilePolicy;
 import utils.nlp.PornDetector;
-import crawler.policies.FilePolicy;
 
 public class TestPornDetector {
 	

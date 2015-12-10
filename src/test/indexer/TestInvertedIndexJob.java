@@ -19,8 +19,9 @@ import junit.framework.TestCase;
 
 import org.junit.Test;
 
+import utils.file.FilePolicy;
+
 import crawler.dao.URLContent;
-import crawler.policies.FilePolicy;
 import edu.stanford.nlp.util.StringUtils;
 
 public class TestInvertedIndexJob extends TestCase {
