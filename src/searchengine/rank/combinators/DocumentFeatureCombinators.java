@@ -1,4 +1,4 @@
-package indexer.rank.combinators;
+package searchengine.rank.combinators;
 
 import indexer.WordCounts;
 import indexer.db.dao.DocumentFeatures;

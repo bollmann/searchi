@@ -1,4 +1,4 @@
-package indexer.servlets;
+package searchengine.servlets;
 
 import java.util.HashMap;
 

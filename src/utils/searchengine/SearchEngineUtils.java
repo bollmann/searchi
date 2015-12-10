@@ -1,6 +1,6 @@
 package utils.searchengine;
 
-import indexer.servlets.SearchResult;
+import searchengine.servlets.SearchResult;
 
 import java.util.ArrayList;
 import java.util.Collections;

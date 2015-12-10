@@ -1,10 +1,10 @@
-package indexer.servlets;
+package searchengine.servlets;
 
 import indexer.DocumentScore;
 import indexer.api.DocumentIDs;
 import indexer.clients.InvertedIndexClient;
 import indexer.db.dao.DocumentFeatures;
-import indexer.ranking.Ranker;
+import searchengine.ranking.Ranker;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -64,6 +64,7 @@ public class IndexerClientServlet extends HttpServlet {
 			throws ServletException, IOException {
 		PrintWriter out = resp.getWriter();
 		InvertedIndexClient iic = InvertedIndexClient.getInstance();
+
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("<html><head><title>Interface-Search Engine Test</title></head>");
 		buffer.append("<body>");
@@ -103,16 +104,21 @@ public class IndexerClientServlet extends HttpServlet {
 			Date startTime = Calendar.getInstance().getTime();
 			Map<String, List<DocumentFeatures>> invertedIndex = iic.getInvertedIndexForQueryMultiThreaded(query);
 			Date endTime = Calendar.getInstance().getTime();
+			
 			logger.info("Indexer fetch took "
 					+ printTimeDiff(startTime, endTime));
+			
 			Map<String, Integer> wordDfs = new HashMap<String, Integer>();
 			for(Entry<String, List<DocumentFeatures>> entry : invertedIndex.entrySet()) {
 				wordDfs.put(entry.getKey(), entry.getValue().size());
 			}
-			List<DocumentScore> documentList = Ranker.getDocumentScoresForQueryAndInvertedIndex(query, invertedIndex);
 			
-			/****************************** Add rankers and combine them here *************/
+			final List<DocumentScore> documentList = 
+				Ranker.getDocumentScoresForQueryAndInvertedIndex(query, invertedIndex);
+			
+			/******************* Add rankers and combine them here - Secret sauce ******************/
 			startTime = Calendar.getInstance().getTime();
+			
 			Map<Integer, DocumentScore> tfIdfRankedDocs = Ranker.rankDocumentsOnTfIdf(documentList, query, iic.getCorpusSize(), wordDfs);
 			Map<Integer, DocumentScore> headerCountRankedDocs = Ranker.rankDocumentsOnHeaderCount(documentList);
 //			Map<Integer, DocumentScore> linkCountRankedDocs = Ranker.rankDocumentsOnLinkCount(documentList);
@@ -146,6 +152,7 @@ public class IndexerClientServlet extends HttpServlet {
 			logger.info("Indexer ranking took "
 					+ printTimeDiff(startTime, endTime));
 			/****************************** End of secret sauce ****************************/
+			
 			startTime = Calendar.getInstance().getTime();
 			
 			

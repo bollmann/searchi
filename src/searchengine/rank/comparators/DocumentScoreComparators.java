@@ -1,7 +1,7 @@
-package indexer.rank.comparators;
+package searchengine.rank.comparators;
 
 import indexer.DocumentScore;
-import indexer.rank.combinators.DocumentFeatureCombinators;
+import searchengine.rank.combinators.DocumentFeatureCombinators;
 
 import java.util.ArrayList;
 import java.util.Comparator;

@@ -91,6 +91,7 @@ public class InvertedIndexClient {
 			es.execute(f);
 		}
 		es.shutdown();
+		
 		try {
 			boolean finshed = es.awaitTermination(1, TimeUnit.MINUTES);
 		} catch (InterruptedException e) {

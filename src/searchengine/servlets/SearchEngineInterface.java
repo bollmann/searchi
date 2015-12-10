@@ -1,11 +1,11 @@
-package indexer.servlets;
+package searchengine.servlets;
 
 import indexer.DocumentScore;
 import indexer.api.DocumentIDs;
 import indexer.clients.InvertedIndexClient;
 import indexer.db.dao.DocumentFeatures;
-import indexer.rank.comparators.DocumentScoreComparators;
-import indexer.ranking.Ranker;
+import searchengine.rank.comparators.DocumentScoreComparators;
+import searchengine.ranking.Ranker;
 
 import java.io.BufferedReader;
 import java.io.File;

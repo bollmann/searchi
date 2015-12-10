@@ -1,9 +1,9 @@
-package test.indexer.ranking;
+package test.searchengine.ranking;
 
 import indexer.DocumentScore;
 import indexer.db.dao.DocumentFeatures;
-import indexer.rank.comparators.DocumentScoreComparators;
-import indexer.ranking.Ranker;
+import searchengine.rank.comparators.DocumentScoreComparators;
+import searchengine.ranking.Ranker;
 
 import java.util.ArrayList;
 import java.util.Arrays;

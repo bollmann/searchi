@@ -1,8 +1,8 @@
-package indexer.ranking;
+package searchengine.ranking;
 
 import indexer.DocumentScore;
 import indexer.db.dao.DocumentFeatures;
-import indexer.rank.combinators.DocumentFeatureCombinators;
+import searchengine.rank.combinators.DocumentFeatureCombinators;
 
 import java.util.ArrayList;
 import java.util.Collections;
