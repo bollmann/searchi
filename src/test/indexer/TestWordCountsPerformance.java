@@ -1,7 +1,7 @@
 package test.indexer;
 
 import indexer.WordCounts;
-import indexer.dao.DocumentFeatures;
+import indexer.db.dao.DocumentFeatures;
 import indexer.offline.InvertedIndexJob;
 import indexer.offline.InvertedIndexJob.FeatureType;
 
@@ -10,10 +10,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Map;
 
 import org.junit.Test;
 
+import utils.file.FileUtils;
 import utils.nlp.Dictionary;
 
 import com.google.gson.Gson;
@@ -32,7 +35,6 @@ public class TestWordCountsPerformance {
 		File inputDir = new File(TEST_DIR);
 		File[] files = inputDir.listFiles();
 
-		int cnt = 0;
 		for (int i = 0; i < files.length; ++i) {
 			BufferedReader br = new BufferedReader(new InputStreamReader(
 					new FileInputStream(files[i])));
@@ -54,20 +56,18 @@ public class TestWordCountsPerformance {
 					doc.setDocId(id);
 					id++;
 					doc.setEuclideanTermFrequency(allCounts.get(
-							FeatureType.TOTAL_COUNTS)
-							.getEuclideanTermFrequency(word));
-					doc.setMaximumTermFrequency(allCounts.get(
-							FeatureType.TOTAL_COUNTS).getMaximumTermFrequency(
-							word));
+						FeatureType.TOTAL_COUNTS).getEuclideanTermFrequency(word));
+					doc.setMaximumTermFrequency(allCounts.get(FeatureType.TOTAL_COUNTS)
+						.getMaximumTermFrequency(word));
 					doc.setTotalCount(allCounts.get(FeatureType.TOTAL_COUNTS)
-							.getCounts(word));
+						.getCounts(word));
 					doc.setHeaderCount(allCounts.get(FeatureType.HEADER_COUNTS)
-							.getCounts(word));
+						.getCounts(word));
 					doc.setLinkCount(allCounts.get(FeatureType.LINK_COUNTS)
-							.getCounts(word));
-					doc.setMetaTagCount(allCounts.get(
-							FeatureType.META_TAG_COUNTS).getCounts(word));
-					doc.setPositions(wordCounts.getPosition(word));
+	                    .getCounts(word));
+	                doc.setMetaTagCount(allCounts.get(FeatureType.META_TAG_COUNTS)
+	                    .getCounts(word));
+	                doc.setPositions(wordCounts.getPosition(word));
 				}
 			}
 			br.close();
@@ -75,6 +75,30 @@ public class TestWordCountsPerformance {
 
 		long endTime = System.currentTimeMillis();
 		System.out.println(endTime - startTime);
+	}
+	
+	@Test
+	public void testPerformanceForLargeHtmlFiles() throws IOException {
+		String content = null;
+		try {
+			content = FileUtils.readFile("testcontent/Wiki-html-file.html");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		URLContent urlContent = new URLContent();
+		urlContent.setContent(content);
+		urlContent.setUrl("http://www.google.com");
+		Date start = Calendar.getInstance().getTime();
+		Map<FeatureType, WordCounts> wordCounts = InvertedIndexJob.computeCounts(urlContent, 3,null);
+		Date end = Calendar.getInstance().getTime();
+		long timeTakenForBigram = (end.getTime() - start.getTime());
+		start = Calendar.getInstance().getTime();
+		wordCounts = InvertedIndexJob.computeCounts(urlContent, 1,null);
+		end = Calendar.getInstance().getTime();
+		long timeTakenForUnigram = (end.getTime() - start.getTime());
+		System.out.println("Time taken for unigram:" + timeTakenForUnigram + " and bigram:" + timeTakenForBigram);
 	}
 
 }

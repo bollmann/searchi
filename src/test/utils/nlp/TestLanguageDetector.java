@@ -8,7 +8,7 @@ import junit.framework.TestCase;
 
 import org.junit.Test;
 
-import utils.file.FilePolicy;
+import utils.file.FileUtils;
 import utils.nlp.LanguageDetector;
 
 public class TestLanguageDetector extends TestCase {
@@ -29,7 +29,7 @@ public class TestLanguageDetector extends TestCase {
 		for (String fileName : nonEnglish) {
 			content = null;
 			try {				
-				content = FilePolicy.readFile(fileName);
+				content = FileUtils.readFile(fileName);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -43,7 +43,7 @@ public class TestLanguageDetector extends TestCase {
 		for (String fileName : english) {
 			content = null;
 			try {				
-				content = FilePolicy.readFile(fileName);
+				content = FileUtils.readFile(fileName);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -66,7 +66,7 @@ public class TestLanguageDetector extends TestCase {
 	public void testIsEnglishWithMeere() {
 		String content = null;
 		try {
-			content = FilePolicy.readFile("testcontent/meere.html");
+			content = FileUtils.readFile("testcontent/meere.html");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

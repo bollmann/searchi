@@ -1,8 +1,8 @@
-package indexer.imports;
+package indexer.db.imports;
 
 import com.google.gson.Gson;
 
-import indexer.dao.InvertedIndexRow;
+import indexer.db.dao.InvertedIndexRow;
 
 public class InvertedIndexAdapter implements
 		FileToDatabaseAdapter<InvertedIndexRow> {

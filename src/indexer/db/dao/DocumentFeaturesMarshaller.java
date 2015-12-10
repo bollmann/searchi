@@ -1,4 +1,4 @@
-package indexer.dao;
+package indexer.db.dao;
 
 
 import java.util.List;

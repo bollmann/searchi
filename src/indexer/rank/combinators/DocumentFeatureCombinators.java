@@ -1,7 +1,7 @@
 package indexer.rank.combinators;
 
 import indexer.WordCounts;
-import indexer.dao.DocumentFeatures;
+import indexer.db.dao.DocumentFeatures;
 
 import java.util.List;
 import java.util.Map;

@@ -1,6 +1,6 @@
-package indexer.imports;
+package indexer.db.imports;
 
-import indexer.dao.DocumentIDRow;
+import indexer.db.dao.DocumentIDRow;
 
 import org.apache.log4j.Logger;
 

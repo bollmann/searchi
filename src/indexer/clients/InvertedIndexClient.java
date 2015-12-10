@@ -1,8 +1,8 @@
 package indexer.clients;
 
 import indexer.InvertedIndexFetcher;
-import indexer.dao.DocumentFeatures;
-import indexer.dao.InvertedIndexRow;
+import indexer.db.dao.DocumentFeatures;
+import indexer.db.dao.InvertedIndexRow;
 
 import java.util.ArrayList;
 import java.util.HashMap;

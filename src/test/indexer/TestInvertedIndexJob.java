@@ -22,7 +22,7 @@ import junit.framework.TestCase;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import utils.file.FilePolicy;
+import utils.file.FileUtils;
 import utils.nlp.Dictionary;
 
 import crawler.dao.URLContent;
@@ -210,7 +210,7 @@ public class TestInvertedIndexJob extends TestCase {
 	public void testPerformanceForLargeHtmlFiles() throws IOException {
 		String content = null;
 		try {
-			content = FilePolicy.readFile("testcontent/Wiki-html-file.html");
+			content = FileUtils.readFile("testcontent/Wiki-html-file.html");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

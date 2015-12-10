@@ -1,6 +1,6 @@
 package indexer;
 
-import indexer.dao.DocumentFeatures;
+import indexer.db.dao.DocumentFeatures;
 
 import java.util.HashMap;
 import java.util.Map;

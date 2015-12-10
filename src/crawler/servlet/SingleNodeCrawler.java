@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
-import utils.file.FilePolicy;
+import utils.file.FileUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -168,7 +168,7 @@ public class SingleNodeCrawler extends HttpServlet {
 
 	public Set<String> readConfigFile(String fileName, int field) throws IOException {
 		Set<String> result = new HashSet<String>();
-		String content = FilePolicy.readFile(fileName);
+		String content = FileUtils.readFile(fileName);
 		for (String line : content.split("\n")) {
 			if (line.split(",").length < (field-1)) {
 				continue;
@@ -186,7 +186,7 @@ public class SingleNodeCrawler extends HttpServlet {
 		if (request.getPathInfo().equals("/status")) {
 			String content = null;
 			try {
-				content = FilePolicy
+				content = FileUtils
 						.readFile("resources/master_status_page.html");
 			} catch (IOException e) {
 				// e.printStackTrace();

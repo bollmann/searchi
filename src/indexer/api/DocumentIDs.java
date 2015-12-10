@@ -1,6 +1,6 @@
 package indexer.api;
 
-import indexer.dao.DocumentIDRow;
+import indexer.db.dao.DocumentIDRow;
 
 import java.util.HashMap;
 import java.util.List;

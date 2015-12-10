@@ -1,7 +1,7 @@
 package indexer.ranking;
 
 import indexer.DocumentScore;
-import indexer.dao.DocumentFeatures;
+import indexer.db.dao.DocumentFeatures;
 import indexer.rank.combinators.DocumentFeatureCombinators;
 
 import java.util.ArrayList;

@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 
-import utils.file.FilePolicy;
+import utils.file.FileUtils;
 
 import crawler.parsers.Parser;
 import crawler.responses.Http11Response;
@@ -190,21 +190,21 @@ public class Http11Request extends HttpRequest implements HttpServletRequest {
 
 		logger.debug("Trying to access " + filePath.toString());
 
-		if (!FilePolicy.exists(filePath)) {
+		if (!FileUtils.exists(filePath)) {
 			logger.error("File doesn't exist!");
 			response.setResponse(404);
 			response.setDefaultBody();
 			return;
 		}
 
-		if (!FilePolicy.isReadable(filePath)) {
+		if (!FileUtils.isReadable(filePath)) {
 			logger.error("File isn't readable!");
 			response.setResponse(401);
 			response.setDefaultBody();
 			return;
 		}
 
-		if (!FilePolicy.isAccessible(filePath, webRootPath)) {
+		if (!FileUtils.isAccessible(filePath, webRootPath)) {
 			logger.error("Trying to access something above webroot!");
 			response.setResponse(403);
 			response.setDefaultBody();
@@ -274,7 +274,7 @@ public class Http11Request extends HttpRequest implements HttpServletRequest {
 
 		try {
 
-			if (!FilePolicy.isDirectory(filePath)) {
+			if (!FileUtils.isDirectory(filePath)) {
 				// simple file
 				logger.info("Reading file");
 				FileInputStream fis = new FileInputStream(file);

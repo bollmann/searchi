@@ -1,6 +1,6 @@
 package indexer;
 
-import indexer.dao.InvertedIndexRow;
+import indexer.db.dao.InvertedIndexRow;
 
 import java.io.BufferedReader;
 import java.io.File;

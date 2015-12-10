@@ -12,6 +12,7 @@
     </manifest>
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
         <javaElement handleIdentifier="=searchi/src&lt;utils.file"/>
+        <javaElement handleIdentifier="=searchi/src&lt;utils.aws"/>
         <javaElement handleIdentifier="=searchi/src&lt;utils.string"/>
         <javaElement handleIdentifier="=searchi/src&lt;mapreduce.lib"/>
         <javaElement handleIdentifier="=searchi/src&lt;pagerank.phase1"/>

@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
-import utils.file.FilePolicy;
+import utils.file.FileUtils;
 
 import crawler.parsers.Parser;
 import crawler.responses.Http10Response;
@@ -185,21 +185,21 @@ public class Http10Request extends HttpRequest implements HttpServletRequest {
 
 		logger.info("Trying to access " + filePath.toString());
 
-		if (!FilePolicy.exists(filePath)) {
+		if (!FileUtils.exists(filePath)) {
 			logger.error("File doesn't exist!");
 			response.setResponse(404);
 			response.setDefaultBody();
 			return;
 		}
 
-		if (!FilePolicy.isReadable(filePath)) {
+		if (!FileUtils.isReadable(filePath)) {
 			logger.error("File isn't readable!");
 			response.setResponse(401);
 			response.setDefaultBody();
 			return;
 		}
 
-		if (!FilePolicy.isAccessible(filePath, webRootPath)) {
+		if (!FileUtils.isAccessible(filePath, webRootPath)) {
 			logger.error("Trying to access something above webroot!");
 			response.setResponse(403);
 			response.setDefaultBody();
@@ -215,7 +215,7 @@ public class Http10Request extends HttpRequest implements HttpServletRequest {
 
 		try {
 
-			if (!FilePolicy.isDirectory(filePath)) {
+			if (!FileUtils.isDirectory(filePath)) {
 				// simple file
 				logger.info("Reading file");
 				FileInputStream fis = new FileInputStream(file);

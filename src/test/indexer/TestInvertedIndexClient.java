@@ -1,7 +1,7 @@
 package test.indexer;
 
 import indexer.clients.InvertedIndexClient;
-import indexer.dao.DocumentFeatures;
+import indexer.db.dao.DocumentFeatures;
 
 import java.util.Arrays;
 import java.util.Calendar;

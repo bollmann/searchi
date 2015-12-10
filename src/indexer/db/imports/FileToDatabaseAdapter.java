@@ -1,4 +1,4 @@
-package indexer.imports;
+package indexer.db.imports;
 
 public interface FileToDatabaseAdapter<T> {
 	public String getTableName();

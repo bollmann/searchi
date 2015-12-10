@@ -1,8 +1,8 @@
 package indexer.offline;
 
 import indexer.WordCounts;
-import indexer.dao.DocumentFeatures;
-import indexer.dao.InvertedIndexRow;
+import indexer.db.dao.DocumentFeatures;
+import indexer.db.dao.InvertedIndexRow;
 
 import java.io.IOException;
 import java.util.ArrayList;

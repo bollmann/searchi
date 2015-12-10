@@ -3,7 +3,7 @@ package indexer.servlets;
 import indexer.DocumentScore;
 import indexer.api.DocumentIDs;
 import indexer.clients.InvertedIndexClient;
-import indexer.dao.DocumentFeatures;
+import indexer.db.dao.DocumentFeatures;
 import indexer.ranking.Ranker;
 
 import java.io.IOException;
