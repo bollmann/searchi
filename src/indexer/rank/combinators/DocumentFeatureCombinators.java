@@ -11,6 +11,8 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
+import utils.Tuple;
+
 public class DocumentFeatureCombinators {
 	private static final Logger logger = Logger
 			.getLogger(DocumentFeatureCombinators.class);
@@ -74,11 +76,31 @@ public class DocumentFeatureCombinators {
 		return result;
 	}
 
-	public static Map<String, Set<Integer>> combinePositions(
-			Map<String, DocumentFeatures> wordFeatures) {
-		Map<String, Set<Integer>> result = new HashMap<String, Set<Integer>>();
-		for (Entry<String, DocumentFeatures> entry : wordFeatures.entrySet()) {
-			result.put(entry.getKey(), entry.getValue().getPositions());
+	public static int combinePositions(
+			Map<String, DocumentFeatures> wordFeatures, List<Tuple<String>> consecutiveWordTuples) {
+		int result = 0;
+		
+		for(Tuple<String> queryTuple : consecutiveWordTuples) {
+			// go through the tuples (a, b) which are at a distance of 1 from each other
+			// look for a and b in the features. if any one of them is absent, return max int
+			// if both are present, pairwise compare and find the minimum difference tuple of positions of
+			// a and b
+			DocumentFeatures feat1 = wordFeatures.get(queryTuple.getFirst());
+			DocumentFeatures feat2 = wordFeatures.get(queryTuple.getSecond());
+			int minDifference = Integer.MAX_VALUE;
+			if(feat1 == null || feat2 == null) {
+				return minDifference;
+			}
+			
+			for(int posA : feat1.getPositions()) {
+				for(int posB : feat2.getPositions()) {
+					int diff = Math.abs(posA - posB);
+					if(diff < minDifference) {
+						minDifference  = diff;
+					}
+				}
+			}
+			result += minDifference;
 		}
 		return result;
 	}

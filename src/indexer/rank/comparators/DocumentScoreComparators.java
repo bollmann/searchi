@@ -3,12 +3,15 @@ package indexer.rank.comparators;
 import indexer.DocumentScore;
 import indexer.rank.combinators.DocumentFeatureCombinators;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+
+import utils.Tuple;
 
 public class DocumentScoreComparators {
 	private static final Logger logger = Logger
@@ -113,17 +116,21 @@ public class DocumentScoreComparators {
 
 	// TODO incomplete!
 	public static Comparator<DocumentScore> getPositionComparator(
-			List<Integer> queryPositions) {
-		int positionDifferences;
+			List<String> query) {
+		final List<Tuple<String>> consecutiveWordTuples = new ArrayList<Tuple<String>>();
+		for (int i = 0; i < query.size()-1; i++) {
+			Tuple<String> tuple = new Tuple<>(query.get(i), query.get(i+1));
+			consecutiveWordTuples.add(tuple);
+		}
 		Comparator<DocumentScore> comparator = new Comparator<DocumentScore>() {
 			@Override
 			public int compare(DocumentScore o1, DocumentScore o2) {
-				Map<String, Set<Integer>> positionMap1 = DocumentFeatureCombinators
-						.combinePositions(o1.getWordFeatures());
-				Map<String, Set<Integer>> positionMap2 = DocumentFeatureCombinators
-						.combinePositions(o2.getWordFeatures());
+				int pos1 = DocumentFeatureCombinators
+						.combinePositions(o1.getWordFeatures(), consecutiveWordTuples);
+				int pos2 = DocumentFeatureCombinators
+						.combinePositions(o2.getWordFeatures(), consecutiveWordTuples);
 				// TODO Auto-generated method stub
-				return (-1) * Float.compare(1, 2);
+				return Float.compare(pos1, pos2);
 			}
 
 		};

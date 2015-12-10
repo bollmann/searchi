@@ -9,8 +9,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import junit.framework.TestCase;
 
@@ -99,7 +101,7 @@ public class TestRanker extends TestCase {
 		List<DocumentScore> result = new ArrayList<>(resultMap.values());
 		Collections.sort(result, DocumentScoreComparators.getTfIdfComparator(
 				query, corpusSize, wordDfs));
-		System.out.println(result);
+//		System.out.println(result);
 		// TODO not sure about scores
 		assertEquals(1, result.get(0).getDocId());
 		assertEquals(2, result.get(1).getDocId());
@@ -365,6 +367,65 @@ public class TestRanker extends TestCase {
 		assertEquals(1.0f, resultList.get(1).getScore());
 	}
 
+	
+	@Test
+	public void testRankDocumentsOnPosition() {
+		List<String> query = Arrays.asList("some random query".split(" "));
+		List<DocumentScore> scores = new ArrayList<DocumentScore>();
+		DocumentScore score1 = new DocumentScore(1);
+		DocumentFeatures feat11 = new DocumentFeatures();
+		Set<Integer> pos1 = new HashSet<Integer>();
+		pos1.add(23);
+		feat11.setPositions(pos1);
+		score1.addFeatures("some", feat11);
+		
+		DocumentFeatures feat12 = new DocumentFeatures();
+		Set<Integer> pos2 = new HashSet<Integer>();
+		pos2.add(24);
+		feat12.setPositions(pos2);
+		score1.addFeatures("random", feat12);
+		
+		DocumentFeatures feat13 = new DocumentFeatures();
+		Set<Integer> pos3 = new HashSet<Integer>();
+		pos3.add(25);
+		feat13.setPositions(pos3);
+		score1.addFeatures("query", feat13);
+		
+		DocumentScore score2 = new DocumentScore(2);
+		DocumentFeatures feat21 = new DocumentFeatures();
+		Set<Integer> pos21 = new HashSet<Integer>();
+		pos21.add(1);
+		feat21.setPositions(pos21);
+		score2.addFeatures("some", feat21);
+		
+		DocumentFeatures feat22 = new DocumentFeatures();
+		Set<Integer> pos22 = new HashSet<Integer>();
+		pos22.add(24);
+		feat22.setPositions(pos22);
+		score2.addFeatures("random", feat22);
+		
+		DocumentFeatures feat23 = new DocumentFeatures();
+		Set<Integer> pos23 = new HashSet<Integer>();
+		pos23.add(55);
+		feat23.setPositions(pos23);
+		score2.addFeatures("query", feat23);
+
+		scores.add(score1);
+		scores.add(score2);
+		
+		Map<Integer, DocumentScore> resultMap = Ranker
+				.rankDocumentsOnPosition(scores, query);
+//		System.out.println(resultMap);
+		List<DocumentScore> resultList = new ArrayList<DocumentScore>(
+				resultMap.values());
+		Collections.sort(resultList,
+				DocumentScoreComparators.getPositionComparator(query));
+		assertEquals(1, resultList.get(0).getDocId());
+		assertEquals(2.0f, resultList.get(0).getScore());
+		assertEquals(2, resultList.get(1).getDocId());
+		assertEquals(54f, resultList.get(1).getScore());
+	}
+		
 	@Test
 	public void testCombinationOfFeaturesAndRanking() {
 		List<String> query = Arrays.asList("some random query".split(" "));
@@ -381,6 +442,10 @@ public class TestRanker extends TestCase {
 		feat11.setTotalCount(2);
 		feat11.setMetaTagCount(1);
 		feat11.setLinkCount(0);
+		Set<Integer> pos11 = new HashSet<>();
+		pos11.add(2);
+		pos11.add(4);
+		feat11.setPositions(pos11);
 		score1.addFeatures("some", feat11);
 		// feature for "random"
 		DocumentFeatures feat12 = new DocumentFeatures();
@@ -389,6 +454,11 @@ public class TestRanker extends TestCase {
 		feat12.setTotalCount(3);
 		feat12.setMetaTagCount(1);
 		feat12.setLinkCount(0);
+		Set<Integer> pos12 = new HashSet<>();
+		pos12.add(1);
+		pos12.add(3);
+		pos12.add(5);
+		feat12.setPositions(pos12);
 		score1.addFeatures("random", feat12);
 		// feature for "query"
 		DocumentFeatures feat13 = new DocumentFeatures();
@@ -397,6 +467,9 @@ public class TestRanker extends TestCase {
 		feat13.setTotalCount(1);
 		feat13.setMetaTagCount(0);
 		feat13.setLinkCount(1);
+		Set<Integer> pos13 = new HashSet<>();
+		pos13.add(6);
+		feat13.setPositions(pos13);
 		score1.addFeatures("query", feat13);
 		
 		
@@ -414,6 +487,12 @@ public class TestRanker extends TestCase {
 		feat22.setTotalCount(4);
 		feat22.setMetaTagCount(0);
 		feat22.setLinkCount(1);
+		Set<Integer> pos21 = new HashSet<>();
+		pos21.add(1);
+		pos21.add(2);
+		pos21.add(5);
+		pos21.add(7);
+		feat22.setPositions(pos21);
 		score2.addFeatures("random", feat22);
 		// feature for "query"
 		DocumentFeatures feat23 = new DocumentFeatures();
@@ -422,6 +501,11 @@ public class TestRanker extends TestCase {
 		feat23.setTotalCount(3);
 		feat23.setMetaTagCount(1);
 		feat23.setLinkCount(1);
+		Set<Integer> pos23 = new HashSet<>();
+		pos23.add(4);
+		pos23.add(6);
+		pos23.add(8);
+		feat23.setPositions(pos23);
 		score2.addFeatures("query", feat23);
 		List<DocumentScore> scoreList = new ArrayList<>();
 		scoreList.add(score1);
@@ -439,6 +523,7 @@ public class TestRanker extends TestCase {
 		Map<Integer, DocumentScore> links = Ranker.rankDocumentsOnLinkCount(scoreList);
 		Map<Integer, DocumentScore> meta = Ranker.rankDocumentsOnMetaCount(scoreList);
 		Map<Integer, DocumentScore> queryPresence = Ranker.rankDocumentsOnQueryWordPresenceCount(scoreList, query);
+		Map<Integer, DocumentScore> positions = Ranker.rankDocumentsOnPosition(scoreList, query);
 		
 		List<DocumentScore> rankedScores = new ArrayList<>(tfIdf.values());
 		Collections.sort(rankedScores,
@@ -487,5 +572,13 @@ public class TestRanker extends TestCase {
 		assertEquals(3, Math.round(rankedScores.get(0).getScore()));
 		assertEquals(2, rankedScores.get(1).getDocId());
 		assertEquals(2, Math.round(rankedScores.get(1).getScore()));
+		
+		rankedScores = new ArrayList<>(positions.values());
+		Collections.sort(rankedScores,
+				DocumentScoreComparators.getPositionComparator(query));
+		assertEquals(1, rankedScores.get(0).getDocId());
+		assertEquals(2, Math.round(rankedScores.get(0).getScore()));
+		assertEquals(2, rankedScores.get(1).getDocId());
+		assertEquals(Integer.MAX_VALUE, Math.round(rankedScores.get(1).getScore()));
 	}
 }
