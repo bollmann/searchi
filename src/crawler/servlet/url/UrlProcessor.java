@@ -65,11 +65,10 @@ public class UrlProcessor {
 		if (info != null) {
 			 logger.info("Not getting new data for " + url
 			 + " as it's already present in ddb");
-			// logger.info("Looking for item")
-			// String content = s3.getItem(info.getId());
-			// Gson gson = new Gson();
-			// logger.debug("Parsing content to urlcontent:" + content);
-			// urlContent = gson.fromJson(content, URLContent.class);
+			 String content = s3.getItem(info.getId());
+			 Gson gson = new Gson();
+			 logger.debug("Parsing content to urlcontent:" + content);
+			 urlContent = gson.fromJson(content, URLContent.class);
 			// return new ArrayList<String>();
 		} else {
 			logger.debug("Getting fresh data for:" + url);
@@ -181,7 +180,7 @@ public class UrlProcessor {
 				response = HttpClient.genericGet(url, request);
 
 				content = new String(response.getBody());
-				logger.info("Content type:"
+				logger.debug("Content type:"
 						+ response.getHeader("Content-Type") + " and body "
 						+ content);
 				if (response.getHeader("Content-Type")
