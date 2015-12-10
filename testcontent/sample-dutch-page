@@ -1,0 +1,1501 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="date_published" scheme="W3CDTF" content="2015-12-10" />
+<meta name="robots" content="index, follow" />
+
+		<meta name="description" content="IKEA Laat je inspireren door onze meubels voor je keuken, badkamer, woonkamer, slaapkamer en nog veel meer in onze woonwarenhuizen of webwinkel. " />
+	
+<link rel="alternate" media="only screen and (max-width: 640px)" href="http://m.ikea.com/nl/nl/"/>
+<meta name="keywords" content="IKEA,IKEA - Meubels & woonaccessoires | keuken, slaapkamer, badkamer " />
+
+<meta name="country" content="NL" />
+
+<meta name="language" scheme="rfc1766" content="nl-NL" />
+<meta name="languageid" content="-22" />
+<meta name="store_id" content="9" />
+<meta name="title" content="IKEA - Meubels & woonaccessoires | keuken, slaapkamer, badkamer  - IKEA" />
+<meta name="category" content="Home Page" />
+
+<meta name="IRWStats.pageName" content="Home Page"/>
+
+<meta name="IRWStats.pageNameLocal" content="Homepage"/>
+<meta name="IRWStats.pageType" content="Home Page" />
+<meta name="IRWStats.internalPageType" content="standard" />
+<meta name="IRWStats.category" content="Home Page" />
+<meta name="IRWStats.sitenavigation" content="start of visit" />
+<meta name="google-site-verification" content="F1feMD3YEy85BTfY3pDGXsTfHJyShgDRYT8cFVssul4"/> 
+
+<meta http-equiv="X-UA-Compatible" content="EmulateIE7" />
+	
+		<script language="JavaScript" src="//tags.tiqcdn.com/utag/ikea/nl-main/prod/utag.sync.js" type="text/javascript"></script>
+	
+<script language="JavaScript" src="/ms/js/js_main.js" type="text/javascript"></script>
+
+
+<script language="JavaScript" src="/ms/nl_NL/js/navOptions.js" type="text/javascript"></script>
+
+
+<script language="JavaScript" type="text/javascript">
+    var irwstats_locale = "nl_NL";
+    irwstatPrepareOmnitureConfig(irwstats_locale, "live");
+</script>
+<link rel="stylesheet" href="/ms/css/css_main.css" type="text/css"/>
+<link rel="stylesheet" id="localCSS" href="/ms/nl_NL/css/local_em.css" type="text/css"/>
+<script type="text/javascript" language="javascript">
+	//call the irwInit function in general.js
+	irwInit();
+</script>
+
+<script type="text/javascript" language="javascript">
+	//call the lastUrlCookie fn from cookie_util.js
+	storeUrlForBackShopping();
+</script>
+
+<script type="text/javascript">
+	// Variables needed for add to shopping list/shopping cart popup
+	var js_fn_CHOICE_VIEW_LIST = "Boodschappenlijstje bekijken";
+	var js_fn_CHOICE_MORE_PRODUCT_LIST = "Producten zijn toegevoegd aan ";
+	var js_fn_MOREPRODUCTS_HEADER = "Producten toegevoegd";
+	var js_fn_MOREPRODUCTS_ERROR_HEADER = "Fout";
+	var js_fn_MOREARTICLES_ERROR_TEXT = "Producten";
+	var js_fn_POPUP_SELECT_HEADER = "Selecteer een boodschappenlijstje";
+	var js_fn_POPUP_DONE_HEADER = "Product toegevoegd";
+	var js_fn_POPUP_DONE_TEXT = "Dit product is toegevoegd.";
+	var js_fn_POPUP_SAVE_BTN = "Opslaan";
+	var js_fn_POPUP_CLOSE_BTN = "Sluiten";
+	var js_fn_POPUP_CANCEL_BTN = "Annuleren";
+	var js_fn_POPUP_ERROR_HEADER = "Oeps, er is een fout opgetreden";
+	var js_fn_POPUP_ERROR_TEXT = "Er is een fout opgetreden bij het verwerken van je opdracht";
+	var js_fn_POPUP_LOGIN_HEADER = "Hiervoor moet je inloggen";
+	var js_fn_POPUP_LOGIN_LINK = "Log in";
+	var js_fn_POPUP_SIGNUP_LINK = "maak een profiel aan ";
+	var js_fn_POPUP_LOGIN_TEXT = "<a class=\"link\" rel=\"nofollow\" href=\"/webapp/wcs/stores/servlet/LogonForm?storeId=9&langId=-22&URL=/nl/nl/\">Log in</a> of <a class=\"link\" rel=\"nofollow\" href=\"/webapp/wcs/stores/servlet/CreateUser?storeId=9&langId=-22&URL=/nl/nl/\">maak een profiel aan </a> om je boodschappenlijstje op te kunnen slaan op de IKEA server. <br><Br> Je kan producten toevoegen door op een productpagina op de knop Boodschappenlijstje te klikken <br>of door links op deze pagina het artikelnummer in te voeren (bijv. uit de IKEA catalogus). ";
+	var js_fn_DEFAULT_LISTNAME = "Boodschappenlijstje";
+	var js_fn_POPUP_ERROR_MAX_NO_OF_LISTS = "Je hebt het maximale aantal boodschappenlijstjes gemaakt";
+	var js_fn_SHOPPING_CART  = "Naar mijn winkelwagen";
+	var js_fn_HASBEENADDEDTOSC = "Aan je boodschappenlijstje toegevoegd ";
+	var js_fn_COULDNOTBEADDEDTOSC = "kon niet toegevoegd worden. Probeer het later opnieuw.";
+	var js_fn_POPUP_PRODUCTADDED = "Dit product is toegevoegd.";
+	var js_fn_POPUP_VIEWCART_URL = "/webapp/wcs/stores/servlet/OrderItemDisplay?storeId=9&langId=-22&catalogId=11001&orderId=.&newLinks=true";
+	var js_fn_ERROR_CREATE_LIST = "Er is een fout opgetreden bij het maken van je boodschappenlijstje";
+	var js_fn_ERROR_SHOPPING_LIST_MAX_ITEM_QUANTITY_LIMIT_EXCEEDED = "Het maximaal aantal is 999 producten";
+	var js_fn_ERROR_SHOPPING_LIST_MAX_LIMIT_EXCEEDED = "Het maximaal aantal producten is 999";
+	var js_fn_POPUP_CART_PRODUCTS = "products";
+	var js_fn_POPUP_CART_TOTAL_PRICE = "Total price";
+	var js_fn_OI_txt_inclVat = "incl. btw";
+	var js_fn_OI_txt_exclVat = "excl. btw";
+	var js_fn_OI_txt_POPUP_inclVat = "Totaalprijs inclusief btw<br>";
+	var js_fn_OI_txt_POPUP_exclVat = "Totaalprijs exclusief btw<br>";
+	var js_fn_TXT_PRICE = "Price/";
+	var js_fn_UNIT_MEASURE_EN = "";
+	var js_fn_TXT_UNITPRICE = "Prijs per set";
+	var js_fn_defaultLocalStore_txt = "Select your IKEA store";
+    var js_ERR_PAY_COMMUNICATION_DISTR = "Om technische redenen kunnen we je betaling niet verwerken. Probeer het later opnieuw.";
+    var js_ENABLE_STOCK_UNIT = "true";
+	var js_ENERGY_PRODUCT_FICHE = "Energielabel";
+	var sprTechInfoTabText =  "&nbsp;";
+	
+
+</script>
+<link rel="stylesheet" href="/ms/css/home_FW10_em.css" type="text/css"/>
+<link rel="stylesheet" href="/ms/css/new_category_page.css" type="text/css"/>
+<script language="JavaScript" src="/ms/js/category_page.js" type="text/javascript"></script>
+<script language="JavaScript" src="/ms/js/home.js" type="text/javascript"></script>
+<script language="VBScript" src="/ms/js/home.vbs" type="text/vbscript"></script>
+
+<title id="txtHtmlTitle">IKEA - Meubels & woonaccessoires | keuken, slaapkamer, badkamer  - IKEA</title>
+
+<style type="text/css">
+    body {
+        z-index: 2; 
+    }
+</style> 
+
+<!--[if IE]>
+  <link rel="stylesheet" href="/ms/css/ie.css" type="text/css"/>
+<![endif]-->
+<!--[if IE 7]>
+  <script type="text/javascript" src="/ms/js/ie7.js"></script>
+  <link rel="stylesheet" href="/ms/css/ie7.css" type="text/css"/>
+<![endif]-->
+<!--[if IE 6]>
+  <link rel="stylesheet" href="/ms/css/ie6.css" type="text/css"/>
+<![endif]-->
+<!--[if lt IE 6]>
+  <link rel="stylesheet" href="/ms/css/ie5_5.css" type="text/css"/>
+<![endif]-->
+<!--[if lte IE 6]>
+  <script src="/ms/js/iepngfix_tilebg.js" type="text/javascript"></script>
+<![endif]-->
+  
+</head>
+<body>
+ 
+<div xmlns:tns="http://www.w3.org/1999/xhtml"><a class="skipToMainContent" href="#mainContent"></a></div><div id="allContent"><div id="mainPadding">
+            
+
+
+
+
+
+
+<script type="text/javascript">
+<!-- INCLUDE TEALIUM UTAG.JS ASYNCHRONOUSLY FOR IN THE BEGINNING OF BODY -->
+// part in bold should be configurable in settings per market
+ (function(a, b, c, d) {
+  a = '//tags.tiqcdn.com/utag/ikea/nl-main/prod/utag.js';
+  b = document;
+  c = 'script';
+  d = b.createElement(c);
+  d.src = a;
+  d.type = 'text/java' + c;
+  d.async = true;
+  a = b.getElementsByTagName(c)[0];
+  a.parentNode.insertBefore(d, a);
+})();
+<!-- INCLUDE TEALIUM UTAG.JS ASYNCHRONOUSLY FOR IN THE BEGINNING OF BODY -->
+</script>
+
+		<div class="access" title="Beschikbare sneltoetsen:">
+		
+		</div>		
+        <div id="topMenu" class="topMenu">
+            <form id="myAccount" action="/webapp/wcs/stores/servlet/LogonForm" method="get">
+                <div>
+                    <input type="hidden" name="storeId" value="9" />
+                    <input type="hidden" name="langId" value="-22" />
+                    <input type="hidden" name="catalogId" value="11001" />
+                </div>
+            </form>
+                <div class="logoContainer">
+                    <a href="/nl/nl/" id="lnkIKEALogoHeader" class="logoLink">
+                        <img src="/ms/img/header/logo.gif" alt="Home" class="logo" id="imgIKEALogoHeader"/>
+                    </a>
+                    
+                        <div class="searchForm">
+                    
+                            <form action="/nl/nl/search/" id="searchForm" method="get" onsubmit="return checkSearch(this)" accept-charset="utf-8,*">
+                                
+                                
+                                <div class="formInput">
+                                    <input type="text" value="" name="query" id="search" />
+                                </div>
+                                <div class="formBtn">
+                                    <script type="text/javascript">
+                                        //<![CDATA[
+                                            createButton('Zoek', 'lnkSearchBtnHeader', '', function() { search('searchForm'); });
+                                        //]]>
+                                    </script>
+                                    <noscript>
+                                        <div class="buttonContainer"><a href="javascript:void(0);"><span class="buttonLeft">&nbsp;</span><span class="buttonCaption"><input id="lnkSearchBtnHeader" type="submit" value="Zoek" /></span><span class="buttonRight">&nbsp;</span></a></div>
+                                    </noscript>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="ikeaTagline" id="txtIKEATagHeader"></div>
+                            <script type="text/javascript">
+                                //<![CDATA[
+                                    var storeId='9';
+                                    var userInfo = getUserInfo('9','normal');
+                                    document.observe('dom:loaded', function() {
+                                        userInfo = getUserInfo('9');
+                                        updateWelcomeText();
+                                        updateNoOfCartItems('9');
+                                        generateScLinkListener('9');
+                                    });
+                                    function updateWelcomeText() {
+                                        var userLoggedIn = '</Welkom {firstname}! Niet {firstname}? <a href="/webapp/wcs/stores/servlet/Logoff?langId=-22&amp;storeId=9&amp;forgetMe=true" rel="nofollow">Klik hier</a>';
+                                        var userNotLoggedIn = 'Welkom bij IKEA Nederland';
+                                        if(userInfo != null && userInfo.firstName!= "" && userInfo.firstName!= "") {
+                                            userLoggedIn = userLoggedIn.replace(/{firstname}/g,userInfo.firstName.escapeHTML());
+                                            userLoggedIn = userLoggedIn.replace(/{lastname}/g,userInfo.lastName.escapeHTML());
+                                            userLoggedIn = userLoggedIn.replace(/{title}/g,userInfo.title.escapeHTML());
+                                            document.getElementById("txtIKEATagHeader").innerHTML = userLoggedIn;
+                                        }else{
+                                            document.getElementById("txtIKEATagHeader").innerHTML = userNotLoggedIn;
+                                        }
+                                    }
+                                //]]>
+                            </script>
+                        </div>
+                        <div class="rightSection">
+                            <div class="iconLinkContainer">
+                                <div class="iconLink">
+                                    <a href=" " id="lnkIcon1Header">
+                                        <img src=" "><style>.rightSection .iconLinkContainer {display: none;}</style><img src="" alt=" "  class="annaSmall" id="annaSmall"/>
+                                        <span> </span>
+                                    </a>
+                                </div>
+                            </div>
+                
+                    
+                
+                
+
+            
+                
+                <div class="linkList">
+                    <ul>
+                        
+                            
+                            
+                            
+                                    
+                                            <li>
+                                                <a href="/ms/nl_NL/ikny_splash.html" class="arrowLink" id="link_header_ikny_splash">IKEA vestigingen</a>
+                                                
+                                            </li>
+                                        
+                                
+                        
+                            
+                            
+                            
+                                    
+                                            <li>
+                                                <a href="http://www.ikea.com/ms/nl_NL/customer_service/splash.html" class="arrowLink" id="link_header_splash">Klantenservice</a>
+                                                
+                                            </li>
+                                        
+                                
+                        
+                            
+                            
+                            
+                                    
+                                            <li>
+                                                <a href="/webapp/wcs/stores/servlet/InterestItemDisplay?storeId=9&amp;langId=-22" class="arrowLink" id="link_header_shopping_list" rel="nofollow">Mijn boodschappenlijstje</a>
+                                                
+                                            </li>
+                                        
+                                
+                        
+                            
+                    </ul>
+                </div>
+                
+                <div class="linkList">
+                    <ul>
+                        
+                            
+                            
+                                    
+                                    
+                                <li>
+                                    <script type="text/javascript">
+                                        //<![CDATA[
+                                        if(haslogoffURL('9')) {
+                                            document.writeln("<a class='arrowLink' id='link_header_logout' href='/webapp/wcs/stores/servlet/Logoff?langId=-22&amp;storeId=9&amp;rememberMe=true' rel='nofollow'>Uitloggen</a>");
+                                        }else{
+                                            document.writeln("<a class='arrowLink' id='link_header_login' href='javascript:logonLink();' rel='nofollow'>Inloggen</a>");
+                                        }
+                                        //]]>
+                                    </script>
+                                </li>
+                                
+                        
+                            
+                            
+                            
+                                    
+                                            <li>
+                                                <a href="/ms/nl_NL/ikea_family/index.html" class="arrowLink arrowLinkActive" id="link_header_index">IKEA FAMILY</a>
+                                                
+                                            </li>
+                                        
+                                
+                        
+                            
+                            
+                            
+                                    
+                                            <li>
+                                                <a href="/webapp/wcs/stores/servlet/OrderItemDisplay?storeId=9&amp;langId=-22&amp;catalogId=11001&amp;orderId=.&amp;priceexclvat=&amp;newLinks=true" class="arrowLink" id="link_header_shopping_cart" rel="nofollow"><b>Mijn winkelwagen</b></a>
+                                                
+                                                    <a href="/webapp/wcs/stores/servlet/OrderItemDisplay?storeId=9&amp;langId=-22&amp;catalogId=11001&amp;orderId=.&amp;priceexclvat=&amp;newLinks=true" class="arrowLink arrowLinkInactive" rel="nofollow"><span id="noOfCartItems"></span></a>
+                                                
+                                            </li>
+                                        
+                                
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="menu">
+            <div class="mainMenu">
+                <div class="tableContainer">
+                    <table>
+                        <tr>
+                            <td class="allProducts" id="allProducts">
+                                <a href="/nl/nl/studio/woonmagazine.html" id="lnkMainMenu1Header">
+                                    <span class="end">
+                                        <span class="separator">
+                                            <span class="padding">Trends &amp; inspiratie&nbsp;</span> 
+                                        </span>
+                                    </span>   
+                                </a>
+                            </td>
+                            <td class="newAtIkea">
+                                <a href="/nl/nl/catalog/news/departments/" id="lnkMainMenu2Header">
+                                    <span class="separator">
+                                        <span class="padding">&nbsp;Nieuw&nbsp;</span>
+                                    </span>
+                                </a>
+                            </td>
+                             <td>
+                                <a href="/nl/nl/catalog/categories/departments/living_room/" id="lnkMainMenu3Header">
+                                    <span class="separator">
+                                        <span class="padding">&nbsp;Woonkamer&nbsp;</span>
+                                    </span>
+                                </a>
+                            </td>
+
+                            <td>
+                                <a href="/nl/nl/catalog/categories/departments/bedroom/" id="lnkMainMenu4Header">
+                                    <span class="separator">
+                                        <span class="padding">&nbsp;Slaapkamer&nbsp;</span>
+                                    </span>
+                                </a>
+                            </td>
+
+                            <td>
+                                <a href="/nl/nl/catalog/categories/departments/kitchen/" id="lnkMainMenu5Header">
+                                    <span class="separator">
+                                        <span class="padding">Keuken &amp; apparatuur&nbsp;</span>
+                                    </span>
+                                </a>
+                            </td>
+
+                            <td>
+                                <a href="/nl/nl/catalog/categories/departments/bathroom/" id="lnkMainMenu6Header">
+                                    <span class="separator">
+                                        <span class="padding">&nbsp;Badkamer&nbsp;</span>
+                                    </span>
+                                </a>
+                            </td>
+
+                            <td>
+                                <a href="/nl/nl/catalog/categories/departments/dining/" id="lnkMainMenu7Header">
+                                    <span class="separator">
+                                        <span class="padding">&nbsp;Eetkamer&nbsp;</span>
+                                    </span>
+                                </a>
+                            </td>
+
+                            <td>
+                                <a href="/nl/nl/catalog/categories/departments/workspaces" id="lnkMainMenu8Header">
+                                    <span class="separator">
+                                        <span class="padding">&nbsp;Werkplek&nbsp;</span>
+                                    </span>
+                                </a>
+                            </td>
+
+                            <td>
+                                <a href="/nl/nl/catalog/categories/departments/lighting" id="lnkMainMenu9Header">
+                                    <span class="separator">
+                                        <span class="padding">&nbsp;Verlichting&nbsp;</span>
+                                    </span>
+                                </a>
+                            </td>
+
+                            <td>
+                                <a href="/nl/nl/catalog/categories/departments/Textiles/" id="lnkMainMenu10Header">
+                                    <span class="separator">
+                                        <span class="padding">&nbsp;Textiel&nbsp;</span>
+                                    </span>
+                                </a>
+                            </td>
+
+                            <td>
+                                <a href="/nl/nl/catalog/categories/departments/childrens_ikea" id="lnkMainMenu11Header">
+                                    <span class="separator">
+                                        <span class="padding">&nbsp;IKEA kinderland</span>
+                                    </span>
+                                </a>
+                            </td>
+
+                            <td style="width: 161px;"></td>
+                                <td id="moreRooms" class="moreRooms">
+                                <a href="javascript:;" onmouseover="tagVisibility('SELECT','hide');menuToggle('down');" onmouseout="tagVisibility('SELECT','show');menuToggle('up');" id="lnkMainMenu12Header">
+                                    <span class="end">
+                                        <span class="padding"><span class="arrow" id="arrow2">&nbsp;</span>Alle categorieën</span>
+                                    </span>
+                                </a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <img src="/ms/img/header/main_menu_shadow.gif" alt="" class="mainMenuShadow"/>
+        </div>
+        <!-- prints the all departments menu -->
+        <script type="text/javascript">
+        //<![CDATA[
+            getProducts();
+            enableDepartmentLink();
+        //]]>
+        </script>
+        
+<div id="main">
+		<div id="prfinfo">
+				<div class="headline">
+					&nbsp;
+				</div>
+				<div class="body">
+					&nbsp;
+				</div>
+				<div class="link">
+					<a href="&nbsp;">&nbsp;</a>
+				</div>
+				<div class="btns">
+					<script type="text/javascript">
+						createButton("&nbsp;", "prfbtn", "", function() { closePrfPopup(); });
+					</script>			
+				</div>
+		</div>		
+		<a name="mainContent"></a>		
+	<div class="homepagenews">	
+	<!-- lets not get the adcopy if its already present in the request -->
+		<div id=newsticker>
+			<div class="tickerText">
+				<div class="tickerHeadline">IKEA NIEUWS</div>
+				<script language="JavaScript" type="text/javascript">
+					var changespeed = "4000";
+				</script>
+				
+				<div id=newslist>
+				
+						<SPAN class="link"><a href="http://www.ikea.com/nl/nl/about_ikea/newsitem/productnieuws_finemang">TOT OVER JE OREN VERLIEFD OP NIEUWE FINEMANG COLLECTIE VAN IKEA</a></SPAN>
+						
+						<SPAN class="link"><a href="http://www.ikea.com/nl/nl/about_ikea/newsitem/productnieuws_rimforsa">NIEUWE RIMFORSA SERIE VAN DUURZAAM BAMBOE EN ROESTVRIJ STAAL </a></SPAN>
+						
+						<SPAN class="link"><a href="http://www.ikea.com/nl/nl/about_ikea/newsitem/bookazine-elle">IKEA, ELLE ETEN EN ELLE DECORATION INSPIREREN MET BOOKAZINE ‘IT STARTS WITH THE FOOD’</a></SPAN>
+						
+						<SPAN class="link"><a href="http://www.ikea.com/nl/nl/about_ikea/newsitem/Gerecht-van-Anne-de-Graaf-komt-op-menukaart-IKEA">GERECHT VAN AMSTERDAMSE ANNE DE GRAAF KOMT OP MENUKAART IKEA</a></SPAN>
+						
+				</div>
+			</div>
+			<div id="controlsContainer"></div>
+		</div>
+	 
+	
+	</div>
+
+	<div id="whatsection" class="whatsection">
+	<div id="corrosilDisplayPad" class="corrosilDisplaylayer"></div>
+	
+	<div id="mainCorrosilContiner">
+		<div class="subCorrosilContiner">
+			<div>
+				 
+			</div>
+		</div>
+		<div class="subCorrosilContiner">
+			<div>
+				 
+			</div>
+		</div>
+		<div class="subCorrosilContiner">
+			<div>
+				 
+			</div>
+		</div>
+		<div class="subCorrosilContiner">
+			<div>
+				 
+			</div>
+		</div>
+		<div class="subCorrosilContiner">
+			<div>
+				 
+			</div>
+		</div>
+	</div>
+	
+	</div>
+		
+	<h1 class="homepageHeading"><style>#whatsection {margin-bottom: 0 !important;}</style></h1>
+	
+	<div id="whysection" class="whysection">
+		<!-- lets not get the adcopy if its already present in the request --><div class="gridRow">
+<div id="css-departments" class="gridColumn twelveColumn lastColumn">
+<div class="gridComponent" style="height:1px;">
+<div style="text-align:left;left:0px;top:0px;width:;height:;z-index:1;position:absolute;" class="bodyTextWhite"><style type="text/css" media="all">@import url(/ms/nl_NL/css/ikea-redesign.css);
+#allContent #main #topNavigation {
+  display: none;
+}
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.1.0/js/swiper.jquery.min.js"></script>
+<script src="https://www.youtube.com/iframe_api"></script>
+<script>jQuery.noConflict();</script>
+<script>
+		jQuery(function () {
+		  var snippets = jQuery('[ikea-snippet]');
+		  // Snippet whitelist, just put commas between the selectors
+          snippets = snippets.filter('[ikea-snippet*="article-overview"], [ikea-snippet*="campaign-"], [ikea-snippet*="cta-"], [ikea-snippet*="help"], [ikea-snippet*="homepage-"], [ikea-snippet*="product-closed"], [ikea-snippet*="product-viewer"], [ikea-snippet="related-large"], [ikea-snippet="related"], [ikea-snippet*="quote-"]');
+          for (var i = 0; i < snippets.length; i++) {
+            var $thisSnippet = jQuery(snippets[i]);
+            var links = $thisSnippet.find('a').not('[data-role="link-overlay"]'); // Filter out cases where link-overlay must be added manually because there is no other link in the block for the script to use
+            if (links.length == 1) {
+              var $thisLink = links,
+                  url = $thisLink.attr('href'),
+                  text = $thisLink.text();
+              var $newLink = jQuery(document.createElement('a')),
+                  $newText = jQuery(document.createElement('span'));
+              $newText.text(text).appendTo($newLink);
+              $newLink.attr({'href': url, 'data-role': 'link-overlay', 'class': 'link-overlay'}).appendTo($thisSnippet);
+            }
+          }
+          jQuery('[data-role="link-overlay"]').hover(
+            function() {
+              jQuery(this).closest('[ikea-snippet]').find('a, .button, .ken-burns').not('.no-link-all-hover').addClass('hover');
+            },
+            function() {
+              jQuery(this).closest('[ikea-snippet]').find('a, .button, .ken-burns').removeClass('hover');
+            }
+          );
+		});
+	</script>
+<script>
+    jQuery(function () {
+        jQuery(document).keydown(function (event) {
+            // Listen for the tab and arrow keys, otherwise, end here
+            if ([9, 37, 38, 39, 40].indexOf(event.keyCode) == -1) {
+              return;
+            }
+            jQuery('html').addClass('keyboard-navigation');
+        });
+    });
+  </script>
+<script>
+      function checkForIE () {
+        var trident = navigator.userAgent.match(/Trident\/(\d+)/);
+        if (trident) {
+          var msie = navigator.userAgent.match(/MSIE (\d+)/);
+          if (msie) {
+            // If compatibility mode
+            if (parseInt(msie[1]) != (parseInt(trident[1]) + 4)) {
+              document.documentElement.setAttribute('class', 'ie-compat');
+            }
+            // If less than ie 10
+            if (parseInt(msie[1]) < 10) {
+              document.documentElement.className += ' ie-lt-10';
+            }
+            // If less than ie 9
+            if (parseInt(msie[1]) < 9) {
+              document.documentElement.className += ' ie-lt-9';
+            }
+            // If compatibility mode and less than ie 9
+            if (parseInt(msie[1]) < 9 && parseInt(msie[1]) != (parseInt(trident[1]) + 4)) {
+              // alert('It looks like this site is shown in Compatibitility View. This could cause some display problems. '+
+              // '\n\nUnder Tools (gear icon) -> Compatibility View settings, turn this mode off for IKEA.nl or intranet sites');
+              alert('Het lijkt erop dat deze site in Compatibiliteitsweergave wordt getoond. Dit zou weergaveproblemen kunnen veroorzaken. ' +
+              '\n\nSchakel deze modus uit bij Extra (tandwielicoon) -> Instellingen voor Compatibiliteitsweergave, voor IKEA.nl of intranet sites');
+            }
+          }
+        }
+
+      };
+      checkForIE();
+	</script></div>
+<div class="clearAll"></div>
+</div>
+<div class="clearAll"></div>
+</div>
+<div class="clearAll"></div>
+</div><div class="gridRow">
+<div id="wk49_norraker_minifilm_def" class="gridColumn twelveColumn lastColumn">
+<div class="gridComponent" style="height:0px;">
+<div style="text-align:left;left:0px;top:0px;width:;height:;z-index:1;position:absolute;" class="bodyTextGray"><style type="text/css">
+    #allContentWrapper {
+      width: 100%;
+      height: 100%;
+    }
+    #allContentWrapper,
+    #allContent {
+      position: relative;
+      margin-top: 0;
+      margin-bottom: 0;
+      background-color: white;
+    }
+  </style>
+  <div ikea-snippet="homepage-slideshow" id="homepage-slideshow" data-role="homepage-slideshow" style="min-width: 112.5em;" class="width-full height-full z-low bg-dark overflow-hidden">
+    <div data-role="homepage-slideshow-wrapper" class="corner-top-left width-full height-full">
+        <ul>
+          <li class="panel"><span class="panel" style="background-image: url(http://www.ikea.com/ms/nl_NL/media/img/fy16_beeld/woonkamer/norraker-serie-still-1.jpg)"></span></li>
+          <li class="panel"><span class="panel" style="background-image: url(http://www.ikea.com/ms/nl_NL/media/img/fy16_beeld/woonkamer/norraker-serie-still-3.jpg)"></span></li>
+          <li class="panel"><span class="panel" style="background-image: url(http://www.ikea.com/ms/nl_NL/media/img/fy16_beeld/woonkamer/norraker-serie-still-4.jpg)"></span></li>
+          <li class="panel"><span class="panel" style="background-image: url(http://www.ikea.com/ms/nl_NL/media/img/fy16_beeld/woonkamer/norraker-serie-still-5.jpg)"></span></li>
+          <li class="panel"><span class="panel" style="background-image: url(http://www.ikea.com/ms/nl_NL/media/img/fy16_beeld/woonkamer/norraker-serie-still-2.jpg)"></span></li>
+        </ul>
+      </div>
+
+      <img data-role="homepage-logo" class="homepage-logo" alt="Ikea" src="http://www.ikea.com/ms/nl_NL/media/img/redesign/IKEA-logo-color.svg" style="position: absolute; top: 30px; left: 30px; width: 150px; height: 54px; margin: 0;">
+
+      <div data-role="homepage-slideshow-overlay" class="panel bg-dark" style="opacity: 0;"></div>
+
+      
+      <img data-role="homepage-start-shopping" alt="Slideshow sluiten" src="http://www.ikea.com/ms/nl_NL/media/img/redesign/button_close.svg" style="cursor: pointer; width: 50px; height: 50px; position: absolute; top: 30px; right: 30px; margin: 0;">
+
+      <div class="center-all width-full text-center ">
+    <h1 class="text-xxl text-light text-upper text-shadow">NIEUW<br>VAN DE DESIGNERS VAN IKEA</h1>
+    
+      <button data-role="homepage-start-shopping" style="box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);" class="add-top button light icon-after icon-link-arrow">Ga verder naar IKEA.nl</button>
+    
+  </div>
+  </div>
+  <div ikea-snippet="homepage-video" id="homepage-video" class="z-base width-full height-full fill-dark overflow-hidden">
+    <div data-role="homepage-video-wrapper" class="corner-top-left fixed width-full height-full">
+
+      <div data-id="m0XWiAjRQJg" data-role="homepage-youtube-video" class="remove-top"></div>
+    </div>
+    <div data-role="homepage-video-curtain" class="corner-top-left width-full height-full" style="background-image: url(http://www.ikea.com/ms/nl_NL/media/img/fy16_beeld/woonkamer/norraker-serie-still-1.jpg)"></div>
+    <img data-role="homepage-logo" class="homepage-logo" alt="Ikea" src="http://www.ikea.com/ms/nl_NL/media/img/redesign/IKEA-logo-color.svg" style="position: absolute; top: 30px; left: 30px; width: 150px; height: 54px; margin: 0;">
+    <div data-role="homepage-video-overlay" class="panel fixed bg-dark" style="opacity: 0;"></div>
+    <img data-role="homepage-start-shopping" alt="Video sluiten" src="http://www.ikea.com/ms/nl_NL/media/img/redesign/button_close.svg" style="cursor: pointer; width: 50px; height: 50px; position: absolute; top: 30px; right: 30px; margin: 0;">
+    <div class="center-all width-full text-center ">
+    <h1 class="text-xxl text-light text-upper text-shadow">NIEUW<br>VAN DE DESIGNERS VAN IKEA</h1>
+    
+      <button data-role="homepage-start-shopping" style="box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);" class="add-top button light icon-after icon-link-arrow">Ga verder naar IKEA.nl</button>
+    
+  </div>
+  </div>
+<script>
+  jQuery(function() {
+
+    var $snippet = jQuery('[data-role="homepage-slideshow"]'),
+        $overlay = jQuery('[data-role="homepage-slideshow-overlay"]'),
+        $close = jQuery('[data-role="homepage-start-shopping"]');
+
+    if (!(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))) {
+      $snippet.remove();
+    } else {
+      if (!$snippet.hasClass('header')) {
+        jQuery('#allContent').wrap(function () {
+          return '<div id="allContentWrapper"></div>';
+        });
+        jQuery('body').prepend($snippet);
+
+        jQuery('html, body').on('scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove', function (e) {
+          jQuery('html, body').stop();
+        });
+
+        jQuery($close).on('click', function () {
+          jQuery('html, body').animate({
+            scrollTop: $snippet.height()
+          }, 1500, 'easeInOutQuint');
+        });
+      }
+
+
+      function resizeIt() {
+        var $slideshowSnippet = jQuery('[data-role="homepage-slideshow"]');
+        $slideshowSnippet.css('height', ($slideshowSnippet.width() / jQuery(window).width()) * jQuery(window).height());
+      }
+      resizeIt();
+      jQuery(window).resize(function () {
+        resizeIt();
+      });
+
+
+      if (!$snippet.hasClass('header')) {
+        if (jQuery.cookie('showHomepagevideo') != undefined) {
+          jQuery('html, body').scrollTop($snippet.height());
+        } else {
+          jQuery.cookie('showHomepagevideo', 'youtube');
+        }
+      }
+    }
+  });
+  </script>
+  <script>
+    jQuery(function () {
+
+      var $snippet = jQuery('[ikea-snippet="homepage-video"]'),
+        $wrapper = jQuery('[data-role="homepage-video-wrapper"]'),
+        $curtain = jQuery('[data-role="homepage-video-curtain"]'),
+        $overlay = jQuery('[data-role="homepage-video-overlay"]'),
+        $logo = jQuery('[data-role="homepage-logo"]'),
+        $close = jQuery('[data-role="homepage-start-shopping"]');
+
+      if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+
+        $snippet.remove();
+
+      } else {
+
+         if (!$snippet.hasClass('header')) {
+
+           jQuery('#allContent').wrap(function () {
+             return '<div id="allContentWrapper"></div>';
+           });
+
+           jQuery('body').prepend($snippet);
+
+           jQuery('html, body').on('scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove', function (e) {
+             jQuery('html, body').stop();
+           });
+
+           jQuery($close).on('click', function () {
+             jQuery('html, body').animate({
+               scrollTop: $snippet.height()
+             }, 1500, 'easeInOutQuint');
+           });
+
+          function resizeIt() {
+            var windowWidth = jQuery(window).width(),
+              windowHeight = jQuery(window).height(),
+              videoWidth = windowWidth,
+              videoHeight = (videoWidth / 16) * 9;
+
+            if (videoHeight < windowHeight) {
+              videoHeight = windowHeight;
+              videoWidth = (videoHeight / 9) * 16;
+            }
+
+
+            $snippet.css('width', jQuery(window).width()); // Step 1
+            $snippet.css('width', $curtain.width()); // Step 2
+            $snippet.css('height', ($snippet.width() / jQuery(window).width()) * jQuery(window).height());
+            $wrapper.css({'width': videoWidth, 'height': videoHeight});
+          }
+          resizeIt();
+          jQuery(window).resize(function () {
+            resizeIt();
+          });
+         }
+
+        function bindEvent(el, eventName, eventHandler) {
+          if (el.addEventListener){
+            el.addEventListener(eventName, eventHandler, false);
+          } else if (el.attachEvent){
+            el.attachEvent('on'+eventName, eventHandler);
+          }
+        }
+
+        if (!$snippet.hasClass('header')) {
+          bindEvent(document, "scroll", function (e) {
+            var minY = 0;
+            var maxY = 700;
+
+            if ($logo.css('position') == 'absolute')
+              $logo.css('position', 'fixed');
+
+            if (jQuery(window).scrollTop() >= minY && jQuery(window).scrollTop() < maxY) {
+              var ratio = jQuery(window).scrollTop() / maxY;
+              $overlay.css('opacity', ratio * 0.7);
+            }
+          });
+
+          if (jQuery.cookie('showHomepagevideo') != undefined) {
+            jQuery('html, body').scrollTop($snippet.height());
+          } else {
+            jQuery.cookie('showHomepagevideo', 'youtube');
+          }
+        }
+      }
+    });
+
+    function onYouTubePlayerAPIReady() {
+      var players = document.querySelectorAll('[data-role="homepage-youtube-video"]');
+      var youtubeHomepageWidth = jQuery(window).width();
+      var youtubeHomepageHeight = (youtubeHomepageWidth / 16) * 9;
+      for (var i = 0; i < players.length; i++) {
+        new YT.Player(players[i], {
+          width: '100%',
+          height: '100%',
+          videoId: jQuery(players[i]).attr('data-id'),
+          playerVars: {
+            'autohide': 1,
+            'loop': 1,
+            'controls': 0,
+            'showinfo': 0,
+            'modestbranding': 1,
+            'wmode': 'opaque',
+            'iv_load_policy': 3
+          },
+          events: {
+            'onReady': onPlayerReady,
+            'onStateChange': onPlayerStateChange
+          }
+        });
+      }
+    }
+    function onPlayerReady(event) {
+      event.target.setVolume(0);
+      event.target.playVideo();
+    }
+    function onPlayerStateChange(event) {
+
+      if (event.data === YT.PlayerState.PLAYING) {
+        jQuery('[data-role="homepage-video-curtain"]').addClass('faded-out');
+      }
+      if (event.data === YT.PlayerState.ENDED) {
+        event.target.playVideo();
+      }
+    }
+  </script></div>
+<div class="clearAll"></div>
+</div>
+<div class="clearAll"></div>
+</div>
+<div class="clearAll"></div>
+</div><div class="gridRow">
+<div id="wk50_aanbieding-kitchen-appliances-groot" class="gridColumn twelveColumn lastColumn">
+<div class="gridComponent" style="height:480px;">
+<div style="text-align:left;left:0px;top:0px;width:;height:;z-index:1;position:absolute;" class="bodyTextGray"><div ikea-snippet="homepage-header">
+    <div class="ken-burns fill-dark">
+     <A HREF=http://www.ikea.com/nl/nl/catalog/categories/departments/kitchen/appliances/?icid=nl|iba|20151123|1081> <img class=" " alt="15% korting op keukenapparatuur" src="/ms/nl_NL/media/img/fy16_beeld/keukenapparatuur-korting-a-1060x460.jpg" style="width: 1060px; height: 460px;"></A>
+    
+    </div>
+  </div></div>
+<a href="http://www.ikea.com/nl/nl/catalog/categories/departments/kitchen/appliances/?icid=nl|iba|20151123|1081"><img usemap="#wk50_aanbieding-kitchen-appliances-groot" src="/ms/nl_NL/media/img/logo/laatste-wk-large.png" alt="Laatste week: 15% IKEA FAMILY korting op keukenapparatuur" style="left:0px;top:0px;width:1060px;height:450px;z-index:2;position:absolute;" class=""></a>
+<div class="clearAll"></div>
+</div>
+<div class="clearAll"></div>
+</div>
+<div class="clearAll"></div>
+</div><div class="gridRow">
+<div id="wk50_eetkamer" class="gridColumn twelveColumn lastColumn">
+<div class="gridComponent" style="height:320px;">
+<div style="text-align:left;left:0px;top:0px;width:;height:;z-index:1;position:absolute;" class="categoryGray"><div ikea-snippet="homepage-image" class="width-2-3 height-m fill-dark">
+	<div class="box-large height-m ken-burns">
+	  <img class=" panel" alt="Feestelijke eetkamer" src="/ms/nl_NL/media/img/fy16_beeld/wk49-eettafel-noraker-694x300.jpg" style="width: 694px; height: 300px;">
+      <div class="gradient-bottom-left"></div>
+      <div class="corner-bottom-left width-1-3">
+      
+        <h2 class="text-l" style="width: 500px;">nieuw<br><span class="text-light text-lower">van de designers van IKEA</span></h2>
+        <a href="/nl/nl/catalog/categories/departments/dining/?icid=nl|iba|20151208|1105" class="button small light outline icon-after icon-link-arrow">Bekijk onze eetkamermeubels</a>
+      
+      </div>
+    </div>
+    
+  </div></div>
+<div style="text-align:left;left:734px;top:0px;width:;height:;z-index:2;position:absolute;" class="bodyTextGray"><div ikea-snippet="homepage-text" class="width-3-9 height-m">
+    <div class="center-y">
+      <h2 class="text-l">Feestelijke eetkamer</h2>
+      <p class="text-mms">Comfortabele eetkamermeubels om extra lang te tafelen. In de stijl die bij jou past. Voor kleine en grote gezelschappen.</p>
+      <a href="/nl/nl/catalog/categories/departments/dining/?icid=nl|iba|20151208|1105" class="button small outline icon-after icon-link-arrow">Bekijk onze eetkamermeubels</a>
+    </div>
+  </div></div>
+<div class="clearAll"></div>
+</div>
+<div class="clearAll"></div>
+</div>
+<div class="clearAll"></div>
+</div><div class="gridRow">
+<div id="wk50_badkamerdepartment-with-slider" class="gridColumn twelveColumn lastColumn">
+<div class="gridComponent" style="height:320px;">
+<div style="text-align:left;left:0px;top:0px;width:;height:;z-index:1;position:absolute;" class="bodyTextGray"><div ikea-snippet="product-viewer" class="width-1-3 text-center has-slider">  
+    <div data-role="slider" class="slider relative width-1-3" data-slides-per-view="0">
+      <div class="slider-nav corner-top-left z-sky" style="height: 220px;">
+    <p class="center-all">
+      <button data-role="slider-prev" class="button icon-only icon-previous-outline no-link-all-hover"><span>Vorige</span></button>
+    </p>
+  </div>
+  <div class="slider-nav corner-top-right z-sky" style="height: 220px;">
+	<p class="center-all">
+      <button data-role="slider-next" class="button icon-only icon-next-outline no-link-all-hover"><span>Volgende</span></button>
+	</p>
+  </div>
+      <ul class="swiper-wrapper slider-tray">
+       
+ <li class="swiper-slide slider-item width-1-3">
+          <div class="slider-image relative center-x" style="width: 220px; height: 220px;">
+            <img class=" center-all" alt="MOLGER stellingkast" src="http://www.ikea.com/nl/nl/images/products/molger-stellingkast-bruin__0155632_PE313746_S3.JPG" style="width: 220px; height: 220px;">
+          </div>
+          <h3 class="text-m"><a href="/nl/nl/catalog/products/80241454/" class="link-reverse">MOLGER <span class="text-lower text-light">stellingkast</span></a></h3>
+  <p>
+      <strong class="text-base text-bold">€&nbsp;34.95<span class="text-xs"> /st.</span></strong> 
+  </p>
+  <a href="http://www.ikea.com/nl/nl/catalog/products/80241454/" data-role="link-overlay" class="link-overlay"><span>Product bekijken</span></a>
+        </li>
+		
+		 <li class="swiper-slide slider-item width-1-3">
+          <div class="slider-image relative center-x" style="width: 220px; height: 220px;">
+            <img class=" center-all" alt="MOLGER bank" src="http://www.ikea.com/nl/nl/images/products/molger-bank-bruin__0155556_PE313629_S3.JPG" style="width: 220px; height: 220px;">
+          </div>
+          <h3 class="text-m"><a href="/nl/nl/catalog/products/60241450/" class="link-reverse">MOLGER <span class="text-lower text-light">bank</span></a></h3>
+  <p>
+      <strong class="text-base text-bold">€&nbsp;34.95<span class="text-xs"> /st.</span></strong> 
+  </p>
+  <a href="http://www.ikea.com/nl/nl/catalog/products/60241450/" data-role="link-overlay" class="link-overlay"><span>Product bekijken</span></a>
+        </li>
+
+		<li class="swiper-slide slider-item width-1-3">
+          <div class="slider-image relative center-x" style="width: 220px; height: 220px;">
+            <img class=" center-all" alt="ÅFJÄRDEN handdoek" src="http://www.ikea.com/nl/nl/images/products/afjarden-handdoek-wit__0116890_PE272417_S3.JPG" style="width: 220px; height: 220px;">
+          </div>
+          <h3 class="text-m"><a href="http://www.ikea.com/nl/nl/catalog/products/20190674/" class="link-reverse">ÅFJÄRDEN <span class="text-lower text-light">handdoek</span></a></h3>
+  <p>
+      <strong class="text-base text-bold">€&nbsp;6.99<span class="text-xs"> /st.</span></strong>
+	  </p>    
+  <a href="http://www.ikea.com/nl/nl/catalog/products/20190674/" data-role="link-overlay" class="link-overlay"><span>Product bekijken</span></a>
+        </li>
+		
+        <li class="swiper-slide slider-item width-1-3">
+          <div class="slider-image relative center-x" style="width: 220px; height: 220px;">
+            <img class=" center-all" alt="SÅLNAN mand" src="http://www.ikea.com/nl/nl/images/products/salnan-mand__0249594_PE387800_S3.JPG" style="width: 220px; height: 220px;">
+          </div>
+          <h3 class="text-m"><a href="http://www.ikea.com/nl/nl/catalog/products/70264002/" class="link-reverse">SÅLNAN <span class="text-lower text-light">mand</span></a></h3>
+  <p>
+      <strong class="text-base text-bold">€&nbsp;4.99<span class="text-xs"> /2st.</span></strong>
+  </p>
+  <a href="http://www.ikea.com/nl/nl/catalog/products/70264002/" data-role="link-overlay" class="link-overlay"><span>Product bekijken</span></a>
+
+        <li class="swiper-slide slider-item width-1-3">
+          <div class="slider-image relative center-x" style="width: 220px; height: 220px;">
+            <img class=" center-all" alt="DRAGAN doos" src="http://www.ikea.com/nl/nl/images/products/dragan-doos-set-van-__0315456_PE516779_S3.JPG" style="width: 220px; height: 220px;">
+          </div>
+          <h3 class="text-m"><a href="/nl/nl/catalog/products/50281856/" class="link-reverse">DRAGAN <span class="text-lower text-light">doos</span></a></h3>
+  <p>
+      <strong class="text-base text-bold">€&nbsp;17.95<span class="text-xs"> /st.</span></strong>
+  </p>
+  <a href="http://www.ikea.com/nl/nl/catalog/products/50281856/" data-role="link-overlay" class="link-overlay"><span>Product bekijken</span></a>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+
+<script>
+	  jQuery(function () {
+		  var sliders = document.querySelectorAll('[data-role="slider"]');
+          for (var i = 0; i < sliders.length; i++) {
+            var $slider = jQuery(sliders[i]),
+              slidesPerView = $slider.data('slidesPerView'),
+              autoPlay = $slider.data('autoplay'),
+	            $sliderPrev = $slider.find('[data-role="slider-prev"]'),
+		        $sliderNext = $slider.find('[data-role="slider-next"]');
+            var $thisSlider = new Swiper ($slider, {
+              nextButton: $sliderNext,
+              prevButton: $sliderPrev,
+              loop: true,
+              autoplay: autoPlay,
+              slidesPerView: slidesPerView ? slidesPerView : 1,
+              slidesPerGroup: slidesPerView ? slidesPerView : 1
+            });
+          };
+	  });
+  </script></div>
+<div style="text-align:left;left:366px;top:0px;width:;height:;z-index:2;position:absolute;" class="categoryGray"><div ikea-snippet="homepage-image" class="width-2-3 height-m fill-dark">
+	<div class="box-large height-m ken-burns">
+	  <img class=" panel" alt="" src="/ms/nl_NL/media/img/fy16_beeld/badkamer-department-wk50-694x300.jpg" style="width: 694px; height: 300px;">
+      <div class="gradient-bottom-left"></div>
+      <div class="corner-bottom-left width-1-3">
+      
+           <h2 class="text-l"><span class="text-light text-lower"><b>GODMORGON</br>badkamercollectie</b></span></h2>
+
+        <a href="/nl/nl/catalog/categories/departments/bathroom/?icid=nl|iba|20151208|1104" class="button small light outline icon-after icon-link-arrow">Bekijk onze badkamermeubels</a>
+
+             
+      </div>
+    </div>
+       
+  </div></div>
+<div class="clearAll"></div>
+</div>
+<div class="clearAll"></div>
+</div>
+<div class="clearAll"></div>
+</div><div class="gridRow">
+<div id="wk49_kerstboom-voor-een-euro" class="gridColumn twelveColumn lastColumn">
+<div class="gridComponent" style="height:320px;">
+<div style="text-align:left;left:0px;top:0px;width:;height:;z-index:1;position:absolute;" class="categoryGray"><div ikea-snippet="homepage-image" class="width-2-3 height-m fill-dark">
+	<div class="box-large height-m ken-burns">
+	  <img class=" panel" alt="Nordmann kerstboom voor 1 euro" src="/ms/nl_NL/media/img/fy16_beeld/kerstboom-voor-een-euro-694x300.jpg " style="width: 694px; height: 300px;">
+      <div class="gradient-bottom-left"></div>
+      <div class="corner-bottom-left width-1-3">
+      
+              <h2 class="text-l"><span class="text-light text-lower"><b>Kerstboomactie</b></span></h2>
+        <a href="http://www.ikea.com/ms/nl_NL/campaigns/kerstboom.html?icid=nl|iba|20151130|1101" class="button small light outline icon-after icon-link-arrow">Kerstboom voor 1 euro</a>
+      
+      </div>
+    </div>
+    
+  </div>
+
+</div>
+<div style="text-align:left;left:734px;top:0px;width:;height:;z-index:2;position:absolute;" class="bodyTextGray"><div ikea-snippet="homepage-text" class="width-3-9 height-m">
+    <div class="center-y">
+      <h2 class="text-l">Een kerstboom voor 1 euro</h2>
+      <p class="text-mms">Koop een Nordmann kerstboom van 20 euro en ontvang een IKEA actiepas van 19 euro. Je kerstboom kost dus maar één piek! Deze piek geven we aan Natuurmonumenten.</p>
+      <a href="http://www.ikea.com/ms/nl_NL/campaigns/kerstboom.html?icid=nl|iba|20151130|1101" class="button small outline icon-after icon-link-arrow">Bekijk de startdatum per winkel</a>
+    </div>
+  </div></div>
+<div class="clearAll"></div>
+</div>
+<div class="clearAll"></div>
+</div>
+<div class="clearAll"></div>
+</div><div class="gridRow">
+<div id="wk49_beter-licht-beter-leven" class="gridColumn twelveColumn lastColumn">
+<div class="gridComponent" style="height:320px;">
+<div style="text-align:left;left:366px;top:0px;width:;height:;z-index:1;position:absolute;" class="categoryGray"><div ikea-snippet="homepage-image" class="width-2-3 height-m fill-dark">
+	<div class="box-large height-m ken-burns">
+	  <img class=" panel" alt="Beter licht beter leven" src="/ms/nl_NL/media/img/beter-licht-beter-leven/vluchtelingen-694x300.jpg" style="width: 694px; height: 300px;">
+      <div class="gradient-bottom-left"></div>
+      <div class="corner-bottom-left width-1-3">
+      
+        <h2 class="text-l">BETER LICHT<br><b>BETER LEVEN</b></span></h2>
+        <a href="http://www.ikea.com/nl/nl/campagne/beter-licht-beter-leven.html?icid=nl|iba|20151202|1103" class="button small light outline icon-after icon-link-arrow">Ga naar de actiepagina</a>
+      
+      </div>
+    </div>
+    
+  </div></div>
+<div style="text-align:left;left:0px;top:0px;width:;height:;z-index:2;position:absolute;" class="bodyTextGray"><div ikea-snippet="homepage-text" class="width-3-9 height-m">
+    <div class="center-y">
+      <h2 class="text-l">1 ledlamp =<br>1 euro voor UNHCR</h2>
+      <p class="text-mms">
+Tussen 29 november en 19 december doneert de IKEA Foundation voor elke verkochte ledlamp 1 euro aan VN-vluchtelingenorganisatie UNHCR. </p>
+      <a href="http://www.ikea.com/nl/nl/campagne/beter-licht-beter-leven.html?icid=nl|iba|20151202|1103" class="button small outline icon-after icon-link-arrow">Doe mee aan de actie</a>
+    </div>
+  </div></div>
+<div class="clearAll"></div>
+</div>
+<div class="clearAll"></div>
+</div>
+<div class="clearAll"></div>
+</div><div class="gridRow">
+<div id="wk50-kerst" class="gridColumn twelveColumn lastColumn">
+<div class="gridComponent" style="height:320px;">
+<div style="text-align:left;left:0px;top:0px;width:;height:;z-index:1;position:absolute;" class="categoryGray"><div ikea-snippet="homepage-image" class="width-2-3 height-m fill-dark">
+	<div class="box-large height-m ken-burns">
+	  <img class=" panel" alt="Nieuw bij IKEA: kerstcollectie 2015. Sfeerverlichting, cadeauverpakkingen, decoratie en inspiratie" src="/ms/nl_NL/media/img/fy16_beeld/kerst-cadeauverpakking-694x300.jpg" style="width: 694px; height: 300px;">
+      <div class="gradient-bottom-left"></div>
+      <div class="corner-bottom-left width-1-3">
+      
+        <h2 class="text-l"><span class="text-light text-lower"><b>Kerst-</b><br>en <b>wintercollectie</b></span></h2>
+        <a href="/nl/nl/catalog/categories/seasonal/winter_holidays/25228/?icid=nl|iba|20151116|1091" class="button small light outline icon-after icon-link-arrow">Bekijk alle cadeauverpakking</a>
+      
+      </div>
+    </div>
+    
+  </div></div>
+<div style="text-align:left;left:734px;top:0px;width:;height:;z-index:2;position:absolute;" class="bodyTextGray"><div ikea-snippet="homepage-text" class="width-3-9 height-m">
+    <div class="center-y">
+      <h2 class="text-l">Cadeauverpakking</h2>
+      <p class="text-mms">
+Papier, lint, labels, kerstdecoratie... alles om het geheel nog feestelijker te maken. Maak er iets moois van!
+ <br><br></p>
+      <a href="/nl/nl/catalog/categories/seasonal/winter_holidays/holiday_decoration/?icid=nl|iba|20151116|1091" class="button small outline icon-after icon-link-arrow">Bekijk alle kerstdecoratie</a>
+    </div>
+  </div></div>
+<div class="clearAll"></div>
+</div>
+<div class="clearAll"></div>
+</div>
+<div class="clearAll"></div>
+</div><div class="gridRow">
+<div id="wk48_isgata_winterlodge" class="gridColumn twelveColumn lastColumn">
+<div class="gridComponent" style="height:320px;">
+<div style="text-align:left;left:366px;top:0px;width:;height:;z-index:1;position:absolute;" class="categoryGray"><div ikea-snippet="homepage-image" class="width-2-3 height-m fill-dark">
+	<div class="box-large height-m ken-burns">
+	  <img class="panel" alt="Winterlodge winterse woonaccessoires wintersfeer" src="/ms/nl_NL/media/img/fy16_beeld/wk48_isgata_winterlodge-694x300.jpg" style="width: 694px; height: 300px;">
+      <div class="gradient-bottom-left"></div>
+      <div class="corner-bottom-left width-1-3"style="position: relative; left: 300px; top: 200px;">
+      
+        <h3>ISGATA <span class="text-light text-lower">Plaid</span></h3>
+        <p class="remove-top"><strong class="text-base text-bold">€&nbsp;24.95<span class="text-xs"> /st.</span></strong></p>
+      
+      </div>
+    </div>
+    
+      <a href="/nl/nl/catalog/products/70316510/?icid=nl|iba|20151123|1097" data-role="link-overlay" class="link-overlay"><span>Bekijken</span></a>
+    
+  </div></div>
+<div style="text-align:left;left:0px;top:0px;width:;height:;z-index:2;position:absolute;" class="bodyTextGray"><div ikea-snippet="homepage-text" class="width-3-9 height-m">
+    <div class="center-y">
+      <h2 class="text-l">Winterse woonaccessoires</h2>
+      <p class="text-mms">
+Creëer je eigen winterse sfeer in huis met de ISGATA limited collectie van designer Stina Lanneskog. 
+ </p>
+      <a href="/nl/nl/campagne/winterlodge.html?icid=nl|iba|20151123|1097" class="button small outline icon-after icon-link-arrow">Naar de ISGATA serie</a>
+    </div>
+  </div></div>
+<div class="clearAll"></div>
+</div>
+<div class="clearAll"></div>
+</div>
+<div class="clearAll"></div>
+</div>
+ 
+	</div>
+
+	<h2 class="homepageHeading"><style>#whysection {margin-bottom: 0 !important;}</style></h2>
+	
+	<div class="howsection">
+	<div id="howsection" class="howsectionpart1">
+		 
+	</div>
+
+	<div class="howsectionpart2">
+	<div class="storeandhelp">
+<!-- lets not get the adcopy if its already present in the request -->
+
+	<div class="localStoreAd">
+
+		
+			<span class="headline">IKEA vestigingen:</span>
+				<a href="/ms/nl_NL/ikny_splash.html" class="storesLink">Kies een vestiging</a>
+				<div id="localStoreAdDropDown">
+					
+						<a href="">Kies een vestiging</a>
+						
+								<a href="/nl/nl/store/amersfoort" id="localStore_415">Amersfoort</a>							
+							
+								<a href="/nl/nl/store/amsterdam" id="localStore_088">Amsterdam</a>							
+							
+								<a href="/nl/nl/store/barendrecht" id="localStore_274">Barendrecht (Rotterdam)</a>							
+							
+								<a href="/nl/nl/store/breda" id="localStore_403">Breda</a>							
+							
+								<a href="/nl/nl/store/delft" id="localStore_151">Delft</a>							
+							
+								<a href="/nl/nl/store/duiven" id="localStore_272">Duiven</a>							
+							
+								<a href="/nl/nl/store/eindhoven" id="localStore_087">Eindhoven</a>							
+							
+								<a href="/nl/nl/store/groningen" id="localStore_404">Groningen</a>							
+							
+								<a href="/nl/nl/store/haarlem" id="localStore_378">Haarlem</a>							
+							
+								<a href="/nl/nl/store/heerlen" id="localStore_089">Heerlen</a>							
+							
+								<a href="/nl/nl/store/hengelo" id="localStore_312">Hengelo</a>							
+							
+								<a href="/nl/nl/store/utrecht" id="localStore_270">Utrecht</a>							
+							
+								<a href="/nl/nl/store/zwolle" id="localStore_391">Zwolle</a>							
+							
+					
+				</div>
+				<script type="text/javascript">
+					document.write('<a id="localStoreDropDownButton" class="blueBtn" href="#" onclick="com.ikea.irw.elements.select.toIrwDropDown.localStore.submit();return false;">OK</a>');
+				</script>
+			
+			
+	</div>
+
+ <!-- lets not get the adcopy if its already present in the request --><div class="gridRow">
+<div id="homepage_help_01" class="gridColumn fourColumn lastColumn">
+<div class="gridComponent" style="height:170px;">
+<a href="http://www.ikea.com/ms/nl_NL/customer_service/openingstijden.html" class="bodyTextGray" style="text-align:left;left:0px;top:120px;width:185px;height:;z-index:1;position:absolute;">Bekijk onze ruime openingstijden</a>
+<div style="text-align:left;left:0px;top:20px;width:;height:;z-index:2;position:absolute;" class="headOneGray">Openingstijden</div>
+<a href="http://www.ikea.com/ms/nl_NL/customer_service/openingstijden.html"><img usemap="#homepage_help_01" src="/ms/nl_NL/media/img/homepage_functional/Klok.png" alt="openingstijden" style="left:35px;top:60px;width:52px;height:52px;z-index:3;position:absolute;" class=""></a>
+<div style="text-align:left;left:170px;top:20px;width:340px;height:30px;z-index:4;position:absolute;" class="headOneGray">Meer informatie</div>
+<div style="text-align:left;left:170px;top:50px;width:340px;height:;z-index:5;position:absolute;" class="bodyTextGray">Heb je een vraag?</div>
+<a href="http://www.ikea.com/ms/nl_NL/customer_service/contact_us/algemeen_fy12.html" class="bodyTextGray" style="text-align:left;left:170px;top:70px;width:340px;height:;z-index:6;position:absolute;">Bekijk de veelgestelde <br>vragen</a>
+<div style="text-align:left;left:170px;top:120px;width:340px;height:;z-index:7;position:absolute;" class="bodyTextGray">Contact</div>
+<a href="http://www.ikea.com/ms/nl_NL/customer_service/splash.html" class="bodyTextGray" style="text-align:left;left:170px;top:140px;width:340px;height:;z-index:8;position:absolute;">Klantenservice</a>
+<div style="text-align:left;left:0px;top:0px;width:;height:;z-index:9;position:absolute;" class="bodyTextWhite"><script type="text/javascript">
+setTimeout(function(){var a=document.createElement("script");
+var b=document.getElementsByTagName("script")[0];
+a.src=document.location.protocol+"//dnn506yrbagrg.cloudfront.net/pages/scripts/0018/8455.js?"+Math.floor(new Date().getTime()/3600000);
+a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b)}, 1);
+</script> </div>
+<div class="clearAll"></div>
+</div>
+<div class="clearAll"></div>
+</div>
+<div class="clearAll"></div>
+</div>
+ 
+	
+	</div>
+	
+	<div class="productrecall">
+		<!-- lets not get the adcopy if its already present in the request --><div class="gridRow">
+<div id="productRecall_fallback" class="gridColumn fourColumn lastColumn">
+<div class="gridComponent" style="height:190px;">
+<a href="http://www.ikea.com/nl/nl/about_ikea/newsitem/veiligheidswaarschuwing-PATRULL-nachtlichtje"><img usemap="#productRecall_fallback" src="/ms/nl_NL/media/img/homepage_functional/Recall.jpg" alt="veiligheidswaarschuwingen" style="left:0px;top:0px;width:336px;height:190px;z-index:1;position:absolute;" class=""></a>
+<div style="text-align:left;left:130px;top:75px;width:170px;height:;z-index:2;position:absolute;" class="bodyTextGray"><b>PATRULL nachtlampje </b>IKEA roept roze, wit en oranje PATRULL lampje met sensor terug.</div>
+<div style="text-align:left;left:10px;top:10px;width:340px;height:;z-index:3;position:absolute;" class="headZeroGray">Belangrijke product - en <br>veiligheidswaarschuwing</div>
+<a href="http://www.ikea.com/nl/nl/about_ikea/newsitem/veiligheidswaarschuwing-PATRULL-nachtlichtje" class="bodyTextGray" style="text-align:left;left:130px;top:165px;width:320px;height:190px;z-index:4;position:absolute;"><b>Meer informatie</b></a><img usemap="#productRecall_fallback" src="/ms/nl_NL/media/img/recall/patrull-nachtlichtje-115x100.jpg" alt="PATRULL nachtlichtje" style="left:8px;top:67px;width:115px;height:100px;z-index:5;position:absolute;" class=""><div class="clearAll"></div>
+</div>
+<div class="clearAll"></div>
+</div>
+<div class="clearAll"></div>
+</div>
+ 
+	</div>
+	</div>
+	</div>
+	<script>	
+	document.observe('dom:loaded', function () {
+	    	irwstatSendHomePageTag();
+			com.ikea.irw.landing.readMore.eventBinding();
+			com.ikea.irw.landing.toolTip.eventBinding();
+			new com.ikea.irw.homepage.newsticker();	
+			new com.ikea.irw.homepage.carousel($$("#mainCorrosilContiner .subCorrosilContiner"),$("corrosilDisplayPad"),{nextLabel:"NEXT",previousLabel:"PREVIOUS"});
+	});
+	</script>	
+							
+	<div class="gridRow departmentLinkBlock">
+		<h3>ALLE AFDELINGEN:</h3>								
+		
+				<div class="threeColumn">
+		            <div class="linkContainer ">
+		            <ul>
+			
+					<li><a href='/nl/nl/catalog/categories/departments/bathroom/'>
+					Badkamer
+					</a></li>
+				
+					<li><a href='/nl/nl/catalog/categories/departments/secondary_storage/'>
+					Bergruimte
+					</a></li>
+				
+					<li><a href='/nl/nl/catalog/categories/departments/decoration/'>
+					Decoratie
+					</a></li>
+				
+					<li><a href='/nl/nl/catalog/categories/departments/wireless_charging/'>
+					Draadloos opladen
+					</a></li>
+				
+					<li><a href='/nl/nl/catalog/categories/departments/dining/'>
+					Eetkamer
+					</a></li>
+				
+					<li><a href='/nl/nl/catalog/categories/departments/eating/'>
+					Eten
+					</a></li>
+				
+					<li><a href='/nl/nl/catalog/categories/departments/hallway/'>
+					Hal
+					</a></li>
+				
+				</ul>
+				</div>
+				</div>
+				
+				<div class="threeColumn">
+		            <div class="linkContainer ">
+		            <ul>
+			
+					<li><a href='/nl/nl/catalog/categories/departments/childrens_ikea/'>
+					IKEA Kinderland
+					</a></li>
+				
+					<li><a href='/nl/nl/catalog/categories/departments/kitchen/'>
+					Keukens
+					</a></li>
+				
+					<li><a href='/nl/nl/catalog/categories/departments/small_storage/'>
+					Kleine opbergers
+					</a></li>
+				
+					<li><a href='/nl/nl/catalog/categories/departments/cooking/'>
+					Koken
+					</a></li>
+				
+					<li><a href='/nl/nl/catalog/categories/departments/bedroom/'>
+					Slaapkamer
+					</a></li>
+				
+					<li><a href='/nl/nl/catalog/categories/departments/food/'>
+					Swedish Food Market
+					</a></li>
+				
+					<li><a href='/nl/nl/catalog/categories/departments/Textiles/'>
+					Textiel
+					</a></li>
+				
+				</ul>
+				</div>
+				</div>
+				
+				<div class="threeColumn">
+		            <div class="linkContainer ">
+		            <ul>
+			
+					<li><a href='/nl/nl/catalog/categories/departments/outdoor/'>
+					Tuin en balkon
+					</a></li>
+				
+					<li><a href='/nl/nl/catalog/categories/departments/lighting/'>
+					Verlichting
+					</a></li>
+				
+					<li><a href='/nl/nl/catalog/categories/departments/laundry/'>
+					Wasruimte
+					</a></li>
+				
+					<li><a href='/nl/nl/catalog/categories/departments/workspaces/'>
+					Werkplek
+					</a></li>
+				
+					<li><a href='/nl/nl/catalog/categories/departments/living_room/'>
+					Woonkamer
+					</a></li>
+				
+					<li><a href='/nl/nl/catalog/categories/departments/ikea_family_products/'>
+					IKEA FAMILY producten
+					</a></li>
+				
+					<li><a href='/nl/nl/catalog/categories/business/'>
+					IKEA BUSINESS
+					</a></li>
+				
+				</ul>
+				</div>
+				</div>
+				
+				<div class="threeColumn lastColumn">
+		            <div class="linkContainer lastLinkContainer">
+		            <ul>
+			
+					<li><a href='/nl/nl/catalog/categories/seasonal/winter_holidays/' id="winter_holidays" class="seasonalLink" style="color:#444444">
+					Winter- en kerstcollectie
+					</a></li>	
+				
+			</ul>
+			</div>
+			</div>
+			<div class="clearAll"></div>
+									
+		<div class="clearAll"></div>			
+	</div>		
+		
+<script type="text/javascript" language="JavaScript">
+if(typeof (seasonalStyleArray) !== "undefined"){    
+    	seasonalStyleArray.each(function (seasonalStyle) {
+	        var seasonalName = (seasonalStyle.seasonalName).toLowerCase();
+	        var seasonalColor=seasonalStyle.color;
+	    	document.getElementById(seasonalName).style.color=seasonalColor;
+        });      
+}
+</script>
+
+		
+		
+		
+
+</div></div><div style="clear: both;"></div> 
+
+
+
+        
+        
+        <div id="footer">
+
+            
+            <div class="linksWrapper">
+                
+                    <div class="linkContainer linkContainerFirst">
+				
+                    
+                    <div class="header">
+                    
+                            IKEA vestigingen
+                        
+                    </div>
+                    
+                            
+                               
+                                    <a class="link" href="/ms/nl_NL/customer_service/openingstijden.html">
+                                        Openingstijden
+                                    </a>
+                                   
+                            
+                               
+                                    <a class="link" href="/ms/nl_NL/ikny_splash.html">
+                                        Alle vestigingen
+                                    </a>
+                                   
+                            
+                               
+                                    <a class="link" href="/ms/nl_NL/food/restaurant.html">
+                                        Restaurant
+                                    </a>
+                                   
+                            
+                               
+                                    <a class="link" href="http://www.ikea.com/nl/nl/catalog/categories/departments/food/">
+                                        Swedish Food Market
+                                    </a>
+                                   
+                            
+                               
+                                    <a class="link" href="/ms/nl_NL/customer_service/ikea_services/ikea_services.html">
+                                        Services
+                                    </a>
+                                   
+                            
+                        
+                </div>
+                <div class="linkContainer"><div class="header"><a href="/ms/nl_NL/webwinkel/webwinkel.html">IKEA webwinkel</a></div><a href="/ms/nl_NL/webwinkel/onlinekopen.html">Online winkelen</a><a href="/ms/nl_NL/webwinkel/bestelling.html">Bestellen</a><a href="/ms/nl_NL/webwinkel/betalen.html">Betaalmogelijkheden</a><a href="/ms/nl_NL/webwinkel/bezorgen.html">Bezorging</a><a href="/ms/nl_NL/webwinkel/retour.html">Retourneren</a></div><div class="linkContainer"><div class="header"><a href="http://www.ikea.com/ms/nl_NL/this-is-ikea/index.html">Dit is IKEA</a></div><a href="http://www.ikea.com/ms/nl_NL/this-is-ikea/the-ikea-concept/index.html">Het IKEA concept</a><a href="http://www.ikea.com/ms/nl_NL/this-is-ikea/democratic-design/index.html">Democratisch design</a><a href="http://www.ikea.com/ms/nl_NL/this-is-ikea/about-the-ikea-group/index.html">Over de IKEA Group</a><a href="http://www.ikea.com/ms/nl_NL/this-is-ikea/people-and-planet/index.html">Mens en milieu</a><a href="http://www.ikea.com/ms/nl_NL/campaigns/zonnepanelen.html">Zonnepanelen</a><a href="http://www.ikea.com/nl/nl/about_ikea/newsroom">Nieuws over IKEA</a></div><div class="linkContainer"><div class="header"><a href="http://www.ikea.com/ms/nl_NL/this-is-ikea/working-at-the-ikea-group/index.html">Werken bij IKEA</a></div><a href="/ms/nl_NL/hr/vacatures.html">Vacatures</a><a href="/ms/nl_NL/hr/hbowo/index.html">IKEA voor HBO/WO</a></div><div class="linkContainer"><div class="header">Handige links</div><a href="/ms/nl_NL/customer_service/splash.html">Klantenservice</a><a href="/ms/nl_NL/customer_service/contact_us/contact_us_intro.html">Veelgestelde vragen</a><a href="/ms/nl_NL/virtual_catalogue/online_catalogues.html">Catalogus en brochures</a><a href="/ms/nl_NL/customer_service/ikea_services/cadeaupas.html">IKEA cadeaupas</a></div><div class="linkContainer lastLinkContainer"><div class="header">  </div><a href="/ms/nl_NL/ikea_family/index.html">IKEA FAMILY</a><a href="/ms/nl_NL/customer_service/ikea_services/ikea_mobiel.html">Apps en mobiele site</a><a href="http://www.ikea.com/ms/nl_NL/rooms_ideas/splashplanners.html">Online planners</a></div>
+    <div class="clearAll"></div> <!-- IKEA00671879 -->
+    </div> 
+        
+
+            <div class="copyRight" id="txtCopyFooter">
+                © Inter IKEA Systems B.V. 1999-2015
+                
+                        
+                            <span class="linkDivider">|</span>
+                            <a href="/ms/nl_NL/privacy_policy/privacybeleid.html">
+                                Privacybeleid
+                            </a>
+                        
+                            <span class="linkDivider">|</span>
+                            <a href="/ms/nl_NL/cookie_policy/index.html">
+                                Cookiebeleid
+                            </a>
+                        
+                            <span class="linkDivider">|</span>
+                            <a href="/ms/nl_NL/voorwaarden/gebruikersvoorwaarden.html">
+                                Gebruikersvoorwaarden
+                            </a>
+                        
+                            <span class="linkDivider">|</span>
+                            <a href="#">
+                                <script type="text/javascript" src="/ms/nl_NL/js/enl2.js"></script>
+                            </a>
+                        
+                    
+                
+                
+                        
+                    
+                
+                <noscript>
+                    <div style="display: none;">
+                        <img src="https://smetrics.ikea.com/b/ss/ikeaallnojavascriptprod/5/?c8=nl&amp;pageName=nojavascript" alt="" width="5" height="5" />
+                    </div>
+                </noscript>
+        </div>
+    
+
+</div>
+        
+        
+    
+
+
+
+
+<div style="display:none;">
+	
+	<script type="text/javascript">
+		irwstatSend();
+	</script>
+	
+
+</div>
+<script src="/ms/js/new_survey_popup.js" type="text/javascript"></script>
+<script src="/ms/js/survey_global.js" type="text/javascript"></script>
+</body>
+</html>
