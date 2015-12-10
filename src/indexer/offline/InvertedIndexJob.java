@@ -39,6 +39,8 @@ import crawler.dao.URLContent;
 import edu.stanford.nlp.util.StringUtils;
 
 public class InvertedIndexJob {
+	public static final float ENGLISH_THRESHOLD = 0.5f;
+
 	public static enum FeatureType {
 		TOTAL_COUNTS, HEADER_COUNTS, LINK_COUNTS, META_TAG_COUNTS
 	};
@@ -47,7 +49,6 @@ public class InvertedIndexJob {
 
 	/** Mapper Class for Document Indexer */
 	public static class DocumentIndexer extends Mapper<Text, Text, Text, Text> {
-		private static final float ENG_THRESHOLD = 0.5f;
 
 		@Override
 		public void map(Text docId, Text jsonBlob, Context context)
@@ -58,11 +59,13 @@ public class InvertedIndexJob {
 
 			Dictionary dict = Dictionary.createInstance(Dictionary.class
 					.getResourceAsStream("/resources/dict/all-english"));
-			Map<FeatureType, WordCounts> allCounts = computeCounts(page, 1, dict);
+			Map<FeatureType, WordCounts> allCounts = computeCounts(page, 1,
+					dict);
 			WordCounts totWordCounts = allCounts.get(FeatureType.TOTAL_COUNTS);
 
-			// discard document, if number of english words in doc is below threshold
-			if (totWordCounts.getPercentage() < ENG_THRESHOLD)
+			// discard document, if number of english words in doc is below
+			// threshold
+			if (totWordCounts.getPercentage() < ENGLISH_THRESHOLD)
 				return;
 
 			for (String word : totWordCounts) {

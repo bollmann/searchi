@@ -53,7 +53,7 @@ public class WordCounts implements Iterable<String> {
 		int index = 0;
 		for (String word : words) {
 			totalWords++;
-			if (dict != null && !dict.contains(word))
+			if (dict != null && dict.contains(word))
 				totalWordsEnglish++;
 			
 			Integer counts = wordCounts.get(word);
@@ -62,17 +62,15 @@ public class WordCounts implements Iterable<String> {
 			else
 				wordCounts.put(word, counts + 1);
 
-			if (!wordPos.containsKey(word)) {
+			if (!wordPos.containsKey(word))
 				wordPos.put(word, new HashSet<Integer>());
-			}
-			if (wordPos.get(word).size() <= 5) {
+
+			if (wordPos.get(word).size() <= 5)
 				wordPos.get(word).add((int) (index / maxN) + 1);
-			}
 
 			int nValue = getNGramSize(word);
-			if (nGrams.get(nValue) == null) {
+			if (nGrams.get(nValue) == null)
 				nGrams.put(nValue, new HashSet<String>());
-			}
 			nGrams.get(nValue).add(word);
 
 			Integer nCnts = nGramCounts.get(nValue);
@@ -89,7 +87,6 @@ public class WordCounts implements Iterable<String> {
 				nGramMaxWords.put(nValue, word);
 
 			index++;
-			totalWordsEnglish++;
 		}
 	}
 
@@ -205,7 +202,7 @@ public class WordCounts implements Iterable<String> {
 
 	/** Percentage of English words in counts */
 	public float getPercentage() {
-		return ((float) totalWordsEnglish)/totalWords;
+		return ((float) totalWordsEnglish) / totalWords;
 	}
 	
 	public Map<String, Integer> getWordCounts() {
@@ -267,5 +264,4 @@ public class WordCounts implements Iterable<String> {
 	private int getNGramSize(String word) {
 		return word.split(" ").length;
 	}
-
 }
