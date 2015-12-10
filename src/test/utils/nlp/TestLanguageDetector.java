@@ -20,7 +20,8 @@ public class TestLanguageDetector extends TestCase {
 			"testcontent/sample-german-page",
 			"testcontent/some-french-page.html",
 			"testcontent/sample-spanish-page",
-			"testcontent/sample-spanish-page"
+			"testcontent/sample-dutch-page"
+//			"testcontent/sample-dutch-page2"
 //			"testcontent/sample-fake-english"
 		);
 		
@@ -50,9 +51,6 @@ public class TestLanguageDetector extends TestCase {
 			//System.out.println(content);		
 			assertTrue(LanguageDetector.isEnglish(content));
 		}
-		
-		
-
 	}
 	
 	@Test

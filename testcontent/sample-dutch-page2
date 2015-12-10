@@ -1,0 +1,584 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:og="http://ogp.me/ns#">
+    <head>
+        <meta charset="UTF-8" /><script type="text/javascript">(window.NREUM||(NREUM={})).loader_config={xpid:"XAUOUFNSGwcFUFNSBwU="};window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){var o=e[n]={exports:{}};t[n][0].call(o.exports,function(e){var o=t[n][1][e];return r(o||e)},o,o.exports)}return e[n].exports}if("function"==typeof __nr_require)return __nr_require;for(var o=0;o<n.length;o++)r(n[o]);return r}({QJf3ax:[function(t,e){function n(t){function e(e,n,a){t&&t(e,n,a),a||(a={});for(var c=s(e),f=c.length,u=i(a,o,r),d=0;f>d;d++)c[d].apply(u,n);return u}function a(t,e){f[t]=s(t).concat(e)}function s(t){return f[t]||[]}function c(){return n(e)}var f={};return{on:a,emit:e,create:c,listeners:s,_events:f}}function r(){return{}}var o="nr@context",i=t("gos");e.exports=n()},{gos:"7eSDFh"}],ee:[function(t,e){e.exports=t("QJf3ax")},{}],3:[function(t){function e(t){try{i.console&&console.log(t)}catch(e){}}var n,r=t("ee"),o=t(1),i={};try{n=localStorage.getItem("__nr_flags").split(","),console&&"function"==typeof console.log&&(i.console=!0,-1!==n.indexOf("dev")&&(i.dev=!0),-1!==n.indexOf("nr_dev")&&(i.nrDev=!0))}catch(a){}i.nrDev&&r.on("internal-error",function(t){e(t.stack)}),i.dev&&r.on("fn-err",function(t,n,r){e(r.stack)}),i.dev&&(e("NR AGENT IN DEVELOPMENT MODE"),e("flags: "+o(i,function(t){return t}).join(", ")))},{1:24,ee:"QJf3ax"}],4:[function(t){function e(t,e,n,i,s){try{c?c-=1:r("err",[s||new UncaughtException(t,e,n)])}catch(f){try{r("ierr",[f,(new Date).getTime(),!0])}catch(u){}}return"function"==typeof a?a.apply(this,o(arguments)):!1}function UncaughtException(t,e,n){this.message=t||"Uncaught error with no additional information",this.sourceURL=e,this.line=n}function n(t){r("err",[t,(new Date).getTime()])}var r=t("handle"),o=t(6),i=t("ee"),a=window.onerror,s=!1,c=0;t("loader").features.err=!0,t(5),window.onerror=e;try{throw new Error}catch(f){"stack"in f&&(t(1),t(2),"addEventListener"in window&&t(3),window.XMLHttpRequest&&XMLHttpRequest.prototype&&XMLHttpRequest.prototype.addEventListener&&window.XMLHttpRequest&&XMLHttpRequest.prototype&&XMLHttpRequest.prototype.addEventListener&&!/CriOS/.test(navigator.userAgent)&&t(4),s=!0)}i.on("fn-start",function(){s&&(c+=1)}),i.on("fn-err",function(t,e,r){s&&(this.thrown=!0,n(r))}),i.on("fn-end",function(){s&&!this.thrown&&c>0&&(c-=1)}),i.on("internal-error",function(t){r("ierr",[t,(new Date).getTime(),!0])})},{1:11,2:10,3:8,4:12,5:3,6:25,ee:"QJf3ax",handle:"D5DuLP",loader:"G9z0Bl"}],5:[function(t){if(window.addEventListener){var e=t("handle"),n=t("ee");t(1),window.addEventListener("click",function(){e("inc",["ck"])},!1),window.addEventListener("hashchange",function(){e("inc",["hc"])},!1),n.on("pushState-start",function(){e("inc",["ps"])})}},{1:9,ee:"QJf3ax",handle:"D5DuLP"}],6:[function(t){t("loader").features.ins=!0},{loader:"G9z0Bl"}],7:[function(t){function e(){}if(window.performance&&window.performance.timing&&window.performance.getEntriesByType){var n=t("ee"),r=t("handle"),o=t(1),i=t(2);t("loader").features.stn=!0,t(3);var a=Event;n.on("fn-start",function(t){var e=t[0];e instanceof a&&(this.bstStart=Date.now())}),n.on("fn-end",function(t,e){var n=t[0];n instanceof a&&r("bst",[n,e,this.bstStart,Date.now()])}),o.on("fn-start",function(t,e,n){this.bstStart=Date.now(),this.bstType=n}),o.on("fn-end",function(t,e){r("bstTimer",[e,this.bstStart,Date.now(),this.bstType])}),i.on("fn-start",function(){this.bstStart=Date.now()}),i.on("fn-end",function(t,e){r("bstTimer",[e,this.bstStart,Date.now(),"requestAnimationFrame"])}),n.on("pushState-start",function(){this.time=Date.now(),this.startPath=location.pathname+location.hash}),n.on("pushState-end",function(){r("bstHist",[location.pathname+location.hash,this.startPath,this.time])}),"addEventListener"in window.performance&&(window.performance.addEventListener("webkitresourcetimingbufferfull",function(){r("bstResource",[window.performance.getEntriesByType("resource")]),window.performance.webkitClearResourceTimings()},!1),window.performance.addEventListener("resourcetimingbufferfull",function(){r("bstResource",[window.performance.getEntriesByType("resource")]),window.performance.clearResourceTimings()},!1)),document.addEventListener("scroll",e,!1),document.addEventListener("keypress",e,!1),document.addEventListener("click",e,!1)}},{1:11,2:10,3:9,ee:"QJf3ax",handle:"D5DuLP",loader:"G9z0Bl"}],8:[function(t,e){function n(t){i.inPlace(t,["addEventListener","removeEventListener"],"-",r)}function r(t){return t[1]}var o=t("ee").create(),i=t(1)(o),a=t("gos");if(e.exports=o,n(window),"getPrototypeOf"in Object){for(var s=document;s&&!s.hasOwnProperty("addEventListener");)s=Object.getPrototypeOf(s);s&&n(s);for(var c=XMLHttpRequest.prototype;c&&!c.hasOwnProperty("addEventListener");)c=Object.getPrototypeOf(c);c&&n(c)}else XMLHttpRequest.prototype.hasOwnProperty("addEventListener")&&n(XMLHttpRequest.prototype);o.on("addEventListener-start",function(t,e){function n(){return s}if(t[1]){var r=t[1];if("function"==typeof r){var s=a(r,"nr@wrapped",function(){return i(r,"fn-",n,r.name||"anonymous")});this.wrapped=t[1]=s,o.emit("initEventContext",[t,e],this.wrapped)}else"function"==typeof r.handleEvent&&i.inPlace(r,["handleEvent"],"fn-")}}),o.on("removeEventListener-start",function(t){var e=this.wrapped;e&&(t[1]=e)})},{1:26,ee:"QJf3ax",gos:"7eSDFh"}],9:[function(t,e){var n=t("ee").create(),r=t(1)(n);e.exports=n,r.inPlace(window.history,["pushState","replaceState"],"-")},{1:26,ee:"QJf3ax"}],10:[function(t,e){var n=t("ee").create(),r=t(1)(n);e.exports=n,r.inPlace(window,["requestAnimationFrame","mozRequestAnimationFrame","webkitRequestAnimationFrame","msRequestAnimationFrame"],"raf-"),n.on("raf-start",function(t){t[0]=r(t[0],"fn-")})},{1:26,ee:"QJf3ax"}],11:[function(t,e){function n(t,e,n){t[0]=i(t[0],"fn-",null,n)}function r(t,e,n){function r(){return a}this.ctx={};var a={"nr@context":this.ctx};o.emit("initTimerContext",[t,n],a),t[0]=i(t[0],"fn-",r,n)}var o=t("ee").create(),i=t(1)(o);e.exports=o,i.inPlace(window,["setTimeout","setImmediate"],"setTimer-"),i.inPlace(window,["setInterval"],"setInterval-"),i.inPlace(window,["clearTimeout","clearImmediate"],"clearTimeout-"),o.on("setInterval-start",n),o.on("setTimer-start",r)},{1:26,ee:"QJf3ax"}],12:[function(t,e){function n(){f.inPlace(this,p,"fn-",o)}function r(t,e){f.inPlace(e,["onreadystatechange"],"fn-")}function o(t,e){return e}function i(t,e){for(var n in t)e[n]=t[n];return e}var a=t("ee").create(),s=t(1),c=t(2),f=c(a),u=c(s),d=window.XMLHttpRequest,p=["onload","onerror","onabort","onloadstart","onloadend","onprogress","ontimeout"];e.exports=a,window.XMLHttpRequest=function(t){var e=new d(t);try{a.emit("new-xhr",[],e),e.hasOwnProperty("addEventListener")&&u.inPlace(e,["addEventListener","removeEventListener"],"-",o),e.addEventListener("readystatechange",n,!1)}catch(r){try{a.emit("internal-error",[r])}catch(i){}}return e},i(d,XMLHttpRequest),XMLHttpRequest.prototype=d.prototype,f.inPlace(XMLHttpRequest.prototype,["open","send"],"-xhr-",o),a.on("send-xhr-start",r),a.on("open-xhr-start",r)},{1:8,2:26,ee:"QJf3ax"}],13:[function(t){function e(t){var e=this.params,r=this.metrics;if(!this.ended){this.ended=!0;for(var i=0;c>i;i++)t.removeEventListener(s[i],this.listener,!1);if(!e.aborted){if(r.duration=(new Date).getTime()-this.startTime,4===t.readyState){e.status=t.status;var a=t.responseType,f="arraybuffer"===a||"blob"===a||"json"===a?t.response:t.responseText,u=n(f);if(u&&(r.rxSize=u),this.sameOrigin){var d=t.getResponseHeader("X-NewRelic-App-Data");d&&(e.cat=d.split(", ").pop())}}else e.status=0;r.cbTime=this.cbTime,o("xhr",[e,r,this.startTime])}}}function n(t){if("string"==typeof t&&t.length)return t.length;if("object"!=typeof t)return void 0;if("undefined"!=typeof ArrayBuffer&&t instanceof ArrayBuffer&&t.byteLength)return t.byteLength;if("undefined"!=typeof Blob&&t instanceof Blob&&t.size)return t.size;if("undefined"!=typeof FormData&&t instanceof FormData)return void 0;try{return JSON.stringify(t).length}catch(e){return void 0}}function r(t,e){var n=i(e),r=t.params;r.host=n.hostname+":"+n.port,r.pathname=n.pathname,t.sameOrigin=n.sameOrigin}if(window.XMLHttpRequest&&XMLHttpRequest.prototype&&XMLHttpRequest.prototype.addEventListener&&!/CriOS/.test(navigator.userAgent)){t("loader").features.xhr=!0;var o=t("handle"),i=t(2),a=t("ee"),s=["load","error","abort","timeout"],c=s.length,f=t(1),u=window.XMLHttpRequest;t(4),t(3),a.on("new-xhr",function(){this.totalCbs=0,this.called=0,this.cbTime=0,this.end=e,this.ended=!1,this.xhrGuids={}}),a.on("open-xhr-start",function(t){this.params={method:t[0]},r(this,t[1]),this.metrics={}}),a.on("open-xhr-end",function(t,e){"loader_config"in NREUM&&"xpid"in NREUM.loader_config&&this.sameOrigin&&e.setRequestHeader("X-NewRelic-ID",NREUM.loader_config.xpid)}),a.on("send-xhr-start",function(t,e){var r=this.metrics,o=t[0],i=this;if(r&&o){var f=n(o);f&&(r.txSize=f)}this.startTime=(new Date).getTime(),this.listener=function(t){try{"abort"===t.type&&(i.params.aborted=!0),("load"!==t.type||i.called===i.totalCbs&&(i.onloadCalled||"function"!=typeof e.onload))&&i.end(e)}catch(n){try{a.emit("internal-error",[n])}catch(r){}}};for(var u=0;c>u;u++)e.addEventListener(s[u],this.listener,!1)}),a.on("xhr-cb-time",function(t,e,n){this.cbTime+=t,e?this.onloadCalled=!0:this.called+=1,this.called!==this.totalCbs||!this.onloadCalled&&"function"==typeof n.onload||this.end(n)}),a.on("xhr-load-added",function(t,e){var n=""+f(t)+!!e;this.xhrGuids&&!this.xhrGuids[n]&&(this.xhrGuids[n]=!0,this.totalCbs+=1)}),a.on("xhr-load-removed",function(t,e){var n=""+f(t)+!!e;this.xhrGuids&&this.xhrGuids[n]&&(delete this.xhrGuids[n],this.totalCbs-=1)}),a.on("addEventListener-end",function(t,e){e instanceof u&&"load"===t[0]&&a.emit("xhr-load-added",[t[1],t[2]],e)}),a.on("removeEventListener-end",function(t,e){e instanceof u&&"load"===t[0]&&a.emit("xhr-load-removed",[t[1],t[2]],e)}),a.on("fn-start",function(t,e,n){e instanceof u&&("onload"===n&&(this.onload=!0),("load"===(t[0]&&t[0].type)||this.onload)&&(this.xhrCbStart=(new Date).getTime()))}),a.on("fn-end",function(t,e){this.xhrCbStart&&a.emit("xhr-cb-time",[(new Date).getTime()-this.xhrCbStart,this.onload,e],e)})}},{1:"XL7HBI",2:14,3:12,4:8,ee:"QJf3ax",handle:"D5DuLP",loader:"G9z0Bl"}],14:[function(t,e){e.exports=function(t){var e=document.createElement("a"),n=window.location,r={};e.href=t,r.port=e.port;var o=e.href.split("://");return!r.port&&o[1]&&(r.port=o[1].split("/")[0].split("@").pop().split(":")[1]),r.port&&"0"!==r.port||(r.port="https"===o[0]?"443":"80"),r.hostname=e.hostname||n.hostname,r.pathname=e.pathname,r.protocol=o[0],"/"!==r.pathname.charAt(0)&&(r.pathname="/"+r.pathname),r.sameOrigin=!e.hostname||e.hostname===document.domain&&e.port===n.port&&e.protocol===n.protocol,r}},{}],15:[function(t,e){function n(t){return function(){r(t,[(new Date).getTime()].concat(i(arguments)))}}var r=t("handle"),o=t(1),i=t(2);"undefined"==typeof window.newrelic&&(newrelic=window.NREUM);var a=["setPageViewName","addPageAction","setCustomAttribute","finished","addToTrace","inlineHit","noticeError"];o(a,function(t,e){window.NREUM[e]=n("api-"+e)}),e.exports=window.NREUM},{1:24,2:25,handle:"D5DuLP"}],gos:[function(t,e){e.exports=t("7eSDFh")},{}],"7eSDFh":[function(t,e){function n(t,e,n){if(r.call(t,e))return t[e];var o=n();if(Object.defineProperty&&Object.keys)try{return Object.defineProperty(t,e,{value:o,writable:!0,enumerable:!1}),o}catch(i){}return t[e]=o,o}var r=Object.prototype.hasOwnProperty;e.exports=n},{}],D5DuLP:[function(t,e){function n(t,e,n){return r.listeners(t).length?r.emit(t,e,n):void(r.q&&(r.q[t]||(r.q[t]=[]),r.q[t].push(e)))}var r=t("ee").create();e.exports=n,n.ee=r,r.q={}},{ee:"QJf3ax"}],handle:[function(t,e){e.exports=t("D5DuLP")},{}],XL7HBI:[function(t,e){function n(t){var e=typeof t;return!t||"object"!==e&&"function"!==e?-1:t===window?0:i(t,o,function(){return r++})}var r=1,o="nr@id",i=t("gos");e.exports=n},{gos:"7eSDFh"}],id:[function(t,e){e.exports=t("XL7HBI")},{}],G9z0Bl:[function(t,e){function n(){var t=p.info=NREUM.info,e=f.getElementsByTagName("script")[0];if(t&&t.licenseKey&&t.applicationID&&e){s(d,function(e,n){e in t||(t[e]=n)});var n="https"===u.split(":")[0]||t.sslForHttp;p.proto=n?"https://":"http://",a("mark",["onload",i()]);var r=f.createElement("script");r.src=p.proto+t.agent,e.parentNode.insertBefore(r,e)}}function r(){"complete"===f.readyState&&o()}function o(){a("mark",["domContent",i()])}function i(){return(new Date).getTime()}var a=t("handle"),s=t(1),c=window,f=c.document;t(2);var u=(""+location).split("?")[0],d={beacon:"bam.nr-data.net",errorBeacon:"bam.nr-data.net",agent:"js-agent.newrelic.com/nr-768.min.js"},p=e.exports={offset:i(),origin:u,features:{}};f.addEventListener?(f.addEventListener("DOMContentLoaded",o,!1),c.addEventListener("load",n,!1)):(f.attachEvent("onreadystatechange",r),c.attachEvent("onload",n)),a("mark",["firstbyte",i()])},{1:24,2:15,handle:"D5DuLP"}],loader:[function(t,e){e.exports=t("G9z0Bl")},{}],24:[function(t,e){function n(t,e){var n=[],o="",i=0;for(o in t)r.call(t,o)&&(n[i]=e(o,t[o]),i+=1);return n}var r=Object.prototype.hasOwnProperty;e.exports=n},{}],25:[function(t,e){function n(t,e,n){e||(e=0),"undefined"==typeof n&&(n=t?t.length:0);for(var r=-1,o=n-e||0,i=Array(0>o?0:o);++r<o;)i[r]=t[e+r];return i}e.exports=n},{}],26:[function(t,e){function n(t){return!(t&&"function"==typeof t&&t.apply&&!t[i])}var r=t("ee"),o=t(1),i="nr@original",a=Object.prototype.hasOwnProperty;e.exports=function(t){function e(t,e,r,a){function nrWrapper(){var n,i,s,f;try{i=this,n=o(arguments),s=r&&r(n,i)||{}}catch(d){u([d,"",[n,i,a],s])}c(e+"start",[n,i,a],s);try{return f=t.apply(i,n)}catch(p){throw c(e+"err",[n,i,p],s),p}finally{c(e+"end",[n,i,f],s)}}return n(t)?t:(e||(e=""),nrWrapper[i]=t,f(t,nrWrapper),nrWrapper)}function s(t,r,o,i){o||(o="");var a,s,c,f="-"===o.charAt(0);for(c=0;c<r.length;c++)s=r[c],a=t[s],n(a)||(t[s]=e(a,f?s+o:o,i,s))}function c(e,n,r){try{t.emit(e,n,r)}catch(o){u([o,e,n,r])}}function f(t,e){if(Object.defineProperty&&Object.keys)try{var n=Object.keys(t);return n.forEach(function(n){Object.defineProperty(e,n,{get:function(){return t[n]},set:function(e){return t[n]=e,e}})}),e}catch(r){u([r])}for(var o in t)a.call(t,o)&&(e[o]=t[o]);return e}function u(e){try{t.emit("internal-error",e)}catch(n){}}return t||(t=r),e.inPlace=s,e.flag=i,e}},{1:25,ee:"QJf3ax"}]},{},["G9z0Bl",4,13,7,6,5]);</script>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Personal Body Plan</title>
+                        <!-- Bootstrap -->
+            <link href="/css/bootstrap.css" rel="stylesheet" type="text/css" media="screen">
+        
+        <link href="/css/5880c3b.css" rel="stylesheet" media="screen"/>
+    <link href="/assets/css/fontello.css" rel="stylesheet" media="screen"/>
+    
+        <!-- HTML5 Shim and Respond.js add IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv-printshiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+<![endif]-->
+        <link rel="shortcut icon" href="/favicon.png" />
+    </head>
+    <body class=" page-coaches -details ">
+            <header id="top">
+                    
+<nav id="nav">
+  <strong id="logo">
+    <a href="/">
+      <img src="/bundles/pbptemplate/images/logo.png" alt="Personal Body Plan">
+    </a>
+  </strong>
+
+  <ul class="list list-nav">
+          <li><a href="/resultaten">Resultaten</a></li>
+      <li><a href="/hoe_werkt_het">Hoe werkt het?</a></li>
+      <li><a href="/mobile-app">Coaching App</a></li>
+      <li><a href="/blog/">Blog</a></li>
+      <li><a href="/team?link=team">Team</a></li>
+          <li class="visible-xs"><a href="/login">Inloggen</a></li>
+      </ul>
+  <ul class="list list-nav">
+    <li><a target="_blank" href="http://www.personalbodystore.com/">Personal Body Store</a></li>
+    <li><a target="_blank" href="//personalbodygym.com/">Personal Body Gym
+</a></li>
+  </ul>
+
+  <ul class="list list-nav list-nav-inline">
+    <li><a href="/about-us">Over ons</a></li>
+    <li><a href="/contact">Contact</a></li>
+    <li><a href="/faq">FAQ</a></li>
+  </ul>
+
+  <div class="card-contact">
+  <span>020 - 221 35 19</span>
+  <span><a href="mailto:info@personalbodyplan.com">info@personalbodyplan.com</a></span>
+</div>
+</nav>
+<nav id="nav-user" class="mod-content">
+    
+    <div id="user">
+                <ul>
+                    
+        
+        
+        
+        
+        
+                <li class="first">                    <a href="/registreer" class="btn btn-primary fx-register" data-content-id="registerModal">
+                Start nu jouw plan
+    </a>
+                        
+        </li>    
+            
+        
+        
+        
+        
+        
+                <li class="last">                    <a href="/login" class="btn btn-default fx-login" data-content-id="loginModal">
+                Inloggen
+    </a>
+                        
+        </li>    
+
+    </ul>
+
+    </div>
+</nav>
+            </header>
+
+            <div class="page-header">
+            <span class="label label-info"></span>
+            <h1></h1>
+        </div>
+    
+            <div id="lead" class="mod mod-content -negative"></div>
+    
+            <div id="content" class=" mod mod-content ">
+                                        
+            
+                            
+
+            
+            
+  <section class="mod mod-expert col-md-8">
+  <header>
+    <h1>Anne Gombert</h1>
+    <strong>Personal Body Coach</strong>
+
+    <figure>
+      <img src="http://personalbodyplan.com/media/cache/medium_square/uploads/5ed553ebe6c1441637a0c0e5cdb84532d2b7810c.png" alt="Anne Gombert" />
+    </figure>
+
+    <p>Ik ben iemand die zich voor de volle 100% inzet en erg gedreven is in haar werk en mijn passie voor een fitte lifestyle, sport en voeding. Ik grijp een kans altijd met beide handen aan en zorg dat dit van begin tot eind klopt.</p>
+
+    <div class="mod-social">
+      <ul class="list list-social">
+                        <li><a href="https://www.facebook.com/anne.gombert.94" class="link-social pbp-icon-facebook"><span class="hidden">facebook</span></a></li>
+                            <li><a href="http://instagram.com/anngombert" class="link-social pbp-icon-twitter"><span class="hidden">twitter</span></a></li>
+                            <li><a href="http://instagram.com/anngombert" class="link-social pbp-icon-instagram"><span class="hidden">instagram</span></a></li>
+            </ul>
+    </div>
+  </header>
+
+  <article>
+        <h4>Dit is Anne Gombert</h4>
+    <p>Van kleins af aan ben ik al bezig geweest met sporten. Voetbal, dansen, rennen, ski‘n, snowboarden, surfen, bootcampen, het maakt niet uit of ik zie er wel een uitdaging en plezier in. Door mijn fanatisme heb ik echter soms ook wat gas terug moeten nemen; zo had ik bijvoorbeeld een flinke enkelblessure opgelopen doordat ik te ijverig was tijdens het sporten in de tijd dat ik studeerde aan mijn opleiding. Vanaf het eerste jaar zat ik al met Tom Barten en Pieter Hanraets in hetzelfde jaar en ben ik vrijwel vanaf het begin bij de ontwikkelingen van Personal Body Plan geweest. Ik vond het toen al heel leuk om mee te denken over het ondernemen van bepaalde stappen tijden de opstartfase van Personal Body Plan.<br />
+<br />
+Tijdens mijn blessure moest ik iets veranderen aan mijn lifestyle om gezond te blijven, omdat ik niet meer intensief kon sporten. Tom maakte een voedingsschema voor mij, zodat ik niet kilo&#039;s aan zou komen. Wauw wat was dat een verandering en vooral verbetering van mijn leefpatroon op dat moment. Ik voelde mij fitter, had geen last meer van mijn buik en viel zelfs af terwijl ik in volume meer at. Vanaf dat moment heb ik dit leefpatroon aangehouden en is mijn passie voor voeding alleen maar gegroeid.<br />
+<br />
+Dankzij de ervaringen die ik heb opgedaan tijdens mijn opleiding en die ik opdoe in mijn huidige baan, waarbij ik coaches opleid en klanten begeleid bij de bewustwording van keuzes die zij maken op het gebied van gezondheid, ben ik klaar om de volgende stap in mijn carrière te maken. Ik zie dit als een mooie kans om mensen te motiveren en inspireren om een gezonde lifestyle aan te houden en ze hun lichaam de aandacht te laten geven die het verdient.</p>
+    
+        <div class="mod mod-favourites">
+      <dl>
+                <dt>Interesses:</dt>
+        <dd>Levensverhalen van anderen, sport, koken, reizen</dd>
+        
+                <dt>Favoriete gerechten:</dt>
+        <dd>Verse vis, yoghurt met granola, chocolade</dd>
+        
+                <dt>Favoriete oefeningen:</dt>
+        <dd>Hip Thrusters, Lunges, Bench Press, Side Plank Powell Raise</dd>
+        
+                <dt>In mijn vrije tijd:</dt>
+        <dd>Koffie drinken, lunchen, dineren, sportdaten met vrienden, koken, recepten bedenken, films</dd>
+              </dl>
+    </div>
+    
+    
+        <h4>Wat motiveert mij?</h4>
+    <p>Sinds ik zo actief bezig ben met mijn lifestyle, het trainen en mij verder te verdiepen in de kennis die er is op het gebied van sport, voeding en coaching, word ik regelmatig benaderd door mijn vriendenkring en netwerk met vragen om advies. Maar gelukkig ook met complimenten over mijn lifestyle. Dit geeft mij zo veel positieve energie, net als wanneer ik zie dat ik mensen inspireer om zelf gezonder te worden en te kiezen voor henzelf. Door mij in te leven in de situatie van de ander in combinatie met mijn kennis op het gebied van gezondheid wil ik mensen zo goed mogelijk begeleiden om hun doelen te bereiken.</p>
+    
+        <blockquote>
+      <p>The mind is everything. What you think you become. <cite>Buddha</cite></p>
+    </blockquote>
+    
+    <div class="mod mod-join">
+      <header>
+        <h2>Nu jij</h2>
+        <h4>Word de beste versie van jezelf!</h4>
+      </header>
+
+      <figure>
+        <img src="/bundles/pbptemplate/images/img-mod-join.jpg" alt="Meld je nu aan!">
+      </figure>
+
+      <div class="mod-btn -edge">
+        <a href="/registreer" class="btn btn-secondary">Start nu jouw plan</a>
+        <a href="/hoe_werkt_het" class="btn btn-primary">Hoe werkt het?</a>
+      </div>
+    </div>
+  </article>
+</section>
+
+  <aside class="col-md-4 -right">
+  <div class="mod mod-coaches -preview">
+    <header>
+      <h2>Bekijk onze coaches</h2>
+    </header>
+                    <div class="item active">
+            <ul class="list list-coaches grid-1 -thumbs">
+                              <li>
+                  <a href="/coach/aafke-sommers">
+                    <figure>
+                      <img src="http://personalbodyplan.com/media/cache/square_220/uploads/b9dacda5c96f18ba37abe4fb0f1f555de9370780.png" alt="Aafke Sommers" />
+                      <figcaption><b>Aafke Sommers</b> Personal Body Coach</figcaption>
+                    </figure>
+                    <p>Ik ben Aafke Sommers, 23 jaar oud en woon momenteel in Amsterdam. Ik ben bijna afgestuurd als Crossmediale Communicatiespecialist, ik vind marketing en media erg interessant. Ik ben een spontaan persoon en houd erg van gezelligheid, het liefst ga ik met vriendinnen leuke dingen doen, zoals uitgaan, samen komen, naar het park en leuke lunchplekjes. Ook werk ik nog in een kledingwinkel in de stad.</p>
+                  </a>
+                </li>
+                          </ul>
+        </div>
+              <div class="item ">
+            <ul class="list list-coaches grid-1 -thumbs">
+                              <li>
+                  <a href="/coach/alessandra-scalora">
+                    <figure>
+                      <img src="http://personalbodyplan.com/media/cache/square_220/uploads/950e6ebbda9b310fce2d4e77de0173638818c748.png" alt="Alessandra Scalora" />
+                      <figcaption><b>Alessandra Scalora</b> Personal Body Coach</figcaption>
+                    </figure>
+                    <p>Ik ben Alessandra Scalora, 27 jaar en ik kom uit Eindhoven. Ik woon samen met mijn vriend en chihuahua in een leuk appartement in het bruisende, creatieve gedeelte van Eindhoven, Strijp-S. Ik studeer International Media &amp; Entertainment Management in Breda en ga dit jaar afstuderen.</p>
+                  </a>
+                </li>
+                          </ul>
+        </div>
+              <div class="item ">
+            <ul class="list list-coaches grid-1 -thumbs">
+                              <li>
+                  <a href="/coach/anne-gombert">
+                    <figure>
+                      <img src="http://personalbodyplan.com/media/cache/square_220/uploads/5ed553ebe6c1441637a0c0e5cdb84532d2b7810c.png" alt="Anne Gombert" />
+                      <figcaption><b>Anne Gombert</b> Personal Body Coach</figcaption>
+                    </figure>
+                    <p>Ik ben iemand die zich voor de volle 100% inzet en erg gedreven is in haar werk en mijn passie voor een fitte lifestyle, sport en voeding. Ik grijp een kans altijd met beide handen aan en zorg dat dit van begin tot eind klopt.</p>
+                  </a>
+                </li>
+                          </ul>
+        </div>
+              <div class="item ">
+            <ul class="list list-coaches grid-1 -thumbs">
+                              <li>
+                  <a href="/coach/barbara-van-blijswijk">
+                    <figure>
+                      <img src="http://personalbodyplan.com/media/cache/square_220/uploads/fd208183684d8342e4f4e76e6e2d415655204bbd.png" alt="Barbara van Blijswijk" />
+                      <figcaption><b>Barbara van Blijswijk</b> Personal Body Coach</figcaption>
+                    </figure>
+                    <p>Ik ben een moeder van twee peuters, trotse vrouw van een ondernemer, ben werkzaam als pedagoog, voedingscoach en Personal Body Coach bij Personal Body Plan. Ik houd van uitdagingen zoals parachute springen!</p>
+                  </a>
+                </li>
+                          </ul>
+        </div>
+      
+
+    <div class="mod-btn"><a href="/team#type-coaches" class="btn btn-primary">Bekijk meer coaches</a></div>
+  </div>
+
+  <div class="mod mod-about-us -shortcut mod-content">
+  <header class="col-sm-6">
+    <h2>Je bent in goede handen</h2>
+  </header>
+
+  <figure class="col-sm-6 -right">
+    <img src="/bundles/pbptemplate/images/uploads/img-team.jpg" alt="Je bent in goede handen">
+  </figure>
+
+  <div class="col-sm-6">
+    <p>Ons motto : <strong>"Life-changing results for every body!"</strong></p>
+
+    <p>Personal Body Plan is je ‘personal trainer, voedingsdeskundige en lifestyle coach’ in je broekzak. In oktober 2012 is Personal Body Plan officieel gelanceerd en valt als lifestylemerk onder de vleugels van moederbedrijf Changing Life.</p>
+
+    <div class="mod-btn">
+      <a href="/team#type-team" class="btn btn-primary" data-anchor-scroll>Bekijk ons team</a>
+    </div>
+  </div>
+
+</div>
+
+  <div class="mod mod-coaches -preview">
+    <header>
+      <h2>Bekijk onze experts</h2>
+    </header>
+                  <div class="item active">
+            <ul class="list list-coaches grid-1 -thumbs">
+                              <li>
+                  <a href="/expert/paul-bosma">
+                    <figure>
+                      <img src="http://personalbodyplan.com/media/cache/square_220/uploads/1859195cb3bd8448720d5d2f1ea7818ecb303d88.png" alt="Paul Bosma" />
+                      <figcaption><b>Paul Bosma</b> Head of Knowledge</figcaption>
+                    </figure>
+                    <p>Ik ben een perfectionistische, nauwkeurige, gedisciplineerde, analyserende en humoristische man die altijd ruimte ziet voor verbetering.</p>
+                  </a>
+                </li>
+                          </ul>
+        </div>
+              <div class="item ">
+            <ul class="list list-coaches grid-1 -thumbs">
+                              <li>
+                  <a href="/expert/drs-paul-lammers">
+                    <figure>
+                      <img src="http://personalbodyplan.com/media/cache/square_220/uploads/a0b7fdba334cb54b8732ff698d12f0890a73e1e4.png" alt="Drs. Paul Lammers" />
+                      <figcaption><b>Drs. Paul Lammers</b> Human Movement Scientist</figcaption>
+                    </figure>
+                    <p>Ik ben CSCS (Certified Strength Conditioning Specialist),  Program Manager van Personal Body Plan en fysieke trainer. Als fysieke trainer van NOC*NSF ben ik verantwoordelijk voor de kracht- en conditietraining van het CTO.</p>
+                  </a>
+                </li>
+                          </ul>
+        </div>
+              <div class="item ">
+            <ul class="list list-coaches grid-1 -thumbs">
+                              <li>
+                  <a href="/expert/kelly-selderijk">
+                    <figure>
+                      <img src="http://personalbodyplan.com/media/cache/square_220/uploads/303db040404c6d667a16ad8958166ff7ed47fd99.png" alt="Kelly Selderijk" />
+                      <figcaption><b>Kelly Selderijk</b> Head of Coaching &amp; Nutritionist</figcaption>
+                    </figure>
+                    <p>Ik ben nu 10 jaar bezig met mijn doorlopende fitnessjourney. Afgestudeerd aan de Hogeschool van Amsterdam, richting voeding en diëtetiek met een Post-HBO specialisatie als (top)sport diëtiste. Sportief, hyperactief en een klein beetje een workaholic.</p>
+                  </a>
+                </li>
+                          </ul>
+        </div>
+              <div class="item ">
+            <ul class="list list-coaches grid-1 -thumbs">
+                              <li>
+                  <a href="/expert/jorden-bres">
+                    <figure>
+                      <img src="http://personalbodyplan.com/media/cache/square_220/uploads/9ed996c2e986e1b21232318ce557f27a5b93ba75.png" alt="Jorden Bres" />
+                      <figcaption><b>Jorden Bres</b> Certified Strength &amp; Conditioning Specialist</figcaption>
+                    </figure>
+                    <p>Naast mijn werk als fysieke trainer bij het NOC*NSF hou ik mij bij Personal Body Plan bezig met het kernelement training en de verdere doorontwikkeling daarvan.</p>
+                  </a>
+                </li>
+                          </ul>
+        </div>
+      
+
+    <div class="mod-btn"><a href="/team#type-experts" class="btn btn-primary">Bekijk meer experts</a></div>
+  </div>
+</aside>
+
+        </div>
+    
+            
+  <div class="mod mod-switch mod-content">
+  <dl>
+        <dt>Vorige coach</dt>
+    <dd><a href="/coach/alessandra-scalora" class="pbp-icon-arrow-left">Alessandra Scalora</a></dd>
+    
+        <dt>Volgende coach</dt>
+    <dd><a href="/coach/barbara-van-blijswijk" class="pbp-icon-arrow-right">Barbara van Blijswijk</a></dd>
+      </dl>
+</div>
+  
+          <div class="mod mod-blog-entries mod-content">
+        <header>
+            <h2>Artikelen door Anne Gombert</h2>
+        </header>
+        <ul class="list list-blog-entries grid-4">
+                        <li>
+                <article>
+                    <figure>
+                        <a href="/blog/post/stel-een-doel-en-ga-ervoor,855">
+                                                            <img src="http://blog.personalbodyplan.com/wp-content/uploads/2015/07/361.jpg" alt="Stel een doel en ga ervoor!">
+                                                    </a>
+                    </figure>
+                                        <h6>
+                        <a href="/blog/post/stel-een-doel-en-ga-ervoor,855">
+                            Stel een doel en ga ervoor!
+                        </a>
+                    </h6>
+                    <footer>
+                        <p>
+                            <a href="/blog/author/27">
+                                <b>            Anne Gombert
+    </b>
+                            </a>
+                        </p>
+                    </footer>
+                </article>
+            </li>
+                    </ul>
+        <div class="mod-btn -center">
+            <a href="/blog/author/27" class="btn btn-primary">
+                Bekijk meer artikelen
+            </a>
+        </div>
+    </div>
+
+
+  <div class="mod mod-instagram mod-content">
+    <header>
+        <h2>Anne Gombert op Instagram</h2>
+    </header>
+
+    <iframe src="http://snapwidget.com/in/?u=YW5uZ29tYmVydHxpbnwxNTB8NnwxfHxub3wyNnxub25lfG9uU3RhcnR8bm98bm8%3D&amp;ve=130515" title="Instagram Widget" class="snapwidget-widget" allowTransparency="true" frameborder="0" scrolling="no" style="border:none; overflow:hidden; width:1056px; height:176px"></iframe>
+
+    <div class="mod-btn -center">
+        <a href="http://instagram.com/anngombert" class="btn btn-primary">Bekijk het Instagramprofiel van Anne Gombert</a>
+    </div>
+</div>
+
+  <div class="mod mod-start-plan -shortcut mod-content">
+  <header>
+    <h2>De beste versie van jezelf</h2>
+
+    <div class="mod-btn -center">
+      <a href="/registreer" class="btn btn-primary">Start nu jouw plan</a>
+    </div>
+  </header>
+</div>
+  <div class="mod mod-subscribe mod-content -negative">
+  <section class="col-md-8 -right">
+    <header>
+      <h2>Ontvang tips, recepten en inspiratie in je mailbox.</h2>
+      <p>Meld je aan voor je Personal Body Mail en ontvang het e-book 'De Beste Versie van Jezelf'.</p>
+    </header>
+
+    <form action="https://app.enormail.eu/external/subscribe/2b279a8ce9e564f6d597da011d653ce2" method="post" class="form form-subscribe col-md-10">
+      <input type="hidden" name="name" value=".">
+      <input type="text" class="form-control" name="first_name" id="fn" placeholder="Voornaam">
+      <input type="text" class="form-control" name="last_name" id="ln" placeholder="Achternaam">
+      <input type="email" class="form-control" name="email" id="s" placeholder="Typ je e-mailadres">
+      <span class="mod-btn">
+        <button class="btn btn-primary" type="submit">Aanmelden voor Personal Body Mail</button>
+      </span>
+    </form>
+  </section>
+</div>
+
+
+        <div id="footer-addons" class="mod mod-minis mod-content">
+  <div class="mod mod-mini-timer">
+    <header>
+      <h4>Klaar voor de start?</h4>
+      <p>De nieuwe groep start op <b>Maandag 04-01-2016</b><br>Inschrijven kan nog:</p>
+    </header>
+
+    <time datetime="2015-12-30T23:59">
+      <span><b>0</b> dagen</span>
+      <span><b>0</b> uur</span>
+      <span><b>0</b> min.</span>
+    </time>
+
+    <div class="mod-btn -center">
+      <a href="/registreer" class="btn btn-primary">Start nu jouw plan</a>
+    </div>
+  </div>
+
+  <div class="mod mod-mini-contact">
+    <header>
+      <h4>Neem contact op</h4>
+    </header>
+
+    <div class="card-contact">
+  <span>020 - 221 35 19</span>
+  <span><a href="mailto:info@personalbodyplan.com">info@personalbodyplan.com</a></span>
+</div>
+    <ul class="list list-social">
+            <li><a href="https://nl-nl.facebook.com/PersonalBodyPlan" class="link-social pbp-icon-facebook"><span class="hidden">facebook</span></a></li>
+        <li><a href="https://twitter.com/MijnPBP" class="link-social pbp-icon-twitter"><span class="hidden">twitter</span></a></li>
+        <li class="-hidden"><a href="http://www.pinterest.com/mijnpbp/" class="link-social pbp-icon-pinterest2"><span class="hidden">pinterest</span></a></li>
+        <li><a href="http://instagram.com/personalbodyplan" class="link-social pbp-icon-instagram"><span class="hidden">instagram</span></a></li>
+        <li class="-hidden"><a href="https://www.youtube.com/user/PersonalBodyPlan" class="link-social pbp-icon-youtube3"><span class="hidden">youtube</span></a></li>
+    </ul>
+  </div>
+
+  <div class="mod mod-mini-app">
+    <header>
+      <h4>Download de app</h4>
+      <p>Download de app in de App Store of Google Play Store.</p>
+    </header>
+
+    <div class="mod-btn -column -center">
+      <a href="https://itunes.apple.com/us/app/personal-body-plan/id563507852?mt=8" class="btn btn-img"><img src="/bundles/pbptemplate/images/btn-app-store.png" alt="Personal Body Plan in de App Store"></a>
+      <a href="https://play.google.com/store/apps/details?id=com.ai.pbp" class="btn btn-img"><img src="/bundles/pbptemplate/images/btn-google-store.png" alt="Personal Body Plan in de Google Play Store"></a>
+    </div>
+  </div>
+</div>
+
+<footer id="footer">
+  <nav class="mod-content">
+    <ul class="list">
+        <li>
+            <h6>Resultaten</h6>
+            <ul class="list">
+                <li><a href="/resultaten">Alle resultaten</a></li>
+            </ul>
+        </li>
+        <li>
+            <h6>Hoe werkt het?</h6>
+            <ul class="list">
+                <li><a href="/hoe_werkt_het#what">Onze filosofie</a></li>
+                <li><a href="/hoe_werkt_het#why">Onze werkwijze</a></li>
+                <li><a href="/hoe_werkt_het#values">Wat kost het?</a></li>
+            </ul>
+        </li>
+        <li>
+            <h6>Coaching App</h6>
+            <ul class="list">
+                <li><a href="/mobile-app#features">Functionaliteiten</a></li>
+                <li><a href="/mobile-app#benefits">Voordelen</a></li>
+                <li><a href="/mobile-app#download">Download</a></li>
+            </ul>
+        </li>
+        <li>
+            <h6>Coaches &amp; Experts</h6>
+            <ul class="list">
+                <li><a href="/team#type-coach">Coaches</a></li>
+                <li><a href="/team#type-expert">Experts</a></li>
+            </ul>
+        </li>
+                    <li>
+                <h6>Blog</h6>
+                <ul class="list">
+                                            <li>
+                            <a href="/blog/categories/behaviour,2">
+                                Gedrag
+                            </a>
+                        </li>
+                                            <li>
+                            <a href="/blog/categories/nutrition,3">
+                                Voeding
+                            </a>
+                        </li>
+                                            <li>
+                            <a href="/blog/categories/training,5">
+                                Training
+                            </a>
+                        </li>
+                                            <li>
+                            <a href="/blog/categories/recovery,4">
+                                Herstel
+                            </a>
+                        </li>
+                                    </ul>
+            <li>
+            </ul>
+</nav>
+  <div id="foot-brand" class="mod-content">
+  <em id="foot-logo">
+    <a href="/">
+      <img src="/bundles/pbptemplate/images/logo-full.png" alt="Personal Body Plan">
+    </a>
+  </em>
+
+  <ul class="list list-inline">
+    <li><a href="/about-us">Over ons</a></li>
+    <li class="-hidden"><a href="#">Pers</a></li>
+    <li><a href="/contact">Contact</a></li>
+  </ul>
+
+  <ul class="list list-social">
+            <li><a href="https://nl-nl.facebook.com/PersonalBodyPlan" class="link-social pbp-icon-facebook"><span class="hidden">facebook</span></a></li>
+        <li><a href="https://twitter.com/MijnPBP" class="link-social pbp-icon-twitter"><span class="hidden">twitter</span></a></li>
+        <li class="-hidden"><a href="http://www.pinterest.com/mijnpbp/" class="link-social pbp-icon-pinterest2"><span class="hidden">pinterest</span></a></li>
+        <li><a href="http://instagram.com/personalbodyplan" class="link-social pbp-icon-instagram"><span class="hidden">instagram</span></a></li>
+        <li class="-hidden"><a href="https://www.youtube.com/user/PersonalBodyPlan" class="link-social pbp-icon-youtube3"><span class="hidden">youtube</span></a></li>
+    </ul>
+
+  <a href="mailto:careers@personalbodyplan.com" class="btn btn-primary">Ervaren PBP'er en nu Coach worden?</a>
+</div>
+  <div id="foot-note" class="mod-content">
+    <p id="copy">Copyright 2015 &copy; Personal Body Plan</p>
+
+    <ul class="list list-inline">
+        <li><a href="/algemene_voorwaarden">Algemene Voorwaarden</a></li>
+    </ul>
+
+    <p class="pull-right">Lifestyle Brand van Changing Life</p>
+</div>
+</footer>
+                            <!-- jQuery (necessary for Bootstraps JavaScript plugins) -->
+            <script src="/js/jquery.js"></script>
+            <!-- Include all JavaScripts, compiled by Assetic -->
+            <script src="/js/bootstrap.js"></script>
+        
+        <script type="text/javascript" src="/js/33cd85e.js"></script>
+        
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-3254241-15']);
+    _gaq.push(['_setDomainName', 'personalbodyplan.com']);
+    _gaq.push(['_setAllowLinker', true]);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+        var ga = document.createElement('script');
+        ga.type = 'text/javascript';
+        ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ga, s);
+    })();
+</script>
+
+    <script>
+    (function(h,o,t,j,a,r){
+        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+        h._hjSettings={hjid:55945,hjsv:5};
+        a=o.getElementsByTagName('head')[0];
+        r=o.createElement('script');r.async=1;
+        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+        a.appendChild(r);
+    })(window,document,'//static.hotjar.com/c/hotjar-','.js?sv=');
+</script>
+    <script type="text/javascript">window.NREUM||(NREUM={});NREUM.info={"beacon":"bam.nr-data.net","licenseKey":"f09a50a444","applicationID":"4542004","transactionName":"NV1SZUsCC0BYVUYPDQwXcVJNCgpdFmZwNiENWVNZXBAgS0lTQBIRIE1eVVUGX3dcUFMTDhYCX0NdBhdWXWRdERE=","queueTime":0,"applicationTime":314,"atts":"GRpREwMYGE4=","errorBeacon":"bam.nr-data.net","agent":"js-agent.newrelic.com\/nr-768.min.js"}</script></body>
+</html>

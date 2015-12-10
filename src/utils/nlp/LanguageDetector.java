@@ -95,7 +95,7 @@ public class LanguageDetector {
 					&& !seenWords.contains(baseWord.get(englishWord))) {
 				englishWordCount++;
 				seenWords.add(englishWord);
-				 logger.info("Found " + englishWord +
+				logger.info("Found " + englishWord +
 				   " in content. Total count " + englishWordCount);
 				continue;
 			}

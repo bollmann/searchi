@@ -16,7 +16,6 @@ import java.util.Set;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
@@ -24,7 +23,6 @@ import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.input.KeyValueTextInputFormat;
-import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.apache.log4j.Logger;
@@ -33,25 +31,25 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import utils.file.FileUtils;
-import utils.nlp.LanguageDetector;
+import utils.nlp.Dictionary;
 
 import com.google.gson.Gson;
 
 import crawler.dao.URLContent;
-import db.wrappers.DynamoDBWrapper;
 import edu.stanford.nlp.util.StringUtils;
 
 public class InvertedIndexJob {
-	public static enum Feature {
+	public static enum FeatureType {
 		TOTAL_COUNTS, HEADER_COUNTS, LINK_COUNTS, META_TAG_COUNTS
 	};
 
 	private static Logger logger = Logger.getLogger(InvertedIndexJob.class);
 	
-	
 	/** Mapper Class for Document Indexer */
 	public static class DocumentIndexer extends
 			Mapper<Text, Text, Text, Text> {
+
+		private static final float ENG_THRESHOLD = 0.5f;
 
 		@Override
 		public void map(Text docId, Text jsonBlob, Context context)
@@ -60,27 +58,35 @@ public class InvertedIndexJob {
             URLContent page = new Gson().fromJson(jsonBlob.toString(),
 					URLContent.class);
 
-			Map<Feature, WordCounts> allCounts = computeCounts(page, 1);
-			WordCounts wordCounts = allCounts.get(Feature.TOTAL_COUNTS);
+			Map<FeatureType, WordCounts> allCounts = computeCounts(page, 1);
 			
-			for (String word : wordCounts) {
+			WordCounts totWordCounts = allCounts.get(FeatureType.TOTAL_COUNTS);
+			
+			// Num of english words below threshold
+			if (totWordCounts.getPercentage() < ENG_THRESHOLD) {
+				return;
+			}
+			
+			for (String word : totWordCounts) {
+				
 				DocumentFeatures doc = new DocumentFeatures();
 
 				doc.setDocId(Integer.parseInt(docId.toString()));
 				doc.setEuclideanTermFrequency(allCounts.get(
-					Feature.TOTAL_COUNTS).getEuclideanTermFrequency(word));
-				doc.setMaximumTermFrequency(allCounts.get(Feature.TOTAL_COUNTS)
+					FeatureType.TOTAL_COUNTS).getEuclideanTermFrequency(word));
+				doc.setMaximumTermFrequency(allCounts.get(FeatureType.TOTAL_COUNTS)
 					.getMaximumTermFrequency(word));
-				doc.setTotalCount(allCounts.get(Feature.TOTAL_COUNTS)
+				doc.setTotalCount(allCounts.get(FeatureType.TOTAL_COUNTS)
 					.getCounts(word));
-				doc.setHeaderCount(allCounts.get(Feature.HEADER_COUNTS)
+				doc.setHeaderCount(allCounts.get(FeatureType.HEADER_COUNTS)
 					.getCounts(word));
-				doc.setLinkCount(allCounts.get(Feature.LINK_COUNTS)
+				doc.setLinkCount(allCounts.get(FeatureType.LINK_COUNTS)
                     .getCounts(word));
-                doc.setMetaTagCount(allCounts.get(Feature.META_TAG_COUNTS)
+                doc.setMetaTagCount(allCounts.get(FeatureType.META_TAG_COUNTS)
                     .getCounts(word));
-                doc.setPositions(wordCounts.getPosition(word));
+                doc.setPositions(totWordCounts.getPosition(word));
 
+                // TODO - Check for english word
 				context.write(new Text(word), new Text(new Gson().toJson(doc)));	
 			}
 		}
@@ -187,41 +193,46 @@ public class InvertedIndexJob {
 		System.exit(job.waitForCompletion(true) ? 0 : 1);
 	}
 	
-	/** Calculating all counts for tokens and ngrams for Page contents */
-	public static Map<Feature, WordCounts> computeCounts(URLContent page, int nGramSize) {
+	/** Calculating all counts for tokens and ngrams for Page contents 
+	 * @throws IOException */
+	public static Map<FeatureType, WordCounts> computeCounts(URLContent page,
+			int nGramSize) throws IOException {
+		
+		Dictionary dict = Dictionary.getInstance();
+		
 		Document doc = Jsoup.parse(page.getContent(), page.getUrl());
 		doc.select("script,style").remove();
 				
 		List<String> linkTokens = new Tokenizer(
             doc.select("a[href]").text().replace(".", " ")).getTokens();		
 		WordCounts linkCounts = new WordCounts(
-            StringUtils.getNgrams(linkTokens, 1, nGramSize), nGramSize);
+            StringUtils.getNgrams(linkTokens, 1, nGramSize), nGramSize, dict);
 		linkCounts.computeNormalDocSizes();
 		
 		List<String> metaTagTokens = new Tokenizer(
             extractMetaTags(doc)).getTokens();		
 		WordCounts metaTagCounts = new WordCounts(
-            StringUtils.getNgrams(metaTagTokens, 1, nGramSize), nGramSize);
+            StringUtils.getNgrams(metaTagTokens, 1, nGramSize), nGramSize, dict);
 		metaTagCounts.computeNormalDocSizes();
 		
 		List<String> headerTokens = new Tokenizer(
             doc.select("title,h1,h2,h3,h4,h5,h6").text().replace(".", " ")).getTokens();		
 		WordCounts headerCounts = new WordCounts(
-            StringUtils.getNgrams(headerTokens, 1, nGramSize), nGramSize);
+            StringUtils.getNgrams(headerTokens, 1, nGramSize), nGramSize, dict);
 		headerCounts.computeNormalDocSizes();
 		
 		List<String> normalTokens = new Tokenizer(
             doc.select("title,body").text().replace(".", " ")).getTokens();
 		// logger.info("Normal tokens:" + normalTokens);
 		WordCounts totalCounts = new WordCounts(
-            StringUtils.getNgrams(normalTokens, 1, nGramSize), nGramSize).addCounts(metaTagCounts);
+            StringUtils.getNgrams(normalTokens, 1, nGramSize), nGramSize, dict).addCounts(metaTagCounts);
 		totalCounts.computeNormalDocSizes();
 		
-		Map<Feature, WordCounts> allCounts = new HashMap<Feature, WordCounts>();
-		allCounts.put(Feature.LINK_COUNTS, linkCounts);
-		allCounts.put(Feature.META_TAG_COUNTS, metaTagCounts);
-		allCounts.put(Feature.HEADER_COUNTS, headerCounts);
-		allCounts.put(Feature.TOTAL_COUNTS, totalCounts);
+		Map<FeatureType, WordCounts> allCounts = new HashMap<FeatureType, WordCounts>();
+		allCounts.put(FeatureType.LINK_COUNTS, linkCounts);
+		allCounts.put(FeatureType.META_TAG_COUNTS, metaTagCounts);
+		allCounts.put(FeatureType.HEADER_COUNTS, headerCounts);
+		allCounts.put(FeatureType.TOTAL_COUNTS, totalCounts);
 
 		return allCounts;
 	}
