@@ -21,7 +21,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 
 import db.wrappers.DynamoDBWrapper;
 
-@DynamoDBTable(tableName = "URLMetaInfo")
+@DynamoDBTable(tableName = "URLMetaInfo2")
 public class URLMetaInfo {
 	private Logger logger = Logger.getLogger(getClass());
 

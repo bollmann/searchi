@@ -34,7 +34,7 @@ public class S3Wrapper {
 	private final Logger logger = Logger.getLogger(getClass());
 	private static S3Wrapper instance;
 	private AmazonS3 s3client;
-	public final String URL_BUCKET = "cis455-url-content-new"; // cannot contain
+	public final String URL_BUCKET = "cis455-url-content-english"; // cannot contain
 																// uppercase
 																// letters.
 																// should

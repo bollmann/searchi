@@ -47,7 +47,7 @@ public class SingleNodeCrawler extends HttpServlet {
 				"flushQueue");
 
 		if (flushData.equals("yes")) {
-			ddb.deleteTable("URLMetaInfo");
+			ddb.deleteTable("URLMetaInfo2");
 			s3.deleteBucket(s3.URL_BUCKET);
 
 		}
@@ -59,7 +59,7 @@ public class SingleNodeCrawler extends HttpServlet {
 
 		s3.createBucket(s3.URL_BUCKET);
 		s3.createBucket(s3.URL_QUEUE_BUCKET);
-		ddb.createTable("URLMetaInfo", 30, 30, "url", "S");
+		ddb.createTable("URLMetaInfo2", 30, 30, "url", "S");
 		ddb.createTable("DomainInfo", 15, 15, "domain", "S");
 
 		// look for queue in s3. If not there, then initialize to new

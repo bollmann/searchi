@@ -39,12 +39,12 @@
      
           <context-param>
      	<param-name>domain-range</param-name>
-     	<param-value>test</param-value>
+     	<param-value>1</param-value>
      </context-param>
      
      <context-param>
      	<param-name>domain-config</param-name>
-     	<param-value>conf/domains1.csv</param-value>
+     	<param-value>conf/targeted.csv</param-value>
      </context-param>
      
      <context-param>

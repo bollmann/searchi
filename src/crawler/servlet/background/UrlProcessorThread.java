@@ -53,7 +53,7 @@ public class UrlProcessorThread extends Thread {
 				try {
 					logger.debug("UrlProcessorThread waiting for jobQueue");
 					if (urlQueue.getSize() <= 0) {
-						logger.info("UrlProcessorThread is going to sleep!");
+						logger.debug("UrlProcessorThread is going to sleep!");
 						urlQueue.wait();
 					}
 				} catch (InterruptedException e) {
@@ -95,7 +95,11 @@ public class UrlProcessorThread extends Thread {
 							mq.addUrlToFrontier(url);
 
 						} else {
-							logger.info("Discarded url " + url);
+							logger.info("Discarded url " + url 
+									+ " path allowed? " + mn.isAllowed(parsedUrl.getPath())
+									+ " visited? " + mq.isVisited(url)
+									+ " blacklisted? " + blacklistedDomains.contains(domain)
+									+ " allowed? " + allowedDomains.contains(domain));
 							continue;
 						}
 					}

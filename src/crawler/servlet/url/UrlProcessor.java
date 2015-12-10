@@ -12,14 +12,13 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.apache.tika.exception.TikaException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.tidy.Tidy;
-import org.xml.sax.SAXException;
 
 import utils.nlp.LanguageDetector;
+import utils.nlp.PornDetector;
 
 import com.amazonaws.AmazonServiceException;
 import com.google.gson.Gson;
@@ -29,7 +28,6 @@ import crawler.dao.URLContent;
 import crawler.errors.QueueFullException;
 import crawler.info.URLInfo;
 import crawler.parsers.Parser;
-import crawler.parsers.PdfUtils;
 import crawler.requests.Http10Request;
 import crawler.requests.HttpRequest;
 import crawler.responses.HttpResponse;
@@ -65,13 +63,14 @@ public class UrlProcessor {
 		URLContent urlContent = null;
 
 		if (info != null) {
-			logger.info("Not getting new data for " + url
-					+ " as it's already present in ddb");
+			 logger.info("Not getting new data for " + url
+			 + " as it's already present in ddb");
+			// logger.info("Looking for item")
 			// String content = s3.getItem(info.getId());
 			// Gson gson = new Gson();
 			// logger.debug("Parsing content to urlcontent:" + content);
 			// urlContent = gson.fromJson(content, URLContent.class);
-			return new ArrayList<String>();
+			// return new ArrayList<String>();
 		} else {
 			logger.debug("Getting fresh data for:" + url);
 			urlContent = getNewContent(url);
@@ -176,17 +175,23 @@ public class UrlProcessor {
 				request.setPath(new URL(url).getPath());
 				request.setMethod("GET");
 				request.setHeader("User-Agent", "cis455crawler");
-				request.setHeader("Accept",
+				request.setHeader(
+						"Accept",
 						"text/html,application/pdf,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
 				response = HttpClient.genericGet(url, request);
-				
+
 				content = new String(response.getBody());
-				logger.info("Content type:" + response.getHeader("Content-Type") + " and body " + content);
-				if(response.getHeader("Content-Type").equals("application/pdf")) {
+				logger.info("Content type:"
+						+ response.getHeader("Content-Type") + " and body "
+						+ content);
+				if (response.getHeader("Content-Type")
+						.equals("application/pdf")) {
 					content = "<html><body>" + content + "</body></html>";
 				}
+
 				// file handling logic
-				if(!LanguageDetector.isEnglish(content)) {
+				if (!LanguageDetector.isEnglish(content)
+						&& !PornDetector.isPorn(content)) {
 					return null;
 				}
 

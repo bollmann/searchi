@@ -1,8 +1,6 @@
 package indexer.servlets;
 
 import indexer.DocumentScore;
-import indexer.InvertedIndex;
-import indexer.InvertedIndexFetcher;
 import indexer.api.DocumentIDs;
 import indexer.clients.InvertedIndexClient;
 import indexer.dao.DocumentFeatures;
@@ -19,9 +17,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
