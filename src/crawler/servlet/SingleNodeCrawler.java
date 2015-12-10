@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -135,6 +134,7 @@ public class SingleNodeCrawler extends HttpServlet {
 
 		List<String> seedUrls = new ArrayList<String>() {
 			{
+				add("https://news.ycombinator.com/");
 				// add("https://en.wikipedia.org/wiki/Main_Page");
 				// add("https://www.reddit.com/");
 				// add("http://www.dmoz.org/");
