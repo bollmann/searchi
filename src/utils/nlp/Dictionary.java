@@ -1,30 +1,32 @@
 package utils.nlp;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Scanner;
 import java.util.Set;
-
-import utils.file.FilePolicy;
 
 
 public class Dictionary {
-	private static final String DIR_PATH = "resources/dict/all-english";	
 	private static Dictionary dict = null;
 	
 	private Set<String> words;
 	
-	private Dictionary() throws IOException {
-		String dictWords = FilePolicy.readFile(DIR_PATH);
+	private Dictionary(InputStream resource) throws IOException {
+		String dictWords = new Scanner(resource).useDelimiter("\\Z").next();
 		List<String> lines = Arrays.asList(dictWords.split("\n"));
 		words = new HashSet<>(lines);
 	}
 	
-	public static Dictionary getInstance() throws IOException {
-		if (dict == null) {
-			dict = new Dictionary();
-		}
+	public static Dictionary createInstance(InputStream source) throws IOException {
+		if(dict == null)
+			dict = new Dictionary(source);
+		return dict;
+	}
+	
+	public static Dictionary getInstance() {
 		return dict;
 	}
 	
@@ -38,5 +40,4 @@ public class Dictionary {
 		}
 		return words.contains(word);
 	}
-
 }

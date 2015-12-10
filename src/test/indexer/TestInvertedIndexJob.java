@@ -5,6 +5,8 @@ import indexer.offline.InvertedIndexJob;
 import indexer.offline.InvertedIndexJob.FeatureType;
 import indexer.offline.Tokenizer;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,14 +19,22 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import utils.file.FilePolicy;
+import utils.nlp.Dictionary;
 
 import crawler.dao.URLContent;
 import edu.stanford.nlp.util.StringUtils;
 
 public class TestInvertedIndexJob extends TestCase {
+	private Dictionary dict;
+	
+	@BeforeClass
+	public void setup() throws FileNotFoundException, IOException {
+		dict = Dictionary.createInstance(new FileInputStream("resources/dict/all-english"));
+	}
 	
 	@Test
 	public void testComputeCounts() throws IOException {
@@ -43,7 +53,7 @@ public class TestInvertedIndexJob extends TestCase {
 		URLContent page = new URLContent("http://www.schnitzel.com/");
 		page.setContent(content.toString());
 		
-		Map<FeatureType, WordCounts> allCounts = InvertedIndexJob.computeCounts(page, 1);
+		Map<FeatureType, WordCounts> allCounts = InvertedIndexJob.computeCounts(page, 1, dict);
 		
 		// link counts
 		Map<String, Integer> expLinkCounts = new HashMap<String, Integer>();
@@ -126,7 +136,7 @@ public class TestInvertedIndexJob extends TestCase {
 		URLContent content = new URLContent();
 		content.setContent(sb.toString());
 		content.setUrl("http://www.google.com");
-		Map<FeatureType, WordCounts> wordCounts = InvertedIndexJob.computeCounts(content, 1);
+		Map<FeatureType, WordCounts> wordCounts = InvertedIndexJob.computeCounts(content, 1, dict);
 		System.out.println(wordCounts);
 		
 		//total counts
@@ -177,7 +187,7 @@ public class TestInvertedIndexJob extends TestCase {
 		URLContent content = new URLContent();
 		content.setContent(sb.toString());
 		content.setUrl("http://www.google.com");
-		Map<FeatureType, WordCounts> wordCounts = InvertedIndexJob.computeCounts(content, 2);
+		Map<FeatureType, WordCounts> wordCounts = InvertedIndexJob.computeCounts(content, 2, dict);
 //		System.out.println(wordCounts);
 		
 		//total counts
@@ -210,11 +220,11 @@ public class TestInvertedIndexJob extends TestCase {
 		urlContent.setContent(content);
 		urlContent.setUrl("http://www.google.com");
 		Date start = Calendar.getInstance().getTime();
-		Map<FeatureType, WordCounts> wordCounts = InvertedIndexJob.computeCounts(urlContent, 3);
+		Map<FeatureType, WordCounts> wordCounts = InvertedIndexJob.computeCounts(urlContent, 3, dict);
 		Date end = Calendar.getInstance().getTime();
 		long timeTakenForBigram = (end.getTime() - start.getTime());
 		start = Calendar.getInstance().getTime();
-		wordCounts = InvertedIndexJob.computeCounts(urlContent, 1);
+		wordCounts = InvertedIndexJob.computeCounts(urlContent, 1, dict);
 		end = Calendar.getInstance().getTime();
 		long timeTakenForUnigram = (end.getTime() - start.getTime());
 		System.out.println("Time taken for unigram:" + timeTakenForUnigram + " and bigram:" + timeTakenForBigram);
