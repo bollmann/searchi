@@ -13,8 +13,6 @@ import java.util.concurrent.TimeUnit;
 import org.apache.log4j.Logger;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-import com.amazonaws.services.dynamodbv2.model.ProvisionedThroughput;
-import com.amazonaws.services.dynamodbv2.model.TableDescription;
 
 import db.wrappers.DynamoDBWrapper;
 
