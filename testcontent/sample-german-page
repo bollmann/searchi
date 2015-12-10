@@ -1,0 +1,699 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:og="http://ogp.me/ns#" xmlns:fb="http://ogp.me/ns/fb#" itemscope itemtype="http://schema.org/WebPage">
+<head>
+    
+    <title>news.de</title>                                                            <meta property="fb:admins" content="100000514082124" />    
+    
+    <!-- Google Plus Profile for Google Search -->
+    <link href="https://plus.google.com/+newsde" rel="publisher" />
+    <meta http-equiv="expires" content="0" />
+<meta http-equiv="Content-Language" content="de" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="robots" content="noindex,follow,noarchive,noodp" />
+<meta name="modified" content="2009-08-24T12:00:00+01:00" />
+<meta name="date" content="2009-08-24T12:00:00+01:00" />
+<meta name="copyright" content="News.de, Leipzig, Deutschland (Germany)" />
+<meta name="author" content="News.de-Redaktion" />
+<meta name="verify-v1" content="0QiG4+YGfZKrTd0vSFF91rnz5wyW1zxdHvhPTStRTM8=" />
+<meta name="pragma" content="no-cache" />
+<meta name="cache-control" content="no-cache" />
+<meta name="MSSmartTagsPreventParsing" content="true" />
+<meta name="imagetoolbar" content="no" />
+<meta name="revisit-after" content="1 day" />    
+                                <link href="/module/newsfrontend/css_min/g18_styles_r26171.css" media="screen" rel="stylesheet" type="text/css" />
+<link href="/module/newsfrontend/css/newsletter_r26171.css" media="screen" rel="stylesheet" type="text/css" />
+<link href="http://m.news.de/newsletter/newsletter/" media="only screen and (max-width: 640px)" rel="alternate" />
+<link href="http://www.news.de/newsletter/newsletter/" rel="canonical" />
+
+    <!--[if lte IE 7]>
+        <link rel="stylesheet" type="text/css" href="/module/newsfrontend/css/iehacks.css" />
+    <![endif]-->
+
+        
+        <script type="text/javascript">
+        mobilePageRegex = '#/landing/|(video)/(academixer|nachrichten|clip-tipp)|/newsclub/|/livefussball/|/newsticker/|/umfrage/|/anzeige/|/morgenattacke/|/quiz/|/regional/|/rss/|news.de/nachrichten/|news.de/thema/|news.de/autor/#';
+        mobileAllowed = 'landing/bahn';
+    </script>
+        <script type="text/javascript" src="/module/newsfrontend/js_min/g17_scripts_r26171.js"></script>
+<script type="text/javascript" src="/module/newsfrontend/js/nlregistration_r26171.js"></script>
+<script type="text/javascript">
+    //<![CDATA[
+$(document).ready(function(){
+    initNlRegForm('newsletterFormBox');
+});
+    //]]>
+</script>    <!--[if lte IE 6]>
+            <script type="text/javascript" src="/module/newsfrontend/js/ie6.js" > </script>
+    <![endif]-->
+                        <script type="text/javascript">
+        var uaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://");
+        document.write(unescape("%3Cscript src='" + uaJsHost + "analytics.unister-gmbh.de/ua/ua.js' type='text/javascript' async %3E%3C/script%3E"));
+    </script>
+            <meta property="og:site_name" itemprop="publisher" content="News.de" />
+    <!-- Cookie Einveständniserklärung -->
+    <!-- Begin Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent -->
+<script type="text/javascript">
+    window.cookieconsent_options = {
+        "message":"Hinweis: Durch Nutzung von news.de stimmen Sie der Verwendung von Cookies für Analysezwecke, personalisierte Inhalte und Werbung zu.",
+        "dismiss":"OK",
+        "learnMore":"Mehr erfahren",
+        "link":"http://www.news.de/service/privacypolicy/#cookies",
+        "theme":"dark-bottom"
+    };
+</script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js"></script>
+<!-- End Cookie Consent plugin --></head>
+
+<!--[if IE 7 ]>    <body class="ie7 ie noJs"> <![endif]-->
+<!--[if IE 8 ]>    <body class="ie8 ie noJs"> <![endif]-->
+<!--[if IE 9 ]>    <body class="ie9 ie noJs"> <![endif]-->
+<!--[if (gte IE 10)|!(IE)]><!--> <body class="noJs"> <!--<![endif]-->
+    <!-- remove noJs class and add js as class -->
+    <script type="text/javascript">
+            //<![CDATA[
+            (function(){ var b = document.body; b.className = b.className.replace(/noJs/, 'js'); })();
+            //]]>
+    </script>
+
+    <script type="text/javascript" src="http://static.unister-adservices.com/jsapi"></script>
+
+    <div class="wrapper ">
+        <div class="whiteBg clearfix ">
+                                                            <div class="header">
+    <ul class="headerLinks clearfix">
+        <li>
+            <a rel="nofollow" href="http://www.news.de/newsletter/newsletter/">
+                <i class="icon-star"></i>
+                <strong>Newsletter</strong>
+            </a>
+        </li>
+        <li>
+            <a href="http://www.news.de/service/homepage" rel="nofollow">
+                <i class="icon-home"></i>
+                <strong>als Startseite</strong>
+            </a>
+        </li>
+        <li>
+            <a href="http://www.facebook.com/News.de/" target="_blank" rel="nofollow" title="News.de bei Facebook">
+                <i class="icon-facebook-circled">&nbsp;</i>
+                <abbr>News.de bei Facebook</abbr>
+            </a>
+            <a href="https://plus.google.com/109158619449501807211?prsrc=3" target="_blank" rel="nofollow" title="News.de bei Google+">
+                <i class="icon-gplus-circled">&nbsp;</i>
+                <abbr>News.de bei Google+</abbr>
+            </a>
+            <a href="http://twitter.com/#!/news_de" target="_blank" rel="nofollow" title="News.de bei Twitter">
+                <i class="icon-twitter-circled">&nbsp;</i>
+                <abbr>News.de bei Twitter</abbr>
+            </a>
+            <a href="http://www.news.de/rss" target="_blank" rel="nofollow" title="RSS-Feed von News.de">
+                <i class="icon-rss">&nbsp;</i>
+                <abbr>RSS-Feed von News.de</abbr>
+            </a>
+        </li>
+    </ul>
+    <div class="mainMenu clearfix">
+        <div class="headerLogo size1of5 fll">
+            <a class="logo sprite ir" href="http://www.news.de/">news.de</a>
+            <span class="claim sprite ir">mehr als Nachrichten</span>
+        </div>
+        <div class="navigation size4of5 fll">
+    <div class="mainNaviBar">
+        <input type="checkbox" id="mainNaviToggle" class="mainNaviToggle hidden" />
+        <label for="mainNaviToggle" class="mainMenuLink"><i class="icon-menu">&nbsp;</i>Navigation</label>
+        <ul id="mainNavi" class="mainNavi clearfix">
+                                                                                        <li class="active" id="naviMainactual_ressort">
+                                                        <a id="top_actual_ressort"                                title="Aktuelles"
+                                href="http://www.news.de/aktuell/849808450/"
+                                                                                                class="navLevel1">Aktuelles</a>
+                        </li>
+                                                                                            <li  id="naviMainentertainment_ressort">
+                                                        <a id="top_entertainment_ressort"                                title="Unterhaltung"
+                                href="http://www.news.de/unterhaltung/849808446/"
+                                                                                                class="navLevel1">Unterhaltung</a>
+                        </li>
+                                                                                            <li  id="naviMainadvisor_ressort">
+                                                        <a id="top_advisor_ressort"                                title="Ratgeber"
+                                href="http://www.news.de/ratgeber/849808444/"
+                                                                                                class="navLevel1">Ratgeber</a>
+                        </li>
+                                                                                            <li  id="naviMaintopicoverview">
+                                                        <a id="top_topicoverview"                                title="Themen"
+                                href="http://www.news.de/nachrichten/"
+                                                                                                class="navLevel1">Themen</a>
+                        </li>
+                                                                                            <li  id="naviMainpictures">
+                                                        <a id="top_pictures"                                title="Mediathek"
+                                href="http://www.news.de/mediathek"
+                                                                                                class="navLevel1">Mediathek</a>
+                        </li>
+                                                                                            <li  id="naviMaininteractive">
+                                                        <a id="top_interactive"                                title="Mitmachen"
+                                href="http://www.news.de/mitmachen"
+                                rel="nofollow"                                                                class="navLevel1">Mitmachen</a>
+                        </li>
+                                                                                            <li  id="naviMaindeals">
+                                                        <a id="top_deals"                                title="Deals"
+                                href="http://sale.news.de"
+                                                                target="_blank"                                class="navLevel1">Deals</a>
+                        </li>
+                                        <li id="searchBar" class="searchBar">
+                
+<a href="#search">
+    <i class="icon-search">&nbsp;</i>
+    <abbr>Suche</abbr>
+</a>
+<form id="searchForm" class="searchForm clearfix" action="/search/" method="get">
+    <div class="size3of4 fll">
+            <input type="text" id="searchterm" name="query" value="" placeholder="Suchbegriff" />
+        </div>
+    <div class="size1of4 fll">
+        <input type="hidden" id="aid" name="aid" value="0"/>
+        <button id="searchButton" type="submit" class="btn btnGreen flr">Finden</button>
+    </div>
+</form>            </li>
+        </ul>
+    </div>
+
+    <div id="subNaviBar" class="subNaviBar clearfix">
+                                                        <ul class="subNavi fll naviMainactual_ressort">
+                                                                        <li>
+                                <a title="Politik" href="http://www.news.de/aktuelles/politik/364367598/1/"   class="navLevel2">Politik</a>
+                            </li>
+                                                                                                <li>
+                                <a title="Wirtschaft" href="http://www.news.de/aktuelles/wirtschaft/364371168/1/"   class="navLevel2">Wirtschaft</a>
+                            </li>
+                                                                                                <li>
+                                <a title="Panorama" href="http://www.news.de/aktuelles/panorama/364370929/1/"   class="navLevel2">Panorama</a>
+                            </li>
+                                                                                                <li>
+                                <a title="Sport" href="http://www.news.de/aktuelles/sport/364371176/1/"   class="navLevel2">Sport</a>
+                            </li>
+                                                            </ul>
+                                                            <ul class="subNavi fll hidden naviMainentertainment_ressort">
+                                                                        <li>
+                                <a title="Promis" href="http://www.news.de/unterhaltung/promis/849808447/1/"   class="navLevel2">Promis</a>
+                            </li>
+                                                                                                <li>
+                                <a title="TV" href="http://www.news.de/unterhaltung/tv/849808448/1/"   class="navLevel2">TV</a>
+                            </li>
+                                                                                                <li>
+                                <a title="Film" href="http://www.news.de/unterhaltung/film/849808449/1/"   class="navLevel2">Film</a>
+                            </li>
+                                                                                                <li>
+                                <a title="Medien" href="http://www.news.de/unterhaltung/medien/364371200/1/"   class="navLevel2">Medien</a>
+                            </li>
+                                                            </ul>
+                                                            <ul class="subNavi fll hidden naviMainadvisor_ressort">
+                                                                        <li>
+                                <a title="Gesundheit" href="http://www.news.de/ratgeber/gesundheit/364371216/1/"   class="navLevel2">Gesundheit</a>
+                            </li>
+                                                                                                <li>
+                                <a title="Karriere" href="http://www.news.de/ratgeber/karriere/849808445/1/"   class="navLevel2">Karriere</a>
+                            </li>
+                                                                                                <li>
+                                <a title="Reisen &amp; Leben" href="http://www.news.de/ratgeber/reisen-und-leben/364371208/1/"   class="navLevel2">Reisen &amp; Leben</a>
+                            </li>
+                                                                                                <li>
+                                <a title="Auto" href="http://www.news.de/ratgeber/auto/364371184/1/"   class="navLevel2">Auto</a>
+                            </li>
+                                                                                                <li>
+                                <a title="Technik" href="http://www.news.de/ratgeber/technik/364371192/1/"   class="navLevel2">Technik</a>
+                            </li>
+                                                            </ul>
+                                                                                            <ul class="subNavi fll hidden naviMainpictures">
+                                                                        <li>
+                                <a title="Video" href="http://www.news.de/video/1/"   class="navLevel2">Video</a>
+                            </li>
+                                                                                                <li>
+                                <a title="Fotostrecken" href="http://www.news.de/fotostrecke/1/"   class="navLevel2">Fotostrecken</a>
+                            </li>
+                                                                                                <li>
+                                <a title="Bilder des Tages" href="http://www.news.de/fotostrecke/850700877/die-bilder-des-tages/1/"   class="navLevel2">Bilder des Tages</a>
+                            </li>
+                                                                                                <li>
+                                <a title="Fotovoto" href="http://www.news.de/fotovoto/1"   class="navLevel2">Fotovoto</a>
+                            </li>
+                                                            </ul>
+                                                            <ul class="subNavi fll hidden naviMaininteractive">
+                                                                        <li>
+                                <a title="Spiele" href="http://www.news.de/spiele/1/" rel="nofollow"  class="navLevel2">Spiele</a>
+                            </li>
+                                                                                                <li>
+                                <a title="Persönlichkeitstests" href="http://www.news.de/test/1/" rel="nofollow"  class="navLevel2">Persönlichkeitstests</a>
+                            </li>
+                                                                                                <li>
+                                <a title="Gewinnspiele" href="http://www.news.de/search/lottery" rel="nofollow"  class="navLevel2">Gewinnspiele</a>
+                            </li>
+                                                                                                <li>
+                                <a title="Fotovoto" href="http://www.news.de/fotovoto/1" rel="nofollow"  class="navLevel2">Fotovoto</a>
+                            </li>
+                                                            </ul>
+                                                        </div>
+</div>
+
+<script type="javascript">
+    // init search bar
+    searchBar();
+</script>    </div>
+</div>
+
+<div itemscope itemtype="http://schema.org/Organization" class="hidden">
+    <a itemprop="url" href="http://www.news.de/"><span itemprop="name">news.de</span></a>
+    <span itemprop="description">news.de - mehr als Nachrichten</span>
+    <div itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+        <meta itemprop="name" content="Logo news.de" />
+        <img src="http://media.news.de/resources/images/ef/d8/8d3fe566cb0e0624ab0aea0aa015.jpg" itemprop="contentURL" />
+    </div>
+</div>
+
+
+<noscript class="msg error">
+Achtung, Sie haben Javascript deaktiviert. Die Webseite kann unter Umständen nicht korrekt dargestellt werden oder einige Funktionen fehlerhaft sein.
+</noscript>
+<div class="breadcrumb" itemscope itemtype="http://schema.org/BreadcrumbList">
+    Sie sind hier:             <div itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                    <!-- First breadcrumb is always 'News' -->
+            <a title="news.de" itemprop="item" href="http://www.news.de/"><span itemprop="name">news.de</span></a>                    
+        
+                                                    &raquo;
+                         <meta itemprop="position" content="1" />
+       </div>
+            <div itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+        
+        
+                                    <h1 itemprop="name"></h1>
+                        <meta itemprop="item" content="http://www.news.de/newsletter/newsletter/">
+               <meta itemprop="position" content="2" />
+       </div>
+    </div>
+
+    <script type="text/javascript">
+        var gaJsHost = "http://www.";
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+
+    <script type="text/javascript">
+        var pageTracker = _gat._createTracker("UA-31842-56");
+        pageTracker._setDomainName("news.de");
+
+        $(document).ready(function(){
+                            pageTracker._trackPageview();
+            
+            // remove google analytics utm parameter from url after initialization
+            if (window.history && history.replaceState && (location.search+location.hash).match(/utm_/)) {
+                history.replaceState({}, "news.de", location.pathname);
+            }
+        });
+    </script>
+            
+
+<div class="section clearfix">
+    <div class="nlwrapper">
+    <div id="nlregistration">
+        <div class="nlheader">
+    <span class="triangle-left"></span>
+    <span class="headline4">Jetzt kostenfrei</span>
+    <span class="headline2">NEWSLETTER</span>
+    <span class="headline4">bestellen!</span>
+    <span class="triangle-right"></span>
+</div>
+<div class="nlcontent">
+    <p class="headline4">Täglich topaktuell und immer auf den Punkt</p>
+    <ul>
+        <li><i class="icon-ok-1"> </i>Promi-News, Klatsch & Tratsch</li>
+        <li><i class="icon-ok-1"> </i>Eilmeldungen zu Aufregern, Streiks, Unglücken u.v.m</li>
+        <li><i class="icon-ok-1"> </i>Gewinnspiele mit hochwertigen Preisen</li>
+    </ul>
+    <div id="newsletterFormBox" class="newsletterFormBox clearfix">
+        <!-- Do not delete -->
+        <div class="nlregistration-msg"></div>
+        
+
+<form id="nlRegForm" class="nlForm clearfix">    <div id="nlRegFirstStep">
+        
+<input type="text" name="email" id="nlRegMail" value="" class="email" />        
+<input type="hidden" name="type" value="nlsite" id="type" />    </div>
+    <div class="clearfix">
+        <div class="salutation-row">
+            <p class="note">Mit * gekennzeichnete Felder müssen ausgefüllt werden.</p>
+            <div class="salutation clearfix">
+                <label for="gender" class="optional">Ihr Geschlecht</label>
+
+<label for="gender-0"><input type="radio" name="gender" id="gender-0" value="0" />männlich</label><label for="gender-1"><input type="radio" name="gender" id="gender-1" value="1" />weiblich</label>            </div>
+        </div>
+        <div class="submit-btn">
+            <button name="submit" id="nlRegSubmit" type="button" value="&lt;i class=&quot;icon-mail-alt&quot;&gt;&lt;/i&gt;&lt;span&gt;Jetzt anmelden!&lt;/span&gt;" helper="formButton" class="checkLink btn btnGreen"><i class="icon-mail-alt"></i><span>Jetzt anmelden!</span></button>        </div>
+    </div>
+</form>        <div id="nlLoadingGif" class="loadingGif">&nbsp;</div>
+
+        <!-- do not delete -->
+        <div class="dataProtectionText clearfix"></div>
+                    <p class="sign-off-note">
+                <span>Selbstverständlich können Sie sich jederzeit wieder problemlos vom Newsletter abmelden. Am Ende eines jeden Newsletters finden Sie einen entsprechenden Abmeldelink.</span>
+            </p>
+            </div>
+</div>    </div>
+    <div id="nlsummary" class="hidden">
+        <div class="nlheader">
+    <span class="triangle-left"></span>
+    <span class="headline4">Vielen Dank für Ihre Anmeldung!</span>
+    <span class="triangle-right"></span>
+</div>
+<div class="nlcontent">
+    <p>Wir senden in Kürze eine Nachricht an die von Ihnen angegebene E-Mail-Adresse.</p>
+    <p>Um die Anmeldung erfolgreich abzuschließen, klicken Sie bitte auf den in der E-Mail enthaltenen Aktivierungslink. Erst dann ist Ihre Anmeldung aktiv.</p>
+    <ul class="nl-reg-steps clearfix">
+        <li class="nl-reg-icon">
+            <i class="nl-reg-icon-first"></i>
+            <span>Anmeldeformular</span>
+            <span>ausfüllen</span>
+        </li>
+        <li class="nl-reg-arrow">
+            <i class="icon-right"></i>
+        </li>
+        <li class="nl-reg-icon">
+            <i class="nl-reg-icon-second"></i>
+            <span>E-Mail mit</span>
+            <span>Bestätigungslink</span>
+        </li>
+        <li class="nl-reg-arrow">
+            <i class="icon-right"></i>
+        </li>
+        <li class="nl-reg-icon">
+            <i class="nl-reg-icon-third"></i>
+            <span>Erfolgreiche</span>
+            <span>Anmeldung</span>
+        </li>
+    </ul>
+</div>    </div>
+</div>
+</div>            <div class="footer">
+    <div class="row">
+        <span class="logoInvert sprite ir">news.de</span>
+    </div>
+    <div class="row">
+        <div class="footerLinks clearfix">
+            <div class="size1of4 fll">
+                <ul>
+                                        <li>
+                            <a href="http://www.news.de/service/imprint/"
+                               title="Impressum" rel="nofollow">
+                               Impressum                            </a>
+                        </li>
+                                                <li>
+                            <a href="http://www.news.de/service/terms/"
+                               title="AGB" rel="nofollow">
+                               AGB                            </a>
+                        </li>
+                                                <li>
+                            <a href="http://www.news.de/service/privacypolicy/"
+                               title="Datenschutz" rel="nofollow">
+                               Datenschutz                            </a>
+                        </li>
+                                                <li>
+                            <a href="http://www.unister.de/karriere/offene-stellen.html"
+                               title="Jobs" rel="nofollow">
+                               Jobs                            </a>
+                        </li>
+                                                    </ul></div><div class="size1of4 fll"><ul>
+                                                <li>
+                            <a href="http://www.news.de/service/contact/"
+                               title="Kontakt" rel="nofollow">
+                               Kontakt                            </a>
+                        </li>
+                                                <li>
+                            <a href="http://www.news.de/service/netiquette/"
+                               title="Netiquette" rel="nofollow">
+                               Netiquette                            </a>
+                        </li>
+                                                <li>
+                            <a href="http://www.news.de/service/advertisment/"
+                               title="Werben" rel="nofollow">
+                               Werben                            </a>
+                        </li>
+                                                <li>
+                            <a href="http://presse.news.de"
+                               title="Presse" rel="nofollow">
+                               Presse                            </a>
+                        </li>
+                                                    </ul></div><div class="size1of4 fll"><ul>
+                                                <li>
+                            <a href="http://www.news.de/service/homepage/"
+                               title="Als Startseite" rel="nofollow">
+                               Als Startseite                            </a>
+                        </li>
+                                                <li>
+                            <a href="http://www.news.de/newsletter/newsletter/"
+                               title="Newsletter" rel="nofollow">
+                               Newsletter                            </a>
+                        </li>
+                                                <li>
+                            <a href="http://www.news.de/service/rss/"
+                               title="RSS-Feeds" rel="nofollow">
+                               RSS-Feeds                            </a>
+                        </li>
+                                                <li>
+                            <a href="http://partner.news.de/"
+                               title="Partner" rel="nofollow">
+                               Partner                            </a>
+                        </li>
+                                                    </ul></div><div class="size1of4 fll"><ul>
+                                                <li>
+                            <a href="http://www.news.de/archiv/2015/nachrichten-vom-09-12-2015-Seite-1/"
+                               title="Artikelarchiv" >
+                               Artikelarchiv                            </a>
+                        </li>
+                                                <li>
+                            <a href="http://www.news.de/nachrichten/"
+                               title="Themen" >
+                               Themen                            </a>
+                        </li>
+                                                <li>
+                            <a href="http://www.news.de/newsticker/1/"
+                               title="Nachrichtenüberblick" >
+                               Nachrichtenüberblick                            </a>
+                        </li>
+                                        </ul>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <a href="http://www.news.de/service/onlineadvertising/">Nutzungsbasierte Onlinewerbung</a>
+    </div>    
+</div>
+        </div>
+
+    </div>
+            <script language="JavaScript" type="text/javascript">
+    var oms_site="pn.news.de";
+    var oms_zone="service";
+</script>
+<script src="/module/newsfrontend/js/ads/omsv14_1.js"></script>
+<script type="text/javascript">
+    try
+    {
+        var ystr="";
+        var y_adj="";
+
+        for (var id in yl.YpResult.getAll()) {
+
+            c = yl.YpResult.get(id);
+            ystr+= ';y_ad='+c.id;
+            if(c.format){
+                y_adj=';y_adj='+c.format;
+            }
+        }
+        ystr+=y_adj+';';
+        WLRCMD=WLRCMD+ystr+segQS+crtg_content;
+    }
+    catch(err)
+    {}
+</script>
+
+<script type='text/javascript'>
+    //Synchron Call
+
+    (function() {
+        var useSSL = 'https:' == document.location.protocol;
+        var src = (useSSL ? 'https:' : 'http:') + '//www.googletagservices.com/tag/js/gpt.js';
+        document.write('<scr' + 'ipt src="' + src + '"></scr' + 'ipt>');
+    })();
+
+</script>
+
+<script type='text/javascript'>
+    googletag.cmd.push(function() {
+        googletag.defineSlot('/5766/'+oms_site+'/'+oms_zone, [728, 90], 'oms_gpt_superbanner').addService(googletag.pubads());
+        googletag.defineSlot('/5766/'+oms_site+'/'+oms_zone, [[120, 600],[160, 600],[200, 600]], 'oms_gpt_skyscraper').addService(googletag.pubads());
+
+        
+                                    googletag.defineSlot('/5766/'+oms_site+'/'+oms_zone, [[300, 250],[300, 600]], 'oms_gpt_rectangle').addService(googletag.pubads());
+                    
+        
+        googletag.defineOutOfPageSlot('/5766/'+oms_site+'/'+oms_zone, 'oms_gpt_outofpage').addService(googletag.pubads());
+
+        googletag.pubads().enableSingleRequest();
+        googletag.pubads().enableSyncRendering(); // Add sync rendering mode
+
+        googletag.enableServices();
+
+        if (typeof WLRCMD !='undefined' && WLRCMD !='')
+        {
+            temp=WLRCMD.split(";");
+            for (var id in temp) {
+                if (temp[id].indexOf('=') != -1){
+
+                    values = temp[id].split('=')[1];
+
+                    for (var id2 in temp) {
+                        if ((temp[id2].indexOf('=') != -1) && (temp[id].split('=')[0] == temp[id2].split('=')[0]) && (id < id2)){
+                            values += ';'+temp[id2].split('=')[1];
+                            delete temp[id2];
+                        }
+                    }
+                    temp2 = values.split(";");
+                    googletag.pubads().setTargeting(temp[id].split('=')[0], temp2);
+                }
+            }
+        }
+    });
+</script><div id="FlexTopView">
+    <div id="FlexTop" style="visibility:visible">
+        <script type="text/javascript">
+            //IIz7Mcx("OMS_super1")
+        </script>
+
+        <div id="oms_gpt_superbanner">
+            <script type="text/javascript">
+                adlWallPaperLeft = $('body>.wrapper').width() + 80;
+                omsv_centered=true;
+
+                googletag.cmd.push(function()  { googletag.display('oms_gpt_superbanner')});
+
+            </script>
+        </div>
+        
+        <span class='IIz7Mcx_end'></span>
+
+        <div id="oms_gpt_outofpage">
+            <script type="text/javascript">
+                googletag.cmd.push(function()  { googletag.display('oms_gpt_outofpage')});
+            </script>
+        </div>
+    </div>
+</div><div id="FlexSky" style="visibility:visible">
+    <script type="text/javascript">
+        //IIz7Mcx("unister_sky_big");
+    </script>
+
+    <div id="oms_gpt_skyscraper">
+        <script type="text/javascript">
+            googletag.cmd.push(function()  { googletag.display('oms_gpt_skyscraper')});
+        </script>
+    </div>
+
+    <span class='IIz7Mcx_end'></span>
+</div><script type='text/javascript'>
+	 (function (doc) {
+    var Sh3K1Agc34 = window.xIIz7Mcxx || '/',devices = ['Phone','Pod','Pad','Android','BlackBerry','PlayBook','Kindle','Mobi','Mini'],typeChar = 'U',dts = '',
+    posScr = {
+        pID: 'IIz7Mcx', pList: ['unister_sky_big', 'unister_medium', 'unister1', 'unister_medium2', 'unister_medium3', 'OMS_super1'], regexp: /IIz7Mcx\((\"|\')([\w\s]+)(\"|\')\)/i, arr: [], done: [],
+        srch: function () { var i, j, p = this, sc = doc.scripts; for (i = 0, j = sc.length; i < j; i++) { if (p.mFn(sc[i]) && p.mEn(sc[i]) && p.mNd(sc[i])) { p.col(sc[i]); p.crt(sc[i]); p.done.push(p.regexp.exec(sc[i].innerHTML)[2]); } } p.done = []; },
+        mFn: function (a) { return a ? this.regexp.test(a.innerHTML) : false; },
+        mEn: function (a) { return a ? (this.pList.indexOf(this.regexp.exec(a.innerHTML)[2]) >= 0) : false; },
+        mNd: function (a) { return a ? (this.done.indexOf(this.regexp.exec(a.innerHTML)[2]) < 0) : false; },
+        col: function (a) { if (a) { var c, h, b = a.parentNode, d = b.childNodes.length, e = -1, f = -1, g = this.regexp.exec(a.innerHTML)[2]; for (c = 0; d > c; c++) if (h = b.childNodes[c], "SCRIPT" === h.nodeName && this.regexp.test(h.innerHTML) && g === this.regexp.exec(h.innerHTML)[2]) { e = c; break; } if (e + 1) for (c = e + 1; d > c; c++) if (h = b.childNodes[c], "SPAN" === h.nodeName && h.className.indexOf(this.pID + "_end") + 1) { f = c; break; } if (e + 1 && f + 1) for (c = e + 1; f > c; c++) h = b.childNodes[c], (1 === h.nodeType || 4 === h.nodeType || 8 === h.nodeType) && this.arr.push(h); } },
+        crt: function (a) { if (a) { var i, j, name = this.regexp.exec(a.innerHTML)[2], pDiv = doc.createElement('div'), chDiv = doc.createElement('div'), skylight = doc.createElement('div'), container = a.parentNode, style = document.createElement('style');style.type = 'text/css';
+            function insert() { container.parentNode.insertBefore(style, container); container.parentNode.insertBefore(skylight, container); this.arr = []; }
+            switch (name) {
+                case "unister_sky_big":
+                    var unit = {st:"mZKYeThBUHqh",ss:"cursor:pointer; max-width:300px; max-height:800px;",sd:"position:absolute; top:105px; left:1120px; ",sm:"",im:Sh3K1Agc34+"image/U/ckCn/"+dts+"C50JYWR4SCLFxRVnLBLZ0.gif",cl:function(e,f,a) {return Sh3K1Agc34+'image/'+e+'f'+f+'/'+dts+'C50JYWR4SCLBLGl.gif';}, extra:function(){(function(w,id){if(window.jQuery){function moveSkylight(){if( $('#'+id).length>0 ){$('#'+id).css('top',scrollY+'px');}}$(w).on('scroll',function(){moveSkylight();})}})(window, skylight.id);}};
+                    break;
+                case "unister_medium":
+                    var unit = {st:"EE0Fn5Dhdmyz",ss:"cursor:pointer; max-width:300px; max-height:250px;",sd:"position:relative;margin:0 auto; ",sm:"",im:Sh3K1Agc34+"image/U/ckCn/"+dts+"C50JZVV4dFZbjoyrLBLj3.gif",cl:function(e,f,a) {return Sh3K1Agc34+'image/'+e+'f'+f+'/'+dts+'C50JZVV4dFLBZGk.gif';}, extra:function(){(function(){if(window.jQuery){$('#contentAdMiddle1').hide();$.fn.changeElementType = function(newType) {var attrs = {};if (this[0]) {$.each(this[0].attributes, function(idx, attr) {attrs[attr.nodeName] = attr.value;});this.replaceWith(function() {return $('<' + newType + '/>', attrs).removeClass('halfpage').append($(this).contents());});}};$('.rcol.lineSpace .contentBox').first().changeElementType('span');}})();}};
+                    break;
+                case "unister1":
+                    var unit = {st:"RzLk9nmLiPgg",ss:"cursor:pointer; max-width:670px; max-height:240px;",sd:"position:relative;",sm:"",im:Sh3K1Agc34+"image/U/ckCn/"+dts+"C50JZLB4UrYcxUThLBLN9.gif",cl:function(e,f,a) {return Sh3K1Agc34+'image/'+e+'f'+f+'/'+dts+'C50JZLB4UrLBYGv.gif';}, extra:""};
+                    break;
+                case "unister_medium2":
+                    var unit = {st:"RO18hPejUs0a",ss:"cursor:pointer; max-width:300px; max-height:250px;",sd:"position:relative;margin:0 auto; ",sm:"",im:Sh3K1Agc34+"image/U/ckCn/"+dts+"C50JZLS4ZwJ9qi45LBLI9.gif",cl:function(e,f,a) {return Sh3K1Agc34+'image/'+e+'f'+f+'/'+dts+'C50JZLS4ZwLBJGo.gif';}, extra:""};
+                    break;
+                case "unister_medium3":
+                    var unit = {st:"H32ZacvMeMfH",ss:"cursor:pointer; max-width:300px; max-height:250px;",sd:"position:relative;margin:0 auto; ",sm:"",im:Sh3K1Agc34+"image/U/ckCn/"+dts+"C50JBHS0OIqKoXWOLBLC1.gif",cl:function(e,f,a) {return Sh3K1Agc34+'image/'+e+'f'+f+'/'+dts+'C50JBHS0OILBqGw.gif';}, extra:""};
+                    break;
+                case "OMS_super1":
+                    var unit = {st:"levJtiSKL7pF",ss:"cursor:pointer; max-width:728px; max-height:90px;",sd:"top:0px; position:absolute; left:195px; ",sm:"",im:Sh3K1Agc34+"image/U/ckCn/"+dts+"C50JBHY0XchoLm7GLBLU9.gif",cl:function(e,f,a) {return Sh3K1Agc34+'image/'+e+'f'+f+'/'+dts+'C50JBHY0XcLBhGt.gif';}, extra:""};
+                    break;
+
+                default: break;
+            }
+            if (typeof unit !== 'undefined') {
+                if (unit.wp) { unit.wp(); } else { var style = document.createElement('style'); style.type = 'text/css'; if(typeChar == 'M' && unit.m){ unit.ss += unit.sm } else { unit.ss += unit.sd } style.innerHTML = '#'+unit.st+'{'+unit.ss+'}'; pDiv.appendChild(style); skylight.id = unit.st; var img = document.createElement("img"); img.onload = function() { skylight.appendChild(img); insert(); if (unit.extra) unit.extra();}; img.src = unit.im; var ch=img; img.onclick=function(a){a.preventDefault(),a.stopPropagation();for(var e,f,b=ch,c=0,d=0;b.offsetParent;)c+=b.offsetLeft,d+=b.offsetTop,b=b.offsetParent;a?(e=a.pageX,f=a.pageY):(e=window.event.x+document.body.scrollLeft-2,f=window.event.y+document.body.scrollTop-2),e-=c,f-=d;var redirectURL = unit.cl(e,f,a); if (redirectURL)window.location.href=redirectURL };
+                 } } }
+            }
+    };
+var posplistaWidget = {
+	dA: function() { var pList215x265=['plista_under_1','plista_under_2'], data215x265=['3','4'],els215x265 = this.srch(".plista_widget_underArticle .plistaList .itemLinkPET"); if (els215x265 && els215x265.length > 0) { for (var i = 0; i < pList215x265.length; i++) { if (els215x265[i] && els215x265[i].dataset && data215x265.indexOf(els215x265[i].dataset.position+1) ) { var index = data215x265.indexOf(els215x265[i].dataset.position); this.create(pList215x265[index], index, els215x265[i]);}}}  },
+    srch: function(r) { var s = r.split(" "); if (s && (doc.querySelectorAll?e=doc.querySelectorAll(r):null), e) { return e; } else { return; } },
+    create: function(name, index, els) { var pDiv = doc.createElement('div'), chDiv = doc.createElement('div'), img = doc.createElement('img');
+        function insert() { var el = unit.el; el.parentNode.insertBefore(pDiv, el.nextSibling);chDiv.appendChild(el); }
+        switch (name) {
+                case "plista_under_1":
+                    var unit = {st:"VlcJuKryCHqw",ss:"cursor:pointer; max-width:215px; max-height:265px;",sd:"position:relative;float:left; width:32%; padding:5px 0; margin:0 0 0 1%; ",sm:"",im:Sh3K1Agc34+"image/U/ckCn/"+dts+"C50JZIZ4cTu8dC27LBLD5.gif",cl:function(e,f,a) {return Sh3K1Agc34+'image/'+e+'f'+f+'/'+dts+'C50JZIZ4cTLBuGl.gif';}, extra:""};
+                    break;
+                case "plista_under_2":
+                    var unit = {st:"fiCLDYSnY8Ya",ss:"cursor:pointer; max-width:215px; max-height:265px;",sd:"position:relative;float:left; width:32%; padding:5px 0; margin:0 1% 0 0; ",sm:"",im:Sh3K1Agc34+"image/U/ckCn/"+dts+"C50JZKQ4dBJj3zYMLBLs6.gif",cl:function(e,f,a) {return Sh3K1Agc34+'image/'+e+'f'+f+'/'+dts+'C50JZKQ4dBLBJGz.gif';}, extra:""};
+                    break;
+
+            default: break;
+        }
+        if (typeof unit !== 'undefined' && els) {
+            var style = document.createElement('style'); style.type = 'text/css'; if(typeChar == 'M' && unit.m){ unit.ss += unit.sm } else { unit.ss += unit.sd } style.innerHTML = '#'+unit.st+'{'+unit.ss+'}'; pDiv.appendChild(style); pDiv.id = unit.st; unit.el = els; img.onload = function() { pDiv.appendChild(img); insert(); if (unit.extra) unit.extra(); }; img.src = unit.im; var ch=img; img.onclick=function(a){a.preventDefault(),a.stopPropagation();for(var e,f,b=ch,c=0,d=0;b.offsetParent;)c+=b.offsetLeft,d+=b.offsetTop,b=b.offsetParent;a?(e=a.pageX,f=a.pageY):(e=window.event.x+document.body.scrollLeft-2,f=window.event.y+document.body.scrollTop-2),e-=c,f-=d;var redirectURL = unit.cl(e,f,a); if (redirectURL)window.location.href=redirectURL };
+        }
+    }
+} ;
+function plistaWidgetDetect() { window.trckd&&posplistaWidget.dA(); }
+window.plistaWidget=plistaWidgetDetect;
+
+
+    function detect() { if (!window.trckd) { var body=doc.getElementsByTagName("body")[0],img=doc.createElement("img");if(isSafari()) { body.appendChild(img);};img.src="https://www.adswithsalt.com/"+Date.now()+"/ad-loading.pic";img.onerror=function() { track(); clean(this); };img.onload=function() { 2!=this.height&&(track(),clean(this)); }; } }
+    function track() { window.trckd || ( window.trckd = !0, dts = (window.TeAjwLGYmB || Date.now())+''+Math.floor(Math.random() * 1000), checkDevice(devices), posScr.srch() ) }
+    function clean(a) { a&&a.parentNode&&a.parentNode.removeChild(a) }
+    function init(a) { function c() { b || (b = !0, a()); } function d() { if (!b && document.body) try { doc.documentElement.doScroll("left"); c(); } catch (a) { setTimeout(d, 0); } } var b = !1; doc.addEventListener ? doc.addEventListener("DOMContentLoaded", function() { c(); }, !1) : doc.attachEvent && (doc.documentElement.doScroll && window == window.top && d(), doc.attachEvent("onreadystatechange", function() { "complete" === doc.readyState && c(); })); window.addEventListener ? window.addEventListener("load", c, !1) : window.attachEvent && window.attachEvent("onload", c); }
+    function isSafari() { return /^((?!chrome).)*safari/i.test(navigator.userAgent); }
+    function checkDevice(devices) { for (var n = 0; n < devices.length; n++) { if (~navigator.userAgent.indexOf(devices[n])) { typeChar = 'M'; break; } else { typeChar = 'D'; } } }
+    false?window.tisoomi=detect:init(detect);
+})(document);</script>        
+<div id="loadingGif" class="loadingGif">&nbsp;</div>
+<div id="overlayTopBg" class="overlayTopBg">&nbsp;</div>
+
+<script type="text/javascript" src="https://script.ioam.de/iam.js"></script>
+<!-- SZM VERSION="2.0" -->
+<script type="text/javascript">
+var iam_data = {
+"st":"newsde",
+"cp":"dsk_06_newsletter",
+"sv": "in"
+}
+iom.c(iam_data);
+
+/**
+ * this function reload the ivw pixel source
+ */
+function ReloadPixelImages() {
+    if (iam_data) {
+        iom.c(iam_data, 1);
+    }
+}
+</script>
+<!--/SZM -->
+
+
+
+
+<iframe src="/empty.txt" name="clicktrackframe" id="clicktrackframe" width="1" height="1" marginwidth="0" marginheight="0" scrolling="no" frameborder="0"></iframe>
+</body>
+</html>

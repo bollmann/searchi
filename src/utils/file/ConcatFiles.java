@@ -48,7 +48,7 @@ public class ConcatFiles {
 			URLContent content = new Gson().fromJson(fileContent,
 					URLContent.class);
 			
-			if (!LanguageDetector.isEnglish(content.getContent())
+			if (content == null	|| !LanguageDetector.isEnglish(content.getContent())
 					|| PornDetector.isPorn(content.getContent())) {
 				files[i].delete();
 				br.close();

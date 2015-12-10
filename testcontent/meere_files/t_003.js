@@ -1,1 +1,0 @@
-adscaleNS.uid='409191442370807838'; adscaleNS.initialRequest(adscale_slot_id);

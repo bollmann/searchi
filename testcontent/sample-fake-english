@@ -1,0 +1,2381 @@
+<!DOCTYPE html>
+<html lang="en" id="modernizrcom" class="no-js">
+
+<head>
+
+<meta charset="utf-8">
+<!--
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">-->
+<meta http-equiv="content-language" content="en" />
+
+<title>Info</title>
+
+<meta name="description" content="" />
+<meta name="keywords" content="" />
+
+<link type="text/css" href="http://www.benchmark.rs/assets/css/_frontend/import.css" rel="stylesheet" media="screen" charset="utf-8"/>
+
+
+<link type="text/css" href="http://www.benchmark.rs/assets/css/_frontend/main.css?v=1.5.1" rel="stylesheet" media="screen" charset="utf-8"/>
+<link type="text/css" href="http://www.benchmark.rs/assets/css/_frontend/skin.css?v=1.5.1" rel="stylesheet" media="screen" charset="utf-8"/>
+<link type="text/css" href="http://www.benchmark.rs/assets/css/_frontend/owlcarousel/owl.carousel.css?v=1.5.1" rel="stylesheet" media="screen" charset="utf-8"/>
+<link type="text/css" href="http://www.benchmark.rs/assets/css/_frontend/owlcarousel/owl.theme.css?v=1.5.1" rel="stylesheet" media="screen" charset="utf-8"/>
+<link type="text/css" href="http://www.benchmark.rs/assets/css/_frontend/social/social-likes_classic.css?v=1.5.1" rel="stylesheet" media="screen" charset="utf-8"/>
+<link type="image/x-icon" rel="icon" href="http://www.benchmark.rs/favicon.ico?v=1.5.1"/>
+<link type="image/x-icon" rel="shortcut icon" href="http://www.benchmark.rs/favicon.ico?v=1.5.1"/>
+
+<link type="image/x-icon" rel="icon" href="http://www.benchmark.rs/favicon.ico?v=1.5.1"/>
+<link type="image/x-icon" rel="shortcut icon" href="http://www.benchmark.rs/favicon.ico?v=1.5.1"/>
+
+<script>var app_url = "http://www.benchmark.rs/"; var unregisterId = 63553</script>
+
+
+
+<script type='text/javascript'>(function() { var useSSL = 'https:' == document.location.protocol; var src = (useSSL ? 'https:' : 'http:') + '//www.googletagservices.com/tag/js/gpt.js'; document.write('<scr' + 'ipt src="' + src + '"> </scr' + 'ipt>'); })();</script> <script type='text/javascript'>var googletag = googletag || {};googletag.cmd = googletag.cmd || [];(function() {var gads = document.createElement('script');gads.async = true;gads.type = 'text/javascript';var useSSL = 'https:' == document.location.protocol;gads.src = (useSSL ? 'https:' : 'http:') + '//www.googletagservices.com/tag/js/gpt.js';var node = document.getElementsByTagName('script')[0];node.parentNode.insertBefore(gads, node);})();</script><script type='text/javascript'> googletag.defineSlot('/3730900/101', [[728, 90], [970, 90]], 'div-gpt-ad-1403791726683-0').addService(googletag.pubads()); googletag.pubads().enableSyncRendering(); googletag.enableServices();</script>
+ <script type='text/javascript'>googletag.cmd.push(function() {googletag.defineSlot('/3730900/4801', [728, 90], 'div-gpt-ad-1406619959288-0').addService(googletag.pubads());googletag.pubads().enableSingleRequest();googletag.enableServices();});</script>
+ <script type='text/javascript'>googletag.cmd.push(function() {googletag.defineSlot('/3730900/4802', [[300, 250], [300, 600]], 'div-gpt-ad-1406619984452-0').addService(googletag.pubads());googletag.pubads().enableSingleRequest();googletag.enableServices();});</script>
+ <script type='text/javascript'>googletag.cmd.push(function() {googletag.defineSlot('/3730900/4803', [[300, 250], [300, 600]], 'div-gpt-ad-1406620007744-0').addService(googletag.pubads());googletag.pubads().enableSingleRequest();googletag.enableServices();});</script>
+ <script type='text/javascript'>googletag.cmd.push(function() {googletag.defineSlot('/3730900/4804', [[300, 250], [300, 600]], 'div-gpt-ad-1406620031832-0').addService(googletag.pubads());googletag.pubads().enableSingleRequest();googletag.enableServices();});</script>
+ <script type='text/javascript'>googletag.cmd.push(function() {googletag.defineSlot('/3730900/4805', [[300, 250], [300, 600]], 'div-gpt-ad-1406620053374-0').addService(googletag.pubads());googletag.pubads().enableSingleRequest();googletag.enableServices();});</script>
+ <script type='text/javascript'>googletag.cmd.push(function() {googletag.defineSlot('/3730900/4806', [[300, 250], [300, 600]], 'div-gpt-ad-1406620079858-0').addService(googletag.pubads());googletag.pubads().enableSingleRequest();googletag.enableServices();});</script>
+ <script type='text/javascript'>googletag.cmd.push(function() {googletag.defineSlot('/3730900/4807', [[300, 250], [300, 600]], 'div-gpt-ad-1406620100032-0').addService(googletag.pubads());googletag.pubads().enableSingleRequest();googletag.enableServices();});</script>
+ <script type='text/javascript'>googletag.cmd.push(function() {googletag.defineSlot('/3730900/4808', [[300, 250], [300, 600]], 'div-gpt-ad-1406620122612-0').addService(googletag.pubads());googletag.pubads().enableSingleRequest();googletag.enableServices();});</script>
+ <script type='text/javascript'>googletag.cmd.push(function() {googletag.defineSlot('/3730900/4809', [[300, 250], [300, 600]], 'div-gpt-ad-1406620151711-0').addService(googletag.pubads());googletag.pubads().enableSingleRequest();googletag.enableServices();});</script>
+ <script type='text/javascript'>googletag.cmd.push(function() {googletag.defineSlot('/3730900/4807', [[300, 250], [300, 600]], 'div-gpt-ad-1406620100032-0').addService(googletag.pubads());googletag.pubads().enableSingleRequest();googletag.enableServices();});</script>
+ <script type='text/javascript'>googletag.cmd.push(function() {googletag.defineSlot('/3730900/4802', [[300, 250], [300, 600]], 'div-gpt-ad-1406619984452-0').addService(googletag.pubads());googletag.pubads().enableSingleRequest();googletag.enableServices();});</script>
+ <script type='text/javascript'>googletag.cmd.push(function() {googletag.defineSlot('/3730900/4803', [[300, 250], [300, 600]], 'div-gpt-ad-1406620007744-0').addService(googletag.pubads());googletag.pubads().enableSingleRequest();googletag.enableServices();});</script>
+ <script type='text/javascript'>googletag.cmd.push(function() {googletag.defineSlot('/3730900/4804', [[300, 250], [300, 600]], 'div-gpt-ad-1406620031832-0').addService(googletag.pubads());googletag.pubads().enableSingleRequest();googletag.enableServices();});</script>
+ <script type='text/javascript'>googletag.cmd.push(function() {googletag.defineSlot('/3730900/4808', [[300, 250], [300, 600]], 'div-gpt-ad-1406620122612-0').addService(googletag.pubads());googletag.pubads().enableSingleRequest();googletag.enableServices();});</script>
+ <script type='text/javascript'>googletag.cmd.push(function() {googletag.defineSlot('/3730900/4809', [[300, 250], [300, 600]], 'div-gpt-ad-1406620151711-0').addService(googletag.pubads());googletag.pubads().enableSingleRequest();googletag.enableServices();});</script>
+ <script type='text/javascript'>googletag.cmd.push(function() {googletag.defineSlot('/3730900/4805', [[300, 250], [300, 600]], 'div-gpt-ad-1406620053374-0').addService(googletag.pubads());googletag.pubads().enableSingleRequest();googletag.enableServices();});</script>
+ <script type='text/javascript'>googletag.cmd.push(function() {googletag.defineSlot('/3730900/4806', [[300, 250], [300, 600]], 'div-gpt-ad-1406620079858-0').addService(googletag.pubads());googletag.pubads().enableSingleRequest();googletag.enableServices();});</script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-16758323-3', 'benchmark.rs');
+  ga('send', 'pageview');
+
+</script>
+
+
+<style type="text/css">
+    
+    a.body-backround-link {
+        display:block;
+        position: fixed;
+        top:0;
+        left:0; 
+        right:0; 
+        bottom:0;
+        z-index:0;
+        background-position: center top;
+        background-repeat: no-repeat;
+    }
+</style>
+
+</head>
+
+
+<body class="baseBck font-3 vendors-background ">
+
+
+<a class="body-backround-link" href="http://www.benchmark.rs/telenor" style="background-image:url(http://www.benchmark.rs/assets/img/background/a9a39f3e2a636a02e01b95f9a7e22061.jpg)" target="_blank">&nbsp;</a>
+
+<!-- facebook -->
+<div id="fb-root"></div>
+<script>
+    
+window.onload = function(){    (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=204512693042284&version=v2.0";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk')); }</script>
+<!-- facebook -->
+	
+
+<div class="setup onsetup">
+    <div class="setup-button"></div>
+    <div class="setup-item">
+        <label>Prikaži padajuće menije</label>
+                <span class="setup-icon on" data-state='on' data-action='topmenu'></span>
+    </div>
+    <div class="compare-items">
+        <ul class="uporedi-product-list" id="comparelist">
+                    </ul>
+        <a href="http://www.benchmark.rs/uporedi" class="upixlink"> Idi na uporedi stranicu</a>
+    </div>
+</div>
+<div id="wrap" class="auto" style="z-index:5">
+    
+    <div class="bench_header greyBck"><div class="adsholder"><div id='div-gpt-ad-1406619959288-0' style='height:90px; margin-auto; display:block; text-align:center;'><script type='text/javascript'>googletag.cmd.push(function() { googletag.display('div-gpt-ad-1406619959288-0'); });</script></div></div></div>
+
+
+<div class="TopMenu">
+<nav class="bench_navigation grey">
+	<div class="scroller animate menu-scroller" data-height="28">
+	<ul class="animate">
+                        <li class="a2 animate"><a class="animate" href="http://www.benchmark.rs/mobile">MOBILE</a></li>
+            <li class="a2 animate"><a class="animate" href="http://www.benchmark.rs/hardver">HARDVER</a></li>
+            <li class="a2 animate"><a class="animate" href="http://www.benchmark.rs/multimedija">MULTIMEDIJA</a></li>
+            <li class="a2 animate"><a class="animate" href="http://www.benchmark.rs/games">GAMES</a></li>
+            <li class="a2 animate"><a class="animate" href="http://www.benchmark.rs/software">SOFTVER/WEB</a></li>
+            <li class="a2 animate"><a class="animate" href="http://www.benchmark.rs/biznis-it">BIZNIS/IT</a></li>
+            <li class="a2 animate"><a class="animate" href="http://www.benchmark.rs/info">BENCHMARK</a></li>
+            
+            <li class="a2 animate" id="top10" style="position:absolute;top:0px;right:331px;"><a href="http://www.benchmark.rs/top10">Top 10</a></li>
+            <li class="a2 animate" style="position:absolute;top:0px;right:209px;"><a href="http://www.benchmark.rs/vodic_za_kupovinu">Vodiči za kupovinu</a></li>
+            
+            <li class="a1 animate orange" style="position:absolute;top:0px;right:149px;"><a href="http://www.benchmark.rs/galerija/foto">GALERIJE</a></li>
+            <li class="a1 animate orange" style="position:absolute;top:0px;right:109px;background: #000;"><a href="http://www.benchmark.rs/galerija/video" >VIDEO</a></li>
+            <li class="animate orange" style="position:absolute;top:0px;right:54px;" id="login" id="login"><a href="#">LOGIN</a><span class="border"></span></li>
+                        
+                        <li class="animate" id="forum" style="position:absolute;top:0px;right:1px; background: #D1285B;"><a href="http://forum.benchmark.rs/" style="color:#fff;">FORUM</a></li>
+            	</ul>
+	<div class="clear"></div>
+	</div>
+</nav>
+    
+<div class="tp-modal">
+    <div class="tp-holder">
+                <section class="tp-part active">
+                                    <div class="tp-video">
+                <a href="http://www.benchmark.rs/artikal/test_toshiba_satellite_p50-c-4022" title="Test: Toshiba Satellite P50-C" alias="Test: Toshiba Satellite P50-C">
+                    <span class="preload-image"></span>
+                    <img src="" data-src="http://www.benchmark.rs/assets/img/article/93282952beb074900739abbf95f5b0dd.jpg" />
+                    <h2>Test: Toshiba Satellite P50-C</h2>
+                </a>
+            </div>
+                                                <div class="tp-video">
+                <a href="http://www.benchmark.rs/artikal/test_htc_one_a9-4020" title="Test: HTC One A9" alias="Test: HTC One A9">
+                    <span class="preload-image"></span>
+                    <img src="" data-src="http://www.benchmark.rs/assets/img/article/8533115bb2d27829d2d39b4ab951401b.jpg" />
+                    <h2>Test: HTC One A9</h2>
+                </a>
+            </div>
+                                                <div class="tp-video">
+                <a href="http://www.benchmark.rs/artikal/test_asus_gl552vw-4007" title="Test: ASUS GL552VW" alias="Test: ASUS GL552VW">
+                    <span class="preload-image"></span>
+                    <img src="" data-src="http://www.benchmark.rs/assets/img/article/e36cb87319a160111c992605dc2bbbd5.jpg" />
+                    <h2>Test: ASUS GL552VW</h2>
+                </a>
+            </div>
+                                                <div class="tp-video">
+                <a href="http://www.benchmark.rs/artikal/test_apple_iphone_6s_plus-4012" title="Test: Apple iPhone 6s Plus" alias="Test: Apple iPhone 6s Plus">
+                    <span class="preload-image"></span>
+                    <img src="" data-src="http://www.benchmark.rs/assets/img/article/5c40ea498d8c9bca8fb495c54eaa7776.jpg" />
+                    <h2>Test: Apple iPhone 6s Plus</h2>
+                </a>
+            </div>
+                                                <div class="tp-video">
+                <a href="http://www.benchmark.rs/artikal/test_coolpad_modena-4000" title="Test: Coolpad Modena" alias="Test: Coolpad Modena">
+                    <span class="preload-image"></span>
+                    <img src="" data-src="http://www.benchmark.rs/assets/img/article/6d944a4e48cd559e91b373a5bb3a9e93.jpg" />
+                    <h2>Test: Coolpad Modena</h2>
+                </a>
+            </div>
+                                    <div class="tp-category">
+                                <a href="http://www.benchmark.rs/mobile/vesti" class="Mobile animate" title="Vesti" >Vesti</a>
+                                <a href="http://www.benchmark.rs/mobile/mobilni-telefoni" class="Mobile animate" title="Mobilni telefoni" >Mobilni telefoni</a>
+                                <a href="http://www.benchmark.rs/mobile/laptopovi" class="Mobile animate" title="Laptopovi" >Laptopovi</a>
+                                <a href="http://www.benchmark.rs/mobile/tableti" class="Mobile animate" title="Tableti" >Tableti</a>
+                                <a href="http://www.benchmark.rs/mobile/nosivi-uredjaji" class="Mobile animate" title="Nosivi uređaji" >Nosivi uređaji</a>
+                                <a href="http://www.benchmark.rs/mobile/gps-uredjaji" class="Mobile animate" title="GPS Uređaji" >GPS Uređaji</a>
+                                <a href="http://www.benchmark.rs/mobile/oprema-za-prenosne-uredjaje" class="Mobile animate" title="Oprema za prenosne uređaje" >Oprema za prenosne+</a>
+                                <a href="http://www.benchmark.rs/mobile/clanci" class="Mobile animate" title="Članci" >Članci</a>
+                                
+            </div>
+        </section>
+                <section class="tp-part active">
+                                    <div class="tp-video">
+                <a href="http://www.benchmark.rs/artikal/test_msi_radeon_r7_370_gaming_2g-4013" title="Test: MSI Radeon R7 370 Gaming 2G" alias="Test: MSI Radeon R7 370 Gaming 2G">
+                    <span class="preload-image"></span>
+                    <img src="" data-src="http://www.benchmark.rs/assets/img/article/5459219639816b58f462ef7c0e1ac8d2.jpg" />
+                    <h2>Test: MSI Radeon R7 370 Gaming 2G</h2>
+                </a>
+            </div>
+                                                <div class="tp-video">
+                <a href="http://www.benchmark.rs/artikal/test_gigatron_game_victory-4011" title="Test: Gigatron Game Victory" alias="Test: Gigatron Game Victory">
+                    <span class="preload-image"></span>
+                    <img src="" data-src="http://www.benchmark.rs/assets/img/article/8834bacca7965527bb1a824a3a6dc15d.jpg" />
+                    <h2>Test: Gigatron Game Victory</h2>
+                </a>
+            </div>
+                                                <div class="tp-video">
+                <a href="http://www.benchmark.rs/artikal/test_logitech_k380-4005" title="Test: Logitech K380" alias="Test: Logitech K380">
+                    <span class="preload-image"></span>
+                    <img src="" data-src="http://www.benchmark.rs/assets/img/article/e9e2cfae4da20e5660cb3e1c03e669bb.jpg" />
+                    <h2>Test: Logitech K380</h2>
+                </a>
+            </div>
+                                                <div class="tp-video">
+                <a href="http://www.benchmark.rs/artikal/test_sapphire_radeon_r9_380x_nitro_4_gb-4009" title="Test: Sapphire Radeon R9 380X Nitro 4 GB" alias="Test: Sapphire Radeon R9 380X Nitro 4 GB">
+                    <span class="preload-image"></span>
+                    <img src="" data-src="http://www.benchmark.rs/assets/img/article/aebcc5102654dab33fb62a8644fda7e7.jpg" />
+                    <h2>Test: Sapphire Radeon R9 380X Nitro 4 GB</h2>
+                </a>
+            </div>
+                                                <div class="tp-video">
+                <a href="http://www.benchmark.rs/artikal/test_fractal_design_define_r5_white-4004" title="Test: Fractal Design Define R5 White" alias="Test: Fractal Design Define R5 White">
+                    <span class="preload-image"></span>
+                    <img src="" data-src="http://www.benchmark.rs/assets/img/article/e1dfc628f8016d437d08f9160cc4a4e3.jpg" />
+                    <h2>Test: Fractal Design Define R5 White</h2>
+                </a>
+            </div>
+                                    <div class="tp-category">
+                                <a href="http://www.benchmark.rs/hardver/vesti" class="Hardver animate" title="Vesti" >Vesti</a>
+                                <a href="http://www.benchmark.rs/hardver/racunari" class="Hardver animate" title="Računari" >Računari</a>
+                                <a href="http://www.benchmark.rs/hardver/procesori" class="Hardver animate" title="Procesori" >Procesori</a>
+                                <a href="http://www.benchmark.rs/hardver/maticne-ploce" class="Hardver animate" title="Matične ploče" >Matične ploče</a>
+                                <a href="http://www.benchmark.rs/hardver/video-karte" class="Hardver animate" title="Video karte" >Video karte</a>
+                                <a href="http://www.benchmark.rs/hardver/memorije-diskovi" class="Hardver animate" title="Memorije i diskovi" >Memorije i diskovi</a>
+                                <a href="http://www.benchmark.rs/hardver/kucista-napajanja-kuleri" class="Hardver animate" title="Kućišta, napajanja, kuleri" >Kućišta  napajanja +</a>
+                                <a href="http://www.benchmark.rs/hardver/periferije" class="Hardver animate" title="Periferije" >Periferije</a>
+                                <a href="http://www.benchmark.rs/hardver/mreza-mrezna-oprema" class="Hardver animate" title="Mreže i mrežna oprema" >Mreže i mrežna+</a>
+                                <a href="http://www.benchmark.rs/hardver/aktuelnosti" class="Hardver animate" title="Aktuelnosti" >Aktuelnosti</a>
+                                <a href="http://www.benchmark.rs/hardver/how-to" class="Hardver animate" title="How to" >How to</a>
+                                
+            </div>
+        </section>
+                <section class="tp-part active">
+                                    <div class="tp-video">
+                <a href="http://www.benchmark.rs/artikal/editorijal_oled_tehnologija-4016" title="Editorijal: OLED tehnologija" alias="Editorijal: OLED tehnologija">
+                    <span class="preload-image"></span>
+                    <img src="" data-src="http://www.benchmark.rs/assets/img/article/e7847f8f7e70b87298582245f072cefb.jpg" />
+                    <h2>Editorijal: OLED tehnologija</h2>
+                </a>
+            </div>
+                                                <div class="tp-video">
+                <a href="http://www.benchmark.rs/artikal/test_samsung_40ju6000w-3965" title="Test: Samsung 40JU6000W" alias="Test: Samsung 40JU6000W">
+                    <span class="preload-image"></span>
+                    <img src="" data-src="http://www.benchmark.rs/assets/img/article/e38c825d0c1e771eacea289742810305.jpg" />
+                    <h2>Test: Samsung 40JU6000W</h2>
+                </a>
+            </div>
+                                                <div class="tp-video">
+                <a href="http://www.benchmark.rs/artikal/test_gopro_hero_4_session-3936" title="Test: GoPro Hero 4 Session" alias="Test: GoPro Hero 4 Session">
+                    <span class="preload-image"></span>
+                    <img src="" data-src="http://www.benchmark.rs/assets/img/article/045f2fa9e81d9d12f2b9368a52b9efe9.jpg" />
+                    <h2>Test: GoPro Hero 4 Session</h2>
+                </a>
+            </div>
+                                                <div class="tp-video">
+                <a href="http://www.benchmark.rs/artikal/test_asus_mg278q-3924" title="Test: Asus MG278Q" alias="Test: Asus MG278Q">
+                    <span class="preload-image"></span>
+                    <img src="" data-src="http://www.benchmark.rs/assets/img/article/4cdc127af8961a8d6a7c47a8f697725e.jpg" />
+                    <h2>Test: Asus MG278Q</h2>
+                </a>
+            </div>
+                                                <div class="tp-video">
+                <a href="http://www.benchmark.rs/artikal/test_asus_reco_classic_dashcam-3923" title="Test: Asus Reco Classic Dashcam" alias="Test: Asus Reco Classic Dashcam">
+                    <span class="preload-image"></span>
+                    <img src="" data-src="http://www.benchmark.rs/assets/img/article/59880f4526e33c35a7bd58c36197c8ee.jpg" />
+                    <h2>Test: Asus Reco Classic Dashcam</h2>
+                </a>
+            </div>
+                                    <div class="tp-category">
+                                <a href="http://www.benchmark.rs/multimedija/vesti" class="Multimedija animate" title="Vesti" >Vesti</a>
+                                <a href="http://www.benchmark.rs/multimedija/monitori" class="Multimedija animate" title="Monitori" >Monitori</a>
+                                <a href="http://www.benchmark.rs/multimedija/televizori" class="Multimedija animate" title="Televizori" >Televizori</a>
+                                <a href="http://www.benchmark.rs/multimedija/audio-video-plejeri" class="Multimedija animate" title="Audio / Video plejeri" >Audio / Video+</a>
+                                <a href="http://www.benchmark.rs/multimedija/home-cinema-sistemi" class="Multimedija animate" title="Home cinema sistemi" >Home cinema+</a>
+                                <a href="http://www.benchmark.rs/multimedija/projektori" class="Multimedija animate" title="Projektori" >Projektori</a>
+                                <a href="http://www.benchmark.rs/multimedija/foto-aparati" class="Multimedija animate" title="Foto aparati" >Foto aparati</a>
+                                <a href="http://www.benchmark.rs/multimedija/clanci" class="Multimedija animate" title="Članci" >Članci</a>
+                                
+            </div>
+        </section>
+                <section class="tp-part active">
+                                    <div class="tp-video">
+                <a href="http://www.benchmark.rs/artikal/test_cooler_master_sentinel_iii-4017" title="Test: Cooler Master Sentinel III" alias="Test: Cooler Master Sentinel III">
+                    <span class="preload-image"></span>
+                    <img src="" data-src="http://www.benchmark.rs/assets/img/article/8fd0b4a0754ddc07c42b1ea3c105d074.jpg" />
+                    <h2>Test: Cooler Master Sentinel III</h2>
+                </a>
+            </div>
+                                                <div class="tp-video">
+                <a href="http://www.benchmark.rs/artikal/opis_igre_starcraft_ii_legacy_of_the_void-3999" title="Opis igre: StarCraft II: Legacy of the Void" alias="Opis igre: StarCraft II: Legacy of the Void">
+                    <span class="preload-image"></span>
+                    <img src="" data-src="http://www.benchmark.rs/assets/img/article/aafe23f78cbcd4e196fe7cb455afbb44.jpg" />
+                    <h2>Opis igre: StarCraft II: Legacy of the Void</h2>
+                </a>
+            </div>
+                                                <div class="tp-video">
+                <a href="http://www.benchmark.rs/artikal/test_asus_strix_2.0-3988" title="Test: Asus Strix 2.0" alias="Test: Asus Strix 2.0">
+                    <span class="preload-image"></span>
+                    <img src="" data-src="http://www.benchmark.rs/assets/img/article/f27489563802c85ce0e4a6a04dbf5036.jpg" />
+                    <h2>Test: Asus Strix 2.0</h2>
+                </a>
+            </div>
+                                                <div class="tp-video">
+                <a href="http://www.benchmark.rs/artikal/test_cooler_master_xornet_ii-3986" title="Test: Cooler Master Xornet II" alias="Test: Cooler Master Xornet II">
+                    <span class="preload-image"></span>
+                    <img src="" data-src="http://www.benchmark.rs/assets/img/article/5113156fa75726c6082d9e7af12bb2a0.jpg" />
+                    <h2>Test: Cooler Master Xornet II</h2>
+                </a>
+            </div>
+                                                <div class="tp-video">
+                <a href="http://www.benchmark.rs/artikal/test_cooler_master_quickfire_xti-3953" title="Test: Cooler Master QuickFire XTi" alias="Test: Cooler Master QuickFire XTi">
+                    <span class="preload-image"></span>
+                    <img src="" data-src="http://www.benchmark.rs/assets/img/article/ffa2056cc3417607d4f3c07c9895b24b.jpg" />
+                    <h2>Test: Cooler Master QuickFire XTi</h2>
+                </a>
+            </div>
+                                    <div class="tp-category">
+                                <a href="http://www.benchmark.rs/games/vesti" class="Games animate" title="Vesti" >Vesti</a>
+                                <a href="http://www.benchmark.rs/games/opisi-igara" class="Games animate" title="Opisi igara" >Opisi igara</a>
+                                <a href="http://www.benchmark.rs/games/clanci" class="Games animate" title="Članci" >Članci</a>
+                                <a href="http://www.benchmark.rs/games/najave-igara" class="Games animate" title="Najave igara" >Najave igara</a>
+                                <a href="http://www.benchmark.rs/games/igracki-hardver" class="Games animate" title="Igrački hardver" >Igrački hardver</a>
+                                
+            </div>
+        </section>
+                <section class="tp-part active">
+                                    <div class="tp-video">
+                <a href="http://www.benchmark.rs/artikal/how_to_windows_10_upgrade_korak_po_korak-3956" title="How to: Windows 10 upgrade, korak po korak" alias="How to: Windows 10 upgrade, korak po korak">
+                    <span class="preload-image"></span>
+                    <img src="" data-src="http://www.benchmark.rs/assets/img/article/69213972a2f483ae2bc72d13dd8bea31.jpg" />
+                    <h2>How to: Windows 10 upgrade, korak po korak</h2>
+                </a>
+            </div>
+                                                <div class="tp-video">
+                <a href="http://www.benchmark.rs/artikal/10_dana_sa_windowsom_10_-_dan_10._-_finalni_utisci-3892" title="10 dana sa Windowsom 10 - Dan 10. - Finalni utisci" alias="10 dana sa Windowsom 10 - Dan 10. - Finalni utisci">
+                    <span class="preload-image"></span>
+                    <img src="" data-src="http://www.benchmark.rs/assets/img/article/a0f740dc75c5a0122de122eff4952378.jpg" />
+                    <h2>10 dana sa Windowsom 10 - Dan 10. - Finalni utisci</h2>
+                </a>
+            </div>
+                                                <div class="tp-video">
+                <a href="http://www.benchmark.rs/artikal/kuda_dalje_buducnost_it_industrije_zavisi_od_windowsa_10-3667" title="Kuda dalje: budućnost IT industrije zavisi od Windowsa 10" alias="Kuda dalje: budućnost IT industrije zavisi od Windowsa 10">
+                    <span class="preload-image"></span>
+                    <img src="" data-src="http://www.benchmark.rs/assets/img/article/a96b5a5f12c165e5872102e4404657b9.jpg" />
+                    <h2>Kuda dalje: budućnost IT industrije zavisi od Windowsa 10</h2>
+                </a>
+            </div>
+                                                <div class="tp-video">
+                <a href="http://www.benchmark.rs/artikal/osvrt_windows_9_-_sta_sve_ne_znamo-3609" title="Osvrt: Windows 9 - šta sve (ne) znamo" alias="Osvrt: Windows 9 - šta sve (ne) znamo">
+                    <span class="preload-image"></span>
+                    <img src="" data-src="http://www.benchmark.rs/assets/img/article/d02af19b3edb2ea1c8ecf1421cf5da9b.jpg" />
+                    <h2>Osvrt: Windows 9 - šta sve (ne) znamo</h2>
+                </a>
+            </div>
+                                                <div class="tp-video">
+                <a href="http://www.benchmark.rs/artikal/obavezni_set_aplikacija_za_android-3174" title="Obavezni set aplikacija za Android" alias="Obavezni set aplikacija za Android">
+                    <span class="preload-image"></span>
+                    <img src="" data-src="http://www.benchmark.rs/assets/img/article/f3c471d95c23276b3527f892d8b4cd39.jpg" />
+                    <h2>Obavezni set aplikacija za Android</h2>
+                </a>
+            </div>
+                                    <div class="tp-category">
+                                <a href="http://www.benchmark.rs/software/vesti" class="Softver animate" title="Vesti" >Vesti</a>
+                                <a href="http://www.benchmark.rs/software/softver" class="Softver animate" title="Softver" >Softver</a>
+                                <a href="http://www.benchmark.rs/software/internet" class="Softver animate" title="Internet" >Internet</a>
+                                <a href="http://www.benchmark.rs/software/windows" class="Softver animate" title="Windows" >Windows</a>
+                                <a href="http://www.benchmark.rs/software/linux" class="Softver animate" title="LINUX" >LINUX</a>
+                                <a href="http://www.benchmark.rs/software/os-x" class="Softver animate" title="OS X" >OS X</a>
+                                <a href="http://www.benchmark.rs/software/android" class="Softver animate" title="Android" >Android</a>
+                                <a href="http://www.benchmark.rs/software/ios" class="Softver animate" title="iOS" >iOS</a>
+                                <a href="http://www.benchmark.rs/software/windows-phone" class="Softver animate" title="Windows Phone" >Windows Phone</a>
+                                <a href="http://www.benchmark.rs/software/how-to" class="Softver animate" title="How to" >How to</a>
+                                
+            </div>
+        </section>
+                <section class="tp-part active">
+                                    <div class="tp-video">
+                <a href="http://www.benchmark.rs/artikal/telenor_capture_onlajn_storidz_servis_kompanije_telenor-3444" title="Telenor Capture, onlajn storidž servis kompanije Telenor" alias="Telenor Capture, onlajn storidž servis kompanije Telenor">
+                    <span class="preload-image"></span>
+                    <img src="" data-src="http://www.benchmark.rs/assets/img/article/1639a9705383653ce47ac571bb4b7e08.jpg" />
+                    <h2>Telenor Capture, onlajn storidž servis kompanije Telenor</h2>
+                </a>
+            </div>
+                                                <div class="tp-video">
+                <a href="http://www.benchmark.rs/artikal/novi_pristup_unapredjivanju_mreze_ingeborg_ofsthus_telenor_cto_video-4006" title="Novi pristup unapređivanju mreže: Ingeborg Ofsthus, Telenor CTO (video)" alias="Novi pristup unapređivanju mreže: Ingeborg Ofsthus, Telenor CTO (video)">
+                    <span class="preload-image"></span>
+                    <img src="" data-src="http://www.benchmark.rs/assets/img/article/cc1d0c242d78c45d2f486bc2dd98fdc4.jpg" />
+                    <h2>Novi pristup unapređivanju mreže: Ingeborg Ofsthus, Telenor CTO (video)</h2>
+                </a>
+            </div>
+                                                <div class="tp-video">
+                <a href="http://www.benchmark.rs/artikal/strategija_za_biznis_korisnike_ivan_stojanovic_telenor-4010" title="Strategija za biznis korisnike: Ivan Stojanović, Telenor" alias="Strategija za biznis korisnike: Ivan Stojanović, Telenor">
+                    <span class="preload-image"></span>
+                    <img src="" data-src="http://www.benchmark.rs/assets/img/article/3eebd3b622ebb056693ac2656ffe89e0.jpg" />
+                    <h2>Strategija za biznis korisnike: Ivan Stojanović, Telenor</h2>
+                </a>
+            </div>
+                                                <div class="tp-video">
+                <a href="http://www.benchmark.rs/artikal/unicredit_banka_koliko_je_e-commerce_bezbedan-3959" title="Unicredit banka: Koliko je e-Commerce bezbedan?" alias="Unicredit banka: Koliko je e-Commerce bezbedan?">
+                    <span class="preload-image"></span>
+                    <img src="" data-src="http://www.benchmark.rs/assets/img/article/7bf071dd89a4c05c0c4554483ddd9f75.jpg" />
+                    <h2>Unicredit banka: Koliko je e-Commerce bezbedan?</h2>
+                </a>
+            </div>
+                                                <div class="tp-video">
+                <a href="http://www.benchmark.rs/artikal/kako_pokrenuti_e-commerce_biznis_u_srbiji-3958" title="Kako pokrenuti e-Commerce biznis u Srbiji" alias="Kako pokrenuti e-Commerce biznis u Srbiji">
+                    <span class="preload-image"></span>
+                    <img src="" data-src="http://www.benchmark.rs/assets/img/article/ada0f6d60dd723af26256e5a429043f0.jpg" />
+                    <h2>Kako pokrenuti e-Commerce biznis u Srbiji</h2>
+                </a>
+            </div>
+                                    <div class="tp-category">
+                                <a href="http://www.benchmark.rs/biznis-it/infrastruktura-hardver" class="BiznisIT animate" title="Infrastruktura - hardver" >Infrastruktura+</a>
+                                <a href="http://www.benchmark.rs/biznis-it/resenja-servisi" class="BiznisIT animate" title="Rešenja / servisi" >Rešenja / servisi</a>
+                                <a href="http://www.benchmark.rs/biznis-it/intervjui" class="BiznisIT animate" title="Intervjui" >Intervjui</a>
+                                <a href="http://www.benchmark.rs/biznis-it/it-trziste" class="BiznisIT animate" title="IT Tržište" >IT Tržište</a>
+                                <a href="http://www.benchmark.rs/biznis-it/reportaze" class="BiznisIT animate" title="Reportaže" >Reportaže</a>
+                                
+            </div>
+        </section>
+                <section class="tp-part active">
+                                    <div class="tp-video">
+                <a href="http://www.benchmark.rs/artikal/imamo_dobitnika_znamo_ko_je_osvajac_logitech_z333_zvucnika-4021" title="Imamo dobitnika: Znamo ko je osvajač Logitech Z333 zvučnika!" alias="Imamo dobitnika: Znamo ko je osvajač Logitech Z333 zvučnika!">
+                    <span class="preload-image"></span>
+                    <img src="" data-src="http://www.benchmark.rs/assets/img/article/dc5f46ad9300cb111964ab46da93f265.jpg" />
+                    <h2>Imamo dobitnika: Znamo ko je osvajač Logitech Z333 zvučnika!</h2>
+                </a>
+            </div>
+                                                <div class="tp-video">
+                <a href="http://www.benchmark.rs/artikal/novi_benchmark_shop_je_online-4015" title="Novi Benchmark shop je online" alias="Novi Benchmark shop je online">
+                    <span class="preload-image"></span>
+                    <img src="" data-src="http://www.benchmark.rs/assets/img/article/e954dc2fde0ddaba9c06c954aee4d024.jpg" />
+                    <h2>Novi Benchmark shop je online</h2>
+                </a>
+            </div>
+                                                <div class="tp-video">
+                <a href="http://www.benchmark.rs/artikal/nagradna_igra_osvoji_logitech_z333_zvucnike-4014" title="Nagradna igra: osvoji Logitech Z333 zvučnike!" alias="Nagradna igra: osvoji Logitech Z333 zvučnike!">
+                    <span class="preload-image"></span>
+                    <img src="" data-src="http://www.benchmark.rs/assets/img/article/ddbfd1c292f0ca3b76cd318cbac91707.jpg" />
+                    <h2>Nagradna igra: osvoji Logitech Z333 zvučnike!</h2>
+                </a>
+            </div>
+                                                <div class="tp-video">
+                <a href="http://www.benchmark.rs/artikal/zavrsena_logitech_nagradna_igra_izvucen_dobitnik_logitech_z533_zvucnika-4003" title="Završena Logitech nagradna igra: Izvučen dobitnik Logitech Z533 zvučnika!" alias="Završena Logitech nagradna igra: Izvučen dobitnik Logitech Z533 zvučnika!">
+                    <span class="preload-image"></span>
+                    <img src="" data-src="http://www.benchmark.rs/assets/img/article/9fdc714d9a066b50af433f2d401a1136.jpg" />
+                    <h2>Završena Logitech nagradna igra: Izvučen dobitnik Logitech Z533 zvučnika!</h2>
+                </a>
+            </div>
+                                                <div class="tp-video">
+                <a href="http://www.benchmark.rs/artikal/nova_benchmark_android_aplikacija-3990" title="Nova Benchmark Android aplikacija" alias="Nova Benchmark Android aplikacija">
+                    <span class="preload-image"></span>
+                    <img src="" data-src="http://www.benchmark.rs/assets/img/article/a8cf084d35ad1ac54764603d9db4c3ab.png" />
+                    <h2>Nova Benchmark Android aplikacija</h2>
+                </a>
+            </div>
+                                                                                                                                                            <div class="tp-category">
+                                
+            </div>
+        </section>
+            </div>
+</div>
+</div>
+
+<div class="bench_top whiteBck" >
+    <div class="logo">
+        <a href="http://www.benchmark.rs/">
+            
+                                    <img src="http://www.benchmark.rs/assets/img/layout/_frontend/logo-benchmark.png" />
+                        
+                        
+             
+        </a>
+    </div>
+    <div class="main-search">
+    	<form id="searchForm" method="post" action="http://www.benchmark.rs/pretraga">
+	        <input type="text" name="keyword" class="main-search-input" placeholder="Pretraga..." autocomplete="off"  />
+	        <input type="submit" class="main-search-button animate" value="Search" />
+                <div id="autocomplete-mask"></div>
+                <div id="autocomplete-search" class="animate"></div>
+        </form>
+    </div>
+    <div class="social-header">
+        <a class="media-icons facebook" href="https://www.facebook.com/benchrs" target="_blank"></a>
+        <a class="media-icons twitter" href="https://twitter.com/benchrs" target="_blank"></a>
+        <a class="media-icons google" href="https://plus.google.com/102519404992391457529" rel="publisher" ></a>
+        <a class="media-icons youtube" href="http://www.youtube.com/user/benchrs" target="_blank"></a>
+        <a class="media-icons rss" href="http://www.benchmark.rs/rss_page"></a>
+   </div>
+        <a class="shopbutton" href="http://shop.benchmark.rs"><img src="http://www.benchmark.rs/assets/img/layout/_frontend/shopbutton.png" /></a>
+    </div>
+
+<div class="infocus liteBck">
+    U fokusu: 
+    <ul>
+        <li><a href="http://www.benchmark.rs/aktuelno/windows_10-427">Windows 10</a></li> 
+<li><a href="http://www.benchmark.rs/aktuelno/android-3">Android</a></li> 
+<li><a href="http://www.benchmark.rs/aktuelno/apple-46">Apple</a></li> 
+<li><a href="http://www.benchmark.rs/aktuelno/google-29">Google</a></li> 
+<li><a href="http://www.benchmark.rs/aktuelno/facebook-75">Facebook</a></li> 
+<li><a href="http://www.benchmark.rs/aktuelno/microsoft-43">Microsoft</a></li> 
+    </ul>
+</div>
+
+<div id="top-menu-calibrate"></div>
+<div class="h-nav-height">
+<div class="h-nav stop-highlight">
+<div class="highlight_nav greenLiteBck">
+	<div class="nav-container">
+	<ul class="animate">
+            <li class="animate b-1" data-id="news-hq"><a href="http://www.benchmark.rs/vesti">Vesti</a></li>
+            <li class="animate b-2"><a href="http://www.benchmark.rs/testovi">Testovi</a></li>
+            <li class="animate b-3"><a href="http://www.benchmark.rs/clanci">Članci</a></li>
+            <li class="animate b-4" data-id="vendors-hq"><a href="http://www.benchmark.rs/proizvodjaci">Proizvođači</a></li>
+        </ul>
+        <ul>
+            <li class="animate tvmn"><a href="http://www.benchmark.rs/tv">BENCHMARK TV</a></li>
+        </ul>	
+        <ul>
+            <li class="animate b-5" data-id="laptop-hq"><a href="http://www.benchmark.rs/laptopovi">Laptop</a></li>
+            <li class="animate b-6" data-id="phone-hq"><a href="http://www.benchmark.rs/telefoni">Telefoni</a></li>
+            <li class="animate b-7" data-id="tablet-hq"><a href="http://www.benchmark.rs/tableti">Tableti</a></li>
+	</ul>
+	<div class="clear"> </div>
+	</div>
+</div>
+    <div class="color-topmenu-end">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    
+    <div class="highlight_modal">
+	
+        <div class="hq-part-section" id="news-hq">
+            <table class="news-hq" >
+                <tr>
+                    <td>
+                        <div class="hg_md_left v-border-right-2">
+                            <ul>
+                                <li class="upper font-min er"><a class="category AllTest" href="#" >Sve vesti</a></li>
+                                <li class="upper font-min er"><a class="category Mobile" href="http://www.benchmark.rs/mobile/vesti">Mobile</a></li>
+                                <li class="upper font-min er"><a class="category Hardver" href="http://www.benchmark.rs/hardver/vesti">Hardware</a></li>
+                                <li class="upper font-min er"><a class="category Multimedija" href="http://www.benchmark.rs/multimedija/vesti">Multimedija</a></li>
+                                <li class="upper font-min er"><a class="category Games" href="http://www.benchmark.rs/games/vesti">Games</a></li>
+                                <li class="upper font-min er"><a class="category Softver" href="http://www.benchmark.rs/software/vesti">Software / web</a></li>
+                                <li class="upper font-min er"><a class="category BiznisIT" href="http://www.benchmark.rs/biznis-it/vesti">Biznis it</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td valign="top">
+                        <div class="als-container" id="my-als-list">
+                            <span class="als-prev"></span>
+                            <div class="als-viewport">
+                                <ul class="als-wrapper">
+                                                                        <li class="als-item news-li">
+                                        <ul>
+                                                                                        <li>
+                                                <span class="box-color Hardver"> </span><a href="http://www.benchmark.rs/vesti/corsair_predstavio_carbide_600q_i_600c-61763">Corsair predstavio Carbide 600Q i 600C<span class="hq-time ">22:54</span><span class="hq-break"></span></a>
+                                            </li>
+                                                                                        <li>
+                                                <span class="box-color Games"> </span><a href="http://www.benchmark.rs/vesti/sok_pogledajte_kakva_je_zverina_potrebna_za_vr_verziju_igre_elite_dangerous-61782">Šok: Pogledajte kakva je zverina potrebna za VR verziju igre Elite: Dangerous<span class="hq-time ">22:24</span><span class="hq-break"></span></a>
+                                            </li>
+                                                                                        <li>
+                                                <span class="box-color Hardver"> </span><a href="http://www.benchmark.rs/vesti/evga_predstavio_geforce_gtx_970_hybrid_graficku_karticu-61775">EVGA predstavio GeForce GTX 970 HYBRID grafičku karticu<span class="hq-time ">21:57</span><span class="hq-break"></span></a>
+                                            </li>
+                                                                                        <li>
+                                                <span class="box-color Hardver"> </span><a href="http://www.benchmark.rs/vesti/predstavljena_nova_cooler_master_v_series_napajanja-61764">Predstavljena nova Cooler Master V series napajanja<span class="hq-time ">21:24</span><span class="hq-break"></span></a>
+                                            </li>
+                                                                                        <li>
+                                                <span class="box-color Mobile"> </span><a href="http://www.benchmark.rs/vesti/apple_planira_dogadjaj_u_martu_na_kome_ce_predstaviti_novi_apple_watch_i_svoj_4-incni_iphone-61769">Apple planira događaj u martu, na kome će predstaviti novi Apple Watch i svoj 4-inčni iPhone<span class="hq-time ">20:47</span><span class="hq-break"></span></a>
+                                            </li>
+                                                                                        <li>
+                                                <span class="box-color Softver"> </span><a href="http://www.benchmark.rs/vesti/windows_10_november_update_ponovo_omogucava_funkciju_sakupljanja_podataka_onemogucenu_third-party_aplikacijama-61778">Windows 10 November Update ponovo omogućava funkciju sakupljanja podataka onemogućenu third-party aplikacijama<span class="hq-time ">20:12</span><span class="hq-break"></span></a>
+                                            </li>
+                                                                                        <li>
+                                                <span class="box-color Mobile"> </span><a href="http://www.benchmark.rs/vesti/samsung_s_console_gamepad_aplikacija_transformise_galaxy_telefon_u_kontroler_za_galaxy_view-61773">Samsung S Console Gamepad aplikacija transformiše Galaxy telefon u kontroler za Galaxy View<span class="hq-time ">19:30</span><span class="hq-break"></span></a>
+                                            </li>
+                                                                                        <li>
+                                                <span class="box-color BiznisIT"> </span><a href="http://www.benchmark.rs/vesti/policija_pretresla_kucu_kreatora_bitcoina-61780">Policija pretresla kuću kreatora Bitcoina<span class="hq-time ">18:43</span><span class="hq-break"></span></a>
+                                            </li>
+                                                                                    </ul>
+                                    </li>
+                                                                        <li class="als-item news-li">
+                                        <ul>
+                                                                                        <li>
+                                                <span class="box-color Games"> </span><a href="http://www.benchmark.rs/vesti/blood_and_wine_dlc_donosi_novih_20_sati_gejmpleja_u_the_witcher_3_wild_hunt-61779">Blood and Wine DLC donosi novih 20 sati gejmpleja u The Witcher 3: Wild Hunt<span class="hq-time ">18:06</span><span class="hq-break"></span></a>
+                                            </li>
+                                                                                        <li>
+                                                <span class="box-color Games"> </span><a href="http://www.benchmark.rs/vesti/htc_vive_vr_stize_u_aprilu_2016-61781">HTC Vive VR stiže u aprilu 2016.<span class="hq-time ">17:02</span><span class="hq-break"></span></a>
+                                            </li>
+                                                                                        <li>
+                                                <span class="box-color Hardver"> </span><a href="http://www.benchmark.rs/vesti/windows_10_nije_svemocan_prodaja_racunara_u_padu_i_u_cetvrtom_tromesecju-61766">Windows 10 nije svemoćan: prodaja računara u padu i u četvrtom tromesečju<span class="hq-time ">16:17</span><span class="hq-break"></span></a>
+                                            </li>
+                                                                                        <li>
+                                                <span class="box-color Mobile"> </span><a href="http://www.benchmark.rs/vesti/google_pixel_c_tablet_u_prodaji_promo_video_pokazuje_mogucnosti-61777">Google Pixel C tablet u prodaji, promo video pokazuje mogućnosti<span class="hq-time ">15:49</span><span class="hq-break"></span></a>
+                                            </li>
+                                                                                        <li>
+                                                <span class="box-color Mobile"> </span><a href="http://www.benchmark.rs/vesti/nexus_6_vise_nije_dostupan_u_google_play_prodavnici-61774">Nexus 6 više nije dostupan u Google Play prodavnici<span class="hq-time ">15:02</span><span class="hq-break"></span></a>
+                                            </li>
+                                                                                        <li>
+                                                <span class="box-color Mobile"> </span><a href="http://www.benchmark.rs/vesti/oppo_r7_plus_stize_sa_4_gb_ram_i_64_gb_interne_memorije-61772">Oppo R7 Plus stiže sa 4 GB RAM i 64 GB interne memorije<span class="hq-time ">13:45</span><span class="hq-break"></span></a>
+                                            </li>
+                                                                                        <li>
+                                                <span class="box-color Softver"> </span><a href="http://www.benchmark.rs/vesti/mozilla_firefox_os_je_zvanicno_mrtav-61770">Mozilla Firefox OS je zvanično mrtav<span class="hq-time ">12:55</span><span class="hq-break"></span></a>
+                                            </li>
+                                                                                        <li>
+                                                <span class="box-color Games"> </span><a href="http://www.benchmark.rs/vesti/youtube_otkrio_najpopularnije_gejming_video_klipove_iz_2015._godine-61776">Youtube otkrio najpopularnije gejming video klipove iz 2015. godine<span class="hq-time ">12:01</span><span class="hq-break"></span></a>
+                                            </li>
+                                                                                    </ul>
+                                    </li>
+                                                                        <li class="als-item news-li"><ul><li></li></ul></li>
+                                </ul>
+                            </div>
+                            <span class="als-next"></span>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        
+        <div class="hq-part-section products" id="phone-hq">
+            <ul>
+                <li><a href="http://www.benchmark.rs/telefoni?filter_link=najpopularniji" class="animate"><img src="http://www.benchmark.rs/assets/img/menus/phone/najpopularniji.png" /></a></li>
+                <li><a href="http://www.benchmark.rs/telefoni?filter_link=najnoviji" class="animate"><img src="http://www.benchmark.rs/assets/img/menus/phone/najnoviji.png" /></a></li>
+                <li><a href="http://www.benchmark.rs/telefoni?filter_link=najbolje_ocenjeni" class="animate"><img src="http://www.benchmark.rs/assets/img/menus/phone/best-point.png" /></a></li>
+                <li><a href="http://www.benchmark.rs/telefoni?filter_link=phableti-telefoni" class="animate"><img src="http://www.benchmark.rs/assets/img/menus/phone/phableti.png" /></a></li>
+                <li><a href="http://www.benchmark.rs/telefoni?filter_link=720p" class="animate"><img src="http://www.benchmark.rs/assets/img/menus/phone/720.png" /></a></li>
+                <li><a href="http://www.benchmark.rs/telefoni?filter_link=1080p" class="animate"><img src="http://www.benchmark.rs/assets/img/menus/phone/1080.png" /></a></li>
+            </ul>
+            <div class="clear"></div>
+        </div>
+        
+        <div class="hq-part-section products" id="laptop-hq">
+            <ul>
+                <li><a href="http://www.benchmark.rs/laptopovi?filter_link=performansa" class="animate"><img src="http://www.benchmark.rs/assets/img/menus/laptop/performansama.png" /></a></li>
+                <li><a href="http://www.benchmark.rs/laptopovi?filter_link=najbolje_ocenjeni" class="animate"><img src="http://www.benchmark.rs/assets/img/menus/laptop/najbolje-ocenjeni.png" /></a></li>
+                <li><a href="http://www.benchmark.rs/laptopovi?filter_link=trajanje_baterije" class="animate"><img src="http://www.benchmark.rs/assets/img/menus/laptop/trajanju-baterije.png" /></a></li>
+                <li><a href="http://www.benchmark.rs/laptopovi?filter_link=najbolje_ocenjeni" class="animate"><img src="http://www.benchmark.rs/assets/img/menus/laptop/ocenama-posetilaca.png" /></a></li>
+                <li style="margin-left:1px"><a href="http://www.benchmark.rs/laptopovi?filter_link=najpopularniji" class="animate"><img src="http://www.benchmark.rs/assets/img/menus/laptop/najpopularniji.png" /></a></li>
+                <li style="margin-left:5px"><a href="http://www.benchmark.rs/laptopovi?filter_link=full-hd" class="animate"><img src="http://www.benchmark.rs/assets/img/menus/laptop/Full-HD.png" /></a></li>
+            </ul>
+            <div class="clear"></div>
+        </div>
+        
+        <div class="hq-part-section products" id="tablet-hq">
+            <ul>
+                <li><a href="http://www.benchmark.rs/tableti?filter_link=najpopularniji" class="animate"><img src="http://www.benchmark.rs/assets/img/menus/tablet/najpopularniji.png" /></a></li>
+                <li><a href="http://www.benchmark.rs/tableti?filter_link=najnoviji" class="animate"><img src="http://www.benchmark.rs/assets/img/menus/tablet/najnoviji.png" /></a></li>
+                <li><a href="http://www.benchmark.rs/tableti?filter_link=najbolje_ocenjeni" class="animate"><img src="http://www.benchmark.rs/assets/img/menus/tablet/najbolje-ocenjeni.png" /></a></li>
+                <li><a href="http://www.benchmark.rs/tableti?filter_link=phableti-tableti" class="animate"><img src="http://www.benchmark.rs/assets/img/menus/tablet/phableti.png" /></a></li>
+                <li><a href="http://www.benchmark.rs/tableti?filter_link=720p" class="animate"><img src="http://www.benchmark.rs/assets/img/menus/tablet/720.png" /></a></li>
+                <li><a href="http://www.benchmark.rs/tableti?filter_link=1080p" class="animate"><img src="http://www.benchmark.rs/assets/img/menus/tablet/1080.png" /></a></li>
+            </ul>
+            <div class="clear"></div>
+        </div>
+        <!-- vendors -->
+        <div class="hq-part-section products" id="vendors-hq">
+            
+<div class="vendor-icon-holder">
+    <div class="vendor-icon"><a class="animated" href="http://www.benchmark.rs/acer"><img src="http://www.benchmark.rs/assets//img/vendors/acer.png"></a></div>
+    <div class="vendor-icon animated"><a class="animated"  href="http://www.benchmark.rs/alcatel"><img src="http://www.benchmark.rs/assets//img/vendors/alcatel.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/amd"><img src="http://www.benchmark.rs/assets//img/vendors/amd.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/asrock"><img src="http://www.benchmark.rs/assets//img/vendors/asrock.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/asus"><img src="http://www.benchmark.rs/assets//img/vendors/asus.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/canon"><img src="http://www.benchmark.rs/assets//img/vendors/canon.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/cooler-master"><img src="http://www.benchmark.rs/assets//img/vendors/cooler-master.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/dell"><img src="http://www.benchmark.rs/assets//img/vendors/dell.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/gigabyte"><img src="http://www.benchmark.rs/assets//img/vendors/gigabyte.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/hp"><img src="http://www.benchmark.rs/assets//img/vendors/hp.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/htc"><img src="http://www.benchmark.rs/assets//img/vendors/htc.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/huawei"><img src="http://www.benchmark.rs/assets//img/vendors/huawei.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/intel"><img src="http://www.benchmark.rs/assets//img/vendors/intel.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/kingston"><img src="http://www.benchmark.rs/assets//img/vendors/kingston.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/lenovo"><img src="http://www.benchmark.rs/assets//img/vendors/lenovo.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/logitech"><img src="http://www.benchmark.rs/assets//img/vendors/logitech.png?v=1"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/msi"><img src="http://www.benchmark.rs/assets//img/vendors/msi.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/nikon"><img src="http://www.benchmark.rs/assets//img/vendors/nikon.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/prestigio"><img src="http://www.benchmark.rs/assets//img/vendors/prestigio.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/samsung"><img src="http://www.benchmark.rs/assets//img/vendors/samsung.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/samsungtv"><img src="http://www.benchmark.rs/assets//img/vendors/samsungtv.png?v=2"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/sandisk"><img src="http://www.benchmark.rs/assets//img/vendors/sandisk.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/sapphire"><img src="http://www.benchmark.rs/assets//img/vendors/sapphire.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/sony"><img src="http://www.benchmark.rs/assets//img/vendors/sony.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/toshiba"><img src="http://www.benchmark.rs/assets//img/vendors/toshiba.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/utok"><img src="http://www.benchmark.rs/assets//img/vendors/utok.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/tesla"><img src="http://www.benchmark.rs/assets//img/vendors/tesla.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/telenor"><img src="http://www.benchmark.rs/assets//img/vendors/telenor.png"></a></div>
+    
+    
+    
+
+
+
+    <div class="clear"></div>
+</div>
+
+        </div>
+	<!-- vendors end -->
+    </div>
+    
+        
+</div>
+</div>
+    <a href="http://shop.benchmark.rs" style="display:block;margin-bottom:5px;"><img src="http://www.benchmark.rs/assets/img/shop-banner.jpg" /></a>
+<div class="bech_content_wrap whiteBck v-border-both">
+<div class="details-wrap category-section">
+<!-- the viewport -->
+<div class="category-highlight-container">
+      <!-- the slider -->
+      <div class="owl-carousel">
+        <!-- the items -->
+                <div class="m-item category">
+            <a href="http://www.benchmark.rs/shop">
+            <img src="http://www.benchmark.rs/assets/img/banner/slider/3904c7d22b08c40dfc5a2eec19026d87.jpg" alt="Shop" title="Shop" />
+            </a>
+        </div>
+                <div class="m-item category">
+            <a href="http://www.benchmark.rs/tv">
+            <img src="http://www.benchmark.rs/assets/img/banner/slider/45806b181dff3a552837af275f8bcdf9.jpg" alt="Benchmark TV" title="Benchmark TV" />
+            </a>
+        </div>
+                <div class="m-item category">
+            <a href="">
+            <img src="http://www.benchmark.rs/assets/img/banner/slider/5eb6dcfea02554befb55648d5ef6493d.jpg" alt="Benchmark iOS" title="Benchmark iOS" />
+            </a>
+        </div>
+                <div class="m-item category">
+            <a href="https://play.google.com/store/apps/details?id=com.kepsoftware.benchmark&hl=en">
+            <img src="http://www.benchmark.rs/assets/img/banner/slider/67e1ec33ddf450f193870aabc39f1241.jpg" alt="Benchmark Android" title="Benchmark Android" />
+            </a>
+        </div>
+              </div>
+</div>
+    <div class="category-subcategories">
+        <ul>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </ul>
+        <div class="clear"></div>
+    </div>
+    <div class="column">
+         
+
+<div class="article-list-item top-right-border">
+    <span class="category Hardver">Hardver</span>
+    <span class="date">09.12.2015 22:54</span>
+    <span class="num-comment orangeBck">2</span>
+    <h2><a href="http://www.benchmark.rs/vesti/corsair_predstavio_carbide_600q_i_600c-61763">Corsair predstavio Carbide 600Q i 600C</a></h2>
+    <div class="article-list-image-holder">
+                <a href="http://www.benchmark.rs/vesti/corsair_predstavio_carbide_600q_i_600c-61763">
+            <img src="http://www.benchmark.rs/assets/img/news/small_thumb/00e798dde242efc348338bc556b2acba.jpg" alt="Corsair predstavio Carbide 600Q i 600C" title="Corsair predstavio Carbide 600Q i 600C" class="no" />
+        </a>
+            </div>
+    <div class="article-list-item-description">
+
+        <p>Corsair je predstavio svoja nova Carbide kući&scaron;ta. Novi modeli nose oznake Carbide 600Q i Carbide 600C. Konceptualno, ova kući&scaron;ta imaju za ciljnu grupu korisnike koji ne toleri&scaron;u buku i žele dobro provetreno kući&scaron;te. Prema navodima Corsaira, Carbide modeli omogućavaju i tih rad i veliki stepen provetrenosti.</p>
+                    <span class="alias">&bdquo;Prva inverted-ATX kućišta&rdquo;</span>
+            </div>
+</div>
+
+
+<div class="article-list-item top-right-border">
+    <span class="category Games">Games</span>
+    <span class="date">09.12.2015 22:24</span>
+    <span class="num-comment orangeBck">13</span>
+    <h2><a href="http://www.benchmark.rs/vesti/sok_pogledajte_kakva_je_zverina_potrebna_za_vr_verziju_igre_elite_dangerous-61782">Šok: Pogledajte kakva je zverina potrebna za VR verziju igre Elite: Dangerous</a></h2>
+    <div class="article-list-image-holder">
+                <a href="http://www.benchmark.rs/vesti/sok_pogledajte_kakva_je_zverina_potrebna_za_vr_verziju_igre_elite_dangerous-61782">
+            <img src="http://www.benchmark.rs/assets/img/news/small_thumb/95046af12b800addb428772e3958981d.jpg" alt="Šok: Pogledajte kakva je zverina potrebna za VR verziju igre Elite: Dangerous" title="Šok: Pogledajte kakva je zverina potrebna za VR verziju igre Elite: Dangerous" class="no" />
+        </a>
+            </div>
+    <div class="article-list-item-description">
+
+        <p>Frontier Developments je na zvaničnoj strani okačio minimalne hardverske zahteve za VR verziju igre Elite Dangerous. Da bi igrači uživali u virtualnom realizmu u poznatoj igri istraživanja svemira, moraće da imaju izuzetno snažne računare. Na ovaj način je jo&scaron; jednom potvrđeno da će za postizanje dobrih performansi biti neophodne veoma, veoma snažne specifikacije.</p>
+            </div>
+</div>
+
+
+<div class="article-list-item top-right-border">
+    <span class="category Hardver">Hardver</span>
+    <span class="date">09.12.2015 21:57</span>
+    <span class="num-comment orangeBck">0</span>
+    <h2><a href="http://www.benchmark.rs/vesti/evga_predstavio_geforce_gtx_970_hybrid_graficku_karticu-61775">EVGA predstavio GeForce GTX 970 HYBRID grafičku karticu</a></h2>
+    <div class="article-list-image-holder">
+                <a href="http://www.benchmark.rs/vesti/evga_predstavio_geforce_gtx_970_hybrid_graficku_karticu-61775">
+            <img src="http://www.benchmark.rs/assets/img/news/small_thumb/5b25494bfe7acb9b95226d106dc0526d.jpg" alt="EVGA predstavio GeForce GTX 970 HYBRID grafičku karticu" title="EVGA predstavio GeForce GTX 970 HYBRID grafičku karticu" class="no" />
+        </a>
+            </div>
+    <div class="article-list-item-description">
+
+        <p>Kompanija EVGA predstavila je novu grafičku karticu koja nosi naziv EVGA GeForce GTX 970 HYBRID GAMING. Radi se o grafičkoj kartici koja ima na sebi all-in-one tečno re&scaron;enje za hlađenje koja značajno snižava temperaturu GPU-a. Re&scaron;enje za hlađenje je u potpunosti samostalno, sa radijatorom od 120 mm i ventilatorom.</p>
+            </div>
+</div>
+
+
+<div class="article-list-item top-right-border">
+    <span class="category Hardver">Hardver</span>
+    <span class="date">09.12.2015 21:24</span>
+    <span class="num-comment orangeBck">0</span>
+    <h2><a href="http://www.benchmark.rs/vesti/predstavljena_nova_cooler_master_v_series_napajanja-61764">Predstavljena nova Cooler Master V series napajanja</a></h2>
+    <div class="article-list-image-holder">
+                <a href="http://www.benchmark.rs/vesti/predstavljena_nova_cooler_master_v_series_napajanja-61764">
+            <img src="http://www.benchmark.rs/assets/img/news/small_thumb/5fd7141dd3787ce2650fc3a1a211225e.jpg" alt="Predstavljena nova Cooler Master V series napajanja" title="Predstavljena nova Cooler Master V series napajanja" class="no" />
+        </a>
+            </div>
+    <div class="article-list-item-description">
+
+        <p>Cooler Master je nedavno osvežio svoju V seriju. Ovo osveženje se odnosi na modele manje snage i to između 550 i 750 W.&nbsp;To obuhvata tri modela i to V550, V650 i V750 pri čemu brojna vrednost označava snagu napajanja u vatima. Cooler Master od ova tri modela izdvaja kao najinteresantniji model pod oznakom V750.</p>
+                    <span class="alias">&bdquo;&rdquo;</span>
+            </div>
+</div>
+
+
+<div class="article-list-item top-right-border">
+    <span class="category Mobile">Mobile</span>
+    <span class="date">09.12.2015 20:47</span>
+    <span class="num-comment orangeBck">0</span>
+    <h2><a href="http://www.benchmark.rs/vesti/apple_planira_dogadjaj_u_martu_na_kome_ce_predstaviti_novi_apple_watch_i_svoj_4-incni_iphone-61769">Apple planira događaj u martu, na kome će predstaviti novi Apple Watch i svoj 4-inčni iPhone</a></h2>
+    <div class="article-list-image-holder">
+                <a href="http://www.benchmark.rs/vesti/apple_planira_dogadjaj_u_martu_na_kome_ce_predstaviti_novi_apple_watch_i_svoj_4-incni_iphone-61769">
+            <img src="http://www.benchmark.rs/assets/img/news/small_thumb/4b5f05fd3e353eb2dafc695003b4a874.jpg" alt="Apple planira događaj u martu, na kome će predstaviti novi Apple Watch i svoj 4-inčni iPhone" title="Apple planira događaj u martu, na kome će predstaviti novi Apple Watch i svoj 4-inčni iPhone" class="no" />
+        </a>
+            </div>
+    <div class="article-list-item-description">
+
+        <p>Kompanija Apple će održati događaj u martu 2016. godine, gde će objaviti drugu generaciju Apple Watch pametnog sata i 4-inčni iPhone 6C telefon koji se u poslednje vreme pojavljuje u brojnim glasinama. U mobilnoj industriji je postao trend da ekrani uređaja bivaju sve veći i veći, pa je tako displej veći od 5 inča postao norma za korisnike smartfona.</p>
+            </div>
+</div>
+
+
+<div class="article-list-item top-right-border">
+    <span class="category Softver">Software/Web</span>
+    <span class="date">09.12.2015 20:12</span>
+    <span class="num-comment orangeBck">0</span>
+    <h2><a href="http://www.benchmark.rs/vesti/windows_10_november_update_ponovo_omogucava_funkciju_sakupljanja_podataka_onemogucenu_third-party_aplikacijama-61778">Windows 10 November Update ponovo omogućava funkciju sakupljanja podataka onemogućenu third-party aplikacijama</a></h2>
+    <div class="article-list-image-holder">
+                <a href="http://www.benchmark.rs/vesti/windows_10_november_update_ponovo_omogucava_funkciju_sakupljanja_podataka_onemogucenu_third-party_aplikacijama-61778">
+            <img src="http://www.benchmark.rs/assets/img/news/small_thumb/c8b40a613c08df009d35081b2c13d438.jpg" alt="Windows 10 November Update ponovo omogućava funkciju sakupljanja podataka onemogućenu third-party aplikacijama" title="Windows 10 November Update ponovo omogućava funkciju sakupljanja podataka onemogućenu third-party aplikacijama" class="no" />
+        </a>
+            </div>
+    <div class="article-list-item-description">
+
+        <p>Windows 10 November Update je predstavljen od strane Microsofta uz mnogo pompe, a doneo je mno&scaron;tvo pobolj&scaron;anja na računarima i tabletima &scaron;irom sveta, ali isto tako i neke promene koje korisnici tek sada otkrivaju. Velika diskusija na redditu koja ima nekoliko hiljada upisa otkrila je da je na nekim računarima Windows 10 November&#8230;</p>
+            </div>
+</div>
+
+
+<div class="article-list-item top-right-border">
+    <span class="category Mobile">Mobile</span>
+    <span class="date">09.12.2015 19:30</span>
+    <span class="num-comment orangeBck">0</span>
+    <h2><a href="http://www.benchmark.rs/vesti/samsung_s_console_gamepad_aplikacija_transformise_galaxy_telefon_u_kontroler_za_galaxy_view-61773">Samsung S Console Gamepad aplikacija transformiše Galaxy telefon u kontroler za Galaxy View</a></h2>
+    <div class="article-list-image-holder">
+                <a href="http://www.benchmark.rs/vesti/samsung_s_console_gamepad_aplikacija_transformise_galaxy_telefon_u_kontroler_za_galaxy_view-61773">
+            <img src="http://www.benchmark.rs/assets/img/news/small_thumb/e5a65f0d0150343b1618e90e40f769ca.jpg" alt="Samsung S Console Gamepad aplikacija transformiše Galaxy telefon u kontroler za Galaxy View" title="Samsung S Console Gamepad aplikacija transformiše Galaxy telefon u kontroler za Galaxy View" class="no" />
+        </a>
+            </div>
+    <div class="article-list-item-description">
+
+        <p>Samsung je rekao o Galaxy View tabletu da donosi potpuno novi način konzumiranja mobilnog videa i zabave, a predstavlja ga kao najveći Android mobilni uređaj na trži&scaron;tu. Sa tim se možemo složiti imajući u vidu da Galaxy View ima 18,4-inčni ekran.</p>
+            </div>
+</div>
+
+
+<div class="article-list-item top-right-border">
+    <span class="category BiznisIT">Biznis IT</span>
+    <span class="date">09.12.2015 18:43</span>
+    <span class="num-comment orangeBck">0</span>
+    <h2><a href="http://www.benchmark.rs/vesti/policija_pretresla_kucu_kreatora_bitcoina-61780">Policija pretresla kuću kreatora Bitcoina</a></h2>
+    <div class="article-list-image-holder">
+                <a href="http://www.benchmark.rs/vesti/policija_pretresla_kucu_kreatora_bitcoina-61780">
+            <img src="http://www.benchmark.rs/assets/img/news/small_thumb/159f7b6d5af53db81133252d3eae54c3.jpg" alt="Policija pretresla kuću kreatora Bitcoina" title="Policija pretresla kuću kreatora Bitcoina" class="no" />
+        </a>
+            </div>
+    <div class="article-list-item-description">
+
+        <p>Australijska Federalna policija pretresla je kuću i kancelarije Krejga Rajta, čoveka koga su sajtovi Wired i Gizmodo označili kao mogućeg uma koji stoji iza Bitcoin sistema. Na desetine zvaničnika je u&scaron;lo u iznajmljenu kuću i kancelacije koje su registrovane na njegovo ime, rekav&scaron;i novinaru Rojtersa da su pregledali kuću.</p>
+            </div>
+</div>
+
+       
+    </div>
+    <div class="column">
+        
+    
+        <div class="article-list-item top-right-border">
+        <span class="category InfoPage">Info</span>
+        <span class="date">06.12.2015 21:57</span>
+        <span class="num-comment orangeBck">3</span>
+        <h2><a href="http://www.benchmark.rs/artikal/imamo_dobitnika_znamo_ko_je_osvajac_logitech_z333_zvucnika-4021">Imamo dobitnika: Znamo ko je osvajač Logitech Z333 zvučnika!</a></h2>
+        <div class="article-list-image-holder">
+                        <a href="http://www.benchmark.rs/artikal/imamo_dobitnika_znamo_ko_je_osvajac_logitech_z333_zvucnika-4021">
+                <img src="http://www.benchmark.rs/assets/img/article/dc5f46ad9300cb111964ab46da93f265.jpg" alt="Imamo dobitnika: Znamo ko je osvajač Logitech Z333 zvučnika!" title="Imamo dobitnika: Znamo ko je osvajač Logitech Z333 zvučnika!" class="no" />
+            </a>
+                    </div>
+        <div class="article-list-item-description">
+
+            <p>Nastavljamo da se igramo zajedno sa Logitechom: kome će da zasviraju novi, Logitech Z333 zvučnici? Najsrećniji je bio...</p>
+                    </div>
+    </div>
+        <div class="article-list-item top-right-border">
+        <span class="category InfoPage">Info</span>
+        <span class="date">01.12.2015 16:00</span>
+        <span class="num-comment orangeBck">81</span>
+        <h2><a href="http://www.benchmark.rs/artikal/novi_benchmark_shop_je_online-4015">Novi Benchmark shop je online</a></h2>
+        <div class="article-list-image-holder">
+                        <a href="http://www.benchmark.rs/artikal/novi_benchmark_shop_je_online-4015">
+                <img src="http://www.benchmark.rs/assets/img/article/e954dc2fde0ddaba9c06c954aee4d024.jpg" alt="Novi Benchmark shop je online" title="Novi Benchmark shop je online" class="no" />
+            </a>
+                    </div>
+        <div class="article-list-item-description">
+
+            <p>Benchmark online prodavnica konačno ide u pravom smeru: nudi proizvode koje nećete pronaći na drugim mestima, nudi dobre cene i mnogo sadržajniju ponudu</p>
+                    </div>
+    </div>
+        <div class="article-list-item top-right-border">
+        <span class="category InfoPage">Info</span>
+        <span class="date">28.11.2015 19:17</span>
+        <span class="num-comment orangeBck">38</span>
+        <h2><a href="http://www.benchmark.rs/artikal/nagradna_igra_osvoji_logitech_z333_zvucnike-4014">Nagradna igra: osvoji Logitech Z333 zvučnike!</a></h2>
+        <div class="article-list-image-holder">
+                        <a href="http://www.benchmark.rs/artikal/nagradna_igra_osvoji_logitech_z333_zvucnike-4014">
+                <img src="http://www.benchmark.rs/assets/img/article/ddbfd1c292f0ca3b76cd318cbac91707.jpg" alt="Nagradna igra: osvoji Logitech Z333 zvučnike!" title="Nagradna igra: osvoji Logitech Z333 zvučnike!" class="no" />
+            </a>
+                    </div>
+        <div class="article-list-item-description">
+
+            <p>Nastavljamo da se igramo zajedno sa Logitechom: kome će da zasviraju novi, Logitech Z333 zvučnici?</p>
+                    </div>
+    </div>
+        <div class="article-list-item top-right-border">
+        <span class="category InfoPage">Info</span>
+        <span class="date">15.11.2015 19:45</span>
+        <span class="num-comment orangeBck">5</span>
+        <h2><a href="http://www.benchmark.rs/artikal/zavrsena_logitech_nagradna_igra_izvucen_dobitnik_logitech_z533_zvucnika-4003">Završena Logitech nagradna igra: Izvučen dobitnik Logitech Z533 zvučnika!</a></h2>
+        <div class="article-list-image-holder">
+                        <a href="http://www.benchmark.rs/artikal/zavrsena_logitech_nagradna_igra_izvucen_dobitnik_logitech_z533_zvucnika-4003">
+                <img src="http://www.benchmark.rs/assets/img/article/9fdc714d9a066b50af433f2d401a1136.jpg" alt="Završena Logitech nagradna igra: Izvučen dobitnik Logitech Z533 zvučnika!" title="Završena Logitech nagradna igra: Izvučen dobitnik Logitech Z533 zvučnika!" class="no" />
+            </a>
+                    </div>
+        <div class="article-list-item-description">
+
+            <p>Jesen Logitecha na Benchmark sajtu je u punom jeku: Imamo dobitnika odličnih Logitech Z533 zvučnika!</p>
+                    </div>
+    </div>
+        <div class="article-list-item top-right-border">
+        <span class="category InfoPage">Info</span>
+        <span class="date">03.11.2015 14:15</span>
+        <span class="num-comment orangeBck">51</span>
+        <h2><a href="http://www.benchmark.rs/artikal/nova_benchmark_android_aplikacija-3990">Nova Benchmark Android aplikacija</a></h2>
+        <div class="article-list-image-holder">
+                        <a href="http://www.benchmark.rs/artikal/nova_benchmark_android_aplikacija-3990">
+                <img src="http://www.benchmark.rs/assets/img/article/a8cf084d35ad1ac54764603d9db4c3ab.png" alt="Nova Benchmark Android aplikacija" title="Nova Benchmark Android aplikacija" class="no" />
+            </a>
+                    </div>
+        <div class="article-list-item-description">
+
+            <p>Iako smo nedavno prilikom predstavljanja mobilne verzije Benchmarka najavili da Android aplikaciju nećemo dalje unapređivati, stvari su se ipak promenile</p>
+                    </div>
+    </div>
+        <div class="article-list-item top-right-border">
+        <span class="category InfoPage">Info</span>
+        <span class="date">29.10.2015 20:33</span>
+        <span class="num-comment orangeBck">16</span>
+        <h2><a href="http://www.benchmark.rs/artikal/sweet_sixteen_16_godina_bencha..._video-3987">Sweet sixteen: 16 godina Bencha... (video)</a></h2>
+        <div class="article-list-image-holder">
+                        <a href="http://www.benchmark.rs/artikal/sweet_sixteen_16_godina_bencha..._video-3987">
+                <img src="http://www.benchmark.rs/assets/img/article/8aec40bd81a9c822d2c12b0525109709.jpg" alt="Sweet sixteen: 16 godina Bencha... (video)" title="Sweet sixteen: 16 godina Bencha... (video)" class="no" />
+            </a>
+                    </div>
+        <div class="article-list-item-description">
+
+            <p>Želimo da vam se zahvalimo na godinama poverenja i podrške, godinama sjajnog druženja na putu ka postanku respektabilnog medija: takođe, prilika da jednog od vas posebno usrećimo na rođendan Benchmarka...</p>
+                    </div>
+    </div>
+        <div class="article-list-item top-right-border">
+        <span class="category InfoPage">Info</span>
+        <span class="date">24.10.2015 21:00</span>
+        <span class="num-comment orangeBck">0</span>
+        <h2><a href="http://www.benchmark.rs/artikal/imamo_ime_srecnog_dobitnika_logitech_k400_plus_tastature-3982">Imamo ime srećnog dobitnika Logitech K400 Plus tastature</a></h2>
+        <div class="article-list-image-holder">
+                        <a href="http://www.benchmark.rs/artikal/imamo_ime_srecnog_dobitnika_logitech_k400_plus_tastature-3982">
+                <img src="http://www.benchmark.rs/assets/img/article/a3319f44e5e9a79d9762ce2c207cdf28.jpg" alt="Imamo ime srećnog dobitnika Logitech K400 Plus tastature" title="Imamo ime srećnog dobitnika Logitech K400 Plus tastature" class="no" />
+            </a>
+                    </div>
+        <div class="article-list-item-description">
+
+            <p>Nagradna igra u kojoj najsrećniji učesnik (i pratilac našeg You Tube kanala) dobija na dar Logitech K400 Plus tastaturu je završena, a srećni dobitnik je...</p>
+                    </div>
+    </div>
+    <div class="adsholder"><div id='div-gpt-ad-1406620100032-0'><script type='text/javascript'>googletag.cmd.push(function() { googletag.display('div-gpt-ad-1406620100032-0'); });</script></div></div>
+</div>
+
+<div class="column">
+    <div class="adsholder"><div id='div-gpt-ad-1406619984452-0'><script type='text/javascript'>googletag.cmd.push(function() { googletag.display('div-gpt-ad-1406619984452-0'); });</script></div></div>
+     
+    <style>
+    .telenor-widget {
+        display:block;
+        height: auto;
+        overflow: hidden;
+        width:100%;
+        height: 290px;
+        margin-top: 10px;
+    }
+    .telenor-widget-group {
+        display:none;
+        position: relative;
+        padding: 15px;
+        height:230px;
+    }
+    .telenor-widget-group.active {
+        display:block;
+    }
+    .telenorbg {
+        background-image: url("/assets/img/vendors/telenor/telenor-widget.png");
+        background-repeat: no-repeat;
+    }
+    tel-left, .tel-right, .tel-logo {
+        height:60px;
+    }
+    .tel-left, .tel-right {
+        width:30px;
+        height:60px;
+        cursor: pointer;
+    }
+    .tel-logo {
+        display:block;
+        position:absolute;
+        top:0px;
+        bottom:0px;
+        left:50px;
+        right:50px;
+        background-position: center center;
+    }
+    .tel-left {
+        background-position: 0px 0px;
+        float:left;
+          margin-left: 10px;
+    }
+    .tel-right {
+        background-position: right 0px;
+        float:right;
+          margin-right: 10px;
+    }
+    .telenor-navigation {
+        height:60px;
+        overflow: hidden;
+        -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    }
+    .telenor-widget h4 {
+        font-size:15px;
+        font-weight: 400;
+    }
+    .telenor-widget h4 a {
+        color:#222;
+    }
+    .telenor-widget h4 a:hover {
+        text-decoration: underline;
+    }
+    .telenor-widget .widget-item {
+        margin-bottom: 10px;
+    }
+    .telholder {
+
+    }
+</style>
+
+<div class="telenor-widget h-border-bottom">
+    
+    <div class="telenor-navigation clr">
+        <span class="tel-left telenorbg" onclick="moveLeftTelenor(); return false;"></span>
+        <span class="tel-logo telenorbg"></span>
+        <span class="tel-right telenorbg" onclick="moveRightTelenor();return false;"></span>
+    </div>
+    <div class="telholder">
+         
+         
+    <div class="telenor-widget-group active animate">
+     
+    
+    <div class="widget-item">
+         
+        <h4><a href="http://www.telenor.rs/sr/O-Telenoru/Telenor-u-Srbiji/Novosti/2015/Racunari-i-internet-na-Decijem-odeljenju-klinike-za-rehabilitaciju-Dr-Miroslav-Zotovic" target="_blank">Računari i internet na Dečijem odeljenju klinike za rehabilitaciju “Dr Miroslav Zotović”</a></h4>
+    </div>
+    
+     
+    
+    
+    
+     
+         
+    
+    <div class="widget-item">
+         
+        <h4><a href="http://www.telenor.rs/sr/O-Telenoru/Telenor-u-Srbiji/Novosti/2015/Telenor-poklanja-korisnicima-Capture-digitalni-servis-za-cuvanje-fotografija" target="_blank">Telenor poklanja korisnicima Capture, digitalni servis za čuvanje fotografija</a></h4>
+    </div>
+    
+     
+    
+    
+    
+     
+         
+    
+    <div class="widget-item">
+         
+        <h4><a href="http://www.telenor.rs/sr/O-Telenoru/Telenor-u-Srbiji/Novosti/2015/Telenor-investira-vise-od-35-miliona-evra-u-novi-spektar-aktivno-ce-razvijati-4G-mrezu-u-Srbiji" target="_blank">Telenor investira više od 35 miliona evra u novi spektar, aktivno će razvijati 4G mrežu u Srbiji</a></h4>
+    </div>
+    
+     
+    
+    
+    
+     
+         
+    
+    <div class="widget-item">
+         
+        <h4><a href="http://www.telenor.rs/sr/O-Telenoru/Telenor-u-Srbiji/Novosti/2015/Studenti-iz-Norveske-na-praksi-u-Telenoru-Srbija" target="_blank">Studenti iz Norveške na praksi u Telenoru Srbija</a></h4>
+    </div>
+    
+     
+    </div>
+     
+    
+    
+    
+     
+         
+    <div class="telenor-widget-group  animate">
+     
+    
+    <div class="widget-item">
+         
+        <h4><a href="http://www.telenor.rs/sr/O-Telenoru/Telenor-u-Srbiji/Novosti/2015/Jovana-Miljanovic-i-Milos-Kostic-ucesnici-Telenorovog-Foruma-mladih-u-Norveskoj" target="_blank">Jovana Miljanović i Miloš Kostić - učesnici Telenorovog Foruma mladih u Norveškoj</a></h4>
+    </div>
+    
+     
+    
+    
+    
+     
+         
+    
+    <div class="widget-item">
+         
+        <h4><a href="http://www.telenor.rs/sr/O-Telenoru/Telenor-u-Srbiji/Novosti/2015/Znanje-Vikipedije-za-sve-Telenorove-korisnike" target="_blank">Znanje Vikipedije za sve Telenorove korisnike</a></h4>
+    </div>
+    
+     
+    
+    
+    
+     
+         
+    
+    <div class="widget-item">
+         
+        <h4><a href="http://www.telenor.rs/sr/O-Telenoru/Telenor-u-Srbiji/Novosti/2015/Onlajn-prevodilacki-servis-za-znakovni-jezik-sada-dostupan-za-30.000-lica-sa-ostecenim-sluhom-u-Srbiji" target="_blank">Onlajn prevodilački servis za znakovni jezik sada dostupan za 30.000 lica sa oštećenim sluhom u Srbiji</a></h4>
+    </div>
+    
+     
+    
+    
+    
+     
+         
+    
+    <div class="widget-item">
+         
+        <h4><a href="http://www.telenor.rs/sr/O-Telenoru/Telenor-u-Srbiji/Novosti/2015/Finansijski-rezultati-Telenora-Srbije-za-treci-kvartal-2015." target="_blank">Finansijski rezultati Telenora Srbije za treći kvartal 2015.</a></h4>
+    </div>
+    
+     
+    </div>
+     
+    
+    
+    
+     
+         
+    <div class="telenor-widget-group  animate">
+     
+    
+    <div class="widget-item">
+         
+        <h4><a href="http://www.telenor.rs/sr/O-Telenoru/Telenor-u-Srbiji/Novosti/2015/Nova-oprema-za-efikasniji-rad-romskih-zdravstvenih-medijatorki" target="_blank">Nova oprema za efikasniji rad romskih zdravstvenih medijatorki</a></h4>
+    </div>
+    
+     
+    
+    
+    
+     
+         
+    
+    <div class="widget-item">
+         
+        <h4><a href="http://www.telenor.rs/sr/O-Telenoru/Telenor-u-Srbiji/Novosti/2015/iPhone-6s-i-iPhone-6s-Plus-u-Telenor-prodavnicama" target="_blank">iPhone 6s i iPhone 6s Plus u Telenor prodavnicama</a></h4>
+    </div>
+    
+     
+    
+    
+    
+     
+         
+    
+    <div class="widget-item">
+         
+        <h4><a href="http://www.telenor.rs/sr/O-Telenoru/Telenor-u-Srbiji/Novosti/2015/Moja-Firma-Kombinuj-biznis-ponuda-kreirana-u-skladu-s-potrebama-korisnika" target="_blank">Moja Firma Kombinuj, biznis ponuda – kreirana u skladu  s potrebama korisnika</a></h4>
+    </div>
+    
+     
+    
+    
+    
+     
+         
+    
+    <div class="widget-item">
+         
+        <h4><a href="http://www.telenor.rs/sr/O-Telenoru/Telenor-u-Srbiji/Novosti/2015/Kako-da-koristite-internet-na-mobilnom-telefonu" target="_blank">Kako da koristite internet na mobilnom telefonu</a></h4>
+    </div>
+    
+     
+    </div>
+     
+    
+    
+    
+     
+         
+    <div class="telenor-widget-group  animate">
+     
+    
+    <div class="widget-item">
+         
+        <h4><a href="http://www.telenor.rs/sr/O-Telenoru/Telenor-u-Srbiji/Novosti/2015/iPhone-6s-i-iPhone-6s-Plus-u-Telenoru-Srbija" target="_blank">iPhone 6s i iPhone 6s Plus u Telenoru Srbija</a></h4>
+    </div>
+    
+     
+    
+    
+    
+     
+         
+    
+    <div class="widget-item">
+         
+        <h4><a href="http://www.telenor.rs/sr/O-Telenoru/Telenor-u-Srbiji/Novosti/2015/Proglaseni-finalisti-Telenorovog-konkursa-za-najbolju-ideju" target="_blank">Proglašeni finalisti Telenorovog konkursa za najbolju ideju</a></h4>
+    </div>
+    
+     
+    
+    
+    
+     
+         
+    
+    <div class="widget-item">
+         
+        <h4><a href="http://www.telenor.rs/sr/O-Telenoru/Telenor-u-Srbiji/Novosti/2015/Pola-litre-vode-mentalna-snaga-i-pametni-telefon-za-prezivljavanje-u-divljini" target="_blank">Pola litre vode, mentalna snaga i pametni telefon za preživljavanje u divljini</a></h4>
+    </div>
+    
+     
+    
+    
+    
+     
+         
+    
+    <div class="widget-item">
+         
+        <h4><a href="http://www.telenor.rs/sr/O-Telenoru/Telenor-u-Srbiji/Novosti/2015/Prijavite-se-za-Telenor-Trku-prezivljavanja" target="_blank">Prijavite se za Telenor Trku preživljavanja</a></h4>
+    </div>
+    
+     
+    </div>
+     
+    
+    
+    
+     
+         
+    <div class="telenor-widget-group  animate">
+     
+    
+    <div class="widget-item">
+         
+        <h4><a href="http://www.telenor.rs/sr/O-Telenoru/Telenor-u-Srbiji/Novosti/2015/Brzi-internet-gde-god-postoji-Telenorov-signal" target="_blank">Brzi internet gde god postoji Telenorov signal</a></h4>
+    </div>
+    
+     
+    
+    
+    
+     
+         
+    
+    <div class="widget-item">
+         
+        <h4><a href="http://www.telenor.rs/sr/O-Telenoru/Telenor-u-Srbiji/Novosti/2015/Sve-o-preduzetnistvu-na-novom-portalu-mojafirma.rs" target="_blank">Sve o preduzetništvu na novom portalu mojafirma.rs</a></h4>
+    </div>
+    
+     
+    
+    
+    
+     
+         
+    
+    <div class="widget-item">
+         
+        <h4><a href="http://www.telenor.rs/sr/O-Telenoru/Telenor-u-Srbiji/Novosti/2015/Sest-meseci-besplatnog-Facebook-a-uz-nove-pripejd-brojeve-u-Telenoru" target="_blank">Šest meseci besplatnog Facebook-a uz nove pripejd brojeve u Telenoru</a></h4>
+    </div>
+    
+     
+    
+    
+    
+     
+         
+    
+    <div class="widget-item">
+         
+        <h4><a href="http://www.telenor.rs/sr/O-Telenoru/Telenor-u-Srbiji/Novosti/2015/Telenor-pomaze-migrantima-da-se-povezu-sa-svojim-porodicama" target="_blank">Otvorene Wi-Fi internet zone u beogradskim parkovima u blizini Glavne autobuske stanice</a></h4>
+    </div>
+    
+     
+    </div>
+     
+    
+    
+    
+     
+    </div>
+</div>
+
+
+<script>
+    
+    function moveLeftTelenor(){
+        
+        var $w = $('.telenor-widget');
+        var $a = $w.find('.telenor-widget-group.active');
+        if($a.length){
+            $a.removeClass('active');
+            var $next = $a.next('.telenor-widget-group');
+            if($next.length){
+                $next.addClass('active');
+            } else {
+                $('.telenor-widget-group:nth-child(1)').addClass('active');
+            }
+        }
+    }
+    
+    function moveRightTelenor(){
+        var $w = $('.telenor-widget');
+        var $a = $w.find('.telenor-widget-group.active');
+        if($a.length){
+            $a.removeClass('active');
+            var $next = $a.prev('.telenor-widget-group');
+            if($next.length){
+                $next.addClass('active');
+            } else {
+                $('.telenor-widget-group:last-child').addClass('active');
+            }
+        }
+    }
+    
+</script>        
+                <div class="article-list-item top-right-border">
+        <span class="category InfoPage">Info</span>
+        <span class="date">20.10.2015 11:41</span>
+        <span class="num-comment orangeBck">282</span>
+        <h2><a href="http://www.benchmark.rs/artikal/16_godina_benchmarka_poklanjamo_amd_skydiver_9000_pc-3976">16 godina Benchmarka: poklanjamo AMD SkyDiver 9000 PC</a></h2>
+        <div class="article-list-image-holder">
+                        <a href="http://www.benchmark.rs/artikal/16_godina_benchmarka_poklanjamo_amd_skydiver_9000_pc-3976">
+                <img src="http://www.benchmark.rs/assets/img/article/f332935c11375a13725fda2453909905.jpg" alt="16 godina Benchmarka: poklanjamo AMD SkyDiver 9000 PC" title="16 godina Benchmarka: poklanjamo AMD SkyDiver 9000 PC" class="no" />
+            </a>
+                    </div>
+        <div class="article-list-item-description">
+
+            <p>Navikli smo da poklanjamo i volimo da darujemo: jer usklik oduševljenja srećnog dobitnika nema cenu. Da šesnaesti rođendan Benchmarka nekome od vas ostane u lepom sećanju, potrudila se kompanija AMD nesvakidašnjim poklonom</p>
+                    </div>
+    </div>
+         
+    <div class="adsholder"><div id='div-gpt-ad-1406620007744-0'><script type='text/javascript'>googletag.cmd.push(function() { googletag.display('div-gpt-ad-1406620007744-0'); });</script></div></div>
+            <div class="article-list-item top-right-border">
+        <span class="category InfoPage">Info</span>
+        <span class="date">18.10.2015 19:26</span>
+        <span class="num-comment orangeBck">40</span>
+        <h2><a href="http://www.benchmark.rs/artikal/nagradna_igra_osvoji_logitech_k400_plus_tastaturu_video-3975">Nagradna igra: osvoji Logitech K400 Plus tastaturu (video)</a></h2>
+        <div class="article-list-image-holder">
+                        <a href="http://www.benchmark.rs/artikal/nagradna_igra_osvoji_logitech_k400_plus_tastaturu_video-3975">
+                <img src="http://www.benchmark.rs/assets/img/article/a56fe61dcad7c9531d7f2422a45b0f36.jpg" alt="Nagradna igra: osvoji Logitech K400 Plus tastaturu (video)" title="Nagradna igra: osvoji Logitech K400 Plus tastaturu (video)" class="no" />
+            </a>
+                    </div>
+        <div class="article-list-item-description">
+
+            <p>Idemo dalje sa Logitech nagradnim igrama - ove nedelje poklanjamo Logitech K400 Plus tastaturu</p>
+                    </div>
+    </div>
+                <div class="article-list-item top-right-border">
+        <span class="category InfoPage">Info</span>
+        <span class="date">17.10.2015 14:18</span>
+        <span class="num-comment orangeBck">8</span>
+        <h2><a href="http://www.benchmark.rs/artikal/izvucen_srecni_dobitnik_logitech_mx_master_misa-3973">Izvučen srećni dobitnik Logitech MX Master miša</a></h2>
+        <div class="article-list-image-holder">
+                        <a href="http://www.benchmark.rs/artikal/izvucen_srecni_dobitnik_logitech_mx_master_misa-3973">
+                <img src="http://www.benchmark.rs/assets/img/article/9d352cc183ede8fa907ea94089e7984d.jpg" alt="Izvučen srećni dobitnik Logitech MX Master miša" title="Izvučen srećni dobitnik Logitech MX Master miša" class="no" />
+            </a>
+                    </div>
+        <div class="article-list-item-description">
+
+            <p>Nagradna igra u kojoj najsrećniji posetilac Benchmark sajta (i pratilac našeg You Tube kanala) dobija na dar Logitech MX Master miš je završena, a srećni dobitnik je...</p>
+                    </div>
+    </div>
+                <div class="article-list-item top-right-border">
+        <span class="category InfoPage">Info</span>
+        <span class="date">10.10.2015 19:37</span>
+        <span class="num-comment orangeBck">140</span>
+        <h2><a href="http://www.benchmark.rs/artikal/nagradna_igra_osvoji_logitech_mx_master_video-3967">Nagradna igra: osvoji Logitech MX Master! (video)</a></h2>
+        <div class="article-list-image-holder">
+                        <a href="http://www.benchmark.rs/artikal/nagradna_igra_osvoji_logitech_mx_master_video-3967">
+                <img src="http://www.benchmark.rs/assets/img/article/b60e6846039ca643b6de04eacf236163.jpg" alt="Nagradna igra: osvoji Logitech MX Master! (video)" title="Nagradna igra: osvoji Logitech MX Master! (video)" class="no" />
+            </a>
+                    </div>
+        <div class="article-list-item-description">
+
+            <p>Nastavljamo naš serijal nagradnih igara, a na Benchmarku će ova jesen proteći u znaku kompanije Logitech. Sjajne nagrade pripremio vam je poznati proizvođač a krećemo sa prvom - jedan od vas dobiće fantastični MX Master miš!</p>
+                    </div>
+    </div>
+             
+    <div class="adsholder"><div id='div-gpt-ad-1406620031832-0'><script type='text/javascript'>googletag.cmd.push(function() { googletag.display('div-gpt-ad-1406620031832-0'); });</script></div></div>
+        <div class="article-list-item top-right-border">
+        <span class="category InfoPage">Info</span>
+        <span class="date">05.10.2015 19:24</span>
+        <span class="num-comment orangeBck">6</span>
+        <h2><a href="http://www.benchmark.rs/artikal/ime_dobitnika_nagradne_ankete_u_kojoj_poklanjamo_tesla_smartphone_6_je-3963">Ime dobitnika nagradne ankete u kojoj poklanjamo Tesla Smartphone 6 je...</a></h2>
+        <div class="article-list-image-holder">
+                        <a href="http://www.benchmark.rs/artikal/ime_dobitnika_nagradne_ankete_u_kojoj_poklanjamo_tesla_smartphone_6_je-3963">
+                <img src="http://www.benchmark.rs/assets/img/article/825c7f7d9de3696435d3322d380c29e0.jpg" alt="Ime dobitnika nagradne ankete u kojoj poklanjamo Tesla Smartphone 6 je..." title="Ime dobitnika nagradne ankete u kojoj poklanjamo Tesla Smartphone 6 je..." class="no" />
+            </a>
+                    </div>
+        <div class="article-list-item-description">
+
+            <p>Prva nagradna igra koju smo organizovali na našem YouTube kanalu privedena je kraju i imamo ime srećnog dobitnika Tesla Smartphone 6 mobilnog uređaja</p>
+                    </div>
+    </div>
+                <div class="article-list-item top-right-border">
+        <span class="category InfoPage">Info</span>
+        <span class="date">25.09.2015 10:00</span>
+        <span class="num-comment orangeBck">159</span>
+        <h2><a href="http://www.benchmark.rs/artikal/nagradna_anketa_poklanjamo_tesla_smartphone_6-3951">Nagradna anketa: poklanjamo Tesla Smartphone 6</a></h2>
+        <div class="article-list-image-holder">
+                        <a href="http://www.benchmark.rs/artikal/nagradna_anketa_poklanjamo_tesla_smartphone_6-3951">
+                <img src="http://www.benchmark.rs/assets/img/article/82f439634948e84a8a24f7a8c5f1ec32.jpg" alt="Nagradna anketa: poklanjamo Tesla Smartphone 6" title="Nagradna anketa: poklanjamo Tesla Smartphone 6" class="no" />
+            </a>
+                    </div>
+        <div class="article-list-item-description">
+
+            <p>Benchmark u narednom periodu priprema za vas mnoštvo nagradnih igara: prvi uređaj koji ćemo pokloniti najsrećnijem učesniku biće Tesla Smartphone 6</p>
+                    </div>
+    </div>
+                <div class="article-list-item top-right-border">
+        <span class="category InfoPage">Info</span>
+        <span class="date">29.06.2015 13:16</span>
+        <span class="num-comment orangeBck">17</span>
+        <h2><a href="http://www.benchmark.rs/artikal/predstavljamo_benchmark_mobilni_sajt_od_danas_u_funkciji-3897">Predstavljamo: Benchmark mobilni sajt od danas u funkciji</a></h2>
+        <div class="article-list-image-holder">
+                        <a href="http://www.benchmark.rs/artikal/predstavljamo_benchmark_mobilni_sajt_od_danas_u_funkciji-3897">
+                <img src="http://www.benchmark.rs/assets/img/article/e53baa150ea46799dafb3809c123e6dc.jpg" alt="Predstavljamo: Benchmark mobilni sajt od danas u funkciji" title="Predstavljamo: Benchmark mobilni sajt od danas u funkciji" class="no" />
+            </a>
+                    </div>
+        <div class="article-list-item-description">
+
+            <p>Benchmark je konačno postao „mobile friendly“ sajt: priveli smo kraju izradu mobilne verzije sajta koji će korisnicima pružiti maksimalnu brzinu i lakoću pretraživanja naših sadržaja. Isprobajte na svom telefonu ili tabletu, novu, mobilnu verziju sajta, koja će vam omogućiti da komforno pratite naše sadržaje, bilo da ste u prevozu ili uživate u fotelji</p>
+                    </div>
+    </div>
+    </div>    <div class="clear"></div>
+    
+    <!-- retailers banner icon -->
+    
+<div class="vendor-icon-holder">
+    <div class="vendor-icon"><a class="animated" href="http://www.benchmark.rs/acer"><img src="http://www.benchmark.rs/assets//img/vendors/acer.png"></a></div>
+    <div class="vendor-icon animated"><a class="animated"  href="http://www.benchmark.rs/alcatel"><img src="http://www.benchmark.rs/assets//img/vendors/alcatel.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/amd"><img src="http://www.benchmark.rs/assets//img/vendors/amd.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/asrock"><img src="http://www.benchmark.rs/assets//img/vendors/asrock.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/asus"><img src="http://www.benchmark.rs/assets//img/vendors/asus.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/canon"><img src="http://www.benchmark.rs/assets//img/vendors/canon.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/cooler-master"><img src="http://www.benchmark.rs/assets//img/vendors/cooler-master.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/dell"><img src="http://www.benchmark.rs/assets//img/vendors/dell.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/gigabyte"><img src="http://www.benchmark.rs/assets//img/vendors/gigabyte.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/hp"><img src="http://www.benchmark.rs/assets//img/vendors/hp.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/htc"><img src="http://www.benchmark.rs/assets//img/vendors/htc.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/huawei"><img src="http://www.benchmark.rs/assets//img/vendors/huawei.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/intel"><img src="http://www.benchmark.rs/assets//img/vendors/intel.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/kingston"><img src="http://www.benchmark.rs/assets//img/vendors/kingston.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/lenovo"><img src="http://www.benchmark.rs/assets//img/vendors/lenovo.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/logitech"><img src="http://www.benchmark.rs/assets//img/vendors/logitech.png?v=1"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/msi"><img src="http://www.benchmark.rs/assets//img/vendors/msi.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/nikon"><img src="http://www.benchmark.rs/assets//img/vendors/nikon.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/prestigio"><img src="http://www.benchmark.rs/assets//img/vendors/prestigio.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/samsung"><img src="http://www.benchmark.rs/assets//img/vendors/samsung.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/samsungtv"><img src="http://www.benchmark.rs/assets//img/vendors/samsungtv.png?v=2"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/sandisk"><img src="http://www.benchmark.rs/assets//img/vendors/sandisk.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/sapphire"><img src="http://www.benchmark.rs/assets//img/vendors/sapphire.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/sony"><img src="http://www.benchmark.rs/assets//img/vendors/sony.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/toshiba"><img src="http://www.benchmark.rs/assets//img/vendors/toshiba.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/utok"><img src="http://www.benchmark.rs/assets//img/vendors/utok.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/tesla"><img src="http://www.benchmark.rs/assets//img/vendors/tesla.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/telenor"><img src="http://www.benchmark.rs/assets//img/vendors/telenor.png"></a></div>
+    
+    
+    
+
+
+
+    <div class="clear"></div>
+</div>
+
+    
+    <div class="column">
+         
+
+<div class="article-list-item top-right-border">
+    <span class="category Games">Games</span>
+    <span class="date">09.12.2015 18:06</span>
+    <span class="num-comment orangeBck">0</span>
+    <h2><a href="http://www.benchmark.rs/vesti/blood_and_wine_dlc_donosi_novih_20_sati_gejmpleja_u_the_witcher_3_wild_hunt-61779">Blood and Wine DLC donosi novih 20 sati gejmpleja u The Witcher 3: Wild Hunt</a></h2>
+    <div class="article-list-image-holder">
+                <a href="http://www.benchmark.rs/vesti/blood_and_wine_dlc_donosi_novih_20_sati_gejmpleja_u_the_witcher_3_wild_hunt-61779">
+            <img src="http://www.benchmark.rs/assets/img/news/small_thumb/238197fcb3bb100e6ddc7b9fe544bf26.jpg" alt="Blood and Wine DLC donosi novih 20 sati gejmpleja u The Witcher 3: Wild Hunt" title="Blood and Wine DLC donosi novih 20 sati gejmpleja u The Witcher 3: Wild Hunt" class="no" />
+        </a>
+            </div>
+    <div class="article-list-item-description">
+
+        <p>Upravo su se pojavili prvi detalji Blood and Wine DLC-a za igru The Witcher 3: Wild Hunt. Developer CD PROJEKT RED priprema nov DLC za The Witcher 3: Wild Hunt, i po svemu sudeći on će biti izuzetno veliki. Obećali su 20 sati gejmpleja &scaron;to je mnogo vi&scaron;e nego &scaron;to pružaju mnoge dana&scaron;nje kompletne igre.</p>
+            </div>
+</div>
+
+
+<div class="article-list-item top-right-border">
+    <span class="category Games">Games</span>
+    <span class="date">09.12.2015 17:02</span>
+    <span class="num-comment orangeBck">0</span>
+    <h2><a href="http://www.benchmark.rs/vesti/htc_vive_vr_stize_u_aprilu_2016-61781">HTC Vive VR stiže u aprilu 2016.</a></h2>
+    <div class="article-list-image-holder">
+                <a href="http://www.benchmark.rs/vesti/htc_vive_vr_stize_u_aprilu_2016-61781">
+            <img src="http://www.benchmark.rs/assets/img/news/small_thumb/10a313fa9c017a675875e8033fbe3d6a.jpg" alt="HTC Vive VR stiže u aprilu 2016." title="HTC Vive VR stiže u aprilu 2016." class="no" />
+        </a>
+            </div>
+    <div class="article-list-item-description">
+
+        <p>Usred spekulacija da će HTC Vive kontroler virtuelne realnosti biti objavljen ovog meseca, kompanija HTC je izdala saop&scaron;tenje obja&scaron;njavajući da će potro&scaron;ačka verzija uređaja biti objavljena u toku aprila sledeće godine. HTC je prethodno poručivao da će samo ograničena količina Vive kontrolera biti dostupna tokom 2015.</p>
+            </div>
+</div>
+
+
+<div class="article-list-item top-right-border">
+    <span class="category Hardver">Hardver</span>
+    <span class="date">09.12.2015 16:17</span>
+    <span class="num-comment orangeBck">3</span>
+    <h2><a href="http://www.benchmark.rs/vesti/windows_10_nije_svemocan_prodaja_racunara_u_padu_i_u_cetvrtom_tromesecju-61766">Windows 10 nije svemoćan: prodaja računara u padu i u četvrtom tromesečju</a></h2>
+    <div class="article-list-image-holder">
+                <a href="http://www.benchmark.rs/vesti/windows_10_nije_svemocan_prodaja_racunara_u_padu_i_u_cetvrtom_tromesecju-61766">
+            <img src="http://www.benchmark.rs/assets/img/news/small_thumb/d9ecf880b55b35392e3ad14aa5802bbb.jpg" alt="Windows 10 nije svemoćan: prodaja računara u padu i u četvrtom tromesečju" title="Windows 10 nije svemoćan: prodaja računara u padu i u četvrtom tromesečju" class="no" />
+        </a>
+            </div>
+    <div class="article-list-item-description">
+
+        <p>Mnogi su očekivali da Windows 10 pomogne povećanju prodaje računara nakon objave, ali rane cifre pokazuju da je ova industrija koja je u kolapsu daleko od oporavka jer procene ukazuju na slabe performanse u narednim mesecima. Analitičarska kompanija IDC očekuje da isporuke računara &scaron;irom sveta u četvrtom tromesečju opadnu za 10 posto, &scaron;to će dovesti do toga da je pad za celu 2015.</p>
+            </div>
+</div>
+
+
+<div class="article-list-item top-right-border">
+    <span class="category Mobile">Mobile</span>
+    <span class="date">09.12.2015 15:49</span>
+    <span class="num-comment orangeBck">0</span>
+    <h2><a href="http://www.benchmark.rs/vesti/google_pixel_c_tablet_u_prodaji_promo_video_pokazuje_mogucnosti-61777">Google Pixel C tablet u prodaji, promo video pokazuje mogućnosti</a></h2>
+    <div class="article-list-image-holder">
+                <a href="http://www.benchmark.rs/vesti/google_pixel_c_tablet_u_prodaji_promo_video_pokazuje_mogucnosti-61777">
+            <img src="http://www.benchmark.rs/assets/img/news/small_thumb/93c142573c288bcac40327292f85c63e.jpg" alt="Google Pixel C tablet u prodaji, promo video pokazuje mogućnosti" title="Google Pixel C tablet u prodaji, promo video pokazuje mogućnosti" class="no" />
+        </a>
+            </div>
+    <div class="article-list-item-description">
+
+        <p>Najavljen u septembru zajedno sa Nexus 6P i Nexus 5X smartfonima, Google Pixel C tablet je konačno dostupan za kupovinu počev&scaron;i od danas preko Google Play prodavnice. Objavljen je takođe i promo video koji je pre svega fokurisan na to da da korisnicima dobru ideju o tome &scaron;ta je u stvari Google Pixel C tablet.</p>
+            </div>
+</div>
+
+
+<div class="article-list-item top-right-border">
+    <span class="category Mobile">Mobile</span>
+    <span class="date">09.12.2015 15:02</span>
+    <span class="num-comment orangeBck">0</span>
+    <h2><a href="http://www.benchmark.rs/vesti/nexus_6_vise_nije_dostupan_u_google_play_prodavnici-61774">Nexus 6 više nije dostupan u Google Play prodavnici</a></h2>
+    <div class="article-list-image-holder">
+                <a href="http://www.benchmark.rs/vesti/nexus_6_vise_nije_dostupan_u_google_play_prodavnici-61774">
+            <img src="http://www.benchmark.rs/assets/img/news/small_thumb/648fc8dc4ab50d0771128a94f9718af2.jpg" alt="Nexus 6 više nije dostupan u Google Play prodavnici" title="Nexus 6 više nije dostupan u Google Play prodavnici" class="no" />
+        </a>
+            </div>
+    <div class="article-list-item-description">
+
+        <p>Google je danas prestao da prodaje Nexus 6 smartfon preko Google Play prodavnice, vi&scaron;e od godinu dana nakon &scaron;to ga je objavio. Ovo verovatno i ne bi trebalo da predstavlja preveliko iznenađenje imajući u vidu da je Nexus 6P sada Google-ov flagship smartfon, veličine gotovo koliko i Nexus 6.</p>
+            </div>
+</div>
+
+
+<div class="article-list-item top-right-border">
+    <span class="category Mobile">Mobile</span>
+    <span class="date">09.12.2015 13:45</span>
+    <span class="num-comment orangeBck">0</span>
+    <h2><a href="http://www.benchmark.rs/vesti/oppo_r7_plus_stize_sa_4_gb_ram_i_64_gb_interne_memorije-61772">Oppo R7 Plus stiže sa 4 GB RAM i 64 GB interne memorije</a></h2>
+    <div class="article-list-image-holder">
+                <a href="http://www.benchmark.rs/vesti/oppo_r7_plus_stize_sa_4_gb_ram_i_64_gb_interne_memorije-61772">
+            <img src="http://www.benchmark.rs/assets/img/news/small_thumb/00da5bed3fccbe286bd0b056eae21005.jpg" alt="Oppo R7 Plus stiže sa 4 GB RAM i 64 GB interne memorije" title="Oppo R7 Plus stiže sa 4 GB RAM i 64 GB interne memorije" class="no" />
+        </a>
+            </div>
+    <div class="article-list-item-description">
+
+        <p>Kompanija Oppo najavila je novu varijantu R7 Plus telefona. Naime, novi model će imati 4 GB RAM i 64 GB interne memorije, u poređenju sa konfiguracijom od 3 GB RAM i 32 GB interne memorije koliko ima standardni model. Ostatak specifikacija je sličan &scaron;to znači da se radi o telefonu koji se odlikuje 6-inčnim AMOLED ekranom rezolucije 1080 x 1920 piksela, kao i Color OS 2.</p>
+            </div>
+</div>
+
+
+<div class="article-list-item top-right-border">
+    <span class="category Softver">Software/Web</span>
+    <span class="date">09.12.2015 12:55</span>
+    <span class="num-comment orangeBck">0</span>
+    <h2><a href="http://www.benchmark.rs/vesti/mozilla_firefox_os_je_zvanicno_mrtav-61770">Mozilla Firefox OS je zvanično mrtav</a></h2>
+    <div class="article-list-image-holder">
+                <a href="http://www.benchmark.rs/vesti/mozilla_firefox_os_je_zvanicno_mrtav-61770">
+            <img src="http://www.benchmark.rs/assets/img/news/small_thumb/cae4225e18c1e5dda610fe2d6ad133ef.jpg" alt="Mozilla Firefox OS je zvanično mrtav" title="Mozilla Firefox OS je zvanično mrtav" class="no" />
+        </a>
+            </div>
+    <div class="article-list-item-description">
+
+        <p>Mozilina eksperimentalna izgradnja operativnog sistema za smartfone se polako privodi kraju, kako je kompanija zvanično objavila kako će obustaviti sve ponude Firefox OS smartfona preko drugih provajdera. Ovaj potez je usledio kako je Mozilla uvidela da nije u stanju da ponudi najbolje moguće korisničko iskustvo na svojim smartfonima, i time takođe odustala od bilo kakvog razvoja u segmentu smartfona.</p>
+            </div>
+</div>
+
+
+<div class="article-list-item top-right-border">
+    <span class="category Games">Games</span>
+    <span class="date">09.12.2015 12:01</span>
+    <span class="num-comment orangeBck">2</span>
+    <h2><a href="http://www.benchmark.rs/vesti/youtube_otkrio_najpopularnije_gejming_video_klipove_iz_2015._godine-61776">Youtube otkrio najpopularnije gejming video klipove iz 2015. godine</a></h2>
+    <div class="article-list-image-holder">
+                <a href="http://www.benchmark.rs/vesti/youtube_otkrio_najpopularnije_gejming_video_klipove_iz_2015._godine-61776">
+            <img src="http://www.benchmark.rs/assets/img/news/small_thumb/a51724e20026f85de3696c76ce7684dd.jpg" alt="Youtube otkrio najpopularnije gejming video klipove iz 2015. godine" title="Youtube otkrio najpopularnije gejming video klipove iz 2015. godine" class="no" />
+        </a>
+            </div>
+    <div class="article-list-item-description">
+
+        <p>Youtube je otkrio listu gejming videa koji se nalaze u vrhu za prethodnu godinu. Kada kažemo u vrhu, onda pod tim Youtube smatra da je lista bazirana na broju pregleda i deljenja, komentarima, lajkovima i jo&scaron; mnogo drugih parametera. Na mestu broj jedan se nalazi finska free-to-play igra Clash of Clans sa 83,4 miliona pregleda, ali treba istaći da se radi o zvaničnoj Super Bowl TV reklami.</p>
+            </div>
+</div>
+
+    </div>
+    
+    <div class="column">
+    <section class="bench_news_part h-border-bottom">
+	<div class="news-header">
+		<div class="news-category InfoPage">Info</div>
+		<div class="news-date dark  bold">23.05.2012 20:28</div>
+		<div class="news-comment orangeBck">0</div>
+	</div>
+        <h2 class="news-title normal dark"><a href="http://www.benchmark.rs/artikal/benchmark_aplikacija_-_nas_sajt_vidjen_ocima_androida-3567">Benchmark aplikacija - naš sajt viđen očima Androida</a></h2>
+        <div class="news-image"><a href="http://www.benchmark.rs/artikal/benchmark_aplikacija_-_nas_sajt_vidjen_ocima_androida-3567"><img src="http://www.benchmark.rs/assets/img/article/8d6bd3b83dabdeb7da7accfd85b8f9a7.jpg" /></a></div>
+	<div class="news-content">
+            <p>U prethodnom tekstu gde smo opisivali našu Benchmark forum aplikaciju, najavili smo da će uskoro biti dostupna i Benchmark sajt aplikacija, a kada smo upotrebili pojam "uskoro", nismo se šalili - aplikacija je već spremna i dostupna za preuzimanje na Google Play Store-u! Ova aplikacija vam omogućava da naš sajt pratite sa velikom lakoćom, uz pomoć vašeg Android mobilnog uređaja</p>
+        </div>
+	<div class="clear"></div>
+        </section>
+    
+    <div class="adsholder"><div id='div-gpt-ad-1406620122612-0'><script type='text/javascript'>googletag.cmd.push(function() { googletag.display('div-gpt-ad-1406620122612-0'); });</script></div></div>
+    
+    <section class="bench_news_part h-border-bottom">
+	<div class="news-header">
+		<div class="news-category InfoPage">Info</div>
+		<div class="news-date dark  bold">23.05.2012 01:44</div>
+		<div class="news-comment orangeBck">0</div>
+	</div>
+        <h2 class="news-title normal dark"><a href="http://www.benchmark.rs/artikal/benchmark_forum_aplikacija_-_pregled_i_koriscenje-3568">Benchmark forum aplikacija - pregled i korišćenje</a></h2>
+        <div class="news-image"><a href="http://www.benchmark.rs/artikal/benchmark_forum_aplikacija_-_pregled_i_koriscenje-3568"><img src="http://www.benchmark.rs/assets/img/article/edb96fbeb0c361d0acc0bfb40933b164.jpg" /></a></div>
+	<div class="news-content">
+            <p>Dragi posetioci - svesni smo koliko vam je način konzumacije sadržaja na internetu bitna stvar, tako da se Benchmark uvek trudi da ide u korak sa vremenom i potrebama, kako bi vaše posete našem sajtu i forumu bile što ugodnije iskustvo. Spremili smo vam iznenađenje na oba polja, ali ovom prilikom ćemo se fokusirati na naš forum - veliku zajednicu koju je nedavno dobila tridesethiljaditog člana. Do sada ste naš forum mogli pratiti kroz Tapatalk aplikaciju sa vašeg mobilnog uređaja, kroz nedavno dodatu mobilnu temu foruma, ali iskustvo posete foruma je podignuto za još jednu lestvicu. Zadovoljstvo nam je da vam predstavimo Benchmark forum aplikaciju za Android platformu. Pogledajmo o čemu je ovde reč i šta ova aplikacija ima da vam ponudi...</p>
+        </div>
+	<div class="clear"></div>
+        </section>
+ 
+    
+    <section class="bench_news_part h-border-bottom">
+	<div class="news-header">
+		<div class="news-category InfoPage">Info</div>
+		<div class="news-date dark  bold">25.02.2011 21:00</div>
+		<div class="news-comment orangeBck">0</div>
+	</div>
+        <h2 class="news-title normal dark"><a href="http://www.benchmark.rs/artikal/benchmark_predstavio_novi_koncept_svog_sajta-3579">Benchmark predstavio novi koncept svog sajta</a></h2>
+        <div class="news-image"><a href="http://www.benchmark.rs/artikal/benchmark_predstavio_novi_koncept_svog_sajta-3579"><img src="http://www.benchmark.rs/assets/img/article/05442f08a0927fa72b5e85b23a96838a.jpg" /></a></div>
+	<div class="news-content">
+            <p>U Danas Conference Centru brojnim predstavnicima domaćih i stranih IT kompanija i medijima predstavljena je nova koncepcija Benchmark sajta, najpopularnijeg IT medija u Srbiji. Promovisani su novi koncept i pravci razvoja, kao i potpuno drugačiji dizajn i struktura sadržaja, čime je Benchmark transformisan u dinamičan i atraktivan all-in-one tehnološki portal na kome svako može da pronađe informaciju za sebe, uživajući u modernom izgledu i naprednoj navigaciji rađenim prema najnovijim standardima na vebu. Novi Benchmark prevazilazi hardversku tematiku i obraćanje entuzijastima i naprednim korisnicima po čemu je tradicionalno poznat...</p>
+        </div>
+	<div class="clear"></div>
+        </section>
+ 
+    
+    <div class="adsholder"><div id='div-gpt-ad-1406620151711-0'><script type='text/javascript'>googletag.cmd.push(function() { googletag.display('div-gpt-ad-1406620151711-0'); });</script></div></div>
+    
+    <section class="bench_news_part h-border-bottom">
+	<div class="news-header">
+		<div class="news-category InfoPage">Info</div>
+		<div class="news-date dark  bold">24.05.2010 15:00</div>
+		<div class="news-comment orangeBck">0</div>
+	</div>
+        <h2 class="news-title normal dark"><a href="http://www.benchmark.rs/artikal/gooc2010_najava_-_gigabyte_ponovo_u_bench_house-u-3578">GOOC2010 najava - Gigabyte (ponovo) u Bench House-u</a></h2>
+        <div class="news-image"><a href="http://www.benchmark.rs/artikal/gooc2010_najava_-_gigabyte_ponovo_u_bench_house-u-3578"><img src="http://www.benchmark.rs/assets/img/article/6fc5ebfcd0fb43112bd341295ab452a0.jpg" /></a></div>
+	<div class="news-content">
+            <p>Prethodne nedelje Bench House je još jedan put bio mesto druženja kompanije Gigabyte sa posetiocima Benchmark sajta. Naši prijatelji su se potrudili da pred nas izađu sa novim, svežim informacijama koje se tiču novih modela matičnih ploča, ali i predstojećeg GOOC-a 2010. Povod novog druženja sa predstavnicima regionalne kancelarije Gigabyte-a, Nikolom Razdorovim i Vladimirom Koprićem ovog puta bio je višestruk: Gigabyte po običaju pomno prati razvoj aktuelnih trendova i na vreme izlazi sa adekvatnim modelima koji sublimiraju sve novitete koje hardverska industrija donosi. Drugi razlog bio je najava predstojećeg, tradicionalnog overclocking takmičenja koje Gigabyte organizuje...</p>
+        </div>
+	<div class="clear"></div>
+        </section>
+ 
+    
+    <section class="bench_news_part h-border-bottom">
+	<div class="news-header">
+		<div class="news-category InfoPage">Info</div>
+		<div class="news-date dark  bold">25.02.2010 16:02</div>
+		<div class="news-comment orangeBck">0</div>
+	</div>
+        <h2 class="news-title normal dark"><a href="http://www.benchmark.rs/artikal/sasa_marinkovic_amd_u_bench_house-u-3576">Saša Marinković, AMD u Bench House-u</a></h2>
+        <div class="news-image"><a href="http://www.benchmark.rs/artikal/sasa_marinkovic_amd_u_bench_house-u-3576"><img src="http://www.benchmark.rs/assets/img/article/72c701566c88bdc9328e0495f498d876.jpg" /></a></div>
+	<div class="news-content">
+            <p>Bench House je ugostio verovatno najvišeg zvaničnika jedne poznate kompanije koji nam je do sada bio u poseti. „Naš čovek“, kako se to kaže, u kompaniji kao što je AMD je došao da se obrati publici Benchmarka. Otvorenost i neposrednost su bili karakteristike neposredne komunikacije sa gospodinom Sašom Marinkovićem, Product PR & Marketing manager-om kompanije AMD...</p>
+        </div>
+	<div class="clear"></div>
+        </section>
+ 
+    
+    <section class="bench_news_part h-border-bottom">
+	<div class="news-header">
+		<div class="news-category InfoPage">Info</div>
+		<div class="news-date dark  bold">30.09.2009 11:58</div>
+		<div class="news-comment orangeBck">0</div>
+	</div>
+        <h2 class="news-title normal dark"><a href="http://www.benchmark.rs/artikal/amd_radeon_hd5870_prezentacija_bench_house-3575">AMD Radeon HD5870 prezentacija, Bench House</a></h2>
+        <div class="news-image"><a href="http://www.benchmark.rs/artikal/amd_radeon_hd5870_prezentacija_bench_house-3575"><img src="http://www.benchmark.rs/assets/img/article/7f3c7b358921f377746a82d1f96cfe49.jpg" /></a></div>
+	<div class="news-content">
+            <p></p>
+        </div>
+	<div class="clear"></div>
+        </section>
+ 
+    
+    <section class="bench_news_part h-border-bottom">
+	<div class="news-header">
+		<div class="news-category InfoPage">Info</div>
+		<div class="news-date dark  bold">25.09.2015 10:00</div>
+		<div class="news-comment orangeBck">159</div>
+	</div>
+        <h2 class="news-title normal dark"><a href="http://www.benchmark.rs/artikal/nagradna_anketa_poklanjamo_tesla_smartphone_6-3951">Nagradna anketa: poklanjamo Tesla Smartphone 6</a></h2>
+        <div class="news-image"><a href="http://www.benchmark.rs/artikal/nagradna_anketa_poklanjamo_tesla_smartphone_6-3951"><img src="http://www.benchmark.rs/assets/img/article/82f439634948e84a8a24f7a8c5f1ec32.jpg" /></a></div>
+	<div class="news-content">
+            <p>Benchmark u narednom periodu priprema za vas mnoštvo nagradnih igara: prvi uređaj koji ćemo pokloniti najsrećnijem učesniku biće Tesla Smartphone 6</p>
+        </div>
+	<div class="clear"></div>
+        </section>
+</div>
+
+<div class="column">
+    <section class="bench_news_part h-border-bottom">
+	<div class="news-header">
+		<div class="news-category InfoPage">Info</div>
+		<div class="news-date dark  bold">22.02.2010 17:00</div>
+		<div class="news-comment orangeBck">0</div>
+	</div>
+        <h2 class="news-title normal dark"><a href="http://www.benchmark.rs/artikal/asus_prezentacija_bench_house_q1_2010-3573">ASUS prezentacija, Bench House, Q1 2010</a></h2>
+        <div class="news-image"><a href="http://www.benchmark.rs/artikal/asus_prezentacija_bench_house_q1_2010-3573"><img src="http://www.benchmark.rs/assets/img/article/29ca15c225b857e6b63912c7d8055b78.jpg" /></a></div>
+	<div class="news-content">
+            <p>Bench House nastavlja da potvrđuje svoju privrženost prema korisnicima i članovima Bench zajednice. Ovoga puta ugostili smo veliki ASUS, a neposredan povod su bile nove serije matičnih ploča te kompanije. Interesantnu prezentaciju tajvanskog giganta je pratilo veliko interesovanje…</p>
+        </div>
+	<div class="clear"></div>
+        </section>
+    
+    <section class="bench_news_part h-border-bottom">
+	<div class="news-header">
+		<div class="news-category InfoPage">Info</div>
+		<div class="news-date dark  bold">29.10.2009 12:30</div>
+		<div class="news-comment orangeBck">0</div>
+	</div>
+        <h2 class="news-title normal dark"><a href="http://www.benchmark.rs/artikal/10_godina_benchmark_sajta-3556">10 godina Benchmark sajta</a></h2>
+        <div class="news-image"><a href="http://www.benchmark.rs/artikal/10_godina_benchmark_sajta-3556"><img src="http://www.benchmark.rs/assets/img/article/f88e1d43dbb2d37606bde780dc0ef673.jpg" /></a></div>
+	<div class="news-content">
+            <p>Može li deset godina da proleti? Neki kažu da može, neki smatraju da je to jako dug period. Vreme neumitno teče i mi se, nakon 10 godina osećamo stariji, sa ponekom sedom u kosi. Pa ipak, na kraju bivamo zadovoljniji, iskusniji, uspešniji - bogatiji znanjem i uspomenama. Kao pokretač sajta koji je u proteklih 10 godina posetilo mnogo miliona ljudi, sajta koji je za mnoge od nas postao virtuelni „dom“ kao i početna i krajnja stanica na svakodnevnom putovanju internetom, ne mogu da ne osetim zadovoljstvo time što je urađeno...</p>
+        </div>
+	<div class="clear"></div>
+        </section>
+ 
+    
+    <div class="adsholder"><div id='div-gpt-ad-1406620053374-0'><script type='text/javascript'>googletag.cmd.push(function() { googletag.display('div-gpt-ad-1406620053374-0'); });</script></div></div>
+    
+    <section class="bench_news_part h-border-bottom">
+	<div class="news-header">
+		<div class="news-category InfoPage">Info</div>
+		<div class="news-date dark  bold">08.11.2009 20:00</div>
+		<div class="news-comment orangeBck">0</div>
+	</div>
+        <h2 class="news-title normal dark"><a href="http://www.benchmark.rs/artikal/kingston_ssdnow_prezentacija_bench_house-3571">Kingston SSDNow prezentacija, Bench House</a></h2>
+        <div class="news-image"><a href="http://www.benchmark.rs/artikal/kingston_ssdnow_prezentacija_bench_house-3571"><img src="http://www.benchmark.rs/assets/img/article/5fb778991521c23790d0689121da0d41.jpg" /></a></div>
+	<div class="news-content">
+            <p>Potvrda ugleda koji Bench House priča uživa u domaćim okvirima jeste i prezentacija kompanije Kingston, koja je bila posvećena pre svega SSD tehnologijama. Imali smo čast i zadovoljstvo da vas ugostimo u prostorijama Bench House-a i da svi zajedno vidimo na delu jednu od najpopularnijih novih tehnologija...</p>
+        </div>
+	<div class="clear"></div>
+        </section>
+ 
+    
+    <section class="bench_news_part h-border-bottom">
+	<div class="news-header">
+		<div class="news-category InfoPage">Info</div>
+		<div class="news-date dark  bold">30.10.2012 00:11</div>
+		<div class="news-comment orangeBck">0</div>
+	</div>
+        <h2 class="news-title normal dark"><a href="http://www.benchmark.rs/artikal/osvrt_trinaest_godina_benchmarka-3564">Osvrt: Trinaest godina Benchmarka</a></h2>
+        <div class="news-image"><a href="http://www.benchmark.rs/artikal/osvrt_trinaest_godina_benchmarka-3564"><img src="http://www.benchmark.rs/assets/img/article/30327e2536e0e41ed202ee784a11be47.jpg" /></a></div>
+	<div class="news-content">
+            <p>Benchmark je upravo napunio trinaest godina, započeo četrnaestu. Napisati na današnji dan nešto smisleno svake godine, a pri tome se ne ponavljati, nije jednostavan zadatak. Svi volimo rođendane a ja ih imam dva, samo što za ovaj ne dobijam poklone već samo čestitke. Pa ipak, teško da mogu reći da li mi je draži 13-ti januar ili 29-ti oktobar
+</p>
+        </div>
+	<div class="clear"></div>
+        </section>
+ 
+    
+    <section class="bench_news_part h-border-bottom">
+	<div class="news-header">
+		<div class="news-category InfoPage">Info</div>
+		<div class="news-date dark  bold">23.07.2014 10:00</div>
+		<div class="news-comment orangeBck">0</div>
+	</div>
+        <h2 class="news-title normal dark"><a href="http://www.benchmark.rs/artikal/benchmark_novi_awardi_benchmark_sajta-3582">Benchmark: novi awardi Benchmark sajta</a></h2>
+        <div class="news-image"><a href="http://www.benchmark.rs/artikal/benchmark_novi_awardi_benchmark_sajta-3582"><img src="http://www.benchmark.rs/assets/img/article/e3a651aa913d881fc90b9d618f2c35a9.jpg" /></a></div>
+	<div class="news-content">
+            <p>Sa novim sajtom smo zaokružili mnogo stvari - obraćamo se svim ciljnim grupama, širimo spektar Benchmark ponude kao medija, integrišemo sve što Benchmark nudi u jedinstveni servis gde će svi moći da dođu da prate informacije, testove, dobiju preporuku za kupovinu i kupe konkretne uređaje. Istovremeno, zaokružena je i priča o priznanjima našeg sajta. </p>
+        </div>
+	<div class="clear"></div>
+        </section>
+ 
+    
+    <div class="adsholder"><div id='div-gpt-ad-1406620079858-0'><script type='text/javascript'>googletag.cmd.push(function() { googletag.display('div-gpt-ad-1406620079858-0'); });</script></div></div>
+    
+    <section class="bench_news_part h-border-bottom">
+	<div class="news-header">
+		<div class="news-category InfoPage">Info</div>
+		<div class="news-date dark  bold">22.10.2009 20:41</div>
+		<div class="news-comment orangeBck">0</div>
+	</div>
+        <h2 class="news-title normal dark"><a href="http://www.benchmark.rs/artikal/gigabyte_prezentacija_bench_house-3566">Gigabyte prezentacija, Bench House</a></h2>
+        <div class="news-image"><a href="http://www.benchmark.rs/artikal/gigabyte_prezentacija_bench_house-3566"><img src="http://www.benchmark.rs/assets/img/article/dc5771a205ffce8e3c0d595ca8458108.JPG" /></a></div>
+	<div class="news-content">
+            <p>Nedavno predstavljeni P55 čipset je probudio interesovanje mnogih kupaca za Core i5 platformu, a kompanija Gigabyte već na tržištu ima veliki broj različitih Ultra Durable modela baziranih na ovom setu čipova. To je bio razlog da predstavnici ove kompanije, ispred nekoliko desetina novinara članova Benchmark foruma kažu koje su to prednosti Gigabyte matičnih ploča u odnosu na konkurenciju...</p>
+        </div>
+	<div class="clear"></div>
+        </section>
+ 
+    
+    <section class="bench_news_part h-border-bottom">
+	<div class="news-header">
+		<div class="news-category InfoPage">Info</div>
+		<div class="news-date dark  bold">05.09.2009 14:57</div>
+		<div class="news-comment orangeBck">0</div>
+	</div>
+        <h2 class="news-title normal dark"><a href="http://www.benchmark.rs/artikal/eric_van_beurden_msi_-_p55_u_bench_house-u-3565">Eric van Beurden (MSI) - P55 u Bench House-u</a></h2>
+        <div class="news-image"><a href="http://www.benchmark.rs/artikal/eric_van_beurden_msi_-_p55_u_bench_house-u-3565"><img src="http://www.benchmark.rs/assets/img/article/849c00962b20bcbd95e4bfbde2e7189a.jpg" /></a></div>
+	<div class="news-content">
+            <p>Otvaranjem Bench House-a svakako da nismo dobili samo još jednu u nizu računarskih prodavnica, ma koliko njena ponuda bila ekskluzivna. Kao što smo i najavljivali, Bench House bi trebalo da donese i kvalitet više, tj. da postane stecište svih onih kojima računar i dalje predstavlja neku vrstu magije...</p>
+        </div>
+	<div class="clear"></div>
+        </section>
+</div>    <div class="clear"></div>
+    
+    <div class="category-break"></div>
+    <div class="columna v-border-right equal">
+<section class="bench_news_part h-border-bottom">
+	<div class="news-header">
+		<div class="news-category BiznisIT">Biznis IT</div>
+		<div class="news-date dark  bold">05.06.2014 14:20</div>
+		<div class="news-comment orangeBck">0</div>
+	</div>
+        <h2 class="news-title normal dark"><a href="http://www.benchmark.rs/artikal/benchmark_u_amsterdamu_amd_kaveri_tech_day-3590">Benchmark u Amsterdamu: AMD Kaveri Tech Day</a></h2>
+        <div class="news-image"><a href="http://www.benchmark.rs/artikal/benchmark_u_amsterdamu_amd_kaveri_tech_day-3590"><img src="http://www.benchmark.rs/assets/img/article/88968c103e6fe2eb2506175998e7c374.jpg" /></a></div>
+	<div class="news-content">
+            <p>Kako vreme pokazuje, APU kao koncept predstavlja sve jače uporište kompanije AMD. Kombinacija snažnih procesora i grafičkih procesora koji mogu da stanu rame uz rame sa nižom srednjom klasom diskretnih grafičkih karti su pun pogodak u svim kategorijama gde cena predstavlja jednu od bitnijih stavki. Pored očiglednog uspeha u desktop segmentu, APU je svakako sve interesantniji u mobilnoj primeni gde kompanija vidi ogroman prostor na tržištu za svoje proizvode. AMD tvrdi da sa Kaverijem u mobilnom segmentu stiže još bolja ponuda, veće mogućnosti, naprednije performanse i niža potrošnja, a u sve to smo se uverili na zvaničnoj prezentaciji u Amsterdamu</p>
+        </div>
+	<div class="clear"></div>
+        </section>
+<section class="bench_news_part h-border-bottom">
+	<div class="news-header">
+		<div class="news-category BiznisIT">Biznis IT</div>
+		<div class="news-date dark  bold">02.07.2013 10:00</div>
+		<div class="news-comment orangeBck">0</div>
+	</div>
+        <h2 class="news-title normal dark"><a href="http://www.benchmark.rs/artikal/hp_discover_2013_-_las_vegas-3003">HP Discover 2013 - Las Vegas</a></h2>
+        <div class="news-image"><a href="http://www.benchmark.rs/artikal/hp_discover_2013_-_las_vegas-3003"><img src="http://www.benchmark.rs/assets/img/article/306706efe977d6d70173c4aabbc7ef24.jpg" /></a></div>
+	<div class="news-content">
+            <p>Pružila nam se prilika da se u Las Vegasu upoznamo sa novitetima koje je kompanija Hewlett Packard pripremila u enterprise segmentu svog poslovanja. Tokom trodnevne manifestacije mogli smo čuti mnogo toga novog a najsnažniji utisak je da je HP spreman da se menja u skladu sa brzim promenama u svetu IT-a danas, te da itekako ima šta da ponudi tržištu...</p>
+        </div>
+	<div class="clear"></div>
+        </section>
+</div>
+
+<!-- COLUMN MIDDLE -->
+<div class="columna v-border-right equal">
+<section class="bench_news_part h-border-bottom">
+	<div class="news-header">
+		<div class="news-category BiznisIT">Biznis IT</div>
+		<div class="news-date dark  bold">04.03.2014 09:00</div>
+		<div class="news-comment orangeBck">0</div>
+	</div>
+        <h2 class="news-title normal dark"><a href="http://www.benchmark.rs/artikal/reportaza_benchmark_u_barseloni_-_mwc_2014-3202">Reportaža: Benchmark u Barseloni - MWC 2014</a></h2>
+        <div class="news-image"><a href="http://www.benchmark.rs/artikal/reportaza_benchmark_u_barseloni_-_mwc_2014-3202"><img src="http://www.benchmark.rs/assets/img/article/190d56dc638175bae8483ee6ebf18f39.jpg" /></a></div>
+	<div class="news-content">
+            <p>Nakon godinu dana, ponovo smo se obreli u Barseloni. Ista meta, isto odstojanje, najveći svetski sajam IT&C industrije sa kojim se nijedan od sličnih događaja koji se održavaju na tlu Evrope sasvim sigurno ne može meriti. Neverovatna količina sadržaja, događaja, ljudi dovoljno zgusnuta na jednom mestu (i par okolnih) da se može reći da je ovde svako ko nešto znači u globalu na svetskoj IT&C sceni. Isto tako, da svi koji isprate ove događaje mogu da kažu da su upoznati sa svime što će se događati – pod uslovom da su u stanju da se multipliciraju, jer je količina sadržaja ogromna. Tri užurbana dana su za nama, obavezno pročitajte utiske</p>
+        </div>
+	<div class="clear"></div>
+        </section>
+<section class="bench_news_part h-border-bottom">
+	<div class="news-header">
+		<div class="news-category BiznisIT">Biznis IT</div>
+		<div class="news-date dark  bold">12.03.2013 10:00</div>
+		<div class="news-comment orangeBck">0</div>
+	</div>
+        <h2 class="news-title normal dark"><a href="http://www.benchmark.rs/artikal/barselona_mwc_2013_-_iz_nekog_sasvim_drugog_ugla-3570">Barselona MWC 2013 - iz nekog sasvim drugog ugla</a></h2>
+        <div class="news-image"><a href="http://www.benchmark.rs/artikal/barselona_mwc_2013_-_iz_nekog_sasvim_drugog_ugla-3570"><img src="http://www.benchmark.rs/assets/img/article/d6dd1acfd3859f9a9b9c41aeeb7aa0d7.jpg" /></a></div>
+	<div class="news-content">
+            <p>Nećemo pisati o uređajima o kojima sve već znate, ali kako MWC izgleda iz perspektive novinara? Šta je ono najlepše, šta su muke, kako izgleda radni dan novinara na ovakvom zadatku? Šta smo iz svega naučili i kako ćemo naredne godine…</p>
+        </div>
+	<div class="clear"></div>
+        </section>
+</div>
+
+<!-- COLUMN MIDDLE -->
+<div class="columna v-border-right equal">
+<section class="bench_news_part h-border-bottom">
+	<div class="news-header">
+		<div class="news-category BiznisIT">Biznis IT</div>
+		<div class="news-date dark  bold">25.05.2013 09:55</div>
+		<div class="news-comment orangeBck">0</div>
+	</div>
+        <h2 class="news-title normal dark"><a href="http://www.benchmark.rs/artikal/benchmark_u_moskvi_nova_generacija_amd_apu-a-3569">Benchmark u Moskvi: Nova generacija AMD APU-a</a></h2>
+        <div class="news-image"><a href="http://www.benchmark.rs/artikal/benchmark_u_moskvi_nova_generacija_amd_apu-a-3569"><img src="http://www.benchmark.rs/assets/img/article/ba1cce29f8519de8a4916a7083ca63f8.jpg" /></a></div>
+	<div class="news-content">
+            <p>AMD je definitivno veliku pažnju posvetio APU tehnologiji, a očigledno je da će ovaj segment biti jedno od veoma jakih uporišta kompanije u veoma dugom periodu. Kako bismo dobili informacije iz prve ruke, posetili smo Moskvu gde se održavala jedna od nekoliko prezentacija na temu nove generacije APU-a. U organizaciji AMD-a, ova poseta je bila više nego zanimjiva, a saznali smo šta se krije iza kodnih naziva Temash, Kabini i Richland. APU-ovi neće više biti rezervisani za desktop i prenosne računare, već ćemo ih uskoro po prvi put videti u jednom popularnom tipu uređaja - tabletu</p>
+        </div>
+	<div class="clear"></div>
+        </section>
+<section class="bench_news_part h-border-bottom">
+	<div class="news-header">
+		<div class="news-category BiznisIT">Biznis IT</div>
+		<div class="news-date dark  bold">11.07.2005 15:00</div>
+		<div class="news-comment orangeBck">0</div>
+	</div>
+        <h2 class="news-title normal dark"><a href="http://www.benchmark.rs/artikal/hp_lab_university_2005_tenerife_spanija-3584">HP Lab University 2005, Tenerife, Španija</a></h2>
+        <div class="news-image"><a href="http://www.benchmark.rs/artikal/hp_lab_university_2005_tenerife_spanija-3584"><img src="http://www.benchmark.rs/assets/img/article/24ef583df16904613415613f0257774c.jpg" /></a></div>
+	<div class="news-content">
+            <p>Kada bi novinar zamišljao kako izgleda event njegovog života, velika je verovatnoća da bi poželeo da saznanja o novim tehnologijama spozna na način kojim je HP to omogućio novinarima EMEA regiona, a ovoga puta ih je bilo čak 350. Mesto održavanja, Tenerife - najveće i najpoznatije od Kanarskih ostrva; čast ali i uživanje bilo je odande izveštavati...</p>
+        </div>
+	<div class="clear"></div>
+        </section>
+</div>
+
+<!-- COLUMN RIGHT -->
+<div class="columna">
+<section class="bench_news_part h-border-bottom">
+	<div class="news-header">
+		<div class="news-category BiznisIT">Biznis IT</div>
+		<div class="news-date dark  bold">06.10.2013 23:54</div>
+		<div class="news-comment orangeBck">0</div>
+	</div>
+        <h2 class="news-title normal dark"><a href="http://www.benchmark.rs/artikal/reportaza_sony_xperia_z1_dogadjaj_-_zagreb_04.10.2013-3591">Reportaža: Sony Xperia Z1 događaj - Zagreb, 04.10.2013.</a></h2>
+        <div class="news-image"><a href="http://www.benchmark.rs/artikal/reportaza_sony_xperia_z1_dogadjaj_-_zagreb_04.10.2013-3591"><img src="http://www.benchmark.rs/assets/img/article/68df7f7932bc17239216aa98ac99ef9b.jpg" /></a></div>
+	<div class="news-content">
+            <p>Kao što znate, početkom septembra Sony je na IFA 2013 događaju u Berlinu predstavio svoju novu uzdanicu - Xperia Z1 smartfon. Benchmark je dobio priliku prisustvuje regionalnoj prezentaciji ovog proizvoda, o kome ste već mogli da čitate na stranicama našeg sajta. Sony je ovaj događaj održao nešto bliže, takoreći u komšiluku. Odazvali smo se na poziv i zaputili smo se ka prestonici naših suseda u grad Zagreb, kako bi saznali šta to novi vodeći smartfon poznate japanske kompanije ima da ponudi</p>
+        </div>
+	<div class="clear"></div>
+        </section>
+<section class="bench_news_part h-border-bottom">
+	<div class="news-header">
+		<div class="news-category BiznisIT">Biznis IT</div>
+		<div class="news-date dark  bold">09.12.2011 01:25</div>
+		<div class="news-comment orangeBck">0</div>
+	</div>
+        <h2 class="news-title normal dark"><a href="http://www.benchmark.rs/artikal/hp_discover_2011_bec-2342">HP Discover 2011, Beč</a></h2>
+        <div class="news-image"><a href="http://www.benchmark.rs/artikal/hp_discover_2011_bec-2342"><img src="http://www.benchmark.rs/assets/img/article/3a9b5202abbacc4c913a0d262e4a7bb3.jpg" /></a></div>
+	<div class="news-content">
+            <p>Prethodne sedmice obreli smo se na najvećoj IT manifestaciji u Evropi, možda čak i u svetu, organizovanoj od strane jedne kompanije, skupu u organizaciji kompanije HP - Discover 2011. Tokom nekoliko dana aktivnih dešavanja u Beču mogli smo čuti šta sve to u pogledu IT rešenja i servisa može da ponudi HP; skupu je prisustvovalo impozantnih 7000 ljudi a mi smo sa sobom poneli i neka nova saznanja koja ćemo pokušati da podelimo sa vama</p>
+        </div>
+	<div class="clear"></div>
+        </section>
+</div>    <div class="clear"></div>
+    
+    <div class="category-break"></div>
+    <div class="column">
+         
+
+<div class="article-list-item top-right-border">
+    <span class="category Softver">Software/Web</span>
+    <span class="date">09.12.2015 11:22</span>
+    <span class="num-comment orangeBck">11</span>
+    <h2><a href="http://www.benchmark.rs/vesti/android_6.0_se_sada_nalazi_na_0.5_svih_uredjaja_dok_se_lollipop_nalazi_na_cak_29.5_uredjaja-61768">Android 6.0 se sada nalazi na 0.5% svih uređaja, dok se Lollipop nalazi na čak 29.5% uređaja</a></h2>
+    <div class="article-list-image-holder">
+                <a href="http://www.benchmark.rs/vesti/android_6.0_se_sada_nalazi_na_0.5_svih_uredjaja_dok_se_lollipop_nalazi_na_cak_29.5_uredjaja-61768">
+            <img src="http://www.benchmark.rs/assets/img/news/small_thumb/d5d2ae2579d12f10e9c497507a7a3195.jpg" alt="Android 6.0 se sada nalazi na 0.5% svih uređaja, dok se Lollipop nalazi na čak 29.5% uređaja" title="Android 6.0 se sada nalazi na 0.5% svih uređaja, dok se Lollipop nalazi na čak 29.5% uređaja" class="no" />
+        </a>
+            </div>
+    <div class="article-list-item-description">
+
+        <p>Kompanija Google je objavila decembarski listing koji prikazuje koliko Android uređaja poseduje određenu verziju istoimenog OS-a, zaključno sa ovim mesecom.Najnovija verzija Android sistema, Android Marshmallow, se trenutno nalazi na 0.5% uređaja, &scaron;to je pristojan pomak u odnosu na 0.</p>
+            </div>
+</div>
+
+
+<div class="article-list-item top-right-border">
+    <span class="category Hardver">Hardver</span>
+    <span class="date">09.12.2015 10:49</span>
+    <span class="num-comment orangeBck">6</span>
+    <h2><a href="http://www.benchmark.rs/vesti/amd_kaze_da_ce_freesync_raditi_putem_hdmi_pocevsi_od_2016._godine-61765">AMD kaže da će FreeSync raditi putem HDMI počevši od 2016. godine</a></h2>
+    <div class="article-list-image-holder">
+                <a href="http://www.benchmark.rs/vesti/amd_kaze_da_ce_freesync_raditi_putem_hdmi_pocevsi_od_2016._godine-61765">
+            <img src="http://www.benchmark.rs/assets/img/news/small_thumb/94113bc451c662f68c5e43e959725869.jpg" alt="AMD kaže da će FreeSync raditi putem HDMI počevši od 2016. godine" title="AMD kaže da će FreeSync raditi putem HDMI počevši od 2016. godine" class="no" />
+        </a>
+            </div>
+    <div class="article-list-item-description">
+
+        <p>Kompanija AMD upravo je otkrila preko svog Radeon Technologies odeljenja da će FreeSync tehnologija biti dostupna preko HDMI početkom sledeće godine. AMD trenutno pravi neke velike promene u svojoj strategiji, a izgleda da se stvari kao &scaron;to je izdvajanje Radeon Technologies odeljenja iz glavne kompanije počinje pokazivati kao pravi potez.</p>
+            </div>
+</div>
+
+
+<div class="article-list-item top-right-border">
+    <span class="category Mobile">Mobile</span>
+    <span class="date">09.12.2015 10:13</span>
+    <span class="num-comment orangeBck">0</span>
+    <h2><a href="http://www.benchmark.rs/vesti/holandska_onlajn_prodavnica_otkrila_datum_objave_samsung_galaxy_a3_i_a5_uredjaja-61762">Holandska onlajn prodavnica otkrila datum objave Samsung Galaxy A3 i A5 uređaja</a></h2>
+    <div class="article-list-image-holder">
+                <a href="http://www.benchmark.rs/vesti/holandska_onlajn_prodavnica_otkrila_datum_objave_samsung_galaxy_a3_i_a5_uredjaja-61762">
+            <img src="http://www.benchmark.rs/assets/img/news/small_thumb/d0340eef4984277dcf5ad0d0791f2d0f.jpg" alt="Holandska onlajn prodavnica otkrila datum objave Samsung Galaxy A3 i A5 uređaja" title="Holandska onlajn prodavnica otkrila datum objave Samsung Galaxy A3 i A5 uređaja" class="no" />
+        </a>
+            </div>
+    <div class="article-list-item-description">
+
+        <p>Holandska online maloprodaja SmartPhoneShop.nl je objavila Galaxy A5 i Galaxy A3 uređaje na svom vebsajtu, gde se oni mogu i naručiti. &nbsp;Takođe &nbsp;je naveden "očekivani datum objave" za A5 i A3 uređaje zakazan za 8. januar.Ovi uređaji predstavljaju drugu generaciju A5 i A3 telefona, koja je prvobitno objavljena prethodne godine.</p>
+            </div>
+</div>
+
+
+<div class="article-list-item top-right-border">
+    <span class="category BiznisIT">Biznis IT</span>
+    <span class="date">09.12.2015 09:36</span>
+    <span class="num-comment orangeBck">0</span>
+    <h2><a href="http://www.benchmark.rs/vesti/toshiba_prodaje_poslovanje_sa_belom_tehnikom-61767">Toshiba prodaje poslovanje sa belom tehnikom</a></h2>
+    <div class="article-list-image-holder">
+                <a href="http://www.benchmark.rs/vesti/toshiba_prodaje_poslovanje_sa_belom_tehnikom-61767">
+            <img src="http://www.benchmark.rs/assets/img/news/small_thumb/6740bbd68b0b2efef2347a8051015ab4.jpg" alt="Toshiba prodaje poslovanje sa belom tehnikom" title="Toshiba prodaje poslovanje sa belom tehnikom" class="no" />
+        </a>
+            </div>
+    <div class="article-list-item-description">
+
+        <p>Kako u svom najnovijem izve&scaron;taju navodi japanski Yomiuri, kompanija Toshiba trenutno ozbiljno razmatra da proda poslovanje sa belom tehnikom. Toshiba izrađuje razne uređaje bele tehnike, a među njima su frižideri, klima uređaji, ma&scaron;ine za pranje ve&scaron;a i brojni drugi.</p>
+            </div>
+</div>
+
+    </div>
+
+    <div class="column">
+    <section class="bench_news_part h-border-bottom">
+	<div class="news-header">
+		<div class="news-category InfoPage">Info</div>
+		<div class="news-date dark  bold">26.10.2013 12:53</div>
+		<div class="news-comment orangeBck">0</div>
+	</div>
+        <h2 class="news-title normal dark"><a href="http://www.benchmark.rs/artikal/neverovatnih_sedam_dana_na_benchmarku-3563">Neverovatnih sedam dana na Benchmarku...</a></h2>
+        <div class="news-image"><a href="http://www.benchmark.rs/artikal/neverovatnih_sedam_dana_na_benchmarku-3563"><img src="http://www.benchmark.rs/assets/img/article/77ed44394c89c22eba7ca539cdc98436.jpg" /></a></div>
+	<div class="news-content">
+            <p>U prethodnih sedam dana na našem sajtu objavljeno je sedam testova koji svojom aktuelnošću prevazilaze uobičajeni ritam našeg rada. Pokušali smo da se prisetimo koja je to sedmica donela takvu količinu interesantnih sadržaja na sajtu: i nije nam pošlo za rukom. Ponekad naiđe nekakav neinteresantan period u kome teškom mukom uspevamo da obezbedimo uređaje koji izazivaju veliku pažnju publike. U protekloj, skoro pa savršenoj nedelji, novinari Benchmarka su imali prilike da uživaju u fantastičnim uređajima koji su se skoro po nekoj komandi, odjednom stvorili u našim rukama. Iz tog razloga, smatramo da je red da ih još jednom pomenemo i okupimo na jednom mestu</p>
+        </div>
+	<div class="clear"></div>
+        </section>
+    
+    <section class="bench_news_part h-border-bottom">
+	<div class="news-header">
+		<div class="news-category InfoPage">Info</div>
+		<div class="news-date dark  bold">29.10.2013 10:00</div>
+		<div class="news-comment orangeBck">0</div>
+	</div>
+        <h2 class="news-title normal dark"><a href="http://www.benchmark.rs/artikal/danas_je_rodjendan_benchmarka_uzimamo_petnaestu-3555">Danas je rođendan Benchmarka: “uzimamo petnaestu”</a></h2>
+        <div class="news-image"><a href="http://www.benchmark.rs/artikal/danas_je_rodjendan_benchmarka_uzimamo_petnaestu-3555"><img src="http://www.benchmark.rs/assets/img/article/793e0a929d1dc870db5955ad8c438114.jpg" /></a></div>
+	<div class="news-content">
+            <p>Danas je punih 14 godina i “uzimamo” petnaestu: za mlađani internet medij i više nego pristojan jubilej, pa je reč da ga makar u par rečenica pomenemo… 29. oktobra  sada već daleke 1999. godine, nastao je sajt za koji mnogi kažu da je jedan od srpskih internet brendova, nastao u vremenima kada su se na prste jedne ruke mogli nabrojati korisni sadržaji na domaćem WEB-u. </p>
+        </div>
+	<div class="clear"></div>
+        </section>
+ 
+    
+    <section class="bench_news_part h-border-bottom">
+	<div class="news-header">
+		<div class="news-category InfoPage">Info</div>
+		<div class="news-date dark  bold">26.07.2014 14:44</div>
+		<div class="news-comment orangeBck">0</div>
+	</div>
+        <h2 class="news-title normal dark"><a href="http://www.benchmark.rs/artikal/integracija_benchmark_sajta_i_benchmark_foruma-3541">Integracija Benchmark sajta i Benchmark foruma</a></h2>
+        <div class="news-image"><a href="http://www.benchmark.rs/artikal/integracija_benchmark_sajta_i_benchmark_foruma-3541"><img src="http://www.benchmark.rs/assets/img/article/db0ee89430ed57fdbad32a87ae40db6a.jpg" /></a></div>
+	<div class="news-content">
+            <p>Godinama smo slušali kritike: komentari na sajtu, komentari na forumu, dva logina...zašto to ne može sa istim korisničkim imenom? Izašli smo u susret vašim zahtevima i povezali komentare na sajtu sa komentarima foruma. Isto korisničko ime, isti login podaci, a svaki napisani thread na forumu vidi se u odgovarajućoj temi na sajtu - i obrnuto. Nadamo se da je to ono što ste od nas očekivali...</p>
+        </div>
+	<div class="clear"></div>
+        </section>
+ 
+    
+    <section class="bench_news_part h-border-bottom">
+	<div class="news-header">
+		<div class="news-category InfoPage">Info</div>
+		<div class="news-date dark  bold">24.07.2014 21:33</div>
+		<div class="news-comment orangeBck">0</div>
+	</div>
+        <h2 class="news-title normal dark"><a href="http://www.benchmark.rs/artikal/benchmark_top_10-3536">Benchmark Top 10</a></h2>
+        <div class="news-image"><a href="http://www.benchmark.rs/artikal/benchmark_top_10-3536"><img src="http://www.benchmark.rs/assets/img/article/94b23f2d870eda2afa178688dca7f36c.jpg" /></a></div>
+	<div class="news-content">
+            <p>Rang liste su nam dobro poznate iz svakodnevice. Najboljih 5, 10 ili 20 proizvoda, glumaca, sportista, timova, zemalja po određenom kriterijumu ili parametru je nešto sa čime se susrećemo iz dana u dan. Benchmark sajt sa svojom novom verzijom donosi specifičnu listu, koja nije toliko rang-lista. Benchmark Top 10 je lista odabranih. Lista odabranih proizvoda iz određene kategorije, sa kojima nećete pogrešiti.</p>
+        </div>
+	<div class="clear"></div>
+        </section>
+ 
+    
+    <section class="bench_news_part h-border-bottom">
+	<div class="news-header">
+		<div class="news-category InfoPage">Info</div>
+		<div class="news-date dark  bold">22.07.2014 00:00</div>
+		<div class="news-comment orangeBck">0</div>
+	</div>
+        <h2 class="news-title normal dark"><a href="http://www.benchmark.rs/artikal/stranice_proizvodjaca_na_benchmark_sajtu-3581">Stranice proizvođača na Benchmark sajtu</a></h2>
+        <div class="news-image"><a href="http://www.benchmark.rs/artikal/stranice_proizvodjaca_na_benchmark_sajtu-3581"><img src="http://www.benchmark.rs/assets/img/article/44e61e50a6bff91c0ed7d965d29f7140.jpg" /></a></div>
+	<div class="news-content">
+            <p>Da li ste poželeli nekada da na jednom mestu pronađete sve najnovije informacije vezane za određenog proizvođača? Sve testove, vesti i najave na jednom mestu, da jednim klikom pregledate sve aktuelne proizvode određenog brenda? Benchmark vam je u saradnji sa kompanijama koje su projekat novog Benchmarka podržale, omogućio tako nešto...</p>
+        </div>
+	<div class="clear"></div>
+        </section>
+ 
+</div>
+
+<div class="column">
+        
+    <section class="bench_news_part h-border-bottom">
+	<div class="news-header">
+		<div class="news-category InfoPage">Info</div>
+		<div class="news-date dark  bold">30.04.2014 09:14</div>
+		<div class="news-comment orangeBck">0</div>
+	</div>
+        <h2 class="news-title normal dark"><a href="http://www.benchmark.rs/artikal/najpopularniji_mobilni_uredjaji_medju_posetiocima_benchmarka-3574">Najpopularniji mobilni uređaji među posetiocima Benchmarka</a></h2>
+        <div class="news-image"><a href="http://www.benchmark.rs/artikal/najpopularniji_mobilni_uredjaji_medju_posetiocima_benchmarka-3574"><img src="http://www.benchmark.rs/assets/img/article/051a7bd8a97a8f4f914db76b298cde40.jpg" /></a></div>
+	<div class="news-content">
+            <p>Ne treba posebno trošiti reči na podatke koji govore o ekspanziji upotrebe prenosnih uređaja i naročito – pristupa internetu upotrebom mobilnih telefona i tablet. Danas nam je skoro i nezamislivo da internet sadržajima ili raznim servisima pristupamo isključivo sa računara, i to vreme nam sa ove vremenske distance izgleda kao davno prošlo vreme. Mobilni uređaji su nam omogućili da pristupimo važnim informacijama u svakom trenutku i sa svakog mesta – zbog toga smo malo zavirili u Google Analytics kako bi se upoznali sa zanimljivim podatkom – koje to mobilne uređaje preferiraju (i koriste) posetioci Benchmark sajta?</p>
+        </div>
+	<div class="clear"></div>
+        </section>
+ 
+    
+    <section class="bench_news_part h-border-bottom">
+	<div class="news-header">
+		<div class="news-category InfoPage">Info</div>
+		<div class="news-date dark  bold">01.08.2014 04:30</div>
+		<div class="news-comment orangeBck">363</div>
+	</div>
+        <h2 class="news-title normal dark"><a href="http://www.benchmark.rs/artikal/dobro_dosli_na_novi_benchmark-3559">Dobro došli na novi Benchmark!</a></h2>
+        <div class="news-image"><a href="http://www.benchmark.rs/artikal/dobro_dosli_na_novi_benchmark-3559"><img src="http://www.benchmark.rs/assets/img/article/b8e3218eef2c07d5c08622a54d79d893.jpg" /></a></div>
+	<div class="news-content">
+            <p>Nakon mnogih meseci osmišljavanja strategije, planiranja, a zatim i velikog rada na novom projektu, sa neskrivenim ponosom vam predstavljamo novi Benchmark sajt. Današnji dan, 1. avgust 2014. godine, smatramo novim poglavljem u radu firme Benchmark, duboko verujemo da smo odabrali pravi put u budućnost i nadamo se da su vaša očekivanja od novog sajta, sa onim što imate prilike da vidite i isprobate - ispunjena</p>
+        </div>
+	<div class="clear"></div>
+        </section>
+ 
+    
+    <section class="bench_news_part h-border-bottom">
+	<div class="news-header">
+		<div class="news-category InfoPage">Info</div>
+		<div class="news-date dark  bold">23.07.2014 15:00</div>
+		<div class="news-comment orangeBck">0</div>
+	</div>
+        <h2 class="news-title normal dark"><a href="http://www.benchmark.rs/artikal/benchmark_vodici_za_kupovinu-3585">Benchmark: Vodiči za kupovinu</a></h2>
+        <div class="news-image"><a href="http://www.benchmark.rs/artikal/benchmark_vodici_za_kupovinu-3585"><img src="http://www.benchmark.rs/assets/img/article/f159cb4de65b5e91e429a0078be77da7.jpg" /></a></div>
+	<div class="news-content">
+            <p>Vodiči za kupovinu su novina na Benchmark sajtu. Reč je o člancima koje možete naći raštrkane po raznim kategorijama i koji su logičan nastavak naše ideje o novom sajtu, gde bi svaka kategorija bila sopstvena celina i “zaokružena priča za sebe”. U skladu sa takvom orijentacijom, bilo je potrebno korisniku pristupiti na jedan novi način, a da budemo iskreni, potrebno je i obratiti se svakom tipu korisnika našeg sajta</p>
+        </div>
+	<div class="clear"></div>
+        </section>
+ 
+    
+     
+    
+</div> 
+    
+    <div class="clear"></div>
+    <div class="h-border-bottom" style="height:1px;"></div>
+    
+        <div class="clear"></div>
+</div></div>
+
+<div class="customer-info">
+    Sve cene na ovom sajtu iskazane su u dinarima. PDV je uračunat u cenu. Benchmark u saradnji sa kompanijom Gigatron maksimalno koristi sve svoje resurse da Vam svi artikli na ovom sajtu budu prikazani sa ispravnim nazivima specifikacija, fotografijama i cenama. Ipak, ne možemo garantovati da su sve navedene informacije i fotografije artikala na ovom sajtu u potpunosti ispravne.
+</div>
+<div id="footer">
+	<a href="" class="logo-footer"><img src="http://www.benchmark.rs/assets/img/layout/_frontend/logo-footer.png" /></a>
+        	<div class="cell">
+		<ul>
+			<li><a href="http://www.benchmark.rs/mobile">Mobile</a></li>
+			<li><a href="http://www.benchmark.rs/games">Games</a></li>
+			<li><a href="http://www.benchmark.rs/hardver">Hardver</a></li>
+			<li><a href="http://www.benchmark.rs/software">Softver/Internet</a></li>
+			<li><a href="http://www.benchmark.rs/biznis-it">Biznis IT</a></li>
+			<li><a href="http://www.benchmark.rs/multimedija">Multimedija</a></li>
+		</ul>
+	</div>
+	<div class="cell font-medium">
+		<ul>
+			<li><a href="http://www.benchmark.rs/vesti">Vesti</a></li>
+			<li><a href="http://www.benchmark.rs/testovi">Testovi</a></li>
+			<li><a href="http://www.benchmark.rs/clanci">Članci</a></li>
+		</ul>
+	</div>
+	<div class="cell font-medium">
+		<ul>
+			<li><a href="http://www.benchmark.rs/top10">Top 10</a></li>
+			<li><a href="http://www.benchmark.rs/shop">Shop</a></li>
+			<li><a href="http://www.benchmark.rs/vodic_za_kupovinu">Vodič</a></li>
+		</ul>
+	</div>
+	<div class="cell font-medium">
+		<ul>
+			<li><a href="http://www.benchmark.rs/telefoni">Telefoni</a></li>
+			<li><a href="http://www.benchmark.rs/tableti">Tableti</a></li>
+			<li><a href="http://www.benchmark.rs/laptopovi">laptop</a></li>
+		</ul>
+	</div>
+	<div class="cell right-c">
+		<ul>
+			<li><a href="http://www.benchmark.rs/o_nama">O nama</a></li>
+			<li><a href="http://www.benchmark.rs/marketing">Marketing</a></li>
+			<li><a href="http://www.benchmark.rs/kontakt">Kontakt</a></li>
+			<li><a href="http://www.benchmark.rs/faq">FAQ</a></li>
+			<li><a href="http://www.benchmark.rs/privatnost_korisnika">Privatnost korisnika</a></li>
+			<li><a href="http://www.benchmark.rs/pravila_koriscenja">Pravila korišćenja</a></li>
+			<li><a href="http://www.benchmark.rs/disclaimer">Disclaimer</a></li>
+		</ul>
+	</div>
+	<div class="clear-break"></div>
+        
+        
+<div class="vendor-icon-holder">
+    <div class="vendor-icon"><a class="animated" href="http://www.benchmark.rs/acer"><img src="http://www.benchmark.rs/assets//img/vendors/acer-black.png"></a></div>
+    <div class="vendor-icon animated"><a class="animated"  href="http://www.benchmark.rs/alcatel"><img src="http://www.benchmark.rs/assets//img/vendors/alcatel-black.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/amd"><img src="http://www.benchmark.rs/assets//img/vendors/amd-black.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/asrock"><img src="http://www.benchmark.rs/assets//img/vendors/asrock-black.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/asus"><img src="http://www.benchmark.rs/assets//img/vendors/asus-black.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/canon"><img src="http://www.benchmark.rs/assets//img/vendors/canon-black.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/cooler-master"><img src="http://www.benchmark.rs/assets//img/vendors/cooler-master-black.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/dell"><img src="http://www.benchmark.rs/assets//img/vendors/dell-black.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/gigabyte"><img src="http://www.benchmark.rs/assets//img/vendors/gigabyte-black.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/hp"><img src="http://www.benchmark.rs/assets//img/vendors/hp-black.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/htc"><img src="http://www.benchmark.rs/assets//img/vendors/htc-black.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/huawei"><img src="http://www.benchmark.rs/assets//img/vendors/huawei-black.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/intel"><img src="http://www.benchmark.rs/assets//img/vendors/intel-black.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/kingston"><img src="http://www.benchmark.rs/assets//img/vendors/kingston-black.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/lenovo"><img src="http://www.benchmark.rs/assets//img/vendors/lenovo-black.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/logitech"><img src="http://www.benchmark.rs/assets//img/vendors/logitech-black.png?v=1"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/msi"><img src="http://www.benchmark.rs/assets//img/vendors/msi-black.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/nikon"><img src="http://www.benchmark.rs/assets//img/vendors/nikon-black.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/prestigio"><img src="http://www.benchmark.rs/assets//img/vendors/prestigio-black.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/samsung"><img src="http://www.benchmark.rs/assets//img/vendors/samsung-black.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/samsungtv"><img src="http://www.benchmark.rs/assets//img/vendors/samsungtv-black.png?v=2"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/sandisk"><img src="http://www.benchmark.rs/assets//img/vendors/sandisk-black.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/sapphire"><img src="http://www.benchmark.rs/assets//img/vendors/sapphire-black.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/sony"><img src="http://www.benchmark.rs/assets//img/vendors/sony-black.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/toshiba"><img src="http://www.benchmark.rs/assets//img/vendors/toshiba-black.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/utok"><img src="http://www.benchmark.rs/assets//img/vendors/utok-black.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/tesla"><img src="http://www.benchmark.rs/assets//img/vendors/tesla-black.png"></a></div>
+    <div class="vendor-icon animate"><a class="animated"  href="http://www.benchmark.rs/telenor"><img src="http://www.benchmark.rs/assets//img/vendors/telenor-black.png"></a></div>
+    
+    
+    
+
+
+
+    <div class="clear"></div>
+</div>
+
+        
+</div>
+<div class="footer-end"> 
+    <div class="social-icons">
+        <span>Pratite nas:</span>
+        <span><a href="https://www.facebook.com/benchrs" target="_blank" class="media-icons facebook"></a></span>
+        <span><a href="https://twitter.com/benchrs" target="_blank" class="media-icons twitter"></a></span>
+        <span><a href="https://plus.google.com/102519404992391457529" rel="publisher" class="media-icons googleplus"></a></span>
+        <span><a href="http://www.youtube.com/user/benchrs" target="_blank" class="media-icons youtube"></a></span>
+    </div>
+    <div style="display: block;position: absolute;left: 38%;top: 68px;font-size: 12px;">
+        <a href="http://www.codeion.com" style="color:#333;">Developed by &nbsp;<img src="http://www.benchmark.rs/assets/img/layout/_frontend/codeion.png" /></a>
+    </div>
+    <div class="mobile-apps">
+        <span>Benchmark APP:</span>
+        <span><a href="https://play.google.com/store/apps/details?id=com.kepsoftware.benchmark&hl=en" target="_blank" class="mobile-icons android"></a></span>
+        <span><a href="https://itunes.apple.com/us/app/benchmark-rs/id904254277?mt=8" target="_blank" class="mobile-icons iphone"></a></span>
+    </div>
+</div>
+</div>
+<div id="footer-scroll" class="animate">
+    <div class="footer-scroll-container">
+                <div class="footer-scroll-container-top">
+            
+            <a href="#top" class="footer-scroll-container-button animate"><span>Go to <b>TOP</b></span><img src="http://www.benchmark.rs/assets/img/layout/_frontend/go_top.png"></a>
+        </div>
+    </div>
+</div>
+
+<script src="http://www.benchmark.rs/assets/js/modernizr-2.0.6.js"></script>
+<script type="text/javascript" src="http://www.benchmark.rs/assets/js/jquery-2.1.0.min.js?v=1.5.1"></script>
+<script type="text/javascript" src="http://www.benchmark.rs/assets/js/jquery-migrate-1.2.1.min.js?v=1.5.1"></script>
+<script type="text/javascript" src="http://www.benchmark.rs/assets/js/modernizr.custom.js?v=1.5.1"></script>
+<script type="text/javascript" src="http://www.benchmark.rs/assets/js/jquery-ui-1.8.16.custom.min.js?v=1.5.1"></script>
+<script type="text/javascript" src="http://www.benchmark.rs/assets/js/jquery.mousewheel.js?v=1.5.1"></script>
+<script type="text/javascript" src="http://www.benchmark.rs/assets/js/touch-scroller.js?v=1.5.1"></script>
+<script type="text/javascript" src="http://www.benchmark.rs/assets/js/menu-scroller.js?v=1.5.1"></script>
+<script type="text/javascript" src="http://www.benchmark.rs/assets/js/gallery-scroller.js?v=1.5.1"></script>
+<script type="text/javascript" src="http://www.benchmark.rs/assets/js/owlcarousel/owl.carousel.js?v=1.5.1"></script>
+<script type="text/javascript" src="http://www.benchmark.rs/assets/js/cart_page.js?v=1.5.1"></script>
+<script type="text/javascript" src="http://www.benchmark.rs/assets/js/cart.js?v=1.5.1"></script>
+<script type="text/javascript" src="http://www.benchmark.rs/assets/js/jquery.cookie.js?v=1.5.1"></script>
+<script type="text/javascript" src="http://www.benchmark.rs/assets/js/social/social-likes.min.js?v=1.5.1"></script>
+<script type="text/javascript" src="http://www.benchmark.rs/assets/js/master_frontend.js?v=1.5.1"></script>
+
+
+<script type="text/javascript" src="assets/js/jquery.jcarousel-core.min.js"></script>
+
+<!--[if (gte IE 6)&(lte IE 8)]>
+<script type="text/javascript" src="http://www.benchmark.rs/assets/js/selectivizr-min.js"></script>
+<![endif]-->
+
+<script src="http://www.benchmark.rs/assets/js/unveil-master/jquery.unveil.js"></script>
+<script>
+
+  $(".unveil").unveil(200, function() {
+        $(this).load(function() {
+          this.style.opacity = 1;
+        });
+   });
+
+</script>
+<img width='1' height='1' style='border:0;position:absolute;top:0px;left:0px;' src='http://bs.serving-sys.com/BurstingPipe/adServer.bs?cn=tf&c=19&mc=imp&pli=14853916&PluID=0&ord=[timestamp]&rtu=-1'/>
+</body>
+
+</html>
