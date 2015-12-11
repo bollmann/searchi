@@ -3,6 +3,9 @@ html, body{
 }
 
 .jumbotron.vertical-center {
+  background-image: url('https://awesomewallpapers.files.wordpress.com/2010/05/white.jpg');
+  padding-left: 33%;
+  padding-right: 33%;
   margin-bottom: 0; /* Remove the default bottom margin of .jumbotron */
 }
 

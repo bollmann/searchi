@@ -39,6 +39,8 @@ import crawler.dao.URLContent;
 import edu.stanford.nlp.util.StringUtils;
 
 public class InvertedIndexJob {
+	public static final float ENGLISH_THRESHOLD = 0.5f;
+
 	public static enum FeatureType {
 		TOTAL_COUNTS, HEADER_COUNTS, LINK_COUNTS, META_TAG_COUNTS
 	};
@@ -47,7 +49,6 @@ public class InvertedIndexJob {
 
 	/** Mapper Class for Document Indexer */
 	public static class DocumentIndexer extends Mapper<Text, Text, Text, Text> {
-		private static final float ENG_THRESHOLD = 0.5f;
 
 		@Override
 		public void map(Text docId, Text jsonBlob, Context context)
@@ -58,11 +59,13 @@ public class InvertedIndexJob {
 
 			Dictionary dict = Dictionary.createInstance(Dictionary.class
 					.getResourceAsStream("/resources/dict/all-english"));
-			Map<FeatureType, WordCounts> allCounts = computeCounts(page, 1, dict);
+			Map<FeatureType, WordCounts> allCounts = computeCounts(page, 1,
+					dict);
 			WordCounts totWordCounts = allCounts.get(FeatureType.TOTAL_COUNTS);
 
-			// discard document, if number of english words in doc is below threshold
-			if (totWordCounts.getPercentage() < ENG_THRESHOLD)
+			// discard document, if number of english words in doc is below
+			// threshold
+			if (totWordCounts.getPercentage() < ENGLISH_THRESHOLD)
 				return;
 
 			for (String word : totWordCounts) {
@@ -94,7 +97,7 @@ public class InvertedIndexJob {
 	public static class CorpusIndexer extends
 			Reducer<Text, Text, NullWritable, Text> {
 		public static final int MAX_ENTRIES_PER_ROW = 800;
-		private static final int topK = 2000;
+		private static final int topK = 8000;
 
 		private void writeRow(String word, int page,
 				List<DocumentFeatures> docs, Context context)

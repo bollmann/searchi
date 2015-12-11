@@ -6,7 +6,7 @@ $(function(){
 	$('#searchButton').click(function(e){
 		var query = encodeURI($('#searchBox').val()).replace(/#/g, '%23');
 		if(query){
-			window.location.href = "http://127.0.0.1:3000/results?q=" + query;
+			window.location.href = "http://192.168.0.100:3000/results?q=" + query;
 		}
 	});
 });
@@ -18,7 +18,7 @@ $(function(){
 	    if(e.which == 13) {
 			var query = encodeURI($('#searchBox').val()).replace(/#/g, '%23');
 			if(query){
-				window.location.href = "http://127.0.0.1:3000/results?q=" + query;
+				window.location.href = "http://192.168.0.100:3000/results?q=" + query;
 			}	
 			return false;    	
 	    }
@@ -33,6 +33,7 @@ $(document).ready(function() {
 	var parameters = {q: query};
 	$.get('/search', parameters, function(data){
 		$('#searchResults').html(data);
+		loadResultSnippets(query);
 	})
 
 	analyseQuery(query.toLowerCase());
@@ -41,11 +42,13 @@ $(document).ready(function() {
 function analyseQuery(query){
 
 	weatherLoc = '';
-	if(query.indexOf('weather') > -1 || query.indexOf('climate') > -1 || query.indexOf('temperature') > -1)
+	if(query.indexOf('weather') > -1 || query.indexOf('climate') > -1 || query.indexOf('temperature') > -1 ||
+		query.indexOf('forecast') > -1)
 		weatherLoc = encodeURI(query.replace(/weather/g, '')
 						.replace(/climate/g, '')
 						.replace(/temperature/g, '')
 						.replace(/today/g, '')
+						.replace(/forecast/g, '')
 						.replace(/\bnow\b/g, '')
 						.replace(/\bwhat\b/g, '')
 						.replace(/\bat\b|\bis\b|\bin\b|\bthe\b/g, '')
@@ -92,6 +95,40 @@ function enableAmazonButton(){
 
 function disableAmazonButton(){
 	$('#amazonSearchBtn').attr('disabled', 'disabled')	
+}
+
+function loadResultSnippets (query){
+	var allResults = $('#searchResults').find($('p.list-group-item-text'))
+	allResults.each(function(index, val){
+		insertSnippet(val, query)
+	});
+}
+
+function insertSnippet(listElement, query){
+	var parameters = {url: $(listElement).attr('url')}
+	$.get('./snippet', parameters, function(data){
+		$(listElement).html(highlightSnippet(data, query))
+	})
+}
+
+RegExp.escape = function(str) 
+{
+  var specials = /[.*+?|()\[\]{}\\$^]/g; // .*+?|()[]{}\$^
+  return str.replace(specials, "\\$&");
+}
+
+function highlightSnippet(text, query){
+	var highlightWord = query.split(" ")[0].trim();
+	var regex = new RegExp("(" + RegExp.escape(highlightWord) + ")", "gi");
+  	var boldedText = text.replace(regex, "<b>$1</b>");
+  	var firstOccurrence = boldedText.toUpperCase().indexOf(highlightWord.toUpperCase())
+  	var startMargin = firstOccurrence - 200
+  	if(startMargin < 0)
+  		startMargin = 0
+  	var endMargin = firstOccurrence + 200
+  	if(endMargin > text.length)
+  		endMargin = text.length - 1
+  	return boldedText.substring(startMargin, endMargin) + '...'
 }
 
 function loadAmazonDetails (){
@@ -152,6 +189,7 @@ $(function(){
 			var parameters = {q: query};
 			$.get('/search', parameters, function(data){
 				$('#searchResults').html(data);
+				loadResultSnippets(query);
 			})
 		}
 	});

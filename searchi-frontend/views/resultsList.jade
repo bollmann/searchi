@@ -7,22 +7,38 @@ ul.nav.nav-pills(role='tablist')
     a(href='#combined', aria-controls='combined', role='tab', data-toggle='tab') Combined
 // Tab panes
 .tab-content
-  #indexer.tab-pane.active(role='tabpanel')
+  #indexer.tab-pane.active.fade.in(role='tabpanel')
 
-  //-   br
-  //-   //- h1.small= indexer.time.time
-  //-   ul.list-group
-  //-     each val, key in indexer
-  //-       li.list-group-item= val.url
-  //- #pagerank.tab-pane(role='tabpanel')
-  //-   br 
-  //-   //- h1.small= pagerank.time.time
-  //-   ul.list-group
-  //-     each val, key in pagerank
-  //-       li.list-group-item= val.url
-  //- #combined.tab-pane(role='tabpanel')
-  //-   br
-  //-   // h1.small= combined.time.time
-  //-   ul.list-group
-  //-     each val, key in combined
-  //-       li.list-group-item= val.url
+    br
+    h1.small Results fetched in #{indexer.time.time}ms
+    .list-group
+      each result in indexer
+        if result.url
+          a.list-group-item('href'=result.url)
+            h4.text-primary= result.url
+            p.list-group-item-text(url= result.url) ...
+            p.small Rank: 
+              b= result.rank
+
+  #pagerank.tab-pane.fade(role='tabpanel')
+    br 
+    h1.small Results fetched in #{pagerank.time.time}ms
+    .list-group
+      each result in pagerank
+        if result.url
+          a.list-group-item('href'=result.url)
+            h4.text-primary= result.url
+            p.list-group-item-text(url= result.url) ...
+            p.small Rank: 
+              b= result.rank
+
+  #combined.tab-pane.fade(role='tabpanel')
+    br
+    .list-group
+      each result in combined
+        if result.url
+          a.list-group-item('href'=result.url)
+            h4.text-primary= result.url
+            p.list-group-item-text(url= result.url) ...
+            p.small Rank: 
+              b= result.rank

@@ -8,12 +8,12 @@
      
 	<servlet>
         <servlet-name>SearchServlet</servlet-name>
-        <servlet-class>indexer.servlets.IndexerClientServlet</servlet-class>
+        <servlet-class>searchengine.servlets.IndexerClientServlet</servlet-class>
     </servlet>
  
  	<servlet>
         <servlet-name>SearchEngineInterface</servlet-name>
-        <servlet-class>indexer.servlets.SearchEngineInterface</servlet-class>
+        <servlet-class>searchengine.servlets.SearchEngineInterface</servlet-class>
     </servlet>
        
     <servlet-mapping>

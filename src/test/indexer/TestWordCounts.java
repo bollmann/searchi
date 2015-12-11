@@ -1,7 +1,11 @@
 package test.indexer;
 
 import indexer.WordCounts;
+import indexer.offline.InvertedIndexJob;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -10,7 +14,11 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.junit.Test;
+
+import utils.nlp.Dictionary;
 
 public class TestWordCounts extends TestCase {
 
@@ -108,5 +116,39 @@ public class TestWordCounts extends TestCase {
 
 	private static int sqr(int n) {
 		return n * n;
+	}
+	
+	@Test
+	public void testEnglishPercentage() throws IOException {
+		List<String> nonEnglish = Arrays.asList(
+				"testcontent/cn.nytimes.html",
+				"testcontent/sample-german-page",
+				"testcontent/some-french-page.html",
+				"testcontent/sample-spanish-page",
+				"testcontent/sample-dutch-page",
+				"testcontent/sample-dutch-page2",
+				"testcontent/sample-fake-english"
+			);
+		List<String> english = Arrays.asList(
+				"testcontent/sample-english-page",
+				"testcontent/sample-english-page2",
+				"testcontent/en.wikipedia.org",
+				"testcontent/www.nytimes.com");
+		
+		Dictionary dict = Dictionary.createInstance(new FileInputStream("resources/dict/all-english"));
+		
+		for(String f: nonEnglish) {
+			String[] words = Jsoup.parse(new File(f), "utf-8").select("body").text().toLowerCase().split(" ");
+			WordCounts docCounts = new WordCounts(Arrays.asList(words), 1, dict);
+			System.out.println("english percentage in doc " + f + ": " + docCounts.getPercentage());
+			assertTrue(docCounts.getPercentage() < InvertedIndexJob.ENGLISH_THRESHOLD);
+		}
+		
+		for(String f: english) {
+			String[] words = Jsoup.parse(new File(f), "utf-8").select("body").text().toLowerCase().split(" ");
+			WordCounts docCounts = new WordCounts(Arrays.asList(words), 1, dict);
+			System.out.println("english percentage in doc " + f + ": " + docCounts.getPercentage());
+			assertTrue(docCounts.getPercentage() > InvertedIndexJob.ENGLISH_THRESHOLD);
+		}
 	}
 }
