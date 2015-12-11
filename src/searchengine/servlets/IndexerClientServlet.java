@@ -144,7 +144,7 @@ public class IndexerClientServlet extends HttpServlet {
 //			rankWeights.add(1.0); // metaCounts
 			rankWeights.add(1.0); // totalCounts
 			rankWeights.add(1.0); // query word counts
-			rankWeights.add(1.0); // positions
+			rankWeights.add(-1.0); // positions
 			
 			List<DocumentScore> combinedRankedDocs = Ranker.combineRankedListsWithWeights(rankedLists, rankWeights);
 			
