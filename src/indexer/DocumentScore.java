@@ -63,5 +63,13 @@ public class DocumentScore implements Comparable<DocumentScore> {
 		
 		return fmt.toString();
 	}
-
+	
+	public String toHtml() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("<p>DocID " + this.docId + "; " + this.score + "<br />");
+		for(String word: wordFeatures.keySet())
+			sb.append(word + " features=" + wordFeatures.get(word) + "<br />");
+		sb.append("</p>");
+		return sb.toString();
+	}
 }
