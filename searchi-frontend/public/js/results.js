@@ -42,11 +42,13 @@ $(document).ready(function() {
 function analyseQuery(query){
 
 	weatherLoc = '';
-	if(query.indexOf('weather') > -1 || query.indexOf('climate') > -1 || query.indexOf('temperature') > -1)
+	if(query.indexOf('weather') > -1 || query.indexOf('climate') > -1 || query.indexOf('temperature') > -1 ||
+		query.indexOf('forecast') > -1)
 		weatherLoc = encodeURI(query.replace(/weather/g, '')
 						.replace(/climate/g, '')
 						.replace(/temperature/g, '')
 						.replace(/today/g, '')
+						.replace(/forecast/g, '')
 						.replace(/\bnow\b/g, '')
 						.replace(/\bwhat\b/g, '')
 						.replace(/\bat\b|\bis\b|\bin\b|\bthe\b/g, '')
