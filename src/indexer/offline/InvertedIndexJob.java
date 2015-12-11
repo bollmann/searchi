@@ -97,7 +97,7 @@ public class InvertedIndexJob {
 	public static class CorpusIndexer extends
 			Reducer<Text, Text, NullWritable, Text> {
 		public static final int MAX_ENTRIES_PER_ROW = 800;
-		private static final int topK = 2000;
+		private static final int topK = 8000;
 
 		private void writeRow(String word, int page,
 				List<DocumentFeatures> docs, Context context)
