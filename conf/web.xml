@@ -13,7 +13,7 @@
  
  	<servlet>
         <servlet-name>SearchEngineInterface</servlet-name>
-        <servlet-class>indexer.servlets.SearchEngineInterface</servlet-class>
+        <servlet-class>searchengine.servlets.SearchEngineInterface</servlet-class>
     </servlet>
        
     <servlet-mapping>
