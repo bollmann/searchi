@@ -1,8 +1,9 @@
-package utils.aws;
+package indexer.db.imports;
 
-import indexer.db.imports.DocumentIDsAdapter;
-import indexer.db.imports.FileToDatabaseAdapter;
-import indexer.db.imports.InvertedIndexAdapter;
+
+import indexer.db.imports.adapters.DocumentIDsAdapter;
+import indexer.db.imports.adapters.FileToDatabaseAdapter;
+import indexer.db.imports.adapters.InvertedIndexAdapter;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -20,8 +21,8 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 
 import db.wrappers.DynamoDBWrapper;
 
-public class S3ToDynamoImporter<T> implements Runnable {
-	private static final Logger logger = Logger.getLogger(S3ToDynamoImporter.class);
+public class DynamoImporter<T> implements Runnable {
+	private static final Logger logger = Logger.getLogger(DynamoImporter.class);
 	private static final int NUMBER_THREADS = 4;
 
 	private File input;
@@ -29,7 +30,7 @@ public class S3ToDynamoImporter<T> implements Runnable {
 	private DynamoDBMapper db;
 	private FileToDatabaseAdapter<T> adapter;
 
-	public S3ToDynamoImporter(File input, int batchSize, DynamoDBMapper db,
+	public DynamoImporter(File input, int batchSize, DynamoDBMapper db,
 			FileToDatabaseAdapter<T> adapter) {
 		this.input = input;
 		this.batchSize = batchSize;
@@ -83,7 +84,7 @@ public class S3ToDynamoImporter<T> implements Runnable {
 		ExecutorService executor = Executors.newFixedThreadPool(NUMBER_THREADS);
 		for (File file : inputDir.listFiles()) {
 			logger.info("starting import on file " + file.getName());
-			executor.execute(new S3ToDynamoImporter<T>(file, batchSize, wrapper
+			executor.execute(new DynamoImporter<T>(file, batchSize, wrapper
 					.getMapper(), adapter));
 		}
 		executor.shutdown();

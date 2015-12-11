@@ -1,4 +1,4 @@
-package indexer.db.imports;
+package indexer.db.imports.adapters;
 
 import indexer.db.dao.DocumentIDRow;
 
