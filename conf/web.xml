@@ -8,7 +8,7 @@
      
 	<servlet>
         <servlet-name>SearchServlet</servlet-name>
-        <servlet-class>indexer.servlets.IndexerClientServlet</servlet-class>
+        <servlet-class>searchengine.servlets.IndexerClientServlet</servlet-class>
     </servlet>
  
  	<servlet>
