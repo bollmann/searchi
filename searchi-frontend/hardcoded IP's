@@ -1,6 +1,8 @@
 hardcoded IP's
 --------------
 
-routes/search.js
-js/results.js
-js/index.js
+routes/search.js (servlet)
+
+js/results.js (self)
+js/index.js (self)
+views/resultsLoading.jade (self)

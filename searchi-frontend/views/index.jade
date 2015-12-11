@@ -10,13 +10,14 @@ head
 body
   .jumbotron.vertical-center
     .container.text-center
-      h1.small Searchi << logo maybe? >>
-      p.lead some random shit
+      img.center-block(src='/images/searchi.png')
+      //- p.lead makes you want to search
       br
       br
       br
-      .form-group
-        input#searchBox.form-control(type='search', width='50%', placeholder='Enter your search query')
+      .container
+        .form-group
+          input#searchBox.form-control(type='search', width='10%', placeholder='Enter your query')
 
   script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js')
   script(src='js/bootstrap.min.js')
