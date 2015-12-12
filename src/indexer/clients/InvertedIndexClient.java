@@ -2,6 +2,7 @@ package indexer.clients;
 
 import indexer.InvertedIndexFetcher;
 import indexer.db.dao.DocumentFeatures;
+import indexer.db.dao.ImageIndex;
 import indexer.db.dao.InvertedIndexRow;
 
 import java.util.ArrayList;
@@ -56,6 +57,16 @@ public class InvertedIndexClient {
 
 	public int getCorpusSize() {
 		return corpusSize;
+	}
+	
+	public List<ImageIndex> getImageLocations(String imageWord) {
+		ImageIndex image = new ImageIndex();
+		image.setImageWord(imageWord);
+		DynamoDBQueryExpression<ImageIndex> query = 
+				new DynamoDBQueryExpression<ImageIndex>()
+				.withHashKeyValues(image);
+		
+		return db.query(ImageIndex.class, query);
 	}
 	
 	public List<InvertedIndexRow> getDocumentLocations(String word) {
