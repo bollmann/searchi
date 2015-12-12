@@ -54,11 +54,6 @@ public class DynamoImporter<T> implements Runnable {
 					logger.info("saving " + batchSize
 							+ " items to " + adapter.getTableName() + " table.");
 					
-					// debug:
-					for(T entry: entries) {
-						System.out.println(entry);
-					}
-					
 					db.batchSave(entries);
 					entries = new ArrayList<>();
 				}
@@ -106,7 +101,7 @@ public class DynamoImporter<T> implements Runnable {
 			File inputDir = new File(args[1]);
 			int batchSize = Integer.parseInt(args[2]);
 
-			if (what.equals("DocumentIDs")) {
+			if (what.equals("DocumentIndex")) {
 				logger.info("importing files into Dynamo's DocumentIndex table...");
 				doImport(inputDir, batchSize, new DocumentIndexAdapter());
 			} else if (what.equals("InvertedIndex")) {
