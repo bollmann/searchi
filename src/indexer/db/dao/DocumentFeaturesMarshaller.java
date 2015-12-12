@@ -39,7 +39,6 @@ public class DocumentFeaturesMarshaller implements
 			sb.append(marshallEntry(feature) + ";");
 		
 		return sb.toString();
-//		return new Gson().toJson(features);
 	}
 
 	public DocumentFeatures unmarshallEntry(String rawFeatures) {
@@ -84,6 +83,5 @@ public class DocumentFeaturesMarshaller implements
 			result.add(unmarshallEntry(entry));
 		
 		return result;
-//		return new Gson().fromJson(rawFeatures, new TypeToken<List<DocumentFeatures>>(){}.getType());
 	}
 }
