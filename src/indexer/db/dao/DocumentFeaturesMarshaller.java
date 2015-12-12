@@ -9,8 +9,6 @@ import java.util.List;
 import java.util.Set;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMarshaller;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 public class DocumentFeaturesMarshaller implements
 		DynamoDBMarshaller<List<DocumentFeatures>> {
