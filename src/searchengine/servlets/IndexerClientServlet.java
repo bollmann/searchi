@@ -165,7 +165,7 @@ public class IndexerClientServlet extends HttpServlet {
 			logger.info("Page rank returned " + domainRankScore.size()
 					+ " results");
 			List<SearchResult> pqueue = SearchEngineUtils
-				.convertScoreMapToPriorityQueue(domainRankScore);
+				.getSortedSearchResultUsingScores(domainRankScore);
 
 			endTime = Calendar.getInstance().getTime();
 			logger.info("Domain ranking took "
