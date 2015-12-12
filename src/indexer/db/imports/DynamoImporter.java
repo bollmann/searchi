@@ -1,6 +1,9 @@
 package indexer.db.imports;
 
 
+import indexer.db.dao.DocumentIndex;
+import indexer.db.dao.ImageIndex;
+import indexer.db.dao.InvertedIndex;
 import indexer.db.imports.adapters.DocumentIndexAdapter;
 import indexer.db.imports.adapters.FileToDatabaseAdapter;
 import indexer.db.imports.adapters.InvertedIndexAdapter;
@@ -100,16 +103,17 @@ public class DynamoImporter<T> implements Runnable {
 			String what = args[0];
 			File inputDir = new File(args[1]);
 			int batchSize = Integer.parseInt(args[2]);
+			
+			logger.info("importing files from " + inputDir + " into table " + what + "...");
 
-			if (what.equals("DocumentIndex")) {
-				logger.info("importing files into Dynamo's DocumentIndex table...");
+			if (what.equals(DocumentIndex.TABLE_NAME)) {
 				doImport(inputDir, batchSize, new DocumentIndexAdapter());
-			} else if (what.equals("InvertedIndex")) {
-				logger.info("importing files into Dynamo's InvertedIndex table...");
+			} else if (what.equals(InvertedIndex.TABLE_NAME)) {
 				doImport(inputDir, batchSize, new InvertedIndexAdapter());
-			} else if (what.equals("ImageIndex")) {
-				logger.info("importing files into Dynamo's ImageIndex table...");
+			} else if (what.equals(ImageIndex.TABLE_NAME)) {
 				doImport(inputDir, batchSize, new ImageIndexAdapter());
+			} else {
+				logger.info("table " + what + " is not supported by DynamoImporter!");
 			}
 
 		} catch (ArrayIndexOutOfBoundsException e) {
