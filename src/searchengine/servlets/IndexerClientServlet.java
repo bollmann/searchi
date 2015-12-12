@@ -115,7 +115,7 @@ public class IndexerClientServlet extends HttpServlet {
 			
 		
 			/******************* Add rankers and combine them here - Secret sauce ******************/
-//			startTime = Calendar.getInstance().getTime();
+			startTime = Calendar.getInstance().getTime();
 			
 			SearchAPI searchAPI = new SearchAPI(query, invertedIndex, iic.getCorpusSize());			
 			searchAPI.formDocumentScoresForQueryFromInvertedIndex();
@@ -128,6 +128,7 @@ public class IndexerClientServlet extends HttpServlet {
 				searchAPI.addRanker(RankerType.RANKER_POSITION, -1.0);
 				searchAPI.addRanker(RankerType.RANKER_QUERYMATCH, 1.0);
 				searchAPI.addRanker(RankerType.RANKER_TOTALCOUNT, 1.0);
+				searchAPI.addRanker(RankerType.RANKER_URLCOUNT, 10.0);
 
 				List<Ranker> rankers = searchAPI.applyRankers();
 				
@@ -149,7 +150,7 @@ public class IndexerClientServlet extends HttpServlet {
 //			logger.info(rankedDocs.size());
 			int resultCount = 0;
 			for (DocumentScore doc : rankedDocs) {
-				logger.info("Score " + doc.getScore());
+//				logger.info("Score " + doc.getScore());
 				SearchResult sr = new SearchResult();
 				// lookup id to get document
 				String url = dId.getURLFor(doc.getDocId());

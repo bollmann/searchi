@@ -4,10 +4,6 @@ import indexer.DocumentScore;
 import indexer.api.DocumentIDs;
 import indexer.clients.InvertedIndexClient;
 import indexer.db.dao.DocumentFeatures;
-import searchengine.api.SearchAPI;
-import searchengine.ranking.Ranker;
-import searchengine.ranking.RankerImpl;
-import searchengine.ranking.RankerInfo.RankerType;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -35,6 +31,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 
 import pagerank.api.PageRankAPI;
+import searchengine.api.SearchAPI;
+import searchengine.ranking.Ranker;
+import searchengine.ranking.RankerInfo.RankerType;
 import utils.searchengine.SearchEngineUtils;
 
 import com.google.gson.Gson;
@@ -79,6 +78,11 @@ public class SearchEngineInterface extends HttpServlet {
 		else
 			logger.error("Search engine interface accessed with no query string");
 	}
+	
+	private String printTimeDiff(Date startTime, Date endTime) {
+		long timeDiff = (endTime.getTime() - startTime.getTime());
+		return timeDiff / 1000 + "s," + timeDiff % 1000 + "ms:";
+	}
 
 	private void doListing(HttpServletRequest req, HttpServletResponse resp) throws IOException{
 		String queryStr = req.getParameter("q");
@@ -93,18 +97,24 @@ public class SearchEngineInterface extends HttpServlet {
 		Map<String, Map<String, Map<String, String>>> searchResultMap = new HashMap<String, Map<String, Map<String, String>>>();
 		PageRankAPI pra = new PageRankAPI();
 		List<String> lookupList = new ArrayList<String>(1000);
+		
+		
+		Date startTime = Calendar.getInstance().getTime();
 		Map<String, List<DocumentFeatures>> invertedIndex = iic.getInvertedIndexForQueryMultiThreaded(query);
+		Date endTime = Calendar.getInstance().getTime();
+		
+		
 		Map<String, Integer> wordDfs = new HashMap<String, Integer>();
 		for(Entry<String, List<DocumentFeatures>> entry : invertedIndex.entrySet()) {
 			wordDfs.put(entry.getKey(), entry.getValue().size());
 		}
-		
-		SearchAPI searchAPI = new SearchAPI(query, invertedIndex, iic.getCorpusSize());		
-		searchAPI.formDocumentScoresForQueryFromInvertedIndex();
-		
-		
+
+		logger.info("Indexer fetch took "
+				+ printTimeDiff(startTime, endTime));
 		
 		/****************************** Add rankers and combine them here *************/
+		SearchAPI searchAPI = new SearchAPI(query, invertedIndex, iic.getCorpusSize());		
+		searchAPI.formDocumentScoresForQueryFromInvertedIndex();
 		List<DocumentScore> rankedDocs = null;
 		try {
 			searchAPI.addRanker(RankerType.RANKER_TFIDF, 1.0);
@@ -114,7 +124,8 @@ public class SearchEngineInterface extends HttpServlet {
 			searchAPI.addRanker(RankerType.RANKER_POSITION, -1.0);
 			searchAPI.addRanker(RankerType.RANKER_QUERYMATCH, 1.0);
 			searchAPI.addRanker(RankerType.RANKER_TOTALCOUNT, 1.0);
-
+			searchAPI.addRanker(RankerType.RANKER_URLCOUNT, 10.0);
+			
 			List<Ranker> rankers = searchAPI.applyRankers();
 			
 			rankedDocs = searchAPI.combineRankings(rankers);
@@ -126,9 +137,11 @@ public class SearchEngineInterface extends HttpServlet {
 		
 		/****************************** End of secret sauce ****************************/
 		
+		/******************************** Indexer results *********************/
+		
 		try {
-			/******************************** Indexer results *********************/
-			Date startTime = Calendar.getInstance().getTime();
+			
+			startTime = Calendar.getInstance().getTime();
 			Map<String, Map<String, String>> indexerResultMap = new HashMap<String, Map<String, String>>();
 			Map<String, String> timeMap = new HashMap<String, String>();
 			
@@ -150,7 +163,7 @@ public class SearchEngineInterface extends HttpServlet {
 					break;
 				}
 			}
-			Date endTime = Calendar.getInstance().getTime();
+			endTime = Calendar.getInstance().getTime();
 			timeMap.put("time",  String.valueOf(endTime.getTime() - startTime.getTime()));
 			indexerResultMap.put("time", timeMap);
 			
