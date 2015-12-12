@@ -36,9 +36,14 @@ public class IndexerClientServlet extends HttpServlet {
 	private final Logger logger = Logger.getLogger(getClass());
 	DocumentIDs dId = null;
 	QueryProcessor queryProcessor;
+	
 	@Override
 	public void init() {
-		dId = new DocumentIDs();
+		dId = (DocumentIDs) getServletContext().getAttribute("forwardIndex");
+		if(dId == null) {
+			dId = new DocumentIDs();
+			getServletContext().setAttribute("forwardIndex", dId);
+		}
 		queryProcessor = QueryProcessor.getInstance();
 	}
 

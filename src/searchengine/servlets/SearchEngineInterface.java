@@ -39,10 +39,16 @@ public class SearchEngineInterface extends HttpServlet {
 	private final Logger logger = Logger.getLogger(getClass());
 	Gson gson = null;
 	URL frontendIP = null;
+	DocumentIDs dId;
 	
 	@Override
 	public void init() {
 		gson = new Gson();
+		dId = (DocumentIDs) getServletContext().getAttribute("forwardIndex");
+		if(dId == null) {
+			dId = new DocumentIDs();
+			getServletContext().setAttribute("forwardIndex", dId);
+		}
 		try {
 			frontendIP = new URL(getFrontendIP());
 		} catch (MalformedURLException e) {
@@ -97,16 +103,14 @@ public class SearchEngineInterface extends HttpServlet {
 		Date startTime = Calendar.getInstance().getTime();
 		Map<String, List<DocumentFeatures>> invertedIndex = iic.getInvertedIndexForQueryMultiThreaded(query);
 		Date endTime = Calendar.getInstance().getTime();
-		
+		logger.info("Indexer fetch took "
+				+ printTimeDiff(startTime, endTime));
 		
 		Map<String, Integer> wordDfs = new HashMap<String, Integer>();
 		for(Entry<String, List<DocumentFeatures>> entry : invertedIndex.entrySet()) {
 			wordDfs.put(entry.getKey(), entry.getValue().size());
 		}
 
-		
-		logger.info("Indexer fetch took "
-				+ printTimeDiff(startTime, endTime));
 		Map<String, Map<String, String>> indexerResultMap = new HashMap<String, Map<String, String>>();
 		Map<String, String> timeMap = new HashMap<String, String>();
 		timeMap.put("time",  String.valueOf(endTime.getTime() - startTime.getTime()));
@@ -114,16 +118,18 @@ public class SearchEngineInterface extends HttpServlet {
 		
 		/****************************** Add rankers and combine them here *************/
 		
+		startTime = Calendar.getInstance().getTime();
 		List<DocumentScore> rankedDocs = SearchEngineDataFetcher.getRankedIndexerResults(query, invertedIndex, iic);
-
-		
+		endTime = Calendar.getInstance().getTime();
+		logger.info("Indexer ranking took "
+				+ printTimeDiff(startTime, endTime));
 		/****************************** End of secret sauce ****************************/
 		
 		/******************************** Indexer results *********************/
 		Map<String, Double> indexerScore = new HashMap<String, Double>(1000);
 		
 		try {
-			DocumentIDs dId = new DocumentIDs();
+			
 			
 			int resultCount = 0;
 			for (DocumentScore doc : rankedDocs) {
@@ -140,18 +146,16 @@ public class SearchEngineInterface extends HttpServlet {
 				if (resultCount > 10) {
 					break;
 				}
-			}
+			}			
 			endTime = Calendar.getInstance().getTime();
-			
-			
+			logger.info("Total indexer took "
+					+ printTimeDiff(startTime, endTime));
 			/******************************** Page Rank results *********************/
 
 			startTime = Calendar.getInstance().getTime();
 			Map<String, Double> domainRankScore = new HashMap<>();
 			PageRankAPI pageRankAPI = new PageRankAPI();
-			
-			startTime = Calendar.getInstance().getTime();
-			
+						
 			for (String page : lookupList) {
 				double score = pageRankAPI.getDomainRank(page);
 				domainRankScore.put(page, score);
@@ -163,9 +167,7 @@ public class SearchEngineInterface extends HttpServlet {
 			List<SearchResult> pqueue = SearchEngineUtils
 				.convertScoreMapToPriorityQueue(domainRankScore);
 
-			endTime = Calendar.getInstance().getTime();
-			logger.info("Domain ranking took "
-					+ printTimeDiff(startTime, endTime));
+			
 
 			Map<String, Map<String, String>> pageRankResultMap = new HashMap<String, Map<String, String>>();
 			resultCount = 0;
@@ -178,6 +180,8 @@ public class SearchEngineInterface extends HttpServlet {
 				}
 			}
 			endTime = Calendar.getInstance().getTime();
+			logger.info("Domain ranking took "
+					+ printTimeDiff(startTime, endTime));
 			timeMap = new HashMap<String, String>();
 			timeMap.put("time",  String.valueOf(endTime.getTime() - startTime.getTime()));
 			pageRankResultMap.put("time", timeMap);
