@@ -1,4 +1,4 @@
-package test.searchengine.api;
+package test.searchengine;
 
 import indexer.DocumentScore;
 import indexer.db.dao.DocumentFeatures;
@@ -13,9 +13,9 @@ import junit.framework.TestCase;
 
 import org.junit.Test;
 
-import searchengine.api.SearchAPI;
+import searchengine.SearchEngine;
 
-public class TestSearchAPI extends TestCase {
+public class TestSearchEngine extends TestCase {
 
 	@Test
 	public void testGetDocumentScoresForQueryAndInvertedIndex() {
@@ -48,7 +48,7 @@ public class TestSearchAPI extends TestCase {
 		invertedIndex.put("an", feats2);
 		invertedIndex.put("the", new ArrayList<DocumentFeatures>()); // a result for a query
 																	 // word can't be null
-		SearchAPI searchAPI = new SearchAPI(query, invertedIndex, 1000);
+		SearchEngine searchAPI = new SearchEngine(query, invertedIndex, 1000);
 		List<DocumentScore> results = 
 			searchAPI.formDocumentScoresForQueryFromInvertedIndex();
 		
