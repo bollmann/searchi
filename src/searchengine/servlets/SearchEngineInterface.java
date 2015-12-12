@@ -15,7 +15,6 @@ import java.net.URL;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -31,9 +30,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 
 import pagerank.api.PageRankAPI;
-import searchengine.api.SearchAPI;
-import searchengine.ranking.Ranker;
-import searchengine.ranking.RankerInfo.RankerType;
 import utils.searchengine.SearchEngineUtils;
 
 import com.google.gson.Gson;
@@ -92,8 +88,7 @@ public class SearchEngineInterface extends HttpServlet {
 			query.add(word);
 		InvertedIndexClient iic = InvertedIndexClient.getInstance();
 		logger.info("Recieved query: " + query.toString());
-		Map<String, Double> indexerScore = new HashMap<String, Double>(1000);
-		Map<String, Double> pageRankScore = null;
+		
 		Map<String, Map<String, Map<String, String>>> searchResultMap = new HashMap<String, Map<String, Map<String, String>>>();
 		PageRankAPI pra = new PageRankAPI();
 		List<String> lookupList = new ArrayList<String>(1000);
@@ -109,42 +104,25 @@ public class SearchEngineInterface extends HttpServlet {
 			wordDfs.put(entry.getKey(), entry.getValue().size());
 		}
 
+		
 		logger.info("Indexer fetch took "
 				+ printTimeDiff(startTime, endTime));
+		Map<String, Map<String, String>> indexerResultMap = new HashMap<String, Map<String, String>>();
+		Map<String, String> timeMap = new HashMap<String, String>();
+		timeMap.put("time",  String.valueOf(endTime.getTime() - startTime.getTime()));
+		indexerResultMap.put("time", timeMap);
 		
 		/****************************** Add rankers and combine them here *************/
-		SearchAPI searchAPI = new SearchAPI(query, invertedIndex, iic.getCorpusSize());		
-		searchAPI.formDocumentScoresForQueryFromInvertedIndex();
-		List<DocumentScore> rankedDocs = null;
-		try {
-			searchAPI.addRanker(RankerType.RANKER_TFIDF, 1.0);
-			searchAPI.addRanker(RankerType.RANKER_HEADER, 1.0);
-			searchAPI.addRanker(RankerType.RANKER_LINKS, 1.0);
-			searchAPI.addRanker(RankerType.RANKER_META, 1.0);
-			searchAPI.addRanker(RankerType.RANKER_POSITION, -1.0);
-			searchAPI.addRanker(RankerType.RANKER_QUERYMATCH, 1.0);
-			searchAPI.addRanker(RankerType.RANKER_TOTALCOUNT, 1.0);
-			searchAPI.addRanker(RankerType.RANKER_URLCOUNT, 10.0);
-			
-			List<Ranker> rankers = searchAPI.applyRankers();
-			
-			rankedDocs = searchAPI.combineRankings(rankers);
-			Collections.sort(rankedDocs);
-		} catch (Exception e) {
-			//TODO Handle this exception;
-			return;
-		}
+		
+		List<DocumentScore> rankedDocs = SearchEngineDataFetcher.getRankedIndexerResults(query, invertedIndex, iic);
+
 		
 		/****************************** End of secret sauce ****************************/
 		
 		/******************************** Indexer results *********************/
+		Map<String, Double> indexerScore = new HashMap<String, Double>(1000);
 		
 		try {
-			
-			startTime = Calendar.getInstance().getTime();
-			Map<String, Map<String, String>> indexerResultMap = new HashMap<String, Map<String, String>>();
-			Map<String, String> timeMap = new HashMap<String, String>();
-			
 			DocumentIDs dId = new DocumentIDs();
 			
 			int resultCount = 0;
@@ -164,18 +142,32 @@ public class SearchEngineInterface extends HttpServlet {
 				}
 			}
 			endTime = Calendar.getInstance().getTime();
-			timeMap.put("time",  String.valueOf(endTime.getTime() - startTime.getTime()));
-			indexerResultMap.put("time", timeMap);
+			
 			
 			/******************************** Page Rank results *********************/
 
 			startTime = Calendar.getInstance().getTime();
-			pageRankScore = pra.getPageRankBatch(lookupList);
-			Map<String, Map<String, String>> pageRankResultMap = new HashMap<String, Map<String, String>>();
+			Map<String, Double> domainRankScore = new HashMap<>();
+			PageRankAPI pageRankAPI = new PageRankAPI();
 			
-			List<SearchResult> pqueue = SearchEngineUtils
-					.convertScoreMapToPriorityQueue(pageRankScore);
+			startTime = Calendar.getInstance().getTime();
+			
+			for (String page : lookupList) {
+				double score = pageRankAPI.getDomainRank(page);
+				domainRankScore.put(page, score);
+			}
+			//domainRankScore = pageRankAPI.getDomainRankBatch(lookupList);
 
+			logger.info("Page rank returned " + domainRankScore.size()
+					+ " results");
+			List<SearchResult> pqueue = SearchEngineUtils
+				.convertScoreMapToPriorityQueue(domainRankScore);
+
+			endTime = Calendar.getInstance().getTime();
+			logger.info("Domain ranking took "
+					+ printTimeDiff(startTime, endTime));
+
+			Map<String, Map<String, String>> pageRankResultMap = new HashMap<String, Map<String, String>>();
 			resultCount = 0;
 			for (SearchResult doc : pqueue) {
 				pageRankResultMap.put(String.valueOf(resultCount), doc.toMap());
@@ -195,7 +187,7 @@ public class SearchEngineInterface extends HttpServlet {
 			Double[] weights = { 0.9, 0.1 };
 			Map<String, Map<String, String>> combinedResultMap = new HashMap<String, Map<String, String>>();
 			List<SearchResult> result = SearchEngineUtils
-					.weightedMergeScores(indexerScore, pageRankScore, weights);
+					.weightedMergeScores(indexerScore, domainRankScore, weights);
 			
 			resultCount = 0;
 			for (SearchResult doc : result) {

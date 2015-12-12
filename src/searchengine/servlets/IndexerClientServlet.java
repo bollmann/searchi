@@ -68,8 +68,7 @@ public class IndexerClientServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		PrintWriter out = resp.getWriter();
-		InvertedIndexClient iic = InvertedIndexClient.getInstance();
-
+		
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("<html><head><title>Interface-Search Engine Test</title></head>");
 		buffer.append("<body>");
@@ -79,8 +78,8 @@ public class IndexerClientServlet extends HttpServlet {
 		buffer.append("<input size=50 name = \"query\">");
 		buffer.append("<button>Searchi again!</button>");
 		buffer.append("</form>");
+		
 		LinkedList<String> query = new LinkedList<String>();
-
 		queryStr = URLDecoder.decode(queryStr, "UTF-8");
 
 		for (String word : queryStr.split(" "))
@@ -88,17 +87,7 @@ public class IndexerClientServlet extends HttpServlet {
 
 		logger.info("Got search query:" + queryStr + " split into " + query);
 
-		// for (DocumentVector doc : iiObj.lookupDocuments(query)) {
-		// buffer.append("<li>" + doc.toString() + "</li>");
-		//
-		// }
-
 		Map<String, Double> indexerScore = new HashMap<String, Double>(1000);
-		Map<String, Double> pageRankScore = null;
-
-		PageRankAPI pra = new PageRankAPI();
-		List<String> lookupList = new ArrayList<String>(1000);
-
 		try {
 			/******************************** Indexer display *********************/
 
@@ -106,6 +95,7 @@ public class IndexerClientServlet extends HttpServlet {
 			buffer.append("<br>Using Indexer Ranking:");
 			buffer.append("<ol>");
 
+			InvertedIndexClient iic = InvertedIndexClient.getInstance();
 			Date startTime = Calendar.getInstance().getTime();
 			Map<String, List<DocumentFeatures>> invertedIndex = iic.getInvertedIndexForQueryMultiThreaded(query);
 			Date endTime = Calendar.getInstance().getTime();
@@ -116,38 +106,17 @@ public class IndexerClientServlet extends HttpServlet {
 		
 			/******************* Add rankers and combine them here - Secret sauce ******************/
 			startTime = Calendar.getInstance().getTime();
-			
-			SearchAPI searchAPI = new SearchAPI(query, invertedIndex, iic.getCorpusSize());			
-			searchAPI.formDocumentScoresForQueryFromInvertedIndex();
-			List<DocumentScore> rankedDocs = null;
-			try {
-				searchAPI.addRanker(RankerType.RANKER_TFIDF, 1.0);
-				searchAPI.addRanker(RankerType.RANKER_HEADER, 1.0);
-				searchAPI.addRanker(RankerType.RANKER_LINKS, 1.0);
-				searchAPI.addRanker(RankerType.RANKER_META, 1.0);
-				searchAPI.addRanker(RankerType.RANKER_POSITION, -1.0);
-				searchAPI.addRanker(RankerType.RANKER_QUERYMATCH, 1.0);
-				searchAPI.addRanker(RankerType.RANKER_TOTALCOUNT, 1.0);
-				searchAPI.addRanker(RankerType.RANKER_URLCOUNT, 10.0);
-
-				List<Ranker> rankers = searchAPI.applyRankers();
-				
-				rankedDocs = searchAPI.combineRankings(rankers);
-				Collections.sort(rankedDocs);
-			} catch (Exception e) {
-				//TODO Handle this exception;
-//				return;
-				e.printStackTrace();
-			}
-			
+			List<DocumentScore> rankedDocs = SearchEngineDataFetcher.getRankedIndexerResults(query, invertedIndex, iic);
 			endTime = Calendar.getInstance().getTime();
 			logger.info("Indexer ranking took "
 					+ printTimeDiff(startTime, endTime));
 			/****************************** End of secret sauce ****************************/
 			
-			startTime = Calendar.getInstance().getTime();
+			List<String> lookupList = new ArrayList<String>(1000);
 			
-//			logger.info(rankedDocs.size());
+
+			startTime = Calendar.getInstance().getTime();			
+			logger.info(rankedDocs.size());
 			int resultCount = 0;
 			for (DocumentScore doc : rankedDocs) {
 //				logger.info("Score " + doc.getScore());
@@ -172,16 +141,25 @@ public class IndexerClientServlet extends HttpServlet {
 
 			/******************************** Page Rank display *********************/
 
+			logger.info("Using Domain rank to rank pages");
+			Map<String, Double> domainRankScore = new HashMap<>();
+			PageRankAPI pageRankAPI = new PageRankAPI();
+			
 			startTime = Calendar.getInstance().getTime();
-			pageRankScore = pra.getPageRankBatch(lookupList);
+			
+			for (String page : lookupList) {
+				double score = pageRankAPI.getDomainRank(page);
+				domainRankScore.put(page, score);
+			}
+			//domainRankScore = pageRankAPI.getDomainRankBatch(lookupList);
 
-			logger.info("Page rank returned " + pageRankScore.size()
+			logger.info("Page rank returned " + domainRankScore.size()
 					+ " results");
 			List<SearchResult> pqueue = SearchEngineUtils
-					.convertScoreMapToPriorityQueue(pageRankScore);
+				.convertScoreMapToPriorityQueue(domainRankScore);
 
 			endTime = Calendar.getInstance().getTime();
-			logger.info("Page ranking took "
+			logger.info("Domain ranking took "
 					+ printTimeDiff(startTime, endTime));
 			resultCount = 0;
 			buffer.append("<br>Using Page Ranking:");
@@ -200,9 +178,9 @@ public class IndexerClientServlet extends HttpServlet {
 
 			/******************************** Final display *********************/
 			startTime = Calendar.getInstance().getTime();
-			Double[] weights = { 0.9, 0.1 };
+			Double[] weights = { 0.98, 0.02 };
 			List<SearchResult> result = SearchEngineUtils
-					.weightedMergeScores(indexerScore, pageRankScore, weights);
+					.weightedMergeScores(indexerScore, domainRankScore, weights);
 			buffer.append("<br>Combined Results:<ol>");
 
 			resultCount = 0;
@@ -230,6 +208,6 @@ public class IndexerClientServlet extends HttpServlet {
 			out.flush();
 			out.close();
 		}
-
+		
 	}
 }
