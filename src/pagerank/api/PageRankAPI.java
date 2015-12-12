@@ -16,7 +16,7 @@ import db.wrappers.DynamoDBWrapper;
 
 public final class PageRankAPI {
 
-	private DynamoDBWrapper dynamoWrapper;
+	private final DynamoDBWrapper dynamoWrapper;
 
 	public PageRankAPI() {
 		this.dynamoWrapper = DynamoDBWrapper.getInstance(
@@ -127,17 +127,17 @@ public final class PageRankAPI {
 		for (String page : pages) {
 			String domain = StringUtils.getDomainFromUrl(page.trim()); 
 			pagesToDomain.put(page, domain);
-			if (!isSeen.contains(domain)) {
+			if (isSeen.contains(domain)) {
 				continue;
 			}
 			isSeen.add(domain);
 			
 			DRDao dao = new DRDao();			
 			dao.setDomain(domain);
-			dao.setDomainScore(-1.0);
 			items.add(dao);
 		}
 
+		System.out.println(dynamoWrapper.getBatchItem(items));
 		List<Object> domainRankItems = dynamoWrapper.getBatchItem(items).get(
 				PRCreateTable.DR_TABLE_NAME);
 		Map<String, Double> ranks = new HashMap<>();
