@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Set;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMarshaller;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 public class DocumentFeaturesMarshaller implements
 		DynamoDBMarshaller<List<DocumentFeatures>> {
@@ -32,11 +34,12 @@ public class DocumentFeaturesMarshaller implements
 	
 	@Override
 	public String marshall(List<DocumentFeatures> features) {
-		StringBuffer sb = new StringBuffer();
-		for(DocumentFeatures feature: features)
-			sb.append(marshallEntry(feature) + ";");
-		
-		return sb.toString();
+//		StringBuffer sb = new StringBuffer();
+//		for(DocumentFeatures feature: features)
+//			sb.append(marshallEntry(feature) + ";");
+//		
+//		return sb.toString();
+		return new Gson().toJson(features);
 	}
 
 	public DocumentFeatures unmarshallEntry(String rawFeatures) {
@@ -74,12 +77,13 @@ public class DocumentFeaturesMarshaller implements
 
 	@Override
 	public List<DocumentFeatures> unmarshall(Class<List<DocumentFeatures>> clazz, String rawFeatures) {
-		List<DocumentFeatures> result = new ArrayList<>();
-		
-		String[] entries = rawFeatures.split(";");
-		for(String entry: entries)
-			result.add(unmarshallEntry(entry));
-		
-		return result;
+//		List<DocumentFeatures> result = new ArrayList<>();
+//		
+//		String[] entries = rawFeatures.split(";");
+//		for(String entry: entries)
+//			result.add(unmarshallEntry(entry));
+//		
+//		return result;
+		return new Gson().fromJson(rawFeatures, new TypeToken<List<DocumentFeatures>>(){}.getType());
 	}
 }

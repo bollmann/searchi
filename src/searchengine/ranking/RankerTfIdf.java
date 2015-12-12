@@ -57,8 +57,7 @@ public final class RankerTfIdf extends Ranker {
 			
 			ranks.add(new Double(scoreValue));
 		}
-		System.out.println("MAX tfidf " + maxScore  );
-		System.out.println("MIN tfidf " + minScore  );
+		
 		ranks = normalize(ranks, minScore, maxScore);
 	}
 	
@@ -106,7 +105,7 @@ public final class RankerTfIdf extends Ranker {
 				double docWeight = feature.getTfidf();
 				
 				result += queryWeight * docWeight;
-				//logger.info("queryWeight is " + queryWeight + " and docweight is tfidf=" + docWeight + " and result is " + result);
+			//	logger.info("queryWeight is " + queryWeight + " and docweight is tfidf=" + docWeight + " and result is " + result);
 			}
 		}
 		return result;

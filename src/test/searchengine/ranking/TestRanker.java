@@ -8,11 +8,11 @@ import searchengine.ranking.RankerLinks;
 import searchengine.ranking.RankerMeta;
 import searchengine.ranking.RankerPosition;
 import searchengine.ranking.RankerQueryMatch;
+import searchengine.ranking.RankerTfIdf;
 import searchengine.ranking.RankerTotalCount;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -26,44 +26,39 @@ import org.junit.Test;
 public class TestRanker extends TestCase {
 
 	
-//
-//	@Test
-//	public void testRankDocumentsOnTfIdf() {
-//		List<String> query = Arrays.asList("a an a the".split(" "));
-//		List<DocumentScore> scores = new ArrayList<DocumentScore>();
-//
-//		DocumentScore score1 = new DocumentScore(1);
-//		DocumentFeatures feat1 = new DocumentFeatures();
-//		feat1.setEuclideanTermFrequency(2f);
-//		score1.addFeatures("a", feat1);
-//
-//		DocumentScore score2 = new DocumentScore(2);
-//		DocumentFeatures feat2 = new DocumentFeatures();
-//		feat2.setEuclideanTermFrequency(1f);
-//		score2.addFeatures("an", feat2);
-//
-//		scores.add(score1);
-//		scores.add(score2);
-//
-//		Map<String, Integer> wordDfs = new HashMap<String, Integer>() {
-//			{
-//				put("a", 1);
-//				put("an", 1);
-//			}
-//		};
-//
-//		int corpusSize = 2000;
-//		Map<Integer, DocumentScore> resultMap = RankerImpl.rankDocumentsOnTfIdf(
-//				scores, query, corpusSize, wordDfs);
-//		List<DocumentScore> result = new ArrayList<>(resultMap.values());
-//		Collections.sort(result, DocumentScoreComparators.getTfIdfComparator(
-//				query, corpusSize, wordDfs));
-////		System.out.println(result);
-//		// TODO not sure about scores
-//		assertEquals(1, result.get(0).getDocId());
-//		assertEquals(2, result.get(1).getDocId());
-//	}
-//
+
+	@Test
+	public void testRankDocumentsOnTfIdf() {
+		List<String> query = Arrays.asList("a an a the".split(" "));
+		List<DocumentScore> scores = new ArrayList<DocumentScore>();
+
+		DocumentScore score1 = new DocumentScore(1);
+		DocumentFeatures feat1 = new DocumentFeatures();
+		feat1.setTfidf(2f);
+		score1.addFeatures("a", feat1);
+
+		DocumentScore score2 = new DocumentScore(2);
+		DocumentFeatures feat2 = new DocumentFeatures();
+		feat2.setTfidf(1f);
+		score2.addFeatures("an", feat2);
+
+		scores.add(score1);
+		scores.add(score2);
+		
+		Map<String, Integer>wordDfs = new HashMap<>();
+		wordDfs.put("a", 20);
+		wordDfs.put("an", 10);
+
+		int corpusSize = 2000;
+		Ranker rankerTfIdf = new RankerTfIdf(scores, query, corpusSize, wordDfs);
+		rankerTfIdf.computeRank();
+		List<Double> ranks = rankerTfIdf.getRanks();
+		
+		assertEquals(2, ranks.size());
+		assertEquals(1.0, ranks.get(0));
+		assertEquals(0.0, ranks.get(1));
+	}
+
 	@Test
 	public void testRankDocumentsOnTotalCount() {
 		
@@ -253,7 +248,7 @@ public class TestRanker extends TestCase {
 	
 	@Test
 	public void testRankDocumentsOnQueryWordMatchCount() {
-		List<String> query = Arrays.asList("Some random query".split(" "));
+		//QUERY - "Some random query"
 		
 		List<DocumentScore> scores = new ArrayList<DocumentScore>();
 		DocumentScore score1 = new DocumentScore(1);
