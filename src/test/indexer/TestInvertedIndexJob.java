@@ -14,6 +14,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -24,7 +25,6 @@ import org.junit.Test;
 
 import utils.file.FileUtils;
 import utils.nlp.Dictionary;
-
 import crawler.dao.URLContent;
 import edu.stanford.nlp.util.StringUtils;
 
@@ -62,7 +62,7 @@ public class TestInvertedIndexJob extends TestCase {
 		expLinkCounts.put("in", 1);
 		expLinkCounts.put("link", 1);
 
-		assertEquals(expLinkCounts, allCounts.get("linkCounts").getCounts());
+		assertEquals(expLinkCounts, allCounts.get(FeatureType.LINK_COUNTS).getCounts());
 		
 		// header counts
 		Map<String, Integer> expHeaderCounts = new HashMap<String, Integer>();
@@ -74,7 +74,7 @@ public class TestInvertedIndexJob extends TestCase {
 		expHeaderCounts.put("your", 1);
 		expHeaderCounts.put("favorite", 1);
 		
-		assertEquals(expHeaderCounts, allCounts.get("headerCounts").getCounts());
+		assertEquals(expHeaderCounts, allCounts.get(FeatureType.HEADER_COUNTS).getCounts());
 		
 		// meta tag counts
 		Map<String, Integer> expMetaCounts = new HashMap<String, Integer>();
@@ -83,7 +83,7 @@ public class TestInvertedIndexJob extends TestCase {
 		expMetaCounts.put("bratwurst", 1);
 		expMetaCounts.put("page", 1);
 		
-		assertEquals(expMetaCounts, allCounts.get("metaTagCounts").getCounts());
+		assertEquals(expMetaCounts, allCounts.get(FeatureType.META_TAG_COUNTS).getCounts());
 		
 		// normal counts
 		Map<String, Integer> expNormalCounts = new HashMap<String, Integer>();
@@ -103,7 +103,7 @@ public class TestInvertedIndexJob extends TestCase {
 		expNormalCounts.put("link", 1);
 		expNormalCounts.put("in", 1);
 
-		assertEquals(expNormalCounts, allCounts.get("normalCounts").getCounts());
+		assertEquals(expNormalCounts, allCounts.get(FeatureType.TOTAL_COUNTS).getCounts());
 	}
 	
 	@Test
@@ -181,7 +181,7 @@ public class TestInvertedIndexJob extends TestCase {
 	public void testComputeCountsBigram() throws IOException {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<html><body>");
-		sb.append("Two words. New York City.");
+		sb.append("Two words. New York City in new york.");
 		sb.append("<a href='http://www.google.com'>Link link text</a>");
 		sb.append("</body></html>");
 		URLContent content = new URLContent();
@@ -191,19 +191,29 @@ public class TestInvertedIndexJob extends TestCase {
 //		System.out.println(wordCounts);
 		
 		//total counts
-		assertEquals(1, (int) wordCounts.get(FeatureType.TOTAL_COUNTS).getWordCounts().get("two"));
 		assertEquals(1, (int) wordCounts.get(FeatureType.TOTAL_COUNTS).getWordCounts().get("two words"));
-		assertTrue(wordCounts.get(FeatureType.TOTAL_COUNTS).getWordPos().get("two").contains(1));
+		assertEquals(2, (int) wordCounts.get(FeatureType.TOTAL_COUNTS).getWordCounts().get("new york"));
 		
-		assertEquals(1, (int) wordCounts.get(FeatureType.TOTAL_COUNTS).getWordCounts().get("words"));
-		assertTrue(wordCounts.get(FeatureType.TOTAL_COUNTS).getWordPos().get("words").contains(2));
+		//postion
+		assertEquals(new HashSet<>(Arrays.asList(1)), 
+			wordCounts.get(FeatureType.TOTAL_COUNTS).getWordPos().get("two words"));
+		assertEquals(new HashSet<>(Arrays.asList(3,7)), 
+			wordCounts.get(FeatureType.TOTAL_COUNTS).getWordPos().get("new york"));
+		assertEquals(new HashSet<>(Arrays.asList(9)), 
+			wordCounts.get(FeatureType.TOTAL_COUNTS).getWordPos().get("link link"));
+		assertEquals(new HashSet<>(Arrays.asList(10)), 
+			wordCounts.get(FeatureType.TOTAL_COUNTS).getWordPos().get("link text"));
+		
 		
 		//link counts
-		assertEquals(2, (int) wordCounts.get(FeatureType.LINK_COUNTS).getWordCounts().get("link"));
-		assertTrue(wordCounts.get(FeatureType.LINK_COUNTS).getWordPos().get("text").contains(3));
-		assertEquals(1, (int) wordCounts.get(FeatureType.LINK_COUNTS).getWordCounts().get("text"));
-		assertTrue(wordCounts.get(FeatureType.LINK_COUNTS).getWordPos().get("link").contains(1));
-		assertTrue(wordCounts.get(FeatureType.LINK_COUNTS).getWordPos().get("link").contains(2));
+		assertEquals(1, (int) wordCounts.get(FeatureType.LINK_COUNTS).getWordCounts().get("link link"));
+		assertEquals(1, (int) wordCounts.get(FeatureType.LINK_COUNTS).getWordCounts().get("link text"));
+		
+		assertEquals(new HashSet<>(Arrays.asList(1)), 
+			wordCounts.get(FeatureType.LINK_COUNTS).getWordPos().get("link link"));
+		assertEquals(new HashSet<>(Arrays.asList(2)), 
+			wordCounts.get(FeatureType.LINK_COUNTS).getWordPos().get("link text"));
+		
 	}
 	
 	@Test
