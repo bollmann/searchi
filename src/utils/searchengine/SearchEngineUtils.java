@@ -12,9 +12,11 @@ import org.apache.log4j.Logger;
 
 public class SearchEngineUtils {
 	private final static Logger logger = Logger.getLogger(SearchEngineUtils.class);
+	
 	public static List<SearchResult> weightedMergeScores(
 			Map<String, Double> map1, Map<String, Double> map2,
 			Double weights[]) {
+		
 		List<SearchResult> resultList = new ArrayList<SearchResult>(
 				1000);
 
@@ -42,10 +44,13 @@ public class SearchEngineUtils {
 		return resultList;
 	}
 
-	public static List<SearchResult> convertScoreMapToPriorityQueue(
+	/** Returns sorted search results using the specified document scores */
+	public static List<SearchResult> getSortedSearchResultUsingScores(
 			Map<String, Double> scoreMap) {
+		
 		List<SearchResult> list = new ArrayList<SearchResult>();
 		for (Entry<String, Double> entry : scoreMap.entrySet()) {
+		
 			SearchResult sr = new SearchResult();
 			sr.setUrl(entry.getKey());
 			sr.setScore(entry.getValue());
