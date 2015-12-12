@@ -101,8 +101,7 @@ public class FileUtils {
 	/**
 	 * Delete a Directory and all its contents recursively if it exists.
 	 *
-	 * @param root
-	 *            the root directory to delete.
+	 * @param root   the root directory to delete.
 	 */
 	public static void deleteIfExists(Path root) {
 		if (root.toFile().isDirectory()) {
@@ -128,16 +127,17 @@ public class FileUtils {
 		String line = null;
 		BufferedReader br = new BufferedReader(new FileReader(refFile));
 		while ((line = br.readLine()) != null) {
-			seenFiles.add(line);
+			seenFiles.add(line.trim());
 		}
+		br.close();
 		System.out.println("Seen files has " + seenFiles.size()
 				+ " files in it");
 
 		br = new BufferedReader(new FileReader(newFileList));
 		while ((line = br.readLine()) != null) {
-			if (seenFiles.contains(line)) {
+			if (seenFiles.contains(line.trim())) {
 				// delete file
-				String pathString = fileDirectory + "/" + line;
+				String pathString = fileDirectory + "/" + line.trim();
 				System.out.println("Will delete " + pathString);
 				Path path = Paths.get(pathString);
 				Files.deleteIfExists(path);
@@ -156,7 +156,6 @@ public class FileUtils {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			
 		}
 	}
 }
