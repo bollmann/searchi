@@ -10,6 +10,7 @@ import searchengine.ranking.RankerPosition;
 import searchengine.ranking.RankerQueryMatch;
 import searchengine.ranking.RankerTfIdf;
 import searchengine.ranking.RankerTotalCount;
+import searchengine.ranking.RankerUrlCount;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -330,6 +331,37 @@ public class TestRanker extends TestCase {
 		assertEquals(1.0, ranks.get(1));
 	}
 
+	@Test
+	public void testRankDocumentsOnUrlCount() {
+		//QUERY - "Some random query"
+		List<String> query = Arrays.asList("some random query".split(" "));
+		Map<Integer, String> docMap = new HashMap<>();
+		docMap.put(1, "some_random");
+		docMap.put(2,  "query");
+		List<DocumentScore> scores = new ArrayList<DocumentScore>();
+		DocumentScore score1 = new DocumentScore(1);
+		DocumentFeatures feat1 = new DocumentFeatures();
+		feat1.setMetaTagCount(1);
+		score1.addFeatures("some", feat1);
+		score1.addFeatures("random", feat1);
+		score1.addFeatures("query", feat1);
+		
+		DocumentScore score2 = new DocumentScore(2);
+		DocumentFeatures feat2 = new DocumentFeatures();
+		feat2.setTotalCount(3);
+		score2.addFeatures("random", feat2);
+
+		scores.add(score1);
+		scores.add(score2);
+		
+		Ranker rankerUrlCount = new RankerUrlCount(scores, query, docMap);
+		rankerUrlCount.computeRank();
+		List<Double> ranks = rankerUrlCount.getRanks();
+		
+		assertEquals(2, ranks.size());
+		assertEquals(1.0, ranks.get(0));
+		assertEquals(0.0, ranks.get(1));
+	}
 	
 //
 //	@Test

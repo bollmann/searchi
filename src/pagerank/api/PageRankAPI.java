@@ -3,8 +3,10 @@ package pagerank.api;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import pagerank.db.dao.DRDao;
 import pagerank.db.dao.PRDao;
@@ -14,7 +16,7 @@ import db.wrappers.DynamoDBWrapper;
 
 public final class PageRankAPI {
 
-	private DynamoDBWrapper dynamoWrapper;
+	private final DynamoDBWrapper dynamoWrapper;
 
 	public PageRankAPI() {
 		this.dynamoWrapper = DynamoDBWrapper.getInstance(
@@ -87,17 +89,19 @@ public final class PageRankAPI {
 	 * @param String
 	 *            page
 	 * @return double domainRank
+	 * @throws MalformedURLException 
 	 */
-	public double getDomainRank(String page) throws Exception {
+	public double getDomainRank(String page) 
+			throws IllegalArgumentException, MalformedURLException {
 		if (page == null || page.isEmpty()) {
-			throw new Exception("Invalid page. Can't find domainrank score");
+			throw new IllegalArgumentException("Invalid page. Can't find domainrank score");
 		}
 
 		String domain = StringUtils.getDomainFromUrl(page.trim());
 
 		DRDao domainRank = (DRDao) dynamoWrapper.getItem(domain, DRDao.class);
 		if (domainRank == null) {
-			throw new Exception("DomainRank not found for specified page");
+			return 0.0;
 		}
 
 		return domainRank.getDomainScore();
@@ -106,8 +110,7 @@ public final class PageRankAPI {
 	/**
 	 * Batch Get for DomainRank scores of multiple domains
 	 * 
-	 * @param List
-	 *            <String> pages
+	 * @param List <String> pages
 	 * @return Map <String, Double> domainRanks
 	 * @throws MalformedURLException
 	 */
@@ -119,23 +122,44 @@ public final class PageRankAPI {
 		}
 
 		List<Object> items = new ArrayList<>();
+		Map<String, String> pagesToDomain = new HashMap<>();
+		Set<String> isSeen = new HashSet<>();
 		for (String page : pages) {
-			DRDao dao = new DRDao();
-			dao.setDomain(StringUtils.getDomainFromUrl(page.trim()));
-			dao.setDomainScore(-1.0);
+			String domain = StringUtils.getDomainFromUrl(page.trim()); 
+			pagesToDomain.put(page, domain);
+			if (isSeen.contains(domain)) {
+				continue;
+			}
+			isSeen.add(domain);
+			
+			DRDao dao = new DRDao();			
+			dao.setDomain(domain);
 			items.add(dao);
 		}
 
+		System.out.println(dynamoWrapper.getBatchItem(items));
 		List<Object> domainRankItems = dynamoWrapper.getBatchItem(items).get(
 				PRCreateTable.DR_TABLE_NAME);
-		Map<String, Double> domainRanks = new HashMap<>();
+		Map<String, Double> ranks = new HashMap<>();
 		for (Object domainObj : domainRankItems) {
 			DRDao domainDAO = (DRDao) domainObj;
 			if (domainDAO == null || domainDAO.getDomainScore() < 0)
 				continue;
 
-			domainRanks.put(domainDAO.getDomain(), domainDAO.getDomainScore());
+			ranks.put(domainDAO.getDomain(), domainDAO.getDomainScore());
 		}
+		
+		Map<String, Double> domainRanks = new HashMap<>();
+		for (String page : pagesToDomain.keySet()) {
+			String domain = pagesToDomain.get(page);
+			if (ranks.containsKey(domain)) {
+				domainRanks.put(page, ranks.get(domain));
+			}
+			else {
+				domainRanks.put(page, 0.0);
+			}
+		}	
+		
 		return domainRanks;
 	}
 

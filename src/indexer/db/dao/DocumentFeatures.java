@@ -22,7 +22,16 @@ public final class DocumentFeatures {
 	private int headerCount;
 	private int linkCount;
 	private int metaTagCount;
+	private int urlCount;
 	private Set<Integer> positions;
+
+	public int getUrlCount() {
+		return urlCount;
+	}
+
+	public void setUrlCount(int urlCount) {
+		this.urlCount = urlCount;
+	}
 
 	public DocumentFeatures() {
 		this.positions = new HashSet<Integer>();

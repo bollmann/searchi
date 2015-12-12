@@ -4,7 +4,8 @@
 	<property name="project.root" location="${basedir}" />
 	<property name="build.dir" location="${project.root}" />
 	<property name="build.target.dir" location="${project.root}${file.separator}bin" />
-	<property name="web-inf.dir" location="${build.target.dir}${file.separator}WEB-INF" />
+	<property name="target.dir" location="${project.root}${file.separator}target" />
+	<property name="web-inf.dir" location="${target.dir}${file.separator}WEB-INF" />
 	<property name="classes.dir" location="${web-inf.dir}${file.separator}classes" />
 	<property name="web-inf.lib.dir" location="${web-inf.dir}${file.separator}lib" />
 	<property name="test-classes.dir" location="${build.target.dir}${file.separator}test${file.separator}classes" />
@@ -99,8 +100,10 @@
 
 	<target name="compile-servlet" depends="compile-all" description="Makes the WAR file for the servlet">
 		<delete file="servlet.war" />
+		
 		<mkdir dir="${web-inf.dir}${file.separator}classes" />
 		<mkdir dir="${web-inf.dir}${file.separator}lib" />
+		<mkdir dir="${web-inf.dir}${file.separator}classes${file.separator}resources" />
 		<copy file="${conf.dir}${file.separator}web.xml" tofile="${web-inf.dir}${file.separator}web.xml" overwrite="true" />
 		<copy todir="${web-inf.dir}${file.separator}classes">
 			<fileset dir="bin" includes="**" />
@@ -108,15 +111,18 @@
 		<copy todir="${web-inf.dir}${file.separator}lib">
 			<fileset dir="lib" includes="*.jar" />
 		</copy>
+		<copy todir="${web-inf.dir}${file.separator}classes${file.separator}resources">
+			<fileset dir="resources" includes="**" />
+		</copy>
 		<delete dir="${web-inf.dir}${file.separator}lib${file.separator}aws-sdk" />
 		<jar destfile="servlet.war" update="true">
-			<fileset dir="${build.target.dir}">
-				<include name="**/*.class" />
-				<include name="**/*.jar" />
-				<include name="WEB-INF/web.xml" />
-			</fileset>
+			<fileset dir="${target.dir}" includes="WEB-INF/classes/**/*.class" />
+			<fileset dir="${target.dir}" includes="WEB-INF/lib/*.jar" />
+			<fileset dir="${target.dir}" includes="WEB-INF/classes/resources/**/*.*" />
+			<fileset dir="${target.dir}" includes="WEB-INF/*.xml" />
 		</jar>
-		<delete dir="${build.target.dir}"/>
+		<delete dir="${target.dir}" />
+				
 	</target>
 
 	<target name="all">

@@ -4,3 +4,8 @@
 *.war
 .DS_Store
 /bin/
+/bin/
+/bin/
+/target/
+target/
+/target

@@ -43,7 +43,7 @@ public class TestDynamoDBWrapper extends TestCase {
 		assertEquals(info1.getId(), resultIds.get(0));
 		assertEquals(info2.getId(), resultIds.get(1));
 		assertEquals(info3.getId(), resultIds.get(2));
-		wp.deleteTable("URLMetaInfo");
+//		wp.deleteTable("URLMetaInfo");
 	}
 	
 	/*
@@ -91,7 +91,7 @@ public class TestDynamoDBWrapper extends TestCase {
 		} catch (DynamoDBMappingException e) {
 			e.printStackTrace();
 		}
-		wp.deleteTable("URLMetaInfo");
+//		wp.deleteTable("URLMetaInfo");
 	}
 	
 	@Test
@@ -111,13 +111,13 @@ public class TestDynamoDBWrapper extends TestCase {
 		} catch (DynamoDBMappingException e) {
 			e.printStackTrace();
 		}
-		wp.deleteTable("URLMetaInfo");
+//		wp.deleteTable("URLMetaInfo");
 	}
 	
 	@Test
 	public void testGetNumberOfItemsInTable() {
 		DynamoDBWrapper ddb = DynamoDBWrapper.getInstance(DynamoDBWrapper.US_EAST);
-		Integer result = ddb.getNumberOfItemsInTable("URLMetaInfo");
+		Integer result = ddb.getNumberOfItemsInTable("URLMetaInfo2");
 		System.out.println(result);
 	}
 

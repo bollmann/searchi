@@ -1,15 +1,10 @@
 package searchengine.servlets;
 
 import indexer.DocumentScore;
-import indexer.InvertedIndexFetcher;
 import indexer.api.DocumentIDs;
 import indexer.clients.InvertedIndexClient;
+import indexer.clients.InvertedIndexFetcher;
 import indexer.db.dao.DocumentFeatures;
-import searchengine.api.SearchAPI;
-import searchengine.ranking.Ranker;
-import searchengine.ranking.RankerImpl;
-import searchengine.ranking.RankerInfo.RankerType;
-import searchengine.ranking.RankerTfIdf;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -22,10 +17,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -35,15 +26,26 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 
 import pagerank.api.PageRankAPI;
+import searchengine.api.SearchAPI;
+import searchengine.ranking.Ranker;
+import searchengine.ranking.RankerInfo.RankerType;
+import utils.nlp.QueryProcessor;
 import utils.searchengine.SearchEngineUtils;
 
 @SuppressWarnings("serial")
 public class IndexerClientServlet extends HttpServlet {
 	private final Logger logger = Logger.getLogger(getClass());
 	DocumentIDs dId = null;
+	QueryProcessor queryProcessor;
+	
 	@Override
 	public void init() {
-		dId = new DocumentIDs();
+		dId = (DocumentIDs) getServletContext().getAttribute("forwardIndex");
+		if(dId == null) {
+			dId = new DocumentIDs();
+			getServletContext().setAttribute("forwardIndex", dId);
+		}
+		queryProcessor = QueryProcessor.getInstance();
 	}
 
 	@Override
@@ -72,8 +74,7 @@ public class IndexerClientServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		PrintWriter out = resp.getWriter();
-		InvertedIndexClient iic = InvertedIndexClient.getInstance();
-
+		
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("<html><head><title>Interface-Search Engine Test</title></head>");
 		buffer.append("<body>");
@@ -83,8 +84,8 @@ public class IndexerClientServlet extends HttpServlet {
 		buffer.append("<input size=50 name = \"query\">");
 		buffer.append("<button>Searchi again!</button>");
 		buffer.append("</form>");
+		
 		LinkedList<String> query = new LinkedList<String>();
-
 		queryStr = URLDecoder.decode(queryStr, "UTF-8");
 
 		for (String word : queryStr.split(" "))
@@ -92,17 +93,7 @@ public class IndexerClientServlet extends HttpServlet {
 
 		logger.info("Got search query:" + queryStr + " split into " + query);
 
-		// for (DocumentVector doc : iiObj.lookupDocuments(query)) {
-		// buffer.append("<li>" + doc.toString() + "</li>");
-		//
-		// }
-
 		Map<String, Double> indexerScore = new HashMap<String, Double>(1000);
-		Map<String, Double> pageRankScore = null;
-
-		PageRankAPI pra = new PageRankAPI();
-		List<String> lookupList = new ArrayList<String>(1000);
-
 		try {
 			/******************************** Indexer display *********************/
 
@@ -110,6 +101,7 @@ public class IndexerClientServlet extends HttpServlet {
 			buffer.append("<br>Using Indexer Ranking:");
 			buffer.append("<ol>");
 
+			InvertedIndexClient iic = InvertedIndexClient.getInstance();
 			Date startTime = Calendar.getInstance().getTime();
 			Map<String, List<DocumentFeatures>> invertedIndex = iic.getInvertedIndexForQueryMultiThreaded(query);
 			Date endTime = Calendar.getInstance().getTime();
@@ -119,86 +111,21 @@ public class IndexerClientServlet extends HttpServlet {
 			
 		
 			/******************* Add rankers and combine them here - Secret sauce ******************/
-//			startTime = Calendar.getInstance().getTime();
-//			
-//			int numOfRankers = 5;
-//			Ranker rankerTfIdf = new RankerTfIdf(documentList, query, iic.getCorpusSize(), wordDfs);
-//			
-//			
-//			ExecutorService es = Executors.newFixedThreadPool(numOfRankers);
-//			es.execute(rankerTfIdf);
-//			
-//			es.shutdown();			
-//			try {
-//				boolean finshed = es.awaitTermination(1, TimeUnit.MINUTES);
-//			} catch (InterruptedException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//
-//			Map<Integer, DocumentScore> tfIdfRankedDocs = RankerImpl.rankDocumentsOnTfIdf(documentList, query, iic.getCorpusSize(), wordDfs);
-//			Map<Integer, DocumentScore> headerCountRankedDocs = RankerImpl.rankDocumentsOnHeaderCount(documentList);
-////			Map<Integer, DocumentScore> linkCountRankedDocs = Ranker.rankDocumentsOnLinkCount(documentList);
-////			Map<Integer, DocumentScore> metaCountRankedDocs = Ranker.rankDocumentsOnMetaCount(documentList);
-//			Map<Integer, DocumentScore> totalCountRankedDocs = RankerImpl.rankDocumentsOnTotalCount(documentList);
-//			Map<Integer, DocumentScore> queryWordPresenceRankedDocs = RankerImpl.rankDocumentsOnQueryWordPresenceCount(documentList, query);
-//			Map<Integer, DocumentScore> positionRankedDocs = RankerImpl.rankDocumentsOnPosition(documentList, query);
-
-			
-			SearchAPI searchAPI = new SearchAPI(query, invertedIndex, iic.getCorpusSize());			
-			searchAPI.formDocumentScoresForQueryFromInvertedIndex();
-			List<DocumentScore> rankedDocs = null;
-			try {
-				searchAPI.setRanker(RankerType.RANKER_TFIDF, 1.0);
-				searchAPI.setRanker(RankerType.RANKER_HEADER, 1.0);
-				searchAPI.setRanker(RankerType.RANKER_LINKS, 1.0);
-				searchAPI.setRanker(RankerType.RANKER_META, 1.0);
-				searchAPI.setRanker(RankerType.RANKER_POSITION, -1.0);
-				searchAPI.setRanker(RankerType.RANKER_QUERYMATCH, 1.0);
-				searchAPI.setRanker(RankerType.RANKER_TOTALCOUNT, 1.0);
-
-				List<Ranker> rankers = searchAPI.applyRankers();
-				
-				rankedDocs = searchAPI.combineRankings(rankers);
-				Collections.sort(rankedDocs);
-			} catch (Exception e) {
-				//TODO Handle this exception;
-				return;
-			}
-			
-			
-//			List<Map<Integer, DocumentScore>> rankedLists = new ArrayList<>();
-//			rankedLists.add(tfIdfRankedDocs);
-//			rankedLists.add(headerCountRankedDocs);
-////			rankedLists.add(linkCountRankedDocs);
-////			rankedLists.add(metaCountRankedDocs);
-//			rankedLists.add(totalCountRankedDocs);
-//			rankedLists.add(queryWordPresenceRankedDocs);
-//			rankedLists.add(positionRankedDocs);
-//			
-//			List<Double> rankWeights = new ArrayList<>();
-//			rankWeights.add(1.0); // tfidf
-//			rankWeights.add(1.0); // headerCounts
-////			rankWeights.add(1.0); // linkCounts
-////			rankWeights.add(1.0); // metaCounts
-//			rankWeights.add(1.0); // totalCounts
-//			rankWeights.add(1.0); // query word counts
-//			rankWeights.add(1.0); // positions
-//			
-//			List<DocumentScore> combinedRankedDocs = RankerImpl.combineRankedListsWithWeights(rankedLists, rankWeights);
-
+			startTime = Calendar.getInstance().getTime();
+			List<DocumentScore> rankedDocs = SearchEngineDataFetcher.getRankedIndexerResults(query, invertedIndex, iic);
 			endTime = Calendar.getInstance().getTime();
 			logger.info("Indexer ranking took "
 					+ printTimeDiff(startTime, endTime));
 			/****************************** End of secret sauce ****************************/
 			
-			startTime = Calendar.getInstance().getTime();
+			List<String> lookupList = new ArrayList<String>(1000);
 			
+
+			startTime = Calendar.getInstance().getTime();			
 			logger.info(rankedDocs.size());
 			int resultCount = 0;
 			for (DocumentScore doc : rankedDocs) {
-				
-				logger.info("Score " + doc.getScore());
+//				logger.info("Score " + doc.getScore());
 				SearchResult sr = new SearchResult();
 				// lookup id to get document
 				String url = dId.getURLFor(doc.getDocId());
@@ -220,16 +147,25 @@ public class IndexerClientServlet extends HttpServlet {
 
 			/******************************** Page Rank display *********************/
 
+			logger.info("Using Domain rank to rank pages");
+			Map<String, Double> domainRankScore = new HashMap<>();
+			PageRankAPI pageRankAPI = new PageRankAPI();
+			
 			startTime = Calendar.getInstance().getTime();
-			pageRankScore = pra.getPageRankBatch(lookupList);
+			
+			for (String page : lookupList) {
+				double score = pageRankAPI.getDomainRank(page);
+				domainRankScore.put(page, score);
+			}
+			//domainRankScore = pageRankAPI.getDomainRankBatch(lookupList);
 
-			logger.info("Page rank returned " + pageRankScore.size()
+			logger.info("Page rank returned " + domainRankScore.size()
 					+ " results");
 			List<SearchResult> pqueue = SearchEngineUtils
-					.convertScoreMapToPriorityQueue(pageRankScore);
+				.convertScoreMapToPriorityQueue(domainRankScore);
 
 			endTime = Calendar.getInstance().getTime();
-			logger.info("Page ranking took "
+			logger.info("Domain ranking took "
 					+ printTimeDiff(startTime, endTime));
 			resultCount = 0;
 			buffer.append("<br>Using Page Ranking:");
@@ -248,9 +184,9 @@ public class IndexerClientServlet extends HttpServlet {
 
 			/******************************** Final display *********************/
 			startTime = Calendar.getInstance().getTime();
-			Double[] weights = { 0.9, 0.1 };
+			Double[] weights = { 0.98, 0.02 };
 			List<SearchResult> result = SearchEngineUtils
-					.weightedMergeScores(indexerScore, pageRankScore, weights);
+					.weightedMergeScores(indexerScore, domainRankScore, weights);
 			buffer.append("<br>Combined Results:<ol>");
 
 			resultCount = 0;
@@ -278,6 +214,6 @@ public class IndexerClientServlet extends HttpServlet {
 			out.flush();
 			out.close();
 		}
-
+		
 	}
 }
