@@ -57,10 +57,8 @@ public class InvertedIndexJob {
 			URLContent page = new Gson().fromJson(jsonBlob.toString(),
 					URLContent.class);
 
-			Dictionary dict = Dictionary.createInstance(Dictionary.class
-					.getResourceAsStream("/resources/dict/all-english"));
-			Map<FeatureType, WordCounts> allCounts = computeCounts(page, 1,
-					dict);
+			Dictionary dict = Dictionary.createInstance(Dictionary.JAR_RESOURCE);
+			Map<FeatureType, WordCounts> allCounts = computeCounts(page, 1, dict);
 			WordCounts totWordCounts = allCounts.get(FeatureType.TOTAL_COUNTS);
 
 			// discard document, if number of english words in doc is below
@@ -87,7 +85,6 @@ public class InvertedIndexJob {
 						.getCounts(word));
 				doc.setPositions(totWordCounts.getPosition(word));
 
-				// TODO - Check for english word
 				context.write(new Text(word), new Text(new Gson().toJson(doc)));
 			}
 		}

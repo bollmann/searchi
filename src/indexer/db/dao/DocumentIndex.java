@@ -4,14 +4,14 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 
-@DynamoDBTable(tableName="DocumentIDs")
-public class DocumentIDRow {
+@DynamoDBTable(tableName="DocumentIndex")
+public class DocumentIndex {
 	private int docId;
 	private String url;
 	
-	public DocumentIDRow() { }
+	public DocumentIndex() { }
 	
-	public DocumentIDRow(int id, String u) {
+	public DocumentIndex(int id, String u) {
 		docId = id;
 		url = u;
 	}

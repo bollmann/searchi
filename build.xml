@@ -73,14 +73,26 @@
 		</jar>
 	</target>
 
-	<target name="inverted-index" depends="compile-all">
-		<jar basedir="bin" destfile="InvertedIndexJob.jar" includes="db/**.class,crawler/dao/*.class,indexer/**/*.class,indexer/*.class,utils/**/*.class">
+	<target name="inverted-index-job" depends="compile-all">
+		<jar basedir="bin" destfile="InvertedIndexJob.jar">
 			<fileset dir=".">
 				<include name="lib/*.jar" />
 				<include name="resources/dict/all-english" />
 			</fileset>
 			<manifest>
 				<attribute name="Main-Class" value="indexer.offline.InvertedIndexJob" />
+			</manifest>
+		</jar>
+	</target>
+	
+	<target name="image-job" depends="compile-all">
+		<jar basedir="bin" destfile="ImageJob.jar">
+			<fileset dir=".">
+				<include name="lib/*.jar" />
+				<include name="resources/dict/all-english" />
+			</fileset>
+			<manifest>
+				<attribute name="Main-Class" value="indexer.offline.ImageJob" />
 			</manifest>
 		</jar>
 	</target>
@@ -114,6 +126,7 @@
 	<target name="clean">
 		<delete dir="bin/" />
 		<delete file="InvertedIndexJob.jar" />
+		<delete file="ImageJob.jar" />
 	    <delete file="servlet.war" />
 	    <delete file="crawler-servlet.war" />
 	</target>
