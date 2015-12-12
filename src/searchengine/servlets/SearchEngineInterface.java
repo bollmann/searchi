@@ -4,8 +4,10 @@ import indexer.DocumentScore;
 import indexer.api.DocumentIDs;
 import indexer.clients.InvertedIndexClient;
 import indexer.db.dao.DocumentFeatures;
-import searchengine.rank.comparators.DocumentScoreComparators;
+import searchengine.api.SearchAPI;
 import searchengine.ranking.Ranker;
+import searchengine.ranking.RankerImpl;
+import searchengine.ranking.RankerInfo.RankerType;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -96,14 +98,32 @@ public class SearchEngineInterface extends HttpServlet {
 		for(Entry<String, List<DocumentFeatures>> entry : invertedIndex.entrySet()) {
 			wordDfs.put(entry.getKey(), entry.getValue().size());
 		}
-		List<DocumentScore> documentList = Ranker.getDocumentScoresForQueryAndInvertedIndex(query, invertedIndex);
+		
+		SearchAPI searchAPI = new SearchAPI(query, invertedIndex, iic.getCorpusSize());		
+		searchAPI.formDocumentScoresForQueryFromInvertedIndex();
+		
+		
 		
 		/****************************** Add rankers and combine them here *************/
+		List<DocumentScore> rankedDocs = null;
+		try {
+			searchAPI.setRanker(RankerType.RANKER_TFIDF, 1.0);
+			searchAPI.setRanker(RankerType.RANKER_HEADER, 1.0);
+			searchAPI.setRanker(RankerType.RANKER_LINKS, 1.0);
+			searchAPI.setRanker(RankerType.RANKER_META, 1.0);
+			searchAPI.setRanker(RankerType.RANKER_POSITION, -1.0);
+			searchAPI.setRanker(RankerType.RANKER_QUERYMATCH, 1.0);
+			searchAPI.setRanker(RankerType.RANKER_TOTALCOUNT, 1.0);
+
+			List<Ranker> rankers = searchAPI.applyRankers();
+			
+			rankedDocs = searchAPI.combineRankings(rankers);
+			Collections.sort(rankedDocs);
+		} catch (Exception e) {
+			//TODO Handle this exception;
+			return;
+		}
 		
-		Map<Integer, DocumentScore> tfIdfRankedDocs = Ranker.rankDocumentsOnTfIdf(documentList, query, iic.getCorpusSize(), wordDfs);
-		
-		List<DocumentScore> rankedDocs = new ArrayList<>(tfIdfRankedDocs.values());
-		Collections.sort(rankedDocs, DocumentScoreComparators.getTfIdfComparator(query, iic.getCorpusSize(), wordDfs));
 		/****************************** End of secret sauce ****************************/
 		
 		try {
