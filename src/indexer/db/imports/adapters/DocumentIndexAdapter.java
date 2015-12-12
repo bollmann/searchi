@@ -1,6 +1,6 @@
 package indexer.db.imports.adapters;
 
-import indexer.db.dao.DocumentIDRow;
+import indexer.db.dao.DocumentIndex;
 
 import org.apache.log4j.Logger;
 
@@ -9,22 +9,22 @@ import com.google.gson.JsonSyntaxException;
 
 import crawler.dao.URLContent;
 
-public class DocumentIDsAdapter implements FileToDatabaseAdapter<DocumentIDRow> {
-	private static Logger logger = Logger.getLogger(DocumentIDsAdapter.class);
+public class DocumentIndexAdapter implements FileToDatabaseAdapter<DocumentIndex> {
+	private static Logger logger = Logger.getLogger(DocumentIndexAdapter.class);
 	
 	@Override
 	public String getTableName() {
-		return "DocumentIDs";
+		return "DocumentIndex";
 	}
 	
 	@Override
-	public DocumentIDRow unserialize(String inputLine) {
+	public DocumentIndex unserialize(String inputLine) {
 		try {
 			String parts[] = inputLine.split("\t");
 			int docId = Integer.parseInt(parts[0]);
 			URLContent page = new Gson().fromJson(parts[1], URLContent.class);
 
-			return new DocumentIDRow(docId, page.getUrl());
+			return new DocumentIndex(docId, page.getUrl());
 		} catch(JsonSyntaxException e) {
 			logger.error("failed to parse JSON for input:");
 			logger.error(inputLine);

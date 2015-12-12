@@ -1,6 +1,8 @@
 package indexer.api;
 
-import indexer.db.dao.DocumentIDRow;
+
+
+import indexer.db.dao.DocumentIndex;
 
 import java.util.HashMap;
 import java.util.List;
@@ -22,8 +24,8 @@ public class DocumentIDs {
 		 DynamoDBMapper db = DynamoDBUtils.connectDB();
 		 
 		 DynamoDBScanExpression scanExpr = new DynamoDBScanExpression();
-		 List<DocumentIDRow> rows = db.scan(DocumentIDRow.class, scanExpr);
-		 for(DocumentIDRow row: rows) {
+		 List<DocumentIndex> rows = db.scan(DocumentIndex.class, scanExpr);
+		 for(DocumentIndex row: rows) {
 			 docIDs.put(row.getDocId(), row.getUrl());
 		 }
 	}

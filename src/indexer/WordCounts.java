@@ -21,25 +21,30 @@ public class WordCounts implements Iterable<String> {
 	private Map<Integer, String> nGramMaxWords;
 	private Map<Integer, Integer> ngramNormalizedDocSize;
 	
+	private Dictionary dict;
+	
 	private int totalWords; 
 	private int totalWordsEnglish;
 
 	
 	public WordCounts(Iterable<String> words) {
-		initCounts(words, 1, null);
+		this.dict = null;
+		initCounts(words, 1);
 	}
 
 	public WordCounts(Iterable<String> words, int maxN) {
-		initCounts(words, maxN, null);
+		this.dict = null;
+		initCounts(words, maxN);
 	}
 	
 	public WordCounts(Iterable<String> words, int maxN, 
 		Dictionary dict) {
-		initCounts(words, maxN, dict);
+		this.dict = dict;
+		initCounts(words, maxN);
 	}
 	
 
-	private void initCounts(Iterable<String> words, int maxN, Dictionary dict) {
+	private void initCounts(Iterable<String> words, int maxN) {
 		wordCounts = new HashMap<>();
 		wordPos = new HashMap<>();
 		nGrams = new HashMap<>();
@@ -202,6 +207,9 @@ public class WordCounts implements Iterable<String> {
 
 	/** Percentage of English words in counts */
 	public float getPercentage() {
+		if(dict == null)
+			throw new IllegalStateException("WordCounts: no dictionary present!");
+		
 		return ((float) totalWordsEnglish) / totalWords;
 	}
 	

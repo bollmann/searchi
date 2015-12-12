@@ -3,6 +3,9 @@ package indexer.db.dao;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 /**
  * The counts of some word within the given document.
  */
@@ -16,9 +19,9 @@ public final class DocumentFeatures {
 	private float euclideanTermFrequency;
 	private float tfidf;
 	private int totalCount;
+	private int headerCount;
 	private int linkCount;
 	private int metaTagCount;
-	private int headerCount;
 	private Set<Integer> positions;
 
 	public DocumentFeatures() {
@@ -96,11 +99,47 @@ public final class DocumentFeatures {
 	public void setPositions(Set<Integer> pos) {
 		this.positions = new HashSet<>(pos);
 	}
+	
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder(17, 31)
+			.append(docId)
+			.append(maximumTermFrequency)
+			.append(euclideanTermFrequency)
+			.append(tfidf)
+			.append(totalCount)
+			.append(headerCount)
+			.append(linkCount)
+			.append(metaTagCount)
+			.append(positions)
+			.hashCode();
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (!(o instanceof DocumentFeatures))
+			return false;
+		if (this == o)
+			return true;
+		
+		DocumentFeatures other = (DocumentFeatures) o;
+		return new EqualsBuilder()
+				.append(this.docId, other.docId)
+				.append(this.maximumTermFrequency, other.maximumTermFrequency)
+				.append(this.euclideanTermFrequency,
+						other.euclideanTermFrequency)
+				.append(this.tfidf, other.tfidf)
+				.append(this.totalCount, other.totalCount)
+				.append(this.headerCount, other.headerCount)
+				.append(this.linkCount, other.linkCount)
+				.append(this.metaTagCount, other.metaTagCount)
+				.append(this.positions, other.positions).isEquals();
+	}
 
 	public String toString() {
 
 		return String
-				.format("{docId: %d, maxtf: %f, euclidtf: %f, tfidf: %f, totalCount: %d,"
+				.format("{docId: %d, maxtf: %f, euclidtf: %f, tfidf: %f, totalCount: %d, "
 						+ "linkCount: %d, metaTagCount: %d, headerCount: %d, wordPositions: %s}",
 						docId, maximumTermFrequency, euclideanTermFrequency,
 						tfidf, totalCount, linkCount, metaTagCount,

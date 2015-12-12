@@ -10,8 +10,9 @@ import java.util.Set;
 
 
 public class Dictionary {
-	private static Dictionary dict = null;
+	public static final InputStream JAR_RESOURCE = Dictionary.class.getResourceAsStream("/resources/dict/all-english");
 	
+	private static Dictionary dict = null;
 	private Set<String> words;
 	
 	private Dictionary(InputStream resource) throws IOException {

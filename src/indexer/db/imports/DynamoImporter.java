@@ -1,9 +1,10 @@
 package indexer.db.imports;
 
 
-import indexer.db.imports.adapters.DocumentIDsAdapter;
+import indexer.db.imports.adapters.DocumentIndexAdapter;
 import indexer.db.imports.adapters.FileToDatabaseAdapter;
 import indexer.db.imports.adapters.InvertedIndexAdapter;
+import indexer.db.imports.adapters.ImageIndexAdapter;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -52,11 +53,19 @@ public class DynamoImporter<T> implements Runnable {
 				if (entries.size() >= batchSize) {
 					logger.info("saving " + batchSize
 							+ " items to " + adapter.getTableName() + " table.");
+					
+					// debug:
+					for(T entry: entries) {
+						System.out.println(entry);
+					}
+					
 					db.batchSave(entries);
 					entries = new ArrayList<>();
 				}
 				++importedLines;
 			}
+			
+			
 			db.batchSave(entries);
 			logger.info("Done with file " + input + ". Saved " + importedLines
 					+ " rows in table " + adapter.getTableName() + ".");
@@ -73,14 +82,6 @@ public class DynamoImporter<T> implements Runnable {
 			FileToDatabaseAdapter<T> adapter) throws InterruptedException {
 		DynamoDBWrapper wrapper = DynamoDBWrapper
 				.getInstance(DynamoDBWrapper.US_EAST);
-//		if (wrapper.describeTable(adapter.getTableName()) == null)
-//			wrapper.createTable(adapter.getTableName(), 5, NUMBER_THREADS * 100, "docId", "N");
-//		TableDescription tableInfo = wrapper.getDynamoDB()
-//				.getTable(adapter.getTableName()).describe();
-//		if (tableInfo.getProvisionedThroughput().getWriteCapacityUnits() != 100L)
-//			wrapper.getClient().updateTable(adapter.getTableName(),
-//					new ProvisionedThroughput(5L, 100L));
-
 		ExecutorService executor = Executors.newFixedThreadPool(NUMBER_THREADS);
 		for (File file : inputDir.listFiles()) {
 			logger.info("starting import on file " + file.getName());
@@ -93,12 +94,6 @@ public class DynamoImporter<T> implements Runnable {
 		int nrRows = wrapper.getNumberOfItemsInTable(adapter.getTableName());
 		logger.info("imported a total of " + nrRows + " into table "
 				+ adapter.getTableName());
-
-//		tableInfo = wrapper.getDynamoDB().getTable(adapter.getTableName())
-//				.describe();
-//		if (tableInfo.getProvisionedThroughput().getWriteCapacityUnits() != 5L)
-//			wrapper.getClient().updateTable(adapter.getTableName(),
-//					new ProvisionedThroughput(5L, 5L));
 	}
 
 	private static void usage() {
@@ -112,11 +107,14 @@ public class DynamoImporter<T> implements Runnable {
 			int batchSize = Integer.parseInt(args[2]);
 
 			if (what.equals("DocumentIDs")) {
-				logger.info("importing from files into Dynamo's DocumentIDs table...");
-				doImport(inputDir, batchSize, new DocumentIDsAdapter());
+				logger.info("importing files into Dynamo's DocumentIndex table...");
+				doImport(inputDir, batchSize, new DocumentIndexAdapter());
 			} else if (what.equals("InvertedIndex")) {
-				logger.info("importing from files into Dynamo's InvertedIndex table...");
+				logger.info("importing files into Dynamo's InvertedIndex table...");
 				doImport(inputDir, batchSize, new InvertedIndexAdapter());
+			} else if (what.equals("ImageIndex")) {
+				logger.info("importing files into Dynamo's ImageIndex table...");
+				doImport(inputDir, batchSize, new ImageIndexAdapter());
 			}
 
 		} catch (ArrayIndexOutOfBoundsException e) {

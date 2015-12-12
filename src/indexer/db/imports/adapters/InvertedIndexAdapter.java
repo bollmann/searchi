@@ -9,7 +9,7 @@ public class InvertedIndexAdapter implements
 
 	@Override
 	public String getTableName() {
-		return "InvertedIndex";
+		return "InvertedIndexNew";
 	}
 	
 	@Override
