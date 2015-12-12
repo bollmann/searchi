@@ -3,6 +3,7 @@ package searchengine.servlets;
 import indexer.DocumentScore;
 import indexer.api.DocumentIDs;
 import indexer.clients.InvertedIndexClient;
+import indexer.clients.InvertedIndexFetcher;
 import indexer.db.dao.DocumentFeatures;
 
 import java.io.IOException;
