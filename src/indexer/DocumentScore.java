@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class DocumentScore implements Comparable<DocumentScore> {
 	private int docId;
-	private float score;
+	private double score;
 
 	/*
 	 * Feature counts of words occurring in this document.
@@ -33,11 +33,11 @@ public class DocumentScore implements Comparable<DocumentScore> {
 		return docId;
 	}
 
-	public void setScore(float score) {
+	public void setScore(double score) {
 		this.score = score;
 	}
 
-	public float getScore() {
+	public double getScore() {
 		return score;
 	}
 	
@@ -51,7 +51,7 @@ public class DocumentScore implements Comparable<DocumentScore> {
 
 	@Override
 	public int compareTo(DocumentScore other) {
-		return (-1) * Float.compare(this.score, other.score);
+		return (-1) * Double.compare(this.score, other.score);
 	}
 
 	@Override
