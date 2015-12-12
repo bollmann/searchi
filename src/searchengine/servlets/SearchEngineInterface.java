@@ -107,13 +107,13 @@ public class SearchEngineInterface extends HttpServlet {
 		/****************************** Add rankers and combine them here *************/
 		List<DocumentScore> rankedDocs = null;
 		try {
-			searchAPI.setRanker(RankerType.RANKER_TFIDF, 1.0);
-			searchAPI.setRanker(RankerType.RANKER_HEADER, 1.0);
-			searchAPI.setRanker(RankerType.RANKER_LINKS, 1.0);
-			searchAPI.setRanker(RankerType.RANKER_META, 1.0);
-			searchAPI.setRanker(RankerType.RANKER_POSITION, -1.0);
-			searchAPI.setRanker(RankerType.RANKER_QUERYMATCH, 1.0);
-			searchAPI.setRanker(RankerType.RANKER_TOTALCOUNT, 1.0);
+			searchAPI.addRanker(RankerType.RANKER_TFIDF, 1.0);
+			searchAPI.addRanker(RankerType.RANKER_HEADER, 1.0);
+			searchAPI.addRanker(RankerType.RANKER_LINKS, 1.0);
+			searchAPI.addRanker(RankerType.RANKER_META, 1.0);
+			searchAPI.addRanker(RankerType.RANKER_POSITION, -1.0);
+			searchAPI.addRanker(RankerType.RANKER_QUERYMATCH, 1.0);
+			searchAPI.addRanker(RankerType.RANKER_TOTALCOUNT, 1.0);
 
 			List<Ranker> rankers = searchAPI.applyRankers();
 			

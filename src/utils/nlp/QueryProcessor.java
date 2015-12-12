@@ -7,19 +7,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Properties;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
 
-import edu.smu.tspell.wordnet.Synset;
-import edu.smu.tspell.wordnet.WordNetDatabase;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.tagger.maxent.MaxentTagger;
 
 public class QueryProcessor {
 	private final static Logger logger = Logger.getLogger(QueryProcessor.class);
-	private WordNetDatabase database;
 
 	private final static String[] stopWordList = { "a", "about", "above",
 			"above", "across", "after", "afterwards", "again", "against",
@@ -72,7 +68,6 @@ public class QueryProcessor {
 			Arrays.asList(stopWordList));
 	private final static Map<String, Integer> posRankMap = new HashMap<>();
 	private static QueryProcessor instance;
-	private StanfordCoreNLP pipeline;
 	private MaxentTagger tagger;
 	
 	public static QueryProcessor getInstance() {
@@ -83,26 +78,21 @@ public class QueryProcessor {
 	}
 	
 	public void initPosRankMap() {
-		posRankMap.put("NNP", 10); // barrack, obama
-		posRankMap.put("NN", 9); // president
-		posRankMap.put("JJ", 8); // random
+		posRankMap.put("NNP", 100); // barrack, obama
+		posRankMap.put("NN", 90); // president
+		posRankMap.put("JJ", 80); // random
 		posRankMap.put("WP", 3);
-		posRankMap.put("RB", 2); // crap
-		posRankMap.put("DT", 2); // the
-		posRankMap.put("VBZ", 1); // is
+		posRankMap.put("RB", 10); // crap
+		posRankMap.put("DT", 5); // the
+		posRankMap.put("VBZ", 4); // is
 	}
 
 	private QueryProcessor() {
-		// database = WordNetDatabase.getFileInstance();
-		// Properties props = System.getProperties();
-		// props.setProperty("wordnet.database.dir", "./resources/dict");
 		tagger = new MaxentTagger(
 //				"resources/gate-EN-twitter.model"); // 5 words in 161 ms
 				"resources/gate-EN-twitter-fast.model"); // 5 words in 100 ms
-//		Properties props = new Properties();
-//		props.put("annotators", "tokenize, ssplit, pos, ner");
+
 		initPosRankMap();
-		// pipeline = new StanfordCoreNLP(props);
 	}
 
 	/**
