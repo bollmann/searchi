@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 
 import pagerank.api.PageRankAPI;
-import searchengine.api.SearchAPI;
+import searchengine.SearchEngine;
 import searchengine.ranking.Ranker;
 import searchengine.ranking.RankerInfo.RankerType;
 import utils.nlp.QueryProcessor;
@@ -112,7 +112,10 @@ public class IndexerClientServlet extends HttpServlet {
 		
 			/******************* Add rankers and combine them here - Secret sauce ******************/
 			startTime = Calendar.getInstance().getTime();
-			List<DocumentScore> rankedDocs = SearchEngineDataFetcher.getRankedIndexerResults(query, invertedIndex, iic);
+			
+			SearchEngine searchEngine = new SearchEngine(query, invertedIndex, iic.getCorpusSize());			
+			List<DocumentScore> rankedDocs = searchEngine.getRankedIndexerResults();
+			
 			endTime = Calendar.getInstance().getTime();
 			logger.info("Indexer ranking took "
 					+ printTimeDiff(startTime, endTime));
