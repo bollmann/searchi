@@ -100,7 +100,7 @@
 
 	<target name="compile-servlet" depends="compile-all" description="Makes the WAR file for the servlet">
 		<delete file="servlet.war" />
-		<delete dir="${target.dir}" />
+		
 		<mkdir dir="${web-inf.dir}${file.separator}classes" />
 		<mkdir dir="${web-inf.dir}${file.separator}lib" />
 		<mkdir dir="${web-inf.dir}${file.separator}resources" />
@@ -121,6 +121,8 @@
 			<fileset dir="${target.dir}" includes="WEB-INF/resources/**" />
 			<fileset dir="${target.dir}" includes="WEB-INF/*.xml" />
 		</jar>
+		<delete dir="${target.dir}" />
+				
 	</target>
 
 	<target name="all">
