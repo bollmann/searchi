@@ -71,8 +71,7 @@ public class InvertedIndexJob {
 
 				doc.setDocId(Integer.parseInt(docId.toString()));
 				doc.setEuclideanTermFrequency(allCounts.get(
-						FeatureType.TOTAL_COUNTS).getEuclideanTermFrequency(
-						word));
+						FeatureType.TOTAL_COUNTS).getEuclideanTermFrequency(word));
 				doc.setMaximumTermFrequency(allCounts.get(
 						FeatureType.TOTAL_COUNTS).getMaximumTermFrequency(word));
 				doc.setTotalCount(allCounts.get(FeatureType.TOTAL_COUNTS)
@@ -205,29 +204,29 @@ public class InvertedIndexJob {
 
 		List<String> linkTokens = new Tokenizer(doc.select("a[href]").text()
 				.replace(".", " ")).getTokens();
-		WordCounts linkCounts = new WordCounts(StringUtils.getNgrams(
-				linkTokens, 1, nGramSize), nGramSize, dict);
+		WordCounts linkCounts = new WordCounts(
+			StringUtils.getNgrams(linkTokens, nGramSize, nGramSize), nGramSize, dict);
 		linkCounts.computeNormalDocSizes();
 
 		List<String> metaTagTokens = new Tokenizer(extractMetaTags(doc))
 				.getTokens();
-		WordCounts metaTagCounts = new WordCounts(StringUtils.getNgrams(
-				metaTagTokens, 1, nGramSize), nGramSize, dict);
+		WordCounts metaTagCounts = new WordCounts(
+			StringUtils.getNgrams(metaTagTokens, nGramSize, nGramSize), nGramSize, dict);
 		metaTagCounts.computeNormalDocSizes();
 
 		List<String> headerTokens = new Tokenizer(doc
 				.select("title,h1,h2,h3,h4,h5,h6").text().replace(".", " "))
 				.getTokens();
-		WordCounts headerCounts = new WordCounts(StringUtils.getNgrams(
-				headerTokens, 1, nGramSize), nGramSize, dict);
+		WordCounts headerCounts = new WordCounts(
+			StringUtils.getNgrams(headerTokens, nGramSize, nGramSize), nGramSize, dict);
 		headerCounts.computeNormalDocSizes();
 
 		List<String> normalTokens = new Tokenizer(doc.select("title,body")
 				.text().replace(".", " ")).getTokens();
 		// logger.info("Normal tokens:" + normalTokens);
-		WordCounts totalCounts = new WordCounts(StringUtils.getNgrams(
-				normalTokens, 1, nGramSize), nGramSize, dict)
-				.addCounts(metaTagCounts);
+		WordCounts totalCounts = new WordCounts(
+			StringUtils.getNgrams(normalTokens, nGramSize, nGramSize), nGramSize, dict);
+		totalCounts = totalCounts.addCounts(metaTagCounts);
 		totalCounts.computeNormalDocSizes();
 
 		Map<FeatureType, WordCounts> allCounts = new HashMap<FeatureType, WordCounts>();

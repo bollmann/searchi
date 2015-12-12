@@ -15,7 +15,6 @@ import java.util.Map;
 import junit.framework.TestCase;
 
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.junit.Test;
 
 import utils.nlp.Dictionary;
@@ -69,28 +68,23 @@ public class TestWordCounts extends TestCase {
 	}
 	
 	@Test
-	public void testBiTriCounts() {
+	public void testBiCounts() {
 		List<String> input = 
-			Arrays.asList("a b", "b c", "a b", "a b c", "a c b", "a b", "a c b");
+			Arrays.asList("a b", "b c", "a b", "a b");
 		Map<String, Integer> expected = new HashMap<String, Integer>();
 		expected.put("a b", 3);
 		expected.put("b c", 1);
-		expected.put("a b c",1);
-		expected.put("a c b", 2);
 
-		WordCounts actual = new WordCounts(input);
+		WordCounts actual = new WordCounts(input, 2);
 		actual.computeNormalDocSizes();
 		
 		assertEquals(expected, actual.getCounts());
 		assertEquals("a b", actual.getMaxNWord(2));
-		assertEquals("a c b", actual.getMaxNWord(3));
 
 		float alpha = 0.5f;
 		Map<String, Float> maxFreqs = new HashMap<String, Float>();
 		maxFreqs.put("a b", alpha + (1 - alpha) * 3 / 3);
 		maxFreqs.put("b c", alpha + (1 - alpha) * 1 / 3);
-		maxFreqs.put("a b c", alpha + (1 - alpha) * 1 / 2);
-		maxFreqs.put("a c b", alpha + (1 - alpha) * 2 / 2);
 
 		for (String word : actual)
 			assertEquals(maxFreqs.get(word),
@@ -99,19 +93,57 @@ public class TestWordCounts extends TestCase {
 		double docSize2 = Math.sqrt(sqr(expected.get("a b"))
 				+ sqr(expected.get("b c")));
 		
+		Map<String, Float> euclidFreqs = new HashMap<>();
+		euclidFreqs.put("a b", (float) (expected.get("a b") / docSize2));
+		euclidFreqs.put("b c", (float) (expected.get("b c") / docSize2));
+
+		for (String word : actual)
+			assertEquals(euclidFreqs.get(word), actual.getEuclideanTermFrequency(word));
+		
+		//Assert positions
+		assertEquals(new HashSet<>(Arrays.asList(1,3,4)), actual.getPosition("a b"));
+		assertEquals(new HashSet<>(Arrays.asList(2)), actual.getPosition("b c"));
+	}
+	
+	@Test
+	public void testTriCounts() {
+		List<String> input = 
+			Arrays.asList("a b c", "a c b", "a c b", "a b c", "a c b");
+		Map<String, Integer> expected = new HashMap<String, Integer>();		
+		expected.put("a b c",2);
+		expected.put("a c b", 3);
+
+		WordCounts actual = new WordCounts(input, 3);
+		actual.computeNormalDocSizes();
+		
+		assertEquals(expected, actual.getCounts());		
+		assertEquals("a c b", actual.getMaxNWord(3));
+
+		float alpha = 0.5f;
+		Map<String, Float> maxFreqs = new HashMap<String, Float>();
+		maxFreqs.put("a b c", alpha + (1 - alpha) * 2 / 3);
+		maxFreqs.put("a c b", alpha + (1 - alpha) * 3 / 3);
+
+		for (String word : actual)
+			assertEquals(maxFreqs.get(word),
+					actual.getMaximumTermFrequency(word));
+		
 		double docSize3 = Math.sqrt(sqr(expected.get("a b c"))
 				+ sqr(expected.get("a c b")));
 		
 		
 		Map<String, Float> euclidFreqs = new HashMap<>();
-		euclidFreqs.put("a b", (float) (expected.get("a b") / docSize2));
-		euclidFreqs.put("b c", (float) (expected.get("b c") / docSize2));
 		euclidFreqs.put("a b c", (float) (expected.get("a b c") / docSize3));
 		euclidFreqs.put("a c b", (float) (expected.get("a c b") / docSize3));
 
 		for (String word : actual)
 			assertEquals(euclidFreqs.get(word), actual.getEuclideanTermFrequency(word));
+		
+		//Assert positions
+		assertEquals(new HashSet<>(Arrays.asList(1,4)), actual.getPosition("a b c"));
+		assertEquals(new HashSet<>(Arrays.asList(2,3,5)), actual.getPosition("a c b"));
 	}
+
 
 
 	private static int sqr(int n) {

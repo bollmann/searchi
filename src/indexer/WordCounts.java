@@ -19,12 +19,13 @@ public class WordCounts implements Iterable<String> {
 	private Map<Integer, Set<String>> nGrams;
 	private Map<Integer, Integer> nGramCounts;
 	private Map<Integer, String> nGramMaxWords;
-	private Map<Integer, Integer> ngramNormalizedDocSize;
+	private Map<Integer, Integer> nGramNormalizedDocSize;
 	
 	private Dictionary dict;
 	
 	private int totalWords; 
 	private int totalWordsEnglish;
+	private int nGramSize;
 
 	
 	public WordCounts(Iterable<String> words) {
@@ -32,33 +33,34 @@ public class WordCounts implements Iterable<String> {
 		initCounts(words, 1);
 	}
 
-	public WordCounts(Iterable<String> words, int maxN) {
+	public WordCounts(Iterable<String> words, int nValue) {
 		this.dict = null;
-		initCounts(words, maxN);
+		initCounts(words, nValue);
 	}
 	
-	public WordCounts(Iterable<String> words, int maxN, 
+	public WordCounts(Iterable<String> words, int nValue, 
 		Dictionary dict) {
 		this.dict = dict;
-		initCounts(words, maxN);
+		initCounts(words, nValue);
 	}
 	
 
-	private void initCounts(Iterable<String> words, int maxN) {
+	private void initCounts(Iterable<String> words, int nValue) {
 		wordCounts = new HashMap<>();
 		wordPos = new HashMap<>();
 		nGrams = new HashMap<>();
 		nGramCounts = new HashMap<>();
 		nGramMaxWords = new HashMap<>();
-		ngramNormalizedDocSize = new HashMap<>();
+		nGramNormalizedDocSize = new HashMap<>();
 		
 		totalWords = 0;
 		totalWordsEnglish = 0;
+		nGramSize = nValue;
 		
 		int index = 0;
 		for (String word : words) {
 			totalWords++;
-			if (dict != null && dict.contains(word))
+			if (nGramSize == 1 && dict != null && dict.contains(word))
 				totalWordsEnglish++;
 			
 			Integer counts = wordCounts.get(word);
@@ -71,25 +73,25 @@ public class WordCounts implements Iterable<String> {
 				wordPos.put(word, new HashSet<Integer>());
 
 			if (wordPos.get(word).size() <= 5)
-				wordPos.get(word).add((int) (index / maxN) + 1);
+				wordPos.get(word).add(index  + 1);
 
-			int nValue = getNGramSize(word);
-			if (nGrams.get(nValue) == null)
-				nGrams.put(nValue, new HashSet<String>());
-			nGrams.get(nValue).add(word);
+			//int nValue = getNGramSize(word);
+			if (nGrams.get(nGramSize) == null)
+				nGrams.put(nGramSize, new HashSet<String>());
+			nGrams.get(nGramSize).add(word);
 
-			Integer nCnts = nGramCounts.get(nValue);
+			Integer nCnts = nGramCounts.get(nGramSize);
 			if (nCnts == null) {
-				nGramCounts.put(nValue, 1);
+				nGramCounts.put(nGramSize, 1);
 			} else {
-				nGramCounts.put(nValue, nCnts + 1);
+				nGramCounts.put(nGramSize, nCnts + 1);
 			}
 
 			// update maxWord, if necessary:
-			String maxNWord = nGramMaxWords.get(nValue);
+			String maxNWord = nGramMaxWords.get(nGramSize);
 			if (maxNWord == null
 					|| wordCounts.get(maxNWord) < wordCounts.get(word))
-				nGramMaxWords.put(nValue, word);
+				nGramMaxWords.put(nGramSize, word);
 
 			index++;
 		}
@@ -103,7 +105,7 @@ public class WordCounts implements Iterable<String> {
 		this.nGrams = new HashMap<>(other.nGrams);
 		this.nGramCounts = new HashMap<>(other.nGramCounts);
 		this.nGramMaxWords = new HashMap<>(other.nGramMaxWords);
-		this.ngramNormalizedDocSize = new HashMap<>(other.ngramNormalizedDocSize);
+		this.nGramNormalizedDocSize = new HashMap<>(other.nGramNormalizedDocSize);
 		this.totalWords = other.totalWords;
 		this.totalWordsEnglish = other.totalWordsEnglish;
 	}
@@ -152,7 +154,7 @@ public class WordCounts implements Iterable<String> {
 			for (String nGram : ngrams) {
 				docSize += Math.pow(wordCounts.get(nGram), 2.0);
 			}
-			ngramNormalizedDocSize.put(nValue,docSize);
+			nGramNormalizedDocSize.put(nValue,docSize);
 		}		
 	}
 
@@ -166,16 +168,17 @@ public class WordCounts implements Iterable<String> {
 	/** Calculate TF for a word */
 	public float getMaximumTermFrequency(String word) {
 		float alpha = 0.5F;
-		int nValue = getNGramSize(word);
-		float tf = ((float) wordCounts.get(word) / wordCounts.get(nGramMaxWords.get(nValue)));
+		//int nValue = getNGramSize(word);
+		
+		float tf = ((float) wordCounts.get(word) / wordCounts.get(nGramMaxWords.get(nGramSize)));
 		return alpha + (1 - alpha) * tf; 
 	}
 
 	/** Get Euclidean Term Freq of a word */
 	public float getEuclideanTermFrequency(String word) {
-		int nValue = getNGramSize(word);
+		//int nValue = getNGramSize(word);
 		
-		int docSize = ngramNormalizedDocSize.get(nValue);
+		int docSize = nGramNormalizedDocSize.get(nGramSize);
 		return (float) (getCounts(word) / Math.sqrt((double) docSize));
 	}
 
@@ -210,7 +213,9 @@ public class WordCounts implements Iterable<String> {
 		if(dict == null)
 			throw new IllegalStateException("WordCounts: no dictionary present!");
 		
-		return ((float) totalWordsEnglish) / totalWords;
+		if (nGramSize == 1)
+			return ((float) totalWordsEnglish) / totalWords;
+		return 1f;
 	}
 	
 	public Map<String, Integer> getWordCounts() {
