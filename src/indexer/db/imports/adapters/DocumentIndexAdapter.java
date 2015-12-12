@@ -14,7 +14,7 @@ public class DocumentIndexAdapter implements FileToDatabaseAdapter<DocumentIndex
 	
 	@Override
 	public String getTableName() {
-		return "DocumentIndex";
+		return DocumentIndex.TABLE_NAME;
 	}
 	
 	@Override

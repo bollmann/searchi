@@ -2,7 +2,7 @@ package indexer.offline;
 
 import indexer.WordCounts;
 import indexer.db.dao.DocumentFeatures;
-import indexer.db.dao.InvertedIndexRow;
+import indexer.db.dao.InvertedIndex;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -93,13 +93,13 @@ public class InvertedIndexJob {
 	/** Reducer Class for Corpus Indexer */
 	public static class CorpusIndexer extends
 			Reducer<Text, Text, NullWritable, Text> {
-		public static final int MAX_ENTRIES_PER_ROW = 800;
+		public static final int MAX_ENTRIES_PER_ROW = 4000;
 		private static final int topK = 8000;
 
 		private void writeRow(String word, int page,
 				List<DocumentFeatures> docs, Context context)
 				throws IOException, InterruptedException {
-			InvertedIndexRow row = new InvertedIndexRow(word, page, docs);
+			InvertedIndex row = new InvertedIndex(word, page, docs);
 
 			NullWritable key = NullWritable.get();
 			Text value = new Text(new Gson().toJson(row));

@@ -8,7 +8,7 @@ public class ImageIndexAdapter implements FileToDatabaseAdapter<ImageIndex> {
 
 	@Override
 	public String getTableName() {
-		return "ImageIndex";
+		return ImageIndex.TABLE_NAME;
 	}
 
 	@Override

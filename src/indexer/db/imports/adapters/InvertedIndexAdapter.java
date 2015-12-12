@@ -2,20 +2,19 @@ package indexer.db.imports.adapters;
 
 import com.google.gson.Gson;
 
-import indexer.db.dao.InvertedIndexRow;
+import indexer.db.dao.InvertedIndex;
 
 public class InvertedIndexAdapter implements
-		FileToDatabaseAdapter<InvertedIndexRow> {
-	//public static final String TABLE_NAME = "InvertedIndexNew";
+		FileToDatabaseAdapter<InvertedIndex> {
 
 	@Override
 	public String getTableName() {
-		return "InvertedIndexNew";
+		return InvertedIndex.TABLE_NAME;
 	}
 	
 	@Override
-	public InvertedIndexRow unserialize(String input) {
-		return new Gson().fromJson(input, InvertedIndexRow.class);
+	public InvertedIndex unserialize(String input) {
+		return new Gson().fromJson(input, InvertedIndex.class);
 	}
 
 }

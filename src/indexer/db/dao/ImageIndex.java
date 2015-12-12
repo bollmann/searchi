@@ -4,10 +4,14 @@ import java.util.Set;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIgnore;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 
-@DynamoDBTable(tableName="ImageIndex")
+@DynamoDBTable(tableName=ImageIndex.TABLE_NAME)
 public class ImageIndex {
+	@DynamoDBIgnore
+	public static final String TABLE_NAME = "ImageIndex";
+	
 	@DynamoDBHashKey
 	private String imageWord;
 	@DynamoDBAttribute

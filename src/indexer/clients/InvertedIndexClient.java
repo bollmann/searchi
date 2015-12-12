@@ -3,7 +3,7 @@ package indexer.clients;
 import indexer.InvertedIndexFetcher;
 import indexer.db.dao.DocumentFeatures;
 import indexer.db.dao.ImageIndex;
-import indexer.db.dao.InvertedIndexRow;
+import indexer.db.dao.InvertedIndex;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,7 +34,7 @@ public class InvertedIndexClient {
 	private static InvertedIndexClient instance;
 	private DynamoDBMapper db;
 	private int corpusSize;
-	private LRUCache<String, List<InvertedIndexRow>> cache;
+	private LRUCache<String, List<InvertedIndex>> cache;
 
 	public static synchronized InvertedIndexClient getInstance() {
 		if(instance == null) {
@@ -52,7 +52,7 @@ public class InvertedIndexClient {
 		// TODO make this faster
 		// this.corpusSize = s3.getNumberOfItemsInBucket(S3_CRAWL_SNAPSHOT);
 		this.corpusSize = 113000;
-		cache = new LRUCache<String, List<InvertedIndexRow>>();
+		cache = new LRUCache<String, List<InvertedIndex>>();
 	}
 
 	public int getCorpusSize() {
@@ -69,19 +69,19 @@ public class InvertedIndexClient {
 		return db.query(ImageIndex.class, query);
 	}
 	
-	public List<InvertedIndexRow> getDocumentLocations(String word) {
-		List<InvertedIndexRow> result = null;
+	public List<InvertedIndex> getDocumentLocations(String word) {
+		List<InvertedIndex> result = null;
 		if (cache.containsKey(word)) {
 			logger.info("Getting entries for " + word  + " from cache");
 			result = cache.get(word);
 		} else {
-			InvertedIndexRow item = new InvertedIndexRow();
+			InvertedIndex item = new InvertedIndex();
 			item.setWord(word);
 
-			DynamoDBQueryExpression<InvertedIndexRow> query = new DynamoDBQueryExpression<InvertedIndexRow>()
+			DynamoDBQueryExpression<InvertedIndex> query = new DynamoDBQueryExpression<InvertedIndex>()
 					.withHashKeyValues(item);
 			result = new ArrayList<>();
-			for (InvertedIndexRow row : db.query(InvertedIndexRow.class, query)) {
+			for (InvertedIndex row : db.query(InvertedIndex.class, query)) {
 				result.add(row);
 			}
 			logger.info("Caching " + result.size() + " entries for " + word);

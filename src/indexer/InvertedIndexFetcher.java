@@ -2,7 +2,7 @@ package indexer;
 
 import indexer.clients.InvertedIndexClient;
 import indexer.db.dao.DocumentFeatures;
-import indexer.db.dao.InvertedIndexRow;
+import indexer.db.dao.InvertedIndex;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,9 +23,9 @@ public class InvertedIndexFetcher extends Thread {
 	public void run() {
 		InvertedIndexClient ii = InvertedIndexClient.getInstance();
 //		logger.info("Fetcher found " + ii.getCache().size() + " in cache of iiclient id " + ii.hashCode());
-		List<InvertedIndexRow> rows = ii.getDocumentLocations(word);
+		List<InvertedIndex> rows = ii.getDocumentLocations(word);
 		List<DocumentFeatures> featureList = new ArrayList<DocumentFeatures>();
-		for (InvertedIndexRow row : rows) {
+		for (InvertedIndex row : rows) {
 			featureList.addAll(row.getFeatures());
 		}
 		logger.info("Found " + rows.size() + " rows for " + word);

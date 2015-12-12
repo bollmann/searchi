@@ -13,30 +13,32 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 /**
  * Models an Item (row) from the Inverted Index.
  */
-@DynamoDBTable(tableName="InvertedIndexNew")
-public class InvertedIndexRow {
+@DynamoDBTable(tableName=InvertedIndex.TABLE_NAME)
+public class InvertedIndex {
+	@DynamoDBIgnore
+	public static final String TABLE_NAME = "InvertedIndexNew";
+	
+	@DynamoDBHashKey
 	private String word;
+	@DynamoDBRangeKey
 	private int page;
+	@DynamoDBAttribute
+	@DynamoDBMarshalling(marshallerClass=DocumentFeaturesMarshaller.class)
 	private List<DocumentFeatures> features;
 	
-	public InvertedIndexRow() { }
-	
-	public InvertedIndexRow(String word, int page, List<DocumentFeatures> features) {
+	public InvertedIndex() { }
+	public InvertedIndex(String word, int page, List<DocumentFeatures> features) {
 		this.word = word;
 		this.page = page;
 		this.features = features;
 	}
 	
-	@DynamoDBHashKey(attributeName="word")
 	public String getWord() { return word; }
 	public void setWord(String w) { word = w; }
 	
-	@DynamoDBRangeKey(attributeName="page")
 	public int getPage() { return page; }
 	public void setPage(int pid) { page = pid; }
 	
-	@DynamoDBAttribute(attributeName="features")
-	@DynamoDBMarshalling(marshallerClass=DocumentFeaturesMarshaller.class)
 	public List<DocumentFeatures> getFeatures() {
 		return features;
 	}
@@ -44,7 +46,6 @@ public class InvertedIndexRow {
 		this.features = features;
 	}
 	
-	@DynamoDBIgnore
 	public String toString() {
 		return String.format("word = %s, page = %d, features = %s", word, page, features);
 	}
