@@ -1,4 +1,4 @@
-package examples;
+package mapreduce.examples;
 
 import java.io.IOException;
 import java.util.StringTokenizer;
