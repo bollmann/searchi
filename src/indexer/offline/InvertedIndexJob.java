@@ -59,7 +59,9 @@ public class InvertedIndexJob {
 					URLContent.class);
 
 			Dictionary dict = Dictionary.createInstance(Dictionary.JAR_RESOURCE);
-			Map<FeatureType, WordCounts> allCounts = computeCounts(page, 2, dict);
+
+			int nGramSize = context.getConfiguration().getInt("nGramSize",1);
+			Map<FeatureType, WordCounts> allCounts = computeCounts(page, nGramSize, dict);
 			WordCounts totWordCounts = allCounts.get(FeatureType.TOTAL_COUNTS);
 
 			// discard document, if number of english words in doc is below
@@ -167,15 +169,17 @@ public class InvertedIndexJob {
 	/** Main Indexer MapReduce Job */
 	public static void main(String[] args) throws IOException,
 			ClassNotFoundException, InterruptedException {
-		logger.info(String
-				.format("starting job with args: inputdir=%s, outputdir=%s, corpusSize=%s",
-						args[0], args[1], args[2]));
+		logger.info(
+			String.format("starting job with args: inputdir=%s, outputdir=%s, "
+				+ "corpusSize=%s nGramSize=%s",	args[0], args[1], args[2], args[3]));
 
 		FileUtils.deleteIfExists(java.nio.file.Paths.get(args[1]));
 		int corpusSize = Integer.parseInt(args[2]);
+		int nGramSize = Integer.parseInt(args[3]);
 
 		Configuration conf = new Configuration();
 		conf.setInt("corpusSize", corpusSize);
+		conf.setInt("nGramSize", nGramSize);
 		Job job = Job.getInstance(conf, "build inverted index");
 		job.setJarByClass(InvertedIndexJob.class);
 
