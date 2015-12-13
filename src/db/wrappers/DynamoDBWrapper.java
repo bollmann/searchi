@@ -3,8 +3,12 @@ package db.wrappers;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 
@@ -242,7 +246,42 @@ public class DynamoDBWrapper {
 			System.err.println(e.getMessage());
 		}
 	}
+	
+	/***
+	 *  Scans the table using multiple threads and segments
+	 * @param tableName
+	 * @param totalSegments
+	 * @return ScanSegmentTask containing list of items scanned
+	 */
+	public List<ScanSegmentTask> scanParallel(String tableName, int totalSegments) {
+		ScanSegmentTask task = null;
+		
+		ExecutorService executor = Executors.newFixedThreadPool(totalSegments);
+		List<ScanSegmentTask> tasks = new ArrayList<>();
+		for (int segment = 0; segment < totalSegments; segment++) {
+			// Runnable task that will only scan one segment
+			task = new ScanSegmentTask(tableName, totalSegments, segment, client);
+			executor.execute(task);
+			
+			tasks.add(task);
+		}
+		
+		executor.shutdown();
+	    try 
+	    {
+	        if (!executor.awaitTermination(5, TimeUnit.MINUTES)) {
+	            executor.shutdownNow();
+	        }
+	    } catch (InterruptedException e) {
+	        executor.shutdownNow();
+	        Thread.currentThread().interrupt();
+	    }
+	    
+	    return tasks;
+		
+	}
 
+	/** Get number of items in specified dynamo table */
 	public Integer getNumberOfItemsInTable(String tableName) {
 		Integer rowCount = 0;
 		Map<String, AttributeValue> lastKeyEvaluated = null;
