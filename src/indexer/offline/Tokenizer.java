@@ -45,9 +45,10 @@ public class Tokenizer {
 	public List<String> getTokens() {
 		List<String> tokens = new ArrayList<String>();
 		for (CoreLabel token : atext.get(CoreAnnotations.TokensAnnotation.class)) {
-			if (token.toString().matches("[a-zA-Z]+") 
-				&& token.toString().length() <= MAX_TOKEN_SIZE
-				&& !wordsToRemove.contains(token.toString()))
+			String tokenStr = token.toString().toLowerCase();
+			if (tokenStr.matches("[a-zA-Z]+") 
+				&& tokenStr.length() <= MAX_TOKEN_SIZE
+				&& !wordsToRemove.contains(tokenStr))
 				
 				tokens.add(token.toString().toLowerCase());
 		}
