@@ -11,6 +11,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 
+import org.apache.log4j.Logger;
+
 import utils.nlp.LanguageDetector;
 import utils.nlp.PornDetector;
 
@@ -20,6 +22,7 @@ import crawler.dao.URLContent;
 
 public class ConcatFiles {
 
+	private static final Logger logger = Logger.getLogger(ConcatFiles.class);
 	private String inDir;
 	private String outFilePrefix;
 	private int numFilesToCombine;
@@ -45,8 +48,17 @@ public class ConcatFiles {
 			BufferedReader br = new BufferedReader(new InputStreamReader(
 					new FileInputStream(files[i])));
 			String fileContent = br.readLine();
-			URLContent content = new Gson().fromJson(fileContent,
-					URLContent.class);
+
+			URLContent content = null;
+			try {
+				content = new Gson().fromJson(fileContent,URLContent.class);
+			} catch (Exception e) {
+				logger.info(String.format(
+					"Deleting file %s because JSON parse exception ",files[i].getName()), e);
+				files[i].delete();
+				br.close();
+				continue;
+			}
 			
 			if (content == null	|| !LanguageDetector.isEnglish(content.getContent())
 					|| PornDetector.isPorn(content.getContent())) {
