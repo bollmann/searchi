@@ -4,6 +4,7 @@ import indexer.WordCounts;
 import indexer.offline.InvertedIndexJob;
 import indexer.offline.InvertedIndexJob.FeatureType;
 import indexer.offline.Tokenizer;
+import indexer.offline.Tokenizer.TokenType;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -109,7 +110,7 @@ public class TestInvertedIndexJob extends TestCase {
 	@Test
 	public void testGetNGrams() {
 		final String input = "Hello world. This is a test";
-		List<String> tokens = new Tokenizer(input).getTokens();
+		List<String> tokens = new Tokenizer(input, TokenType.UNIGRAM).getTokens();
 		Collection<String> ngrams = StringUtils.getNgrams(tokens, 1, 1);
 		
 		// unigrams

@@ -4,9 +4,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
@@ -21,20 +24,43 @@ public class Tokenizer {
 	private final static Logger logger = Logger.getLogger(Tokenizer.class);
 	private static final int MAX_TOKEN_SIZE = 20;
 	private static StanfordCoreNLP instance = null;
-	private Annotation atext;
+	
+	private Annotation atext;	
+	private Set<String>wordsToRemove;
+	
+	public static enum TokenType {
+		UNIGRAM, BIGRAM, TRIGRAM
+	}
 
-	public Tokenizer(String text) {
+	public Tokenizer(String text, TokenType type) {
 		atext = new Annotation(text);
 		getPipeline().annotate(atext);
+		
+		wordsToRemove = new HashSet<>();
+		if (!TokenType.UNIGRAM.equals(type)) {
+			wordsToRemove.addAll(Arrays.asList("a","an","the")); 
+		}
 	}
 
 	public List<String> getTokens() {
 		List<String> tokens = new ArrayList<String>();
 		for (CoreLabel token : atext.get(CoreAnnotations.TokensAnnotation.class)) {
-			if (token.toString().matches("[a-zA-Z]+") && token.size() <= MAX_TOKEN_SIZE)
+			if (token.toString().matches("[a-zA-Z]+") 
+				&& token.toString().length() <= MAX_TOKEN_SIZE
+				&& !wordsToRemove.contains(token.toString()))
+				
 				tokens.add(token.toString().toLowerCase());
 		}
 		return tokens;
+	}
+	
+	public static TokenType getTokenTypeFromNGramSize(int nGramSize) {
+		if (nGramSize == 1) 
+			return TokenType.UNIGRAM;
+		if (nGramSize == 2)
+			return TokenType.BIGRAM;
+		else
+			return TokenType.TRIGRAM;
 	}
 
 	private static StanfordCoreNLP getPipeline() {

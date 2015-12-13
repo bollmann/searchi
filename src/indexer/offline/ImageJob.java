@@ -2,6 +2,7 @@ package indexer.offline;
 
 import indexer.WordCounts;
 import indexer.db.dao.ImageIndex;
+import indexer.offline.Tokenizer.TokenType;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -56,8 +57,10 @@ public class ImageJob {
 					continue;
 				}
 				
-				WordCounts alt = new WordCounts(new Tokenizer(image.attr("alt")).getTokens(), 1, dict);
-				WordCounts title = new WordCounts(new Tokenizer(image.attr("title")).getTokens(), 1, dict);
+				WordCounts alt = new WordCounts(
+					new Tokenizer(image.attr("alt"), TokenType.UNIGRAM).getTokens(), 1, dict);
+				WordCounts title = new WordCounts(
+					new Tokenizer(image.attr("title"), TokenType.UNIGRAM).getTokens(), 1, dict);
 				
 				if(alt.getPercentage() < ENGLISH_IMAGE_TRESHOLD || 
 						title.getPercentage() < ENGLISH_IMAGE_TRESHOLD)

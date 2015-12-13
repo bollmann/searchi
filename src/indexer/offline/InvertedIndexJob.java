@@ -3,6 +3,7 @@ package indexer.offline;
 import indexer.WordCounts;
 import indexer.db.dao.DocumentFeatures;
 import indexer.db.dao.InvertedIndexRow;
+import indexer.offline.Tokenizer.TokenType;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -58,7 +59,7 @@ public class InvertedIndexJob {
 					URLContent.class);
 
 			Dictionary dict = Dictionary.createInstance(Dictionary.JAR_RESOURCE);
-			Map<FeatureType, WordCounts> allCounts = computeCounts(page, 1, dict);
+			Map<FeatureType, WordCounts> allCounts = computeCounts(page, 2, dict);
 			WordCounts totWordCounts = allCounts.get(FeatureType.TOTAL_COUNTS);
 
 			// discard document, if number of english words in doc is below
@@ -202,27 +203,28 @@ public class InvertedIndexJob {
 		Document doc = Jsoup.parse(page.getContent(), page.getUrl());
 		doc.select("script,style").remove();
 
-		List<String> linkTokens = new Tokenizer(doc.select("a[href]").text()
-				.replace(".", " ")).getTokens();
+		TokenType tokenType = Tokenizer.getTokenTypeFromNGramSize(nGramSize);
+
+		List<String> linkTokens = new Tokenizer(
+			doc.select("a[href]").text().replace(".", " "), tokenType).getTokens();
 		WordCounts linkCounts = new WordCounts(
 			StringUtils.getNgrams(linkTokens, nGramSize, nGramSize), nGramSize, dict);
 		linkCounts.computeNormalDocSizes();
 
-		List<String> metaTagTokens = new Tokenizer(extractMetaTags(doc))
-				.getTokens();
+		List<String> metaTagTokens = new Tokenizer(extractMetaTags(doc),
+			tokenType).getTokens();
 		WordCounts metaTagCounts = new WordCounts(
 			StringUtils.getNgrams(metaTagTokens, nGramSize, nGramSize), nGramSize, dict);
 		metaTagCounts.computeNormalDocSizes();
 
-		List<String> headerTokens = new Tokenizer(doc
-				.select("title,h1,h2,h3,h4,h5,h6").text().replace(".", " "))
-				.getTokens();
+		List<String> headerTokens = new Tokenizer(doc.select("title,h1,h2,h3,h4,h5,h6")
+			.text().replace(".", " "), tokenType).getTokens();
 		WordCounts headerCounts = new WordCounts(
 			StringUtils.getNgrams(headerTokens, nGramSize, nGramSize), nGramSize, dict);
 		headerCounts.computeNormalDocSizes();
 
-		List<String> normalTokens = new Tokenizer(doc.select("title,body")
-				.text().replace(".", " ")).getTokens();
+		List<String> normalTokens = new Tokenizer(
+			doc.select("title,body").text().replace(".", " "), tokenType).getTokens();
 		// logger.info("Normal tokens:" + normalTokens);
 		WordCounts totalCounts = new WordCounts(
 			StringUtils.getNgrams(normalTokens, nGramSize, nGramSize), nGramSize, dict);
