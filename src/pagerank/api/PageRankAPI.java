@@ -37,7 +37,7 @@ public final class PageRankAPI {
 
 		PRDao pageRank = (PRDao) dynamoWrapper.getItem(page, PRDao.class);
 		if (pageRank == null) {
-			throw new Exception("Pagerank not found for specified page");
+			return 0.0;
 		}
 
 		return pageRank.getPageScore();
@@ -61,7 +61,7 @@ public final class PageRankAPI {
 		for (String page : pages) {
 			PRDao dao = new PRDao();
 			dao.setPage(page);
-			dao.setPageScore(-1.0);
+			dao.setPageScore(0.0);
 			items.add(dao);
 		}
 		List<Object> pageRankItems = new ArrayList<>();
@@ -91,13 +91,17 @@ public final class PageRankAPI {
 	 * @return double domainRank
 	 * @throws MalformedURLException 
 	 */
-	public double getDomainRank(String page) 
-			throws IllegalArgumentException, MalformedURLException {
+	public double getDomainRank(String page) throws IllegalArgumentException {
 		if (page == null || page.isEmpty()) {
 			throw new IllegalArgumentException("Invalid page. Can't find domainrank score");
 		}
 
-		String domain = StringUtils.getDomainFromUrl(page.trim());
+		String domain = page;
+		try {
+			domain = StringUtils.getDomainFromUrl(page.trim());
+		} catch (Exception e) {
+			// Do Nothing - Try to find for page as is.
+		}
 
 		DRDao domainRank = (DRDao) dynamoWrapper.getItem(domain, DRDao.class);
 		if (domainRank == null) {
