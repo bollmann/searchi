@@ -16,7 +16,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 @DynamoDBTable(tableName=InvertedIndex.TABLE_NAME)
 public class InvertedIndex {
 	@DynamoDBIgnore
-	public static final String TABLE_NAME = "InvertedIndexNew";
+	public static final String TABLE_NAME = "InvertedIndex";
 	
 	@DynamoDBHashKey
 	private String word;
