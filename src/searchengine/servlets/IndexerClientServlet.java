@@ -134,7 +134,7 @@ public class IndexerClientServlet extends HttpServlet {
 				String url = dId.getURLFor(doc.getDocId());
 				sr.setUrl(url);
 				sr.setScore(doc.getScore());
-				sr.setSnippet(doc.toString());
+				sr.setSnippet(doc.toHtml());
 				buffer.append("<li>" + sr.toHtml() + "</li>");
 				indexerScore.put(url, (double) doc.getScore());
 				lookupList.add(url);

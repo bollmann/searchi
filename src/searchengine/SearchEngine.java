@@ -41,8 +41,7 @@ public final class SearchEngine {
 		for (Entry<String, List<DocumentFeatures>> entry : invertedIndexMap
 				.entrySet()) {
 			wordDfs.put(entry.getKey(), entry.getValue().size());
-		}
-		initDefaultRankingEngine();
+		}		
 	}
 	
 	/** Top level API to get Ranked results.*/
@@ -50,6 +49,10 @@ public final class SearchEngine {
 					
 		formDocumentScoresForQueryFromInvertedIndex();
 		List<DocumentScore> rankedDocs = null;
+		
+		if (rankingEngine == null) {
+			initDefaultRankingEngine();
+		}
 		
 		try {			
 			List<Ranker> rankers = rankingEngine.applyRankers();
@@ -128,12 +131,12 @@ public final class SearchEngine {
 		rankingEngine = new RankingEngine(documentList,
 				query, corpusSize, wordDfs);
 			
-		rankingEngine.addRanker(RankerType.RANKER_TFIDF, 1.0);
+		rankingEngine.addRanker(RankerType.RANKER_TFIDF, 5.0);
 		rankingEngine.addRanker(RankerType.RANKER_HEADER, 1.0);
-		rankingEngine.addRanker(RankerType.RANKER_LINKS, 1.0);
-		rankingEngine.addRanker(RankerType.RANKER_META, 1.0);
-		rankingEngine.addRanker(RankerType.RANKER_POSITION, -1.0);
-		rankingEngine.addRanker(RankerType.RANKER_QUERYMATCH, 1.0);
+		rankingEngine.addRanker(RankerType.RANKER_LINKS, 3.0);
+		rankingEngine.addRanker(RankerType.RANKER_META, 4.0);
+		rankingEngine.addRanker(RankerType.RANKER_POSITION, -10.0);
+		rankingEngine.addRanker(RankerType.RANKER_QUERYMATCH, 2.0);
 		rankingEngine.addRanker(RankerType.RANKER_TOTALCOUNT, 1.0);
 		rankingEngine.addRanker(RankerType.RANKER_URLCOUNT, 10.0);
 				
