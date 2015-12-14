@@ -1,6 +1,5 @@
 package indexer.clients;
 
-import indexer.InvertedIndexFetcher;
 import indexer.db.dao.DocumentFeatures;
 import indexer.db.dao.ImageIndex;
 import indexer.db.dao.InvertedIndex;

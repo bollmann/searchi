@@ -41,7 +41,8 @@ public final class SearchEngine {
 		for (Entry<String, List<DocumentFeatures>> entry : invertedIndexMap
 				.entrySet()) {
 			wordDfs.put(entry.getKey(), entry.getValue().size());
-		}		
+		}
+		rankingEngine = null;
 	}
 	
 	/** Top level API to get Ranked results.*/
@@ -53,7 +54,6 @@ public final class SearchEngine {
 		if (rankingEngine == null) {
 			initDefaultRankingEngine();
 		}
-		
 		try {			
 			List<Ranker> rankers = rankingEngine.applyRankers();
 			
@@ -64,9 +64,7 @@ public final class SearchEngine {
 			logger.error("Couldn't get Ranked Results due to exception: ", e);
 			e.printStackTrace();
 		}
-		
 		return rankedDocs;
-
 	}
 
 	/** Wraps documents in document scores with inverted index data */
