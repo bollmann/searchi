@@ -27,7 +27,7 @@ import db.wrappers.DynamoDBWrapper;
 
 public class DynamoImporter<T> implements Runnable {
 	private static final Logger logger = Logger.getLogger(DynamoImporter.class);
-	private static final int NUMBER_THREADS = 4;
+	private static int NUMBER_THREADS = 3;
 
 	private File input;
 	private int batchSize;
@@ -95,7 +95,7 @@ public class DynamoImporter<T> implements Runnable {
 	}
 
 	private static void usage() {
-		System.out.println("usage: DynamoImporter <table-to-import> <inputdir> <batch-size>\n");
+		System.out.println("usage: DynamoImporter <table-to-import> <inputdir> <batch-size> [<number-threads>]\n");
 	}
 
 	public static void main(String[] args) {
@@ -103,6 +103,8 @@ public class DynamoImporter<T> implements Runnable {
 			String what = args[0];
 			File inputDir = new File(args[1]);
 			int batchSize = Integer.parseInt(args[2]);
+			if(args.length == 4)
+				NUMBER_THREADS = Integer.parseInt(args[3]);
 			
 			logger.info("importing files from " + inputDir + " into table " + what + "...");
 
