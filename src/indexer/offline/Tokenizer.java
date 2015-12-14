@@ -50,7 +50,7 @@ public class Tokenizer {
 				&& tokenStr.length() <= MAX_TOKEN_SIZE
 				&& !wordsToRemove.contains(tokenStr))
 				
-				tokens.add(token.toString().toLowerCase());
+				tokens.add(tokenStr);
 		}
 		return tokens;
 	}

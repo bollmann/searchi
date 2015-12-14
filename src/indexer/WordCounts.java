@@ -60,8 +60,19 @@ public class WordCounts implements Iterable<String> {
 		int index = 0;
 		for (String word : words) {
 			totalWords++;
-			if (nGramSize == 1 && dict != null && dict.contains(word))
-				totalWordsEnglish++;
+			
+			if(dict != null) {
+				String[] splits = word.split("\\s+");
+				boolean validNgram = true;
+				for (int i = 0; i < splits.length; ++i) {
+					if (!dict.contains(splits[i])) {
+						validNgram = false;
+						break;
+					}
+				}
+				if(validNgram)
+					totalWordsEnglish++;
+			}
 			
 			Integer counts = wordCounts.get(word);
 			if (counts == null)
@@ -213,9 +224,7 @@ public class WordCounts implements Iterable<String> {
 		if(dict == null)
 			throw new IllegalStateException("WordCounts: no dictionary present!");
 		
-		if (nGramSize == 1)
-			return ((float) totalWordsEnglish) / totalWords;
-		return 1f;
+		return ((float) totalWordsEnglish) / totalWords;
 	}
 	
 	public Map<String, Integer> getWordCounts() {
