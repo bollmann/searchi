@@ -28,12 +28,15 @@ import db.wrappers.DynamoDBWrapper;
 public class DynamoImporter<T> implements Runnable {
 	private static final Logger logger = Logger.getLogger(DynamoImporter.class);
 	private static int NUMBER_THREADS = 3;
-
+	private static Integer importedRows = 0;
+	
 	private File input;
 	private int batchSize;
 	private DynamoDBMapper db;
 	private FileToDatabaseAdapter<T> adapter;
 
+	
+	
 	public DynamoImporter(File input, int batchSize, DynamoDBMapper db,
 			FileToDatabaseAdapter<T> adapter) {
 		this.input = input;
@@ -49,7 +52,7 @@ public class DynamoImporter<T> implements Runnable {
 			String line = null;
 
 			List<T> entries = new ArrayList<>();
-			int importedLines = 0;
+			int importedFileRows = 0;
 			while ((line = in.readLine()) != null) {
 				entries.add(adapter.unserialize(line));
 
@@ -60,14 +63,17 @@ public class DynamoImporter<T> implements Runnable {
 					db.batchSave(entries);
 					entries = new ArrayList<>();
 				}
-				++importedLines;
+				++importedFileRows;
 			}
 			
-			
 			db.batchSave(entries);
-			logger.info("Done with file " + input + ". Saved " + importedLines
+			logger.info("Done with file " + input + ". Saved " + importedFileRows
 					+ " rows in table " + adapter.getTableName() + ".");
 			in.close();
+
+			synchronized(importedRows) {
+				importedRows += importedFileRows;
+			}
 		} catch (FileNotFoundException e) {
 			logger.error("file " + this.input.getName() + " not found: ", e);
 		} catch (Exception e) {
@@ -89,8 +95,7 @@ public class DynamoImporter<T> implements Runnable {
 		executor.shutdown();
 		executor.awaitTermination(8, TimeUnit.HOURS);
 
-		int nrRows = wrapper.getNumberOfItemsInTable(adapter.getTableName());
-		logger.info("imported a total of " + nrRows + " into table "
+		logger.info("Done. Imported a total of " + importedRows + " into table "
 				+ adapter.getTableName());
 	}
 
