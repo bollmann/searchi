@@ -93,7 +93,10 @@ public class InvertedIndexClient {
 	public Map<String, List<DocumentFeatures>> getInvertedIndexForQueryMultiThreaded(
 			List<String> query) {
 		Map<String, List<DocumentFeatures>> wordDocumentInfoMap = new HashMap<String, List<DocumentFeatures>>();
-
+		logger.info("Starting an es of size " + query.size());
+		if(query.size() <= 0) {
+			return wordDocumentInfoMap;
+		}
 		ExecutorService es = Executors.newFixedThreadPool(query.size());
 		for (String word : query) {
 			InvertedIndexFetcher f = new InvertedIndexFetcher(

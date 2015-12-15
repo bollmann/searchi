@@ -76,7 +76,7 @@ public class HttpServer {
 							+ " <port> <web root> <path to web.xml>");
 			System.exit(1);
 		}
-		logger.debug("Listening at port " + args[0] + " with webroot "
+		logger.info("Listening at port " + args[0] + " with webroot "
 				+ args[1]);
 		int port = 0;
 		try {

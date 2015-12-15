@@ -83,7 +83,7 @@ var json = { pagerank: { time: { time: '121' } },
      time: { time: '1' } } };
 
 router.get('/', function(req, res, next) {
-	var url = "http://192.168.0.100:8080/searchInterface?q=" + req.query.q
+	var url = "http://127.0.0.1:8081/searchInterface?q=" + req.query.q
 	// htmlResults = jade.renderFile(path.join(__dirname, '../views/resultsList.jade'), json)
 	// res.send(htmlResults)
 	request(url, function(err, resp, body){

@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import pagerank.cache.DomainRankCache;
+import pagerank.cache.PageRankCache;
 import pagerank.db.dao.DRDao;
 import pagerank.db.dao.PRDao;
 import pagerank.db.ddl.PRCreateTable;
@@ -17,10 +19,14 @@ import db.wrappers.DynamoDBWrapper;
 public final class PageRankAPI {
 
 	private final DynamoDBWrapper dynamoWrapper;
-
+	private DomainRankCache domainRankCache;
+	private PageRankCache pageRankCache;
+	
 	public PageRankAPI() {
 		this.dynamoWrapper = DynamoDBWrapper.getInstance(
 				DynamoDBWrapper.US_EAST, DynamoDBWrapper.CLIENT_PROFILE);
+		domainRankCache = DomainRankCache.getInstance();
+//		pageRankCache = PageRankCache.getInstance();
 	}
 
 	/**

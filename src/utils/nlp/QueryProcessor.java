@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.tagger.maxent.MaxentTagger;
+import edu.stanford.nlp.util.StringUtils;
 
 public class QueryProcessor {
 	private final static Logger logger = Logger.getLogger(QueryProcessor.class);
@@ -88,9 +89,9 @@ public class QueryProcessor {
 	}
 
 	private QueryProcessor() {
-		tagger = new MaxentTagger(
-//				"resources/gate-EN-twitter.model"); // 5 words in 161 ms
-				"resources/gate-EN-twitter-fast.model"); // 5 words in 100 ms
+//		tagger = new MaxentTagger(
+////				"resources/gate-EN-twitter.model"); // 5 words in 161 ms
+//				"resources/gate-EN-twitter-fast.model"); // 5 words in 100 ms
 
 		initPosRankMap();
 	}
@@ -184,4 +185,19 @@ public class QueryProcessor {
 //		return result;
 //	}
 
+	public Map<Integer, List<String>> generateNGrams(List<String> unigrams, int nGramLimit) {
+		Map<Integer, List<String>> nGramMap = new HashMap<>();
+		for(int i=1;i<=nGramLimit;i++) {
+			List<String> result = new ArrayList<String>();
+			if(unigrams.size() < i) {
+				nGramMap.put(i, result);
+				continue;
+			}
+			for(String gram : StringUtils.getNgrams(unigrams, i, i)) {
+				result.add(gram.toLowerCase());
+			}
+			nGramMap.put(i, result);
+		}
+		return nGramMap;
+	}
 }

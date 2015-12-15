@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import pagerank.db.ddl.PRCreateTable;
+
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 
 import db.wrappers.DynamoDBWrapper;
@@ -29,6 +31,7 @@ public final class DomainRankCache {
 	public static DomainRankCache getInstance() {
 		if (drCache == null) {
 			drCache = new DomainRankCache();
+			drCache.loadFromDB(PRCreateTable.DR_TABLE_NAME);
 		}
 		return drCache;
 	}

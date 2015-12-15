@@ -1,14 +1,23 @@
 package utils.searchengine;
 
-import searchengine.servlets.SearchResult;
+import indexer.DocumentScore;
+import indexer.clients.InvertedIndexClient;
+import indexer.db.dao.DocumentFeatures;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
+
+import pagerank.api.PageRankAPI;
+import searchengine.SearchEngine;
+import searchengine.servlets.SearchResult;
 
 public class SearchEngineUtils {
 	private final static Logger logger = Logger.getLogger(SearchEngineUtils.class);
@@ -16,7 +25,7 @@ public class SearchEngineUtils {
 	public static List<SearchResult> weightedMergeScores(
 			Map<String, Double> map1, Map<String, Double> map2,
 			Double weights[]) {
-		
+		Date startTime = Calendar.getInstance().getTime();
 		List<SearchResult> resultList = new ArrayList<SearchResult>(
 				1000);
 
@@ -41,6 +50,9 @@ public class SearchEngineUtils {
 			resultList.add(sr);
 		}
 		Collections.sort(resultList);
+		Date endTime = Calendar.getInstance().getTime();
+		logger.info("Combined ranking took "
+				+ printTimeDiff(startTime, endTime));
 		return resultList;
 	}
 
@@ -58,5 +70,57 @@ public class SearchEngineUtils {
 		}
 		Collections.sort(list);
 		return list;
+	}
+	
+	public static String printTimeDiff(Date startTime, Date endTime) {
+		long timeDiff = (endTime.getTime() - startTime.getTime());
+		return timeDiff / 1000 + "s," + timeDiff % 1000 + "ms:";
+	}
+	
+	public static Map<Integer, List<DocumentScore>> getRankedIndexerResults(Map<Integer, List<String>> nGramMap) {
+		InvertedIndexClient iic = InvertedIndexClient.getInstance();
+		
+		Map<Integer, List<DocumentScore>> resultMap = new HashMap<Integer, List<DocumentScore>>();
+		Date startTime, endTime;
+		for(Entry<Integer, List<String>> entry : nGramMap.entrySet()) {
+			
+			startTime = Calendar.getInstance().getTime();
+			// get gram data
+			Map<String, List<DocumentFeatures>> invertedIndex = iic.getInvertedIndexForQueryMultiThreaded(entry.getValue());
+
+			endTime = Calendar.getInstance().getTime();
+			
+			logger.info("Indexer fetch for " + entry.getKey() + "-grams took "
+					+ printTimeDiff(startTime, endTime));
+			
+		
+			/******************* Add rankers and combine them here - Secret sauce ******************/
+			startTime = Calendar.getInstance().getTime();
+			
+			SearchEngine searchEngine = new SearchEngine(entry.getValue(), invertedIndex, iic.getCorpusSize());			
+			
+			/****************************** End of secret sauce ****************************/
+
+			List<DocumentScore> rankedDocs = searchEngine.getRankedIndexerResults();
+			resultMap.put(entry.getKey(), rankedDocs);
+			endTime = Calendar.getInstance().getTime();
+			logger.info("Indexer ranking for " + entry.getKey() + "-grams took "
+					+ printTimeDiff(startTime, endTime));
+		}
+		
+		return resultMap;
+	}
+	
+	public static List<SearchResult> getRankedDomainRankResults(Map<String, Double> domainRankScore, 
+			List<String> lookupList) {
+		//domainRankScore = pageRankAPI.getDomainRankBatch(lookupList);
+		Date startTime = Calendar.getInstance().getTime();
+		
+		List<SearchResult> result = SearchEngineUtils
+			.getSortedSearchResultUsingScores(domainRankScore);
+
+		
+				
+		return result;
 	}
 }

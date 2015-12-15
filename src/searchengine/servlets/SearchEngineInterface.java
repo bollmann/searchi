@@ -30,6 +30,7 @@ import org.apache.log4j.Logger;
 
 import pagerank.api.PageRankAPI;
 import searchengine.SearchEngine;
+import utils.nlp.QueryProcessor;
 import utils.searchengine.SearchEngineUtils;
 
 import com.google.gson.Gson;
@@ -40,20 +41,28 @@ public class SearchEngineInterface extends HttpServlet {
 	Gson gson = null;
 	URL frontendIP = null;
 	DocumentIDs dId;
-	
+	InvertedIndexClient iic;
+	PageRankAPI pageRank;
+	QueryProcessor queryProcessor;
 	@Override
 	public void init() {
+		Date startTime = Calendar.getInstance().getTime();
 		gson = new Gson();
 		dId = (DocumentIDs) getServletContext().getAttribute("forwardIndex");
 		if(dId == null) {
 			dId = new DocumentIDs();
 			getServletContext().setAttribute("forwardIndex", dId);
 		}
+		iic = InvertedIndexClient.getInstance();
+		pageRank = new PageRankAPI();
+		queryProcessor = QueryProcessor.getInstance();
 		try {
 			frontendIP = new URL(getFrontendIP());
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
+		Date endTime = Calendar.getInstance().getTime();
+		logger.info("Init took " + printTimeDiff(startTime, endTime));
 	}
 	
 	private String getFrontendIP(){
@@ -75,8 +84,10 @@ public class SearchEngineInterface extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		if(req.getParameter("q") != null)
+		if(req.getParameter("q") != null) {
+			logger.info("Processing request for query " + req.getParameter("q"));
 			doListing(req, resp);
+		}
 		else
 			logger.error("Search engine interface accessed with no query string");
 	}
@@ -93,7 +104,7 @@ public class SearchEngineInterface extends HttpServlet {
 		String queryStr = req.getParameter("q");		
 		queryStr = URLDecoder.decode(queryStr, "UTF-8");		
 		List<String> query = Arrays.asList(queryStr.split("\\s+"));
-		logger.info("Recieved query: " + query.toString());
+		
 		
 		/*****************************  Query Done  ****************************************/
 		
@@ -102,14 +113,15 @@ public class SearchEngineInterface extends HttpServlet {
 		Map<String, Map<String, Map<String, String>>> searchResultMap = 
 			new HashMap<String, Map<String, Map<String, String>>>();
 		
-		
-		
+		Map<Integer, List<String>> nGramMap = queryProcessor.generateNGrams(query, 2);
+		logger.info("Recieved query: " + query.toString() + " and generated nGrams " + nGramMap);
 		/********************* Get Inverted Index for Query words  *************************/
 		
 		Date startTime = Calendar.getInstance().getTime();
+		Map<Integer, List<DocumentScore>> nGramResultMap = SearchEngineUtils.getRankedIndexerResults(nGramMap);
 		
-		InvertedIndexClient iic = InvertedIndexClient.getInstance();
-		Map<String, List<DocumentFeatures>> invertedIndex = iic.getInvertedIndexForQueryMultiThreaded(query);
+		// have to combine ngram results here
+		List<DocumentScore> rankedDocs = nGramResultMap.get(1);
 		
 		Date endTime = Calendar.getInstance().getTime();
 		
@@ -121,26 +133,11 @@ public class SearchEngineInterface extends HttpServlet {
 		indexerResultMap.put("time", timeMap);
 		
 		
-		/****************************** Add rankers and combine them here *************/
-		
-		startTime = Calendar.getInstance().getTime();
-		
-		SearchEngine searchEngine = new SearchEngine(query, invertedIndex, iic.getCorpusSize());			
-		List<DocumentScore> rankedDocs = searchEngine.getRankedIndexerResults();
-		
-		endTime = Calendar.getInstance().getTime();
-		logger.info("Indexer ranking took "
-				+ printTimeDiff(startTime, endTime));
-
-		/****************************** End of secret sauce ****************************/
-		
-		
 		/******************************** Indexer results ******************************/
 		Map<String, Double> indexerScore = new HashMap<String, Double>(1000);
 		
 		try {
-			
-			
+
 			int resultCount = 0;
 			for (DocumentScore doc : rankedDocs) {
 				SearchResult sr = new SearchResult();
@@ -153,7 +150,7 @@ public class SearchEngineInterface extends HttpServlet {
 				indexerScore.put(url, (double) doc.getScore());
 				lookupList.add(url);
 				resultCount++;
-				if (resultCount > 10) {
+				if (resultCount >= 10) {
 					break;
 				}
 			}			
@@ -167,10 +164,9 @@ public class SearchEngineInterface extends HttpServlet {
 
 			startTime = Calendar.getInstance().getTime();
 			Map<String, Double> domainRankScore = new HashMap<>();
-			PageRankAPI pageRankAPI = new PageRankAPI();
 						
 			for (String page : lookupList) {
-				double score = pageRankAPI.getDomainRank(page);
+				double score = pageRank.getDomainRank(page);
 				domainRankScore.put(page, score);
 			}
 			//domainRankScore = pageRankAPI.getDomainRankBatch(lookupList);

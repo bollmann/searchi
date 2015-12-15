@@ -5,21 +5,11 @@
  
  <web-app>
      <display-name>Test servlet for CIS455</display-name>
-     
-	<servlet>
-        <servlet-name>SearchServlet</servlet-name>
-        <servlet-class>searchengine.servlets.IndexerClientServlet</servlet-class>
-    </servlet>
- 
- 	<servlet>
+
+    <servlet>
         <servlet-name>SearchEngineInterface</servlet-name>
         <servlet-class>searchengine.servlets.SearchEngineInterface</servlet-class>
     </servlet>
-       
-    <servlet-mapping>
-        <servlet-name>SearchServlet</servlet-name>
-        <url-pattern>/search/*</url-pattern>
-    </servlet-mapping>
     
     <servlet-mapping>
         <servlet-name>SearchEngineInterface</servlet-name>
