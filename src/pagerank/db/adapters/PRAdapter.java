@@ -9,11 +9,11 @@ import pagerank.db.ddl.PRCreateTable;
 
 public class PRAdapter implements FileToDatabaseAdapter<PRDao>{
 
-	private static Logger logger = Logger.getLogger(DRAdapter.class);
+	private static Logger logger = Logger.getLogger(PRAdapter.class);
 	
 	@Override
 	public String getTableName() {
-		return PRCreateTable.DR_TABLE_NAME;
+		return PRCreateTable.PR_TABLE_NAME;
 	}
 
 	@Override
