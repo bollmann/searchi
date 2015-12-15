@@ -1,14 +1,41 @@
 package searchengine.query;
 
 public class QueryWord {
+	private String word;
+	private Integer nGramSize;
+	private Double weight;
+	
+	public Double getWeight() {
+		return weight;
+	}
+
+	public void setWeight(Double weight) {
+		this.weight = weight;
+	}
+
+	public Integer getnGramSize() {
+		return nGramSize;
+	}
+
+	public void setnGramSize(Integer nGramSize) {
+		this.nGramSize = nGramSize;
+	}
+
+	public void setWord(String word) {
+		this.word = word;
+	}
 
 	public QueryWord(String word) {
-		// TODO Auto-generated constructor stub
+		this.word = word;
 	}
 
 	public String getWord() {
-		// TODO Auto-generated method stub
-		return null;
+		return word;
+	}
+	
+	@Override
+	public String toString() {
+		return "word:" + word + " " + nGramSize + "-gram weight:" + weight;
 	}
 
 }
