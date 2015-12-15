@@ -1,0 +1,14 @@
+sudo apt-get update
+sudo apt-get install git
+git clone https://github.com/bollmann/searchi.git
+
+wget http://download.eclipse.org/jetty/7.6.17.v20150415/dist/jetty-distribution-7.6.17.v20150415.tar.gz
+tar xfz jetty-distribution-7.6.17.v20150415.tar.gz
+<< change jetty config >>
+sudo apt-get install ant default-jdk
+ant compile-servlet
+<< copy to jetty/webapps >>
+
+sudo apt-get install nodejs npm
+ln -s /usr/bin/nodejs /usr/bin/node
+sudo npm install -g nodemon
