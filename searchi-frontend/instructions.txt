@@ -1,3 +1,6 @@
+chmod 400 frontend.pem
+ssh -i frontend.pem ubuntu@PUBLICDNS
+
 sudo apt-get update
 sudo apt-get install git
 git clone https://github.com/bollmann/searchi.git
