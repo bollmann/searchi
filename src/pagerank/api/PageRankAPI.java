@@ -66,7 +66,7 @@ public final class PageRankAPI {
 		List<Object> items = new ArrayList<>();
 		for (String page : pages) {
 			PRDao dao = new PRDao();
-			dao.setPage(page);
+			dao.setPage(StringUtils.normalizeUrlToString(page.trim()));
 			dao.setPageScore(0.0);
 			items.add(dao);
 		}
