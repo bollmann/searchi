@@ -12,8 +12,8 @@ import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 
+import searchengine.query.QueryWord;
 import searchengine.ranking.Ranker;
-
 import searchengine.ranking.RankerInfo.RankerType;
 import searchengine.ranking.RankingEngine;
 
@@ -21,8 +21,8 @@ public final class SearchEngine {
 	
 	private static final Logger logger = Logger.getLogger(SearchEngine.class);
 
-	private final List<String> query;
-	private final Map<String, List<DocumentFeatures>> invertedIndexMap;
+	private final List<QueryWord> query;
+	private final Map<QueryWord, List<DocumentFeatures>> invertedIndexMap;
 	private final int corpusSize;
 
 	private final Map<String, Integer> wordDfs;
@@ -30,17 +30,17 @@ public final class SearchEngine {
 
 	private RankingEngine rankingEngine;	
 
-	public SearchEngine(List<String> query,
-		Map<String, List<DocumentFeatures>> invertedIndexMap, int corpusSize) {
+	public SearchEngine(List<QueryWord> query,
+		Map<QueryWord, List<DocumentFeatures>> invertedIndexMap, int corpusSize) {
 		
 		this.query = query;
 		this.invertedIndexMap = invertedIndexMap;
 		this.corpusSize = corpusSize;
 
 		this.wordDfs = new HashMap<String, Integer>();
-		for (Entry<String, List<DocumentFeatures>> entry : invertedIndexMap
+		for (Entry<QueryWord, List<DocumentFeatures>> entry : invertedIndexMap
 				.entrySet()) {
-			wordDfs.put(entry.getKey(), entry.getValue().size());
+			wordDfs.put(entry.getKey().getWord(), entry.getValue().size());
 		}
 		rankingEngine = null;
 	}
@@ -71,17 +71,16 @@ public final class SearchEngine {
 	public List<DocumentScore> formDocumentScoresForQueryFromInvertedIndex() {
 		Map<Integer, DocumentScore> documentRanks = new HashMap<Integer, DocumentScore>();
 
-		for (String word : query) {
-			List<DocumentFeatures> docs = invertedIndexMap.get(word);
+		for (QueryWord qword : query) {
+			List<DocumentFeatures> docs = invertedIndexMap.get(qword);
 
 			for (DocumentFeatures features : docs) {
-				DocumentScore rankedDoc = documentRanks
-						.get(features.getDocId());
+				DocumentScore rankedDoc = documentRanks.get(features.getDocId());
 				if (rankedDoc == null) {
-					rankedDoc = new DocumentScore(word, features);
+					rankedDoc = new DocumentScore(qword, features);
 					documentRanks.put(features.getDocId(), rankedDoc);
 				} else {
-					rankedDoc.addFeatures(word, features);
+					rankedDoc.addFeatures(qword, features);
 				}
 			}
 		}

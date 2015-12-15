@@ -11,6 +11,7 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
+import searchengine.query.QueryWord;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.tagger.maxent.MaxentTagger;
 import edu.stanford.nlp.util.StringUtils;
@@ -199,5 +200,10 @@ public class QueryProcessor {
 			nGramMap.put(i, result);
 		}
 		return nGramMap;
+	}
+
+	public List<QueryWord> getProcessedQuery(List<String> query, int i) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

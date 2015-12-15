@@ -17,6 +17,7 @@ import org.apache.log4j.Logger;
 
 import pagerank.api.PageRankAPI;
 import searchengine.SearchEngine;
+import searchengine.query.QueryWord;
 import searchengine.servlets.SearchResult;
 
 public class SearchEngineUtils {
@@ -77,38 +78,36 @@ public class SearchEngineUtils {
 		return timeDiff / 1000 + "s," + timeDiff % 1000 + "ms:";
 	}
 	
-	public static Map<Integer, List<DocumentScore>> getRankedIndexerResults(Map<Integer, List<String>> nGramMap) {
+	public static List<DocumentScore> getRankedIndexerResults(
+			List<QueryWord> query) {
 		InvertedIndexClient iic = InvertedIndexClient.getInstance();
-		
-		Map<Integer, List<DocumentScore>> resultMap = new HashMap<Integer, List<DocumentScore>>();
+
 		Date startTime, endTime;
-		for(Entry<Integer, List<String>> entry : nGramMap.entrySet()) {
-			
-			startTime = Calendar.getInstance().getTime();
-			// get gram data
-			Map<String, List<DocumentFeatures>> invertedIndex = iic.getInvertedIndexForQueryMultiThreaded(entry.getValue());
 
-			endTime = Calendar.getInstance().getTime();
-			
-			logger.info("Indexer fetch for " + entry.getKey() + "-grams took "
-					+ printTimeDiff(startTime, endTime));
-			
-		
-			/******************* Add rankers and combine them here - Secret sauce ******************/
-			startTime = Calendar.getInstance().getTime();
-			
-			SearchEngine searchEngine = new SearchEngine(entry.getValue(), invertedIndex, iic.getCorpusSize());			
-			
-			/****************************** End of secret sauce ****************************/
+		startTime = Calendar.getInstance().getTime();
+		// get gram data
+		Map<QueryWord, List<DocumentFeatures>> invertedIndex = iic
+				.getInvertedIndexForQueryMultiThreaded(query);
 
-			List<DocumentScore> rankedDocs = searchEngine.getRankedIndexerResults();
-			resultMap.put(entry.getKey(), rankedDocs);
-			endTime = Calendar.getInstance().getTime();
-			logger.info("Indexer ranking for " + entry.getKey() + "-grams took "
-					+ printTimeDiff(startTime, endTime));
-		}
-		
-		return resultMap;
+		endTime = Calendar.getInstance().getTime();
+
+		logger.info("Indexer fetch for query took "
+				+ printTimeDiff(startTime, endTime));
+
+		/******************* Add rankers and combine them here - Secret sauce ******************/
+		startTime = Calendar.getInstance().getTime();
+
+		SearchEngine searchEngine = new SearchEngine(query, invertedIndex,
+				iic.getCorpusSize());
+
+		/****************************** End of secret sauce ****************************/
+
+		List<DocumentScore> rankedDocs = searchEngine.getRankedIndexerResults();
+
+		endTime = Calendar.getInstance().getTime();
+		logger.info("Indexer ranking took " + printTimeDiff(startTime, endTime));
+
+		return rankedDocs;
 	}
 	
 	public static List<SearchResult> getRankedDomainRankResults(Map<String, Double> domainRankScore, 

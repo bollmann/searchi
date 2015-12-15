@@ -14,6 +14,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 
+import searchengine.query.QueryWord;
 import utils.LRUCache;
 
 import com.amazonaws.auth.AWSCredentials;
@@ -90,17 +91,18 @@ public class InvertedIndexClient {
 		return result;
 	}
 	
-	public Map<String, List<DocumentFeatures>> getInvertedIndexForQueryMultiThreaded(
-			List<String> query) {
-		Map<String, List<DocumentFeatures>> wordDocumentInfoMap = new HashMap<String, List<DocumentFeatures>>();
+	public Map<QueryWord, List<DocumentFeatures>> getInvertedIndexForQueryMultiThreaded(
+			List<QueryWord> query) {
+		Map<QueryWord, List<DocumentFeatures>> wordDocumentInfoMap = 
+			new HashMap<>();
 		logger.info("Starting an es of size " + query.size());
 		if(query.size() <= 0) {
 			return wordDocumentInfoMap;
 		}
 		ExecutorService es = Executors.newFixedThreadPool(query.size());
-		for (String word : query) {
+		for (QueryWord qword : query) {
 			InvertedIndexFetcher f = new InvertedIndexFetcher(
-					wordDocumentInfoMap, word);
+					wordDocumentInfoMap, qword.getWord());
 			es.execute(f);
 		}
 		es.shutdown();

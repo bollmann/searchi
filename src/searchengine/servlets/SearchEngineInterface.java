@@ -30,6 +30,7 @@ import org.apache.log4j.Logger;
 
 import pagerank.api.PageRankAPI;
 import searchengine.SearchEngine;
+import searchengine.query.QueryWord;
 import utils.nlp.QueryProcessor;
 import utils.searchengine.SearchEngineUtils;
 
@@ -106,22 +107,22 @@ public class SearchEngineInterface extends HttpServlet {
 		List<String> query = Arrays.asList(queryStr.split("\\s+"));
 		
 		
-		/*****************************  Query Done  ****************************************/
+		/*****************************  Query Processing  ****************************************/
 		
 		List<String> lookupList = new ArrayList<String>(1000);
 
 		Map<String, Map<String, Map<String, String>>> searchResultMap = 
 			new HashMap<String, Map<String, Map<String, String>>>();
 		
-		Map<Integer, List<String>> nGramMap = queryProcessor.generateNGrams(query, 2);
-		logger.info("Recieved query: " + query.toString() + " and generated nGrams " + nGramMap);
+		// TODO _ List of QueryWords
+		//List<QueryWord> processedQuery = queryProcessor.generateNGrams(query, 2);
+		List<QueryWord> processedQuery = queryProcessor.getProcessedQuery(query, 2);
+		logger.info("Recieved query: " + query.toString() + " and generated nGrams " + processedQuery);
+		
 		/********************* Get Inverted Index for Query words  *************************/
 		
 		Date startTime = Calendar.getInstance().getTime();
-		Map<Integer, List<DocumentScore>> nGramResultMap = SearchEngineUtils.getRankedIndexerResults(nGramMap);
-		
-		// have to combine ngram results here
-		List<DocumentScore> rankedDocs = nGramResultMap.get(1);
+		List<DocumentScore> rankedDocs = SearchEngineUtils.getRankedIndexerResults(processedQuery);
 		
 		Date endTime = Calendar.getInstance().getTime();
 		

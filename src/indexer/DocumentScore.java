@@ -5,6 +5,8 @@ import indexer.db.dao.DocumentFeatures;
 import java.util.HashMap;
 import java.util.Map;
 
+import searchengine.query.QueryWord;
+
 public class DocumentScore implements Comparable<DocumentScore> {
 	private int docId;
 	private double score;
@@ -12,20 +14,20 @@ public class DocumentScore implements Comparable<DocumentScore> {
 	/*
 	 * Feature counts of words occurring in this document.
 	 */
-	private Map<String, DocumentFeatures> wordFeatures;
+	private Map<QueryWord, DocumentFeatures> wordFeatures;
 
 	public DocumentScore(int docId) {
 		this.docId = docId;
-		this.wordFeatures = new HashMap<String, DocumentFeatures>();
+		this.wordFeatures = new HashMap<QueryWord, DocumentFeatures>();
 	}
 	
-	public DocumentScore(String word, DocumentFeatures features) {
+	public DocumentScore(QueryWord word, DocumentFeatures features) {
 		this.docId = features.getDocId();
-		this.wordFeatures = new HashMap<String, DocumentFeatures>();
+		this.wordFeatures = new HashMap<QueryWord, DocumentFeatures>();
 		addFeatures(word, features);
 	}
 
-	public void addFeatures(String word, DocumentFeatures features) {
+	public void addFeatures(QueryWord word, DocumentFeatures features) {
 		wordFeatures.put(word, features);
 	}
 
@@ -41,11 +43,11 @@ public class DocumentScore implements Comparable<DocumentScore> {
 		return score;
 	}
 	
-	public Map<String, DocumentFeatures> getWordFeatures() {
+	public Map<QueryWord, DocumentFeatures> getWordFeatures() {
 		return wordFeatures;
 	}
 	
-	public void setWordFeatures(Map<String, DocumentFeatures> wordFeatures) {
+	public void setWordFeatures(Map<QueryWord, DocumentFeatures> wordFeatures) {
 		this.wordFeatures = wordFeatures;
 	}
 
@@ -58,8 +60,8 @@ public class DocumentScore implements Comparable<DocumentScore> {
 	public String toString() {
 		StringBuffer fmt = new StringBuffer();
 		fmt.append(String.format("DocID %d ; score=%f\n", this.docId, this.score));
-		for(String word: wordFeatures.keySet())
-			fmt.append(String.format("%s features=%s\n", word, wordFeatures.get(word)));
+		for(QueryWord qword: wordFeatures.keySet())
+			fmt.append(String.format("%s features=%s\n", qword.getWord(), wordFeatures.get(qword)));
 		
 		return fmt.toString();
 	}
@@ -67,7 +69,7 @@ public class DocumentScore implements Comparable<DocumentScore> {
 	public String toHtml() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<p>DocID " + this.docId + "; " + this.score + "<br />");
-		for(String word: wordFeatures.keySet())
+		for(QueryWord word: wordFeatures.keySet())
 			sb.append(word + " features=" + wordFeatures.get(word) + "<br />");
 		sb.append("</p>");
 		return sb.toString();

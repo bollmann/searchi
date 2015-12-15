@@ -9,11 +9,13 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import searchengine.query.QueryWord;
+
 public class InvertedIndexFetcher extends Thread {
 	private final Logger logger = Logger.getLogger(getClass());
-	private Map<String, List<DocumentFeatures>> invertedIndex = null;
+	private Map<QueryWord, List<DocumentFeatures>> invertedIndex = null;
 	private String word;
-	public InvertedIndexFetcher(Map<String, List<DocumentFeatures>> invertedIndex, String word) {
+	public InvertedIndexFetcher(Map<QueryWord, List<DocumentFeatures>> invertedIndex, String word) {
 		this.invertedIndex = invertedIndex;
 		this.word = word;
 	}
@@ -28,6 +30,6 @@ public class InvertedIndexFetcher extends Thread {
 			featureList.addAll(row.getFeatures());
 		}
 		logger.info("Found " + rows.size() + " rows for " + word);
-		invertedIndex.put(word, featureList);
+		invertedIndex.put(new QueryWord(word), featureList);
 	}
 }

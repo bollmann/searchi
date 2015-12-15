@@ -10,18 +10,19 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import searchengine.query.QueryWord;
 import searchengine.ranking.RankerInfo.RankerType;
 
 public final class RankingEngine {
 	
 	private final List<DocumentScore> documentList;
-	private final List<String> query;
+	private final List<QueryWord> query;
 	private final int corpusSize;
 	private final Map<String, Integer> wordDfs;
 	
 	private Map<RankerType, Double> rankerSet;
 
-	public RankingEngine(List<DocumentScore> docs, List<String> query,
+	public RankingEngine(List<DocumentScore> docs, List<QueryWord> query,
 		int corpusSize, Map<String, Integer> wordDfs) {
 		
 		this.documentList = docs;
