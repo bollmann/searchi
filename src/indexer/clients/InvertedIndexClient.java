@@ -37,16 +37,16 @@ public class InvertedIndexClient {
 	private LRUCache<String, List<InvertedIndex>> cache;
 
 	public static synchronized InvertedIndexClient getInstance() {
-		if(instance == null) {
+		if (instance == null) {
 			instance = new InvertedIndexClient();
 		}
 		return instance;
 	}
-	
+
 	public LRUCache getCache() {
 		return cache;
 	}
-	
+
 	private InvertedIndexClient() {
 		this.db = connectDB();
 		// TODO make this faster
@@ -58,21 +58,23 @@ public class InvertedIndexClient {
 	public int getCorpusSize() {
 		return corpusSize;
 	}
-	
+
 	public List<ImageIndex> getImageLocations(String imageWord) {
 		ImageIndex image = new ImageIndex();
 		image.setImageWord(imageWord);
-		DynamoDBQueryExpression<ImageIndex> query = 
-				new DynamoDBQueryExpression<ImageIndex>()
+		DynamoDBQueryExpression<ImageIndex> query = new DynamoDBQueryExpression<ImageIndex>()
 				.withHashKeyValues(image);
-		
-		return db.query(ImageIndex.class, query);
+		List<ImageIndex> result = new ArrayList<>();
+		for (ImageIndex row : db.query(ImageIndex.class, query)) {
+			result.add(row);
+		}
+		return result;
 	}
-	
+
 	public List<InvertedIndex> getDocumentLocations(String word) {
 		List<InvertedIndex> result = null;
 		if (cache.containsKey(word)) {
-			logger.info("Getting entries for " + word  + " from cache");
+			logger.info("Getting entries for " + word + " from cache");
 			result = cache.get(word);
 		} else {
 			InvertedIndex item = new InvertedIndex();
@@ -90,13 +92,12 @@ public class InvertedIndexClient {
 		// return db.query(InvertedIndexRow.class, query);
 		return result;
 	}
-	
+
 	public Map<QueryWord, List<DocumentFeatures>> getInvertedIndexForQueryMultiThreaded(
 			List<QueryWord> query) {
-		Map<QueryWord, List<DocumentFeatures>> wordDocumentInfoMap = 
-			new HashMap<>();
+		Map<QueryWord, List<DocumentFeatures>> wordDocumentInfoMap = new HashMap<>();
 		logger.info("Starting an es of size " + query.size());
-		if(query.size() <= 0) {
+		if (query.size() <= 0) {
 			return wordDocumentInfoMap;
 		}
 		ExecutorService es = Executors.newFixedThreadPool(query.size());
@@ -106,7 +107,7 @@ public class InvertedIndexClient {
 			es.execute(f);
 		}
 		es.shutdown();
-		
+
 		try {
 			boolean finshed = es.awaitTermination(1, TimeUnit.MINUTES);
 		} catch (InterruptedException e) {
@@ -125,6 +126,12 @@ public class InvertedIndexClient {
 		dbClient.setRegion(Region.getRegion(Regions.US_EAST_1));
 
 		return new DynamoDBMapper(dbClient);
+	}
+
+	public Map<QueryWord, List<DocumentFeatures>> getImageIndexForQueryMultiThreaded(
+			List<String> query) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

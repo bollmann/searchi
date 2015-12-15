@@ -45,12 +45,13 @@ public class SearchEngineInterface extends HttpServlet {
 	InvertedIndexClient iic;
 	PageRankAPI pageRank;
 	QueryProcessor queryProcessor;
+
 	@Override
 	public void init() {
 		Date startTime = Calendar.getInstance().getTime();
 		gson = new Gson();
 		dId = (DocumentIDs) getServletContext().getAttribute("forwardIndex");
-		if(dId == null) {
+		if (dId == null) {
 			dId = new DocumentIDs();
 			getServletContext().setAttribute("forwardIndex", dId);
 		}
@@ -65,78 +66,124 @@ public class SearchEngineInterface extends HttpServlet {
 		Date endTime = Calendar.getInstance().getTime();
 		logger.info("Init took " + printTimeDiff(startTime, endTime));
 	}
-	
-	private String getFrontendIP(){
-		try{
+
+	private String getFrontendIP() {
+		try {
 			System.out.println(new File(".").getAbsolutePath());
-			BufferedReader a = new BufferedReader(new FileReader(new File("conf/ip_config")));
+			BufferedReader a = new BufferedReader(new FileReader(new File(
+					"conf/ip_config")));
 			String line;
-			while((line = a.readLine()) != null)
-				if(line.startsWith("frontend")){
+			while ((line = a.readLine()) != null)
+				if (line.startsWith("frontend")) {
 					System.out.println(line.split(" = ")[1].trim());
 					return line.split(" = ")[1].trim();
 				}
-		} catch (IOException e){
+		} catch (IOException e) {
 			System.out.println(e.getMessage());
 		}
 		return null;
 	}
-	
+
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		if(req.getParameter("q") != null) {
-			logger.info("Processing request for query " + req.getParameter("q"));
-			doListing(req, resp);
+		if (req.getPathInfo() != null) {
+			if (req.getPathInfo().equals("/image")) {
+				String result;
+				// {"images" : [{"url": url}, {"url": url}]}
+
+				Map<String, List<Map<String, String>>> resultMap = new HashMap<>();
+				List<Map<String, String>> resultList = new ArrayList<>();
+				resultMap.put("images", resultList);
+				try {
+					String queryStr = req.getParameter("q");
+					queryStr = URLDecoder.decode(queryStr, "UTF-8");
+					List<String> query = Arrays.asList(queryStr.split("\\s+"));
+
+					Map<QueryWord, List<DocumentFeatures>> imageIndex = iic
+							.getImageIndexForQueryMultiThreaded(query);
+
+					List<QueryWord> processedQuery = queryProcessor
+							.getProcessedQuery(query, 1);
+
+					SearchEngine search = new SearchEngine(processedQuery,
+							imageIndex, iic.getCorpusSize());
+					List<DocumentScore> rankedDocs = search
+							.formDocumentScoresForQueryFromInvertedIndex();
+					for (DocumentScore doc : rankedDocs) {
+						Map<String, String> map = new HashMap<>();
+						map.put("url", dId.getURLFor(doc.getDocId()));
+						resultList.add(map);
+					}
+				} catch (Exception e) {
+
+				} finally {
+					result = new Gson().toJson(resultMap);
+					PrintWriter out = resp.getWriter();
+					out.append(result);
+					out.flush();
+					out.close();
+				}
+
+			}
+		} else {
+			if (req.getParameter("q") != null) {
+				logger.info("Processing request for query "
+						+ req.getParameter("q"));
+				doListing(req, resp);
+			} else
+				logger.error("Search engine interface accessed with no query string");
 		}
-		else
-			logger.error("Search engine interface accessed with no query string");
+
 	}
-	
+
 	private String printTimeDiff(Date startTime, Date endTime) {
 		long timeDiff = (endTime.getTime() - startTime.getTime());
 		return timeDiff / 1000 + "s," + timeDiff % 1000 + "ms:";
 	}
 
-	private void doListing(HttpServletRequest req, HttpServletResponse resp) throws IOException{
-		
-		/***************************** Get Query and convert to list of words  *************/
-		
-		String queryStr = req.getParameter("q");		
-		queryStr = URLDecoder.decode(queryStr, "UTF-8");		
+	private void doListing(HttpServletRequest req, HttpServletResponse resp)
+			throws IOException {
+
+		/***************************** Get Query and convert to list of words *************/
+
+		String queryStr = req.getParameter("q");
+		queryStr = URLDecoder.decode(queryStr, "UTF-8");
 		List<String> query = Arrays.asList(queryStr.split("\\s+"));
-		
-		
-		/*****************************  Query Processing  ****************************************/
-		
+
+		/***************************** Query Processing ****************************************/
+
 		List<String> lookupList = new ArrayList<String>(1000);
 
-		Map<String, Map<String, Map<String, String>>> searchResultMap = 
-			new HashMap<String, Map<String, Map<String, String>>>();
-		
+		Map<String, Map<String, Map<String, String>>> searchResultMap = new HashMap<String, Map<String, Map<String, String>>>();
+
 		// TODO _ List of QueryWords
-		//List<QueryWord> processedQuery = queryProcessor.generateNGrams(query, 2);
-		List<QueryWord> processedQuery = queryProcessor.getProcessedQuery(query, 2);
-		logger.info("Recieved query: " + query.toString() + " and generated nGrams " + processedQuery);
-		
-		/********************* Get Inverted Index for Query words  *************************/
-		
+		// List<QueryWord> processedQuery = queryProcessor.generateNGrams(query,
+		// 2);
+		List<QueryWord> processedQuery = queryProcessor.getProcessedQuery(
+				query, 2);
+		logger.info("Recieved query: " + query.toString()
+				+ " and generated nGrams " + processedQuery);
+
+		/********************* Get Inverted Index for Query words *************************/
+
 		Date startTime = Calendar.getInstance().getTime();
-		List<DocumentScore> rankedDocs = SearchEngineUtils.getRankedIndexerResults(processedQuery);
-		
+		List<DocumentScore> rankedDocs = SearchEngineUtils
+				.getRankedIndexerResults(processedQuery);
+
 		Date endTime = Calendar.getInstance().getTime();
-		
+
 		logger.info("Indexer fetch took " + printTimeDiff(startTime, endTime));
 
 		Map<String, Map<String, String>> indexerResultMap = new HashMap<String, Map<String, String>>();
 		Map<String, String> timeMap = new HashMap<String, String>();
-		timeMap.put("time",  String.valueOf(endTime.getTime() - startTime.getTime()));
+		timeMap.put("time",
+				String.valueOf(endTime.getTime() - startTime.getTime()));
 		indexerResultMap.put("time", timeMap);
-		
-		
+
 		/******************************** Indexer results ******************************/
 		Map<String, Double> indexerScore = new HashMap<String, Double>(1000);
-		
+
 		try {
 
 			int resultCount = 0;
@@ -154,31 +201,31 @@ public class SearchEngineInterface extends HttpServlet {
 				if (resultCount >= 10) {
 					break;
 				}
-			}			
+			}
 			endTime = Calendar.getInstance().getTime();
 
 			logger.info("Total indexer took "
 					+ printTimeDiff(startTime, endTime));
-				
-			
-		/******************************** Page Rank results ***************************/
+
+			/******************************** Page Rank results ***************************/
 
 			startTime = Calendar.getInstance().getTime();
 			Map<String, Double> domainRankScore = new HashMap<>();
-						
+
 			for (String page : lookupList) {
 				double score = pageRank.getDomainRank(page);
 				domainRankScore.put(page, score);
 			}
-			//domainRankScore = pageRankAPI.getDomainRankBatch(lookupList);
+			// domainRankScore = pageRankAPI.getDomainRankBatch(lookupList);
 
 			logger.info("Page rank returned " + domainRankScore.size()
 					+ " results");
 			List<SearchResult> pqueue = SearchEngineUtils
-				.getSortedSearchResultUsingScores(domainRankScore);
+					.getSortedSearchResultUsingScores(domainRankScore);
 
 			endTime = Calendar.getInstance().getTime();
-			logger.info("Domain ranking took "+ printTimeDiff(startTime, endTime));
+			logger.info("Domain ranking took "
+					+ printTimeDiff(startTime, endTime));
 
 			Map<String, Map<String, String>> pageRankResultMap = new HashMap<String, Map<String, String>>();
 			resultCount = 0;
@@ -194,17 +241,17 @@ public class SearchEngineInterface extends HttpServlet {
 			logger.info("Domain ranking took "
 					+ printTimeDiff(startTime, endTime));
 			timeMap = new HashMap<String, String>();
-			timeMap.put("time",  String.valueOf(endTime.getTime() - startTime.getTime()));
+			timeMap.put("time",
+					String.valueOf(endTime.getTime() - startTime.getTime()));
 			pageRankResultMap.put("time", timeMap);
-			
-			
+
 			/******************************** Combined results **************************/
 			startTime = Calendar.getInstance().getTime();
 			Double[] weights = { 0.9, 0.1 };
 			Map<String, Map<String, String>> combinedResultMap = new HashMap<String, Map<String, String>>();
-			List<SearchResult> result = SearchEngineUtils
-					.weightedMergeScores(indexerScore, domainRankScore, weights);
-			
+			List<SearchResult> result = SearchEngineUtils.weightedMergeScores(
+					indexerScore, domainRankScore, weights);
+
 			resultCount = 0;
 			for (SearchResult doc : result) {
 				combinedResultMap.put(String.valueOf(resultCount), doc.toMap());
@@ -217,13 +264,14 @@ public class SearchEngineInterface extends HttpServlet {
 			}
 			endTime = Calendar.getInstance().getTime();
 			timeMap = new HashMap<String, String>();
-			timeMap.put("time",  String.valueOf(endTime.getTime() - startTime.getTime()));
+			timeMap.put("time",
+					String.valueOf(endTime.getTime() - startTime.getTime()));
 			combinedResultMap.put("time", timeMap);
-			
+
 			searchResultMap.put("indexer", indexerResultMap);
 			searchResultMap.put("pagerank", pageRankResultMap);
 			searchResultMap.put("combined", combinedResultMap);
-			
+
 		} catch (IllegalArgumentException e) {
 		} finally {
 			String searchResultsJSON = gson.toJson(searchResultMap);
@@ -231,21 +279,6 @@ public class SearchEngineInterface extends HttpServlet {
 			out.append(searchResultsJSON);
 			out.flush();
 			out.close();
-//			System.out.println("Sending POST request");
-//			System.out.println("to " + frontendIP.toString());
-//			
-			//Socket s = new Socket(frontendIP.getHost(), Integer.valueOf(frontendIP.getPort()));
-			//PrintWriter out = new PrintWriter(s.getOutputStream(), true);
-		    
-//			out.append("POST / HTTP/1.0\r\n");
-//			out.append("Host: 127.0.0.1\r\n");
-//		    out.append("Content-Type: application/json\r\n");
-//		    out.append("Content-Length: " + String.valueOf(searchResultsJSON.getBytes().length) + "\r\n");
-//			out.append("Connection: close\r\n");
-//		    out.append("\r\n");
-//		    out.append(searchResultsJSON);
-//		    out.flush();  //sends request
-//		    out.close();
 		}
 	}
 }
