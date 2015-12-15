@@ -12,6 +12,12 @@ public class PRDao implements Comparable<PRDao> {
 	
 	private String page;
 	private double pageScore;
+		
+	public PRDao() { }
+	public PRDao(String p, double score) {
+		this.page = p;
+		this.pageScore = score;
+	}
 	
 	
 	@DynamoDBHashKey(attributeName="Page")
