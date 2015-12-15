@@ -1,0 +1,57 @@
+doctype html
+head
+  meta(charset='utf-8')
+  meta(http-equiv='X-UA-Compatible', content='IE=edge')
+  meta(name='viewport', content='width=device-width, initial-scale=1')
+  title Searchi
+  link(href='css/bootstrap.min.css', rel='stylesheet')
+  link(rel='stylesheet', href='//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css')
+  link(rel='stylesheet', href='//blueimp.github.io/Gallery/css/blueimp-gallery.min.css')
+  link(rel='stylesheet', href='css/bootstrap-image-gallery.min.css')
+
+body
+  // The Bootstrap Image Gallery lightbox, should be a child element of the document body
+  .container
+    h1 HI
+    .blueimp-gallery.blueimp-gallery-controls#blueimp-gallery(data-use-bootstrap-modal='false')
+      // The container for the modal slides
+      .slides
+      // Controls for the borderless lightbox
+      h3.title Title
+      a.prev ‹
+      a.next ›
+      a.close ×
+      a.play-pause
+      ol.indicator
+      // The modal dialog, which will be used to wrap the lightbox content
+      .modal.fade
+        .modal-dialog
+          .modal-content
+            .modal-header
+              button.close(type='button', aria-hidden='true') ×
+              h4.modal-title
+            .modal-body.next
+            .modal-footer
+              button.btn.btn-default.pull-left.prev(type='button')
+                i.glyphicon.glyphicon-chevron-left
+                |                         Previous
+              button.btn.btn-primary.next(type='button')
+                | Next
+                i.glyphicon.glyphicon-chevron-right
+
+    .links
+      a(href='http://www.animallearningzone.com/cat/cat_links.jpg', title='link here maybe?', data-gallery='')
+        img(src='http://www.animallearningzone.com/cat/cat_links.jpg', width='200')
+      a(href='https://i.ytimg.com/vi/tntOCGkgt98/maxresdefault.jpg', data-gallery='')
+        img(src='https://i.ytimg.com/vi/tntOCGkgt98/maxresdefault.jpg', width='200')
+      a(href='http://www.animallearningzone.com/cat/cat_links.jpg', data-gallery='')
+        img(src='http://www.animallearningzone.com/cat/cat_links.jpg', width='200')
+      a(href='https://i.ytimg.com/vi/tntOCGkgt98/maxresdefault.jpg', data-gallery='')
+        img(src='https://i.ytimg.com/vi/tntOCGkgt98/maxresdefault.jpg', width='200')
+        
+
+script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js')
+script(src='js/bootstrap.min.js')
+script(src='//blueimp.github.io/Gallery/js/jquery.blueimp-gallery.min.js')
+script(src='js/bootstrap-image-gallery.min.js')
+
