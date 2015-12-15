@@ -21,6 +21,9 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 
+import pagerank.db.adapters.DRAdapter;
+import pagerank.db.ddl.PRCreateTable;
+
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 
 import db.wrappers.DynamoDBWrapper;
@@ -119,6 +122,9 @@ public class DynamoImporter<T> implements Runnable {
 				doImport(inputDir, batchSize, new InvertedIndexAdapter());
 			} else if (what.equals(ImageIndex.TABLE_NAME)) {
 				doImport(inputDir, batchSize, new ImageIndexAdapter());
+			} else if (what.equals(PRCreateTable.DR_TABLE_NAME)) {
+				doImport(inputDir, batchSize, new DRAdapter());
+				
 			} else {
 				logger.info("table " + what + " is not supported by DynamoImporter!");
 			}

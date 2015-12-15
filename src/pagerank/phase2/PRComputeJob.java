@@ -45,7 +45,7 @@ public final class PRComputeJob extends Configured implements Tool {
 	public static void main(String [] args) throws Exception {
 		logger.info("Starting page rank on Map Reduce");
 		
-		int numIter = 5;
+		int numIter = 15;
 		if (args.length > 2) {
 			numIter = Integer.parseInt(args[2]);
 		}

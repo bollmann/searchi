@@ -13,6 +13,11 @@ public class DRDao implements Comparable<DRDao> {
 	private String domain;
 	private double domainScore;
 	
+	public DRDao() { }
+	public DRDao(String dom, double score) {
+		this.domain = dom;
+		this.domainScore = score;
+	}
 	
 	@DynamoDBHashKey(attributeName="Domain")
 	public String getDomain() { 
