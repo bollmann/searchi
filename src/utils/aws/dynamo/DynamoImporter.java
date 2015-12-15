@@ -1,4 +1,4 @@
-package indexer.db.imports;
+package utils.aws.dynamo;
 
 
 import indexer.db.dao.DocumentIndex;
@@ -22,6 +22,7 @@ import java.util.concurrent.TimeUnit;
 import org.apache.log4j.Logger;
 
 import pagerank.db.adapters.DRAdapter;
+import pagerank.db.adapters.PRAdapter;
 import pagerank.db.ddl.PRCreateTable;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
@@ -125,6 +126,8 @@ public class DynamoImporter<T> implements Runnable {
 			} else if (what.equals(PRCreateTable.DR_TABLE_NAME)) {
 				doImport(inputDir, batchSize, new DRAdapter());
 				
+			} else if (what.equals(PRCreateTable.PR_TABLE_NAME)) {
+				doImport(inputDir, batchSize, new PRAdapter());
 			} else {
 				logger.info("table " + what + " is not supported by DynamoImporter!");
 			}

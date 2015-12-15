@@ -6,7 +6,7 @@ $(function(){
 	$('#searchButton').click(function(e){
 		var query = encodeURI($('#searchBox').val()).replace(/#/g, '%23');
 		if(query){
-			window.location.href = "http://192.168.0.100:3000/results?q=" + query;
+			window.location.href = "results?q=" + query;
 		}
 	});
 });
@@ -18,7 +18,7 @@ $(function(){
 	    if(e.which == 13) {
 			var query = encodeURI($('#searchBox').val()).replace(/#/g, '%23');
 			if(query){
-				window.location.href = "http://192.168.0.100:3000/results?q=" + query;
+				window.location.href = "results?q=" + query;
 			}	
 			return false;    	
 	    }

@@ -19,14 +19,15 @@ import db.wrappers.DynamoDBWrapper;
 public final class PageRankAPI {
 
 	private final DynamoDBWrapper dynamoWrapper;
-	private DomainRankCache domainRankCache;
-	private PageRankCache pageRankCache;
-	
+
+	private final DomainRankCache drCache;
+	private final PageRankCache prCache;
+
 	public PageRankAPI() {
 		this.dynamoWrapper = DynamoDBWrapper.getInstance(
 				DynamoDBWrapper.US_EAST, DynamoDBWrapper.CLIENT_PROFILE);
-		domainRankCache = DomainRankCache.getInstance();
-//		pageRankCache = PageRankCache.getInstance();
+		this.drCache = DomainRankCache.getInstance();
+		this.prCache = PageRankCache.getInstance();
 	}
 
 	/**
@@ -40,8 +41,8 @@ public final class PageRankAPI {
 		if (page == null || page.isEmpty()) {
 			throw new Exception("Invalid page. Can't find pagerank score");
 		}
-
-		PRDao pageRank = (PRDao) dynamoWrapper.getItem(page, PRDao.class);
+		String pageNormalized = StringUtils.normalizeUrlToString(page.trim());
+		PRDao pageRank = (PRDao) dynamoWrapper.getItem(pageNormalized, PRDao.class);
 		if (pageRank == null) {
 			return 0.0;
 		}
@@ -66,7 +67,7 @@ public final class PageRankAPI {
 		List<Object> items = new ArrayList<>();
 		for (String page : pages) {
 			PRDao dao = new PRDao();
-			dao.setPage(page);
+			dao.setPage(StringUtils.normalizeUrlToString(page.trim()));
 			dao.setPageScore(0.0);
 			items.add(dao);
 		}
@@ -88,12 +89,26 @@ public final class PageRankAPI {
 		}
 		return pageRanks;
 	}
+	
+	/**
+	 * Get cahched PageRank score for specified page
+	 * using a in-memory cache
+	 * @param String  page
+	 * @return double pageRank
+	 */
+	public double getPageRankCached(String page) throws Exception {
+		if (page == null || page.isEmpty()) {
+			throw new Exception("Invalid page. Can't find pagerank score");
+		}
+		
+		String pageNormalized = StringUtils.normalizeUrlToString(page.trim());
+		return prCache.getPageRank(pageNormalized);
+	}
 
 	/**
 	 * Get DomainRank score for specified page
 	 * 
-	 * @param String
-	 *            page
+	 * @param String page
 	 * @return double domainRank
 	 * @throws MalformedURLException 
 	 */
@@ -115,6 +130,29 @@ public final class PageRankAPI {
 		}
 
 		return domainRank.getDomainScore();
+	}
+	
+	/**
+	 * Get cached DomainRank score for specified page
+	 * using a in-memory cache
+	 * 
+	 * @param String page
+	 * @return double domainRank
+	 * @throws MalformedURLException 
+	 */
+	public double getDomainRankCached(String page) throws IllegalArgumentException {
+		if (page == null || page.isEmpty()) {
+			throw new IllegalArgumentException("Invalid page. Can't find domainrank score");
+		}
+
+		String domain = page.trim();
+		try {
+			domain = StringUtils.getDomainFromUrl(page);
+		} catch (Exception e) {
+			// Do Nothing - Try to find for page as is.
+		}
+		
+		return drCache.getDomainRank(domain);
 	}
 
 	/**
