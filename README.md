@@ -16,7 +16,7 @@ The entire Assignment.
 3) Extra Credits:
 -----------------
 
-Indexer: Image Search
+Indexer: Image Search, Document and Word Metadata (link hits, header hits, normal hits, ...).
 PageRank: Domain rank
 SearchEngine: Ajax dynamic snippets, 3rd party search, image search
 
