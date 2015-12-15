@@ -6,6 +6,8 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import pagerank.db.ddl.PRCreateTable;
+
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 
 import db.wrappers.DynamoDBWrapper;
@@ -33,6 +35,7 @@ public final class PageRankCache {
 	public static PageRankCache getInstance() {
 		if (prCache == null) {
 			prCache = new PageRankCache();
+			prCache.loadFromDB(PRCreateTable.PR_TABLE_NAME);
 		}
 		return prCache;
 	}
