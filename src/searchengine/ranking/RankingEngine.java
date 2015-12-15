@@ -18,12 +18,12 @@ public final class RankingEngine {
 	private final List<DocumentScore> documentList;
 	private final List<QueryWord> query;
 	private final int corpusSize;
-	private final Map<String, Integer> wordDfs;
+	private final Map<QueryWord, Integer> wordDfs;
 	
 	private Map<RankerType, Double> rankerSet;
 
 	public RankingEngine(List<DocumentScore> docs, List<QueryWord> query,
-		int corpusSize, Map<String, Integer> wordDfs) {
+		int corpusSize, Map<QueryWord, Integer> wordDfs) {
 		
 		this.documentList = docs;
 		this.query = query;

@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import searchengine.query.QueryWord;
+
 public final class RankerTotalCount extends Ranker {
 	
 	private final List<DocumentScore> docs;	
@@ -67,12 +69,12 @@ public final class RankerTotalCount extends Ranker {
 		this.normalize = bool;
 	}
 
-	public static int combineTotalCounts(
-			Map<String, DocumentFeatures> wordFeatures) {
-		int result = 0;
+	public static double combineTotalCounts(
+			Map<QueryWord, DocumentFeatures> wordFeatures) {
+		double result = 0;
 		
-		for (Entry<String, DocumentFeatures> entry : wordFeatures.entrySet()) {
-			result += entry.getValue().getTotalCount();
+		for (Entry<QueryWord, DocumentFeatures> entry : wordFeatures.entrySet()) {
+			result += entry.getValue().getTotalCount() * entry.getKey().getWeight();
 		}
 		return result;
 	}

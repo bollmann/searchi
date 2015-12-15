@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import searchengine.query.QueryWord;
+
 public final class RankerLinks extends Ranker {
 	
 	private final List<DocumentScore> docs;	
@@ -66,18 +68,18 @@ public final class RankerLinks extends Ranker {
 		this.normalize = bool;
 	}
 	
-	private double combineLinkCounts(Map<String, DocumentFeatures> wordFeatures) {
+	private double combineLinkCounts(Map<QueryWord, DocumentFeatures> wordFeatures) {
 		double result = 0.0;
 		double normalization = 1.0;
 		
-		for (Entry<String, DocumentFeatures> entry : wordFeatures.entrySet()) {
+		for (Entry<QueryWord, DocumentFeatures> entry : wordFeatures.entrySet()) {
 			DocumentFeatures features = entry.getValue();
 			
 			if (normalize && features.getTotalCount() > 0) {				
 				normalization = ((double) features.getEuclideanTermFrequency()) / features.getTotalCount(); 
 			}
 			
-			result += entry.getValue().getLinkCount() * normalization;
+			result += entry.getValue().getLinkCount() * entry.getKey().getWeight() * normalization;
 		}
 		return result;
 	}

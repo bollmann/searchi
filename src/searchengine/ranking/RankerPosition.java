@@ -7,10 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import searchengine.query.QueryWord;
+
 public final class RankerPosition extends Ranker {
 
 	private final List<DocumentScore> docs;
-	private final List<String> query;
+	private final List<QueryWord> query;
 	
 	private double weight;
 	
@@ -18,7 +20,7 @@ public final class RankerPosition extends Ranker {
 	private boolean normalize;
 	
 	public RankerPosition(List<DocumentScore> documentScores,
-		List<String>query) {
+		List<QueryWord>query) {
 		
 		this.docs = documentScores;
 		this.query = query;
@@ -72,19 +74,24 @@ public final class RankerPosition extends Ranker {
 		this.normalize = bool;
 	}
 	
-	private int combinePositions(Map<String, DocumentFeatures> wordFeatures) {
+	private int combinePositions(Map<QueryWord, DocumentFeatures> wordFeatures) {
 		int score = 0;
 		int range = 2;
 		final int defaultPosScore = 500000;
 		
 		for (int i = 0; i < query.size()-1; i++) {
+			if (containSpace(query.get(i+1).getWord()) && !containSpace(query.get(i).getWord())) {
+				// Break in UNIGRAM and BIGRAMS
+				continue;
+			}
+			
 			DocumentFeatures feat1 = wordFeatures.get(query.get(i));
 			if (feat1 == null) {
 				score += defaultPosScore;
 				continue;
-			}
-			
+			}			
 			for (int j = i+1; j <= i+range-1; ++j) {
+				
 				DocumentFeatures feat2 = wordFeatures.get(query.get(j));
 				if (feat2 == null) {
 					score += defaultPosScore;
@@ -108,4 +115,12 @@ public final class RankerPosition extends Ranker {
 		}
 		return score;		
 	}
+	
+	private boolean containSpace(String word) {
+		if (word.indexOf(' ') >= 0) {
+			return true;
+		}
+		return false;
+	}
 }
+

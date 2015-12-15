@@ -38,4 +38,9 @@ public class QueryWord {
 		return "word:" + word + " " + nGramSize + "-gram weight:" + weight;
 	}
 
+	public double getWeight() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }
