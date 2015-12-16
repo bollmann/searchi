@@ -28,11 +28,9 @@ br
             i.glyphicon.glyphicon-chevron-right
 
 .links
-  a(href='http://www.animallearningzone.com/cat/cat_links.jpg', title='link here maybe?', data-gallery='')
-    img(src='http://www.animallearningzone.com/cat/cat_links.jpg', width='200')
-  a(href='https://i.ytimg.com/vi/tntOCGkgt98/maxresdefault.jpg', data-gallery='')
-    img(src='https://i.ytimg.com/vi/tntOCGkgt98/maxresdefault.jpg', width='200')
-  a(href='http://www.animallearningzone.com/cat/cat_links.jpg', data-gallery='')
-    img(src='http://www.animallearningzone.com/cat/cat_links.jpg', width='200')
-  a(href='https://i.ytimg.com/vi/tntOCGkgt98/maxresdefault.jpg', data-gallery='')
-    img(src='https://i.ytimg.com/vi/tntOCGkgt98/maxresdefault.jpg', width='200')
+  for url in urls
+    a(href='#{url.url}', data-gallery='')
+      img(src='#{url.url}', width='200')
+    //- a(href='http://www.animallearningzone.com/cat/cat_links.jpg', title='link here maybe?', data-gallery='')
+    //-   img(src='http://www.animallearningzone.com/cat/cat_links.jpg', width='200')
+    
