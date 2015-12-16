@@ -33,7 +33,6 @@ public final class DomainRankCache {
 	}
 	
 	public static DomainRankCache getInstance() {
-		logger.info("DOmainRankCache is " + drCache);
 		if (drCache == null) {			
 			drCache = new DomainRankCache();
 			drCache.loadFromDB(PRCreateTable.DR_TABLE_NAME);
@@ -61,7 +60,7 @@ public final class DomainRankCache {
 				domainRankMap.put(domain, Double.parseDouble(domainRank));
 			}
 		}
-		logger.info("Cache Loaded. Normalizing the values");
+		
 		double max= 1000.0;
 		for (String dom : domainRankMap.keySet()) {			
 			domainRankMap.put(dom, domainRankMap.get(dom)/max);

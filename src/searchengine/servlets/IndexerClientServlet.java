@@ -149,7 +149,7 @@ public class IndexerClientServlet extends HttpServlet {
 
 			/******************************** Page Rank *********************/
 
-			logger.info("Using Domain rank to rank pages");
+			//logger.info("Using Domain rank to rank pages");
 			
 			Map<String, Double> domainRankScore = new HashMap<>();
 
@@ -160,15 +160,15 @@ public class IndexerClientServlet extends HttpServlet {
 				domainRankScore.put(page, score);
 			}
 			
-			logger.info("Domain rank returned " + domainRankScore.size()
-					+ " results -- " +domainRankScore);
+			//logger.info("Domain rank returned " + domainRankScore.size()
+			//		+ " results -- " +domainRankScore);
 
 			List<SearchResult> drResults = SearchEngineUtils
 					.getSortedSearchResultUsingScores(domainRankScore);
 			
 			Date endTime = Calendar.getInstance().getTime();
-			logger.info("Sorted search results - " + drResults.size()+ " -- ");
-			logger.info("Domain ranking took "+ SearchEngineUtils.printTimeDiff(startTime, endTime));
+			//logger.info("Sorted search results - " + drResults.size()+ " -- ");
+			//logger.info("Domain ranking took "+ SearchEngineUtils.printTimeDiff(startTime, endTime));
 					
 			buffer.append("<br>Using Page Ranking:");
 			buffer.append("<ol>");

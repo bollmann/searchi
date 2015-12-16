@@ -100,7 +100,7 @@ public final class SearchEngine {
 	public static List<String> formDocumentScoresForQueryFromImageIndex(List<QueryWord> query,
 			Map<QueryWord, List<String>> invertedIndexMap) {
 		Set<String> seenUrls = new HashSet<>();
-		Logger logger = Logger.getLogger(SearchEngine.class);
+	
 		for (Entry<QueryWord, List<String>> entry : invertedIndexMap.entrySet()) {
 //			logger.info("Getting docs for " + entry.getKey());
 			List<String> docs = entry.getValue();

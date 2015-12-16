@@ -27,11 +27,11 @@ public final class PageRankAPI {
 	private final PageRankCache prCache;
 
 	public PageRankAPI() {
-		logger.info("Instantiating PageRankAPI");
+		//logger.info("Instantiating PageRankAPI");
 		this.dynamoWrapper = DynamoDBWrapper.getInstance(
 				DynamoDBWrapper.US_EAST, DynamoDBWrapper.CLIENT_PROFILE);
 		
-		logger.info("Getting DomainRankCache  Instance");
+		//logger.info("Getting DomainRankCache  Instance");
 		this.drCache = DomainRankCache.getInstance();		
 		// TODO Rethink this
 		this.prCache = null;//PageRankCache.getInstance();
