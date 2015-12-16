@@ -51,8 +51,9 @@ public class SearchEngineInterface extends HttpServlet {
 		Date startTime = Calendar.getInstance().getTime();
 		gson = new Gson();
 		dId = (DocumentIDs) getServletContext().getAttribute("forwardIndex");
-		if (dId == null) {
-			dId = new DocumentIDs();
+
+		if(dId == null) {
+			dId = DocumentIDs.getInstance();
 			getServletContext().setAttribute("forwardIndex", dId);
 		}
 		iic = InvertedIndexClient.getInstance();
@@ -99,12 +100,11 @@ public class SearchEngineInterface extends HttpServlet {
 					String queryStr = req.getParameter("q");
 					queryStr = URLDecoder.decode(queryStr, "UTF-8");
 					List<String> query = Arrays.asList(queryStr.split("\\s+"));
-
-					Map<QueryWord, List<String>> imageIndex = iic
-							.getImageIndexForQueryMultiThreaded(query);
-
 					List<QueryWord> processedQuery = queryProcessor
 							.getProcessedQuery(query, 1);
+					
+					Map<QueryWord, List<String>> imageIndex = iic
+							.getImageIndexForQueryMultiThreaded(processedQuery);
 
 					List<String> rankedDocs = SearchEngine
 							.formDocumentScoresForQueryFromImageIndex(processedQuery, imageIndex);

@@ -10,12 +10,14 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import searchengine.query.QueryWord;
+
 public final class RankerTfIdf extends Ranker {
 	private static final Logger logger = Logger.getLogger(RankerTfIdf.class);
 	
-	private final List<String> query;
+	private final List<QueryWord> query;
 	private final List<DocumentScore> docs;
-	private final Map<String, Integer> wordDfs;
+	private final Map<QueryWord, Integer> wordDfs;
 	private final int corpusSize;
 	private double weight;
 	
@@ -23,8 +25,8 @@ public final class RankerTfIdf extends Ranker {
 
 	private boolean normalize;
 	
-	public RankerTfIdf(List<DocumentScore> docs, List<String> query,
-			int corpusSize, Map<String, Integer> wordDfs) {
+	public RankerTfIdf(List<DocumentScore> docs, List<QueryWord> query,
+			int corpusSize, Map<QueryWord, Integer> wordDfs) {
 		this.docs = docs;
 		this.query = query;
 		this.corpusSize= corpusSize;
@@ -87,19 +89,23 @@ public final class RankerTfIdf extends Ranker {
 		this.normalize = bool;
 	}
 	
-	private double combineTfIdfs(Map<String, DocumentFeatures> wordFeatures) {
+	private double combineTfIdfs(Map<QueryWord, DocumentFeatures> wordFeatures) {
 		
 		double result = 0.0;
-		WordCounts queryCounts = new WordCounts(query);
+		List<String> words = new ArrayList<>();
+		for (QueryWord qword: query) {
+			words.add(qword.getWord());
+		}
+		WordCounts queryCounts = new WordCounts(words);
 		
-		for (String queryWord : query) {
-			DocumentFeatures feature = wordFeatures.get(queryWord);
+		for (QueryWord qword : query) {
+			DocumentFeatures feature = wordFeatures.get(qword);
 			//logger.info("Combiner looking for word:" + queryWord + " and got feature:" + feature);
 		
 			if (feature != null) {
 				
-				double queryWeight = queryCounts.getTFIDF(queryWord,
-						corpusSize, wordDfs.get(queryWord));
+				double queryWeight = queryCounts.getTFIDF(qword.getWord(),
+						corpusSize, wordDfs.get(qword));
 //				double docWeight = feature.getEuclideanTermFrequency();
 				
 				double docWeight = feature.getTfidf();

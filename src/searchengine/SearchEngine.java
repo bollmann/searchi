@@ -27,7 +27,7 @@ public final class SearchEngine {
 	private final Map<QueryWord, List<DocumentFeatures>> invertedIndexMap;
 	private final int corpusSize;
 
-	private final Map<String, Integer> wordDfs;
+	private final Map<QueryWord, Integer> wordDfs;
 	private List<DocumentScore> documentList;
 
 	private RankingEngine rankingEngine;	
@@ -39,10 +39,10 @@ public final class SearchEngine {
 		this.invertedIndexMap = invertedIndexMap;
 		this.corpusSize = corpusSize;
 
-		this.wordDfs = new HashMap<String, Integer>();
+		this.wordDfs = new HashMap<>();
 		for (Entry<QueryWord, List<DocumentFeatures>> entry : invertedIndexMap
 				.entrySet()) {
-			wordDfs.put(entry.getKey().getWord(), entry.getValue().size());
+			wordDfs.put(entry.getKey(), entry.getValue().size());
 		}
 		rankingEngine = null;
 	}

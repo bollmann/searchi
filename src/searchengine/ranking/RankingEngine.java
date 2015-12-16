@@ -18,12 +18,12 @@ public final class RankingEngine {
 	private final List<DocumentScore> documentList;
 	private final List<QueryWord> query;
 	private final int corpusSize;
-	private final Map<String, Integer> wordDfs;
+	private final Map<QueryWord, Integer> wordDfs;
 	
 	private Map<RankerType, Double> rankerSet;
 
 	public RankingEngine(List<DocumentScore> docs, List<QueryWord> query,
-		int corpusSize, Map<String, Integer> wordDfs) {
+		int corpusSize, Map<QueryWord, Integer> wordDfs) {
 		
 		this.documentList = docs;
 		this.query = query;
@@ -93,6 +93,12 @@ public final class RankingEngine {
 			rankerPosition.setWeight(rankerSet.get(RankerType.RANKER_POSITION));
 			rankers.add(rankerPosition);
 		}
+		
+		if (rankerSet.containsKey(RankerType.RANKER_URLCOUNT)) {
+			Ranker rankerUrlCount = new RankerUrlCount(documentList, query);
+			rankerUrlCount.setWeight(rankerSet.get(RankerType.RANKER_URLCOUNT));
+			rankers.add(rankerUrlCount);
+		}
 
 		// Mulithreaded ranker execution
 		ExecutorService es = Executors.newFixedThreadPool(rankers.size());
@@ -102,7 +108,7 @@ public final class RankingEngine {
 
 		es.shutdown();
 		try {
-			es.awaitTermination(1, TimeUnit.MINUTES);
+			es.awaitTermination(10, TimeUnit.MINUTES);
 		} catch (InterruptedException e) {
 			throw new Exception(e);
 		}

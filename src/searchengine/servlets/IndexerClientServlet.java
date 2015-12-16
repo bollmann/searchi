@@ -25,6 +25,7 @@ import org.apache.log4j.Logger;
 
 import pagerank.api.PageRankAPI;
 import searchengine.SearchEngine;
+import searchengine.query.QueryWord;
 import utils.nlp.QueryProcessor;
 import utils.searchengine.SearchEngineUtils;
 import edu.stanford.nlp.util.StringUtils;
@@ -40,7 +41,7 @@ public class IndexerClientServlet extends HttpServlet {
 	public void init() {
 		dId = (DocumentIDs) getServletContext().getAttribute("forwardIndex");
 		if(dId == null) {
-			dId = new DocumentIDs();
+			dId = DocumentIDs.getInstance();
 			getServletContext().setAttribute("forwardIndex", dId);
 		}
 		queryProcessor = QueryProcessor.getInstance();
@@ -88,9 +89,9 @@ public class IndexerClientServlet extends HttpServlet {
 		for (String word : queryStr.split(" "))
 			unigrams.add(word);
 		
-		Map<Integer, List<String>> nGramMap = queryProcessor.generateNGrams(unigrams, 2);
+		List<QueryWord> processedQuery = queryProcessor.getProcessedQuery(unigrams, 2);
 
-		logger.info("Got search query:" + queryStr + " split into " + nGramMap);
+		logger.info("Got search query:" + queryStr + " split into " + processedQuery);
 
 		Map<String, Double> indexerScore = new HashMap<String, Double>(1000);
 		try {
@@ -101,10 +102,8 @@ public class IndexerClientServlet extends HttpServlet {
 			buffer.append("<ol>");
 
 			
-			Map<Integer, List<DocumentScore>> nGramResultMap = SearchEngineUtils.getRankedIndexerResults(nGramMap);
+			List<DocumentScore> rankedDocs = SearchEngineUtils.getRankedIndexerResults(processedQuery);
 			
-			// have to combine ngram results here
-			List<DocumentScore> rankedDocs = nGramResultMap.get(1);
 			
 			List<String> lookupList = new ArrayList<String>(1000);
 			

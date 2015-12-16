@@ -27,6 +27,7 @@ public class QueryWord {
 
 	public QueryWord(String word) {
 		this.word = word;
+		this.weight = 1.0;
 	}
 
 	public String getWord() {

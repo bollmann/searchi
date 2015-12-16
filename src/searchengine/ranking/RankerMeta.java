@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import searchengine.query.QueryWord;
+
 public final class RankerMeta extends Ranker {
 
 	private final List<DocumentScore> docs;
@@ -65,11 +67,11 @@ public final class RankerMeta extends Ranker {
 		this.normalize = bool;
 	}
 
-	private double combineMetaTagCounts(Map<String, DocumentFeatures> wordFeatures) {
+	private double combineMetaTagCounts(Map<QueryWord, DocumentFeatures> wordFeatures) {
 		double result = 0.0;
 		
-		for (Entry<String, DocumentFeatures> entry : wordFeatures.entrySet()) {
-			result += entry.getValue().getMetaTagCount();
+		for (Entry<QueryWord, DocumentFeatures> entry : wordFeatures.entrySet()) {
+			result += entry.getValue().getMetaTagCount() * entry.getKey().getWeight();
 		}
 		return result;
 	}

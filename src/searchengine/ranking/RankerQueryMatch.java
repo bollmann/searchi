@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import searchengine.query.QueryWord;
+
 /** Ranks based on common words in query 
  *  and the document */
 public final class RankerQueryMatch extends Ranker {
@@ -68,8 +70,12 @@ public final class RankerQueryMatch extends Ranker {
 		this.normalize = bool;
 	}
 	
-	private int combineQueryWordPresenceCounts(Map<String, DocumentFeatures> wordFeatures) {
-		return wordFeatures.size();
+	private double combineQueryWordPresenceCounts(Map<QueryWord, DocumentFeatures> wordFeatures) {
+		double score = 0.0;
+		for (QueryWord qword : wordFeatures.keySet()) {
+			score += qword.getWeight();
+		}
+		return score;
 	}
 
 }

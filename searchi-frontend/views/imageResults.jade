@@ -1,0 +1,38 @@
+h3 Image results for '#{q}'
+hr
+br
+.blueimp-gallery.blueimp-gallery-controls#blueimp-gallery(data-use-bootstrap-modal='false')
+  // The container for the modal slides
+  .slides
+  // Controls for the borderless lightbox
+  h3.title Title
+  a.prev ‹
+  a.next ›
+  a.close ×
+  a.play-pause
+  ol.indicator
+  // The modal dialog, which will be used to wrap the lightbox content
+  .modal.fade
+    .modal-dialog
+      .modal-content
+        .modal-header
+          button.close(type='button', aria-hidden='true') ×
+          h4.modal-title
+        .modal-body.next
+        .modal-footer
+          button.btn.btn-default.pull-left.prev(type='button')
+            i.glyphicon.glyphicon-chevron-left
+            |                         Previous
+          button.btn.btn-primary.next(type='button')
+            | Next
+            i.glyphicon.glyphicon-chevron-right
+
+.links
+  a(href='http://www.animallearningzone.com/cat/cat_links.jpg', title='link here maybe?', data-gallery='')
+    img(src='http://www.animallearningzone.com/cat/cat_links.jpg', width='200')
+  a(href='https://i.ytimg.com/vi/tntOCGkgt98/maxresdefault.jpg', data-gallery='')
+    img(src='https://i.ytimg.com/vi/tntOCGkgt98/maxresdefault.jpg', width='200')
+  a(href='http://www.animallearningzone.com/cat/cat_links.jpg', data-gallery='')
+    img(src='http://www.animallearningzone.com/cat/cat_links.jpg', width='200')
+  a(href='https://i.ytimg.com/vi/tntOCGkgt98/maxresdefault.jpg', data-gallery='')
+    img(src='https://i.ytimg.com/vi/tntOCGkgt98/maxresdefault.jpg', width='200')

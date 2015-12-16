@@ -2,15 +2,6 @@ package test.searchengine.ranking;
 
 import indexer.DocumentScore;
 import indexer.db.dao.DocumentFeatures;
-import searchengine.ranking.Ranker;
-import searchengine.ranking.RankerHeader;
-import searchengine.ranking.RankerLinks;
-import searchengine.ranking.RankerMeta;
-import searchengine.ranking.RankerPosition;
-import searchengine.ranking.RankerQueryMatch;
-import searchengine.ranking.RankerTfIdf;
-import searchengine.ranking.RankerTotalCount;
-import searchengine.ranking.RankerUrlCount;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,31 +15,48 @@ import junit.framework.TestCase;
 
 import org.junit.Test;
 
-public class TestRanker extends TestCase {
+import searchengine.query.QueryWord;
+import searchengine.ranking.Ranker;
+import searchengine.ranking.RankerHeader;
+import searchengine.ranking.RankerLinks;
+import searchengine.ranking.RankerMeta;
+import searchengine.ranking.RankerPosition;
+import searchengine.ranking.RankerQueryMatch;
+import searchengine.ranking.RankerTfIdf;
+import searchengine.ranking.RankerTotalCount;
+import searchengine.ranking.RankerUrlCount;
 
-	
+public class TestRanker extends TestCase {
 
 	@Test
 	public void testRankDocumentsOnTfIdf() {
-		List<String> query = Arrays.asList("a an a the".split(" "));
+		QueryWord qWordA = new QueryWord("a");
+		QueryWord qWordAn = new QueryWord("an");
+		QueryWord qWordthe = new QueryWord("the");
+		
+		List<QueryWord> query = new ArrayList<>();		
+		query.add(qWordA);
+		query.add(qWordAn);
+		query.add(qWordthe);
+		
 		List<DocumentScore> scores = new ArrayList<DocumentScore>();
 
 		DocumentScore score1 = new DocumentScore(1);
 		DocumentFeatures feat1 = new DocumentFeatures();
 		feat1.setTfidf(2f);
-		score1.addFeatures("a", feat1);
+		score1.addFeatures(qWordA, feat1);
 
 		DocumentScore score2 = new DocumentScore(2);
 		DocumentFeatures feat2 = new DocumentFeatures();
 		feat2.setTfidf(1f);
-		score2.addFeatures("an", feat2);
+		score2.addFeatures(qWordAn, feat2);
 
 		scores.add(score1);
 		scores.add(score2);
 		
-		Map<String, Integer>wordDfs = new HashMap<>();
-		wordDfs.put("a", 20);
-		wordDfs.put("an", 10);
+		Map<QueryWord, Integer>wordDfs = new HashMap<>();
+		wordDfs.put(qWordA, 20);
+		wordDfs.put(qWordAn, 10);
 
 		int corpusSize = 2000;
 		Ranker rankerTfIdf = new RankerTfIdf(scores, query, corpusSize, wordDfs);
@@ -62,16 +70,16 @@ public class TestRanker extends TestCase {
 
 	@Test
 	public void testRankDocumentsOnTotalCount() {
-		
+		QueryWord qWordA = new QueryWord("a");
 		DocumentScore score1 = new DocumentScore(1);
 		DocumentFeatures feat1 = new DocumentFeatures();
 		feat1.setTotalCount(1);
-		score1.addFeatures("a", feat1);
+		score1.addFeatures(qWordA, feat1);
 		
 		DocumentScore score2 = new DocumentScore(2);
 		DocumentFeatures feat2 = new DocumentFeatures();
 		feat2.setTotalCount(2);
-		score2.addFeatures("a", feat2);
+		score2.addFeatures(qWordA, feat2);
 
 		List<DocumentScore> scores = new ArrayList<DocumentScore>();
 		scores.add(score1);
@@ -86,7 +94,10 @@ public class TestRanker extends TestCase {
 	}
 
 	@Test
-	public void testRankDocumentsOnTotalCountWithMoreThanOneFeature() {
+	public void testRankDocumentsOnTotalCountWithMoreThanOneFeature() {		
+		QueryWord qWordA = new QueryWord("a");
+		QueryWord qWordAn = new QueryWord("an");
+		QueryWord qWordthe = new QueryWord("the");
 		List<DocumentScore> scores = new ArrayList<DocumentScore>();
 
 		DocumentScore score1 = new DocumentScore(1);
@@ -94,16 +105,16 @@ public class TestRanker extends TestCase {
 		feat11.setTotalCount(1);
 		DocumentFeatures feat12 = new DocumentFeatures();
 		feat12.setTotalCount(5);
-		score1.addFeatures("a", feat11);
-		score1.addFeatures("b", feat12);
+		score1.addFeatures(qWordA, feat11);
+		score1.addFeatures(qWordAn, feat12);
 
 		DocumentScore score2 = new DocumentScore(2);
 		DocumentFeatures feat21 = new DocumentFeatures();
 		feat21.setTotalCount(2);
 		DocumentFeatures feat22 = new DocumentFeatures();
 		feat22.setTotalCount(1);
-		score2.addFeatures("a", feat21);
-		score2.addFeatures("c", feat22);
+		score2.addFeatures(qWordA, feat21);
+		score2.addFeatures(qWordthe, feat22);
 		
 		DocumentScore score3 = new DocumentScore(3);
 		DocumentFeatures feat31 = new DocumentFeatures();
@@ -112,9 +123,9 @@ public class TestRanker extends TestCase {
 		feat32.setTotalCount(1);
 		DocumentFeatures feat33 = new DocumentFeatures();
 		feat33.setTotalCount(4);
-		score3.addFeatures("a", feat31);
-		score3.addFeatures("b", feat32);
-		score3.addFeatures("c", feat33);
+		score3.addFeatures(qWordA, feat31);
+		score3.addFeatures(qWordAn, feat32);
+		score3.addFeatures(qWordthe, feat33);
 
 		scores.add(score1);
 		scores.add(score2);
@@ -132,15 +143,17 @@ public class TestRanker extends TestCase {
 
 	@Test
 	public void testRankDocumentsOnLinkCount() {
+		QueryWord qWordA = new QueryWord("a");
+		
 		List<DocumentScore> scores = new ArrayList<DocumentScore>();
 		DocumentScore score1 = new DocumentScore(1);
 		DocumentFeatures feat1 = new DocumentFeatures();
 		feat1.setLinkCount(3);
-		score1.addFeatures("a", feat1);
+		score1.addFeatures(qWordA, feat1);
 		DocumentScore score2 = new DocumentScore(2);
 		DocumentFeatures feat2 = new DocumentFeatures();
 		feat2.setLinkCount(2);
-		score2.addFeatures("a", feat2);
+		score2.addFeatures(qWordA, feat2);
 
 		scores.add(score1);
 		scores.add(score2);
@@ -156,22 +169,26 @@ public class TestRanker extends TestCase {
 
 	@Test
 	public void testRankDocumentsOnLinkCountForMultipleFeatures() {
+		QueryWord qWordA = new QueryWord("a");
+		QueryWord qWordAn = new QueryWord("an");
+		QueryWord qWordthe = new QueryWord("the");
+		
 		List<DocumentScore> scores = new ArrayList<DocumentScore>();
 		DocumentScore score1 = new DocumentScore(1);
 		DocumentFeatures feat11 = new DocumentFeatures();
 		feat11.setLinkCount(5);
 		DocumentFeatures feat12 = new DocumentFeatures();
 		feat12.setLinkCount(3);
-		score1.addFeatures("a", feat11);
-		score1.addFeatures("b", feat12);
+		score1.addFeatures(qWordA, feat11);
+		score1.addFeatures(qWordAn, feat12);
 
 		DocumentScore score2 = new DocumentScore(2);
 		DocumentFeatures feat21 = new DocumentFeatures();
 		feat21.setLinkCount(2);
 		DocumentFeatures feat22 = new DocumentFeatures();
 		feat22.setLinkCount(3);
-		score2.addFeatures("a", feat21);
-		score2.addFeatures("b", feat22);
+		score2.addFeatures(qWordA, feat21);
+		score2.addFeatures(qWordAn, feat22);
 
 		DocumentScore score3 = new DocumentScore(3);
 		DocumentFeatures feat31 = new DocumentFeatures();
@@ -180,9 +197,9 @@ public class TestRanker extends TestCase {
 		feat32.setLinkCount(1);
 		DocumentFeatures feat33 = new DocumentFeatures();
 		feat33.setLinkCount(3);
-		score3.addFeatures("a", feat31);
-		score3.addFeatures("b", feat32);
-		score3.addFeatures("c", feat33);
+		score3.addFeatures(qWordA, feat31);
+		score3.addFeatures(qWordAn, feat32);
+		score3.addFeatures(qWordthe, feat33);
 
 		scores.add(score1);
 		scores.add(score2);
@@ -200,16 +217,18 @@ public class TestRanker extends TestCase {
 
 	@Test
 	public void testRankDocumentsOnMeta() {
+		QueryWord qWordA = new QueryWord("a");
+		
 		List<DocumentScore> scores = new ArrayList<DocumentScore>();
 		DocumentScore score1 = new DocumentScore(1);
 		DocumentFeatures feat1 = new DocumentFeatures();
 		feat1.setMetaTagCount(1);
-		score1.addFeatures("a", feat1);
+		score1.addFeatures(qWordA, feat1);
 		
 		DocumentScore score2 = new DocumentScore(2);
 		DocumentFeatures feat2 = new DocumentFeatures();
 		feat2.setMetaTagCount(2);
-		score2.addFeatures("a", feat2);
+		score2.addFeatures(qWordA, feat2);
 
 		scores.add(score1);		
 		scores.add(score2);
@@ -225,15 +244,17 @@ public class TestRanker extends TestCase {
 
 	@Test
 	public void testRankDocumentsOnHeaderCount() {
+		QueryWord qWordA = new QueryWord("a");
+		
 		List<DocumentScore> scores = new ArrayList<DocumentScore>();
 		DocumentScore score1 = new DocumentScore(1);
 		DocumentFeatures feat1 = new DocumentFeatures();
 		feat1.setHeaderCount(1);
-		score1.addFeatures("a", feat1);
+		score1.addFeatures(qWordA, feat1);
 		DocumentScore score2 = new DocumentScore(2);
 		DocumentFeatures feat2 = new DocumentFeatures();
 		feat2.setHeaderCount(2);
-		score2.addFeatures("a", feat2);
+		score2.addFeatures(qWordA, feat2);
 
 		scores.add(score1);
 		scores.add(score2);
@@ -250,19 +271,22 @@ public class TestRanker extends TestCase {
 	@Test
 	public void testRankDocumentsOnQueryWordMatchCount() {
 		//QUERY - "Some random query"
+		QueryWord qWordA = new QueryWord("some");
+		QueryWord qWordAn = new QueryWord("random");
+		QueryWord qWordthe = new QueryWord("query");
 		
 		List<DocumentScore> scores = new ArrayList<DocumentScore>();
 		DocumentScore score1 = new DocumentScore(1);
 		DocumentFeatures feat1 = new DocumentFeatures();
 		feat1.setMetaTagCount(1);
-		score1.addFeatures("some", feat1);
-		score1.addFeatures("random", feat1);
-		score1.addFeatures("query", feat1);
+		score1.addFeatures(qWordA, feat1);
+		score1.addFeatures(qWordAn, feat1);
+		score1.addFeatures(qWordthe, feat1);
 		
 		DocumentScore score2 = new DocumentScore(2);
 		DocumentFeatures feat2 = new DocumentFeatures();
 		feat2.setTotalCount(3);
-		score2.addFeatures("random", feat2);
+		score2.addFeatures(qWordAn, feat2);
 
 		scores.add(score1);
 		scores.add(score2);
@@ -279,45 +303,53 @@ public class TestRanker extends TestCase {
 	
 	@Test
 	public void testRankDocumentsOnPosition() {
-		List<String> query = Arrays.asList("some random query".split(" "));
+		QueryWord qWordA = new QueryWord("some");
+		QueryWord qWordAn = new QueryWord("random");
+		QueryWord qWordthe = new QueryWord("query");
+		
+		List<QueryWord> query = new ArrayList<>();
+		query.add(qWordA);
+		query.add(qWordAn);
+		query.add(qWordthe);
+		
 		List<DocumentScore> scores = new ArrayList<DocumentScore>();
 		DocumentScore score1 = new DocumentScore(1);
 		DocumentFeatures feat11 = new DocumentFeatures();
 		Set<Integer> pos1 = new HashSet<Integer>();
 		pos1.add(23);
 		feat11.setPositions(pos1);
-		score1.addFeatures("some", feat11);
+		score1.addFeatures(qWordA, feat11);
 		
 		DocumentFeatures feat12 = new DocumentFeatures();
 		Set<Integer> pos2 = new HashSet<Integer>();
 		pos2.add(25);
 		feat12.setPositions(pos2);
-		score1.addFeatures("random", feat12);
+		score1.addFeatures(qWordAn, feat12);
 		
 		DocumentFeatures feat13 = new DocumentFeatures();
 		Set<Integer> pos3 = new HashSet<Integer>();
 		pos3.add(28);
 		feat13.setPositions(pos3);
-		score1.addFeatures("query", feat13);
+		score1.addFeatures(qWordthe, feat13);
 		
 		DocumentScore score2 = new DocumentScore(2);
 		DocumentFeatures feat21 = new DocumentFeatures();
 		Set<Integer> pos21 = new HashSet<Integer>();
 		pos21.add(1);
 		feat21.setPositions(pos21);
-		score2.addFeatures("some", feat21);
+		score2.addFeatures(qWordA, feat21);
 		
 		DocumentFeatures feat22 = new DocumentFeatures();
 		Set<Integer> pos22 = new HashSet<Integer>();
 		pos22.add(24);
 		feat22.setPositions(pos22);
-		score2.addFeatures("random", feat22);
+		score2.addFeatures(qWordAn, feat22);
 		
 		DocumentFeatures feat23 = new DocumentFeatures();
 		Set<Integer> pos23 = new HashSet<Integer>();
 		pos23.add(55);
 		feat23.setPositions(pos23);
-		score2.addFeatures("query", feat23);
+		score2.addFeatures(qWordthe, feat23);
 
 		scores.add(score1);
 		scores.add(score2);
@@ -334,7 +366,15 @@ public class TestRanker extends TestCase {
 	@Test
 	public void testRankDocumentsOnUrlCount() {
 		//QUERY - "Some random query"
-		List<String> query = Arrays.asList("some random query".split(" "));
+		QueryWord qWordA = new QueryWord("some");
+		QueryWord qWordAn = new QueryWord("random");
+		QueryWord qWordthe = new QueryWord("query");
+		
+		List<QueryWord> query = new ArrayList<>();
+		query.add(qWordA);
+		query.add(qWordAn);
+		query.add(qWordthe);
+		
 		Map<Integer, String> docMap = new HashMap<>();
 		docMap.put(1, "some_random");
 		docMap.put(2,  "query");
@@ -342,19 +382,19 @@ public class TestRanker extends TestCase {
 		DocumentScore score1 = new DocumentScore(1);
 		DocumentFeatures feat1 = new DocumentFeatures();
 		feat1.setMetaTagCount(1);
-		score1.addFeatures("some", feat1);
-		score1.addFeatures("random", feat1);
-		score1.addFeatures("query", feat1);
+		score1.addFeatures(qWordA, feat1);
+		score1.addFeatures(qWordAn, feat1);
+		score1.addFeatures(qWordthe, feat1);
 		
 		DocumentScore score2 = new DocumentScore(2);
 		DocumentFeatures feat2 = new DocumentFeatures();
 		feat2.setTotalCount(3);
-		score2.addFeatures("random", feat2);
+		score2.addFeatures(qWordAn, feat2);
 
 		scores.add(score1);
 		scores.add(score2);
 		
-		Ranker rankerUrlCount = new RankerUrlCount(scores, query, docMap);
+		Ranker rankerUrlCount = new RankerUrlCount(scores, query);
 		rankerUrlCount.computeRank();
 		List<Double> ranks = rankerUrlCount.getRanks();
 		
@@ -580,4 +620,7 @@ public class TestRanker extends TestCase {
 //		assertEquals(2, rankedScores.get(1).getDocId());
 //		assertEquals(Integer.MAX_VALUE, Math.round(rankedScores.get(1).getScore()));
 //	}
+//
+	
 }
+

@@ -20,16 +20,16 @@ public class TestSearchEngine extends TestCase {
 
 	@Test
 	public void testGetDocumentScoresForQueryAndInvertedIndex() {
-		List<String> query = Arrays.asList("a an the".split(" "));
-		List<QueryWord> processedQuery = new ArrayList<>();
-		QueryWord qwA = new QueryWord("a");
-		QueryWord qwAn = new QueryWord("an");
-		QueryWord qwThe = new QueryWord("the");
-		
-		processedQuery.add(qwA);
-		processedQuery.add(qwAn);
-		processedQuery.add(qwThe);
 
+		QueryWord qWordA = new QueryWord("a");
+		QueryWord qWordAn = new QueryWord("an");
+		QueryWord qWordthe = new QueryWord("the");
+		
+		List<QueryWord> query = new ArrayList<>();
+		query.add(qWordA);
+		query.add(qWordAn);		
+		query.add(qWordthe);
+		
 		DocumentFeatures feat1 = new DocumentFeatures();
 		feat1.setDocId(1);
 		DocumentFeatures feat2 = new DocumentFeatures();
@@ -53,11 +53,12 @@ public class TestSearchEngine extends TestCase {
 		feats2.add(feat6);
 
 		Map<QueryWord, List<DocumentFeatures>> invertedIndex = new HashMap<>();
-		invertedIndex.put(qwA, feats1);
-		invertedIndex.put(qwAn, feats2);
-		invertedIndex.put(qwThe, new ArrayList<DocumentFeatures>()); // a result for a query
+
+		invertedIndex.put(qWordA, feats1);
+		invertedIndex.put(qWordAn, feats2);
+		invertedIndex.put(qWordthe, new ArrayList<DocumentFeatures>()); // a result for a query
 																	 // word can't be null
-		SearchEngine searchAPI = new SearchEngine(processedQuery, invertedIndex, 1000);
+		SearchEngine searchAPI = new SearchEngine(query, invertedIndex, 1000);
 		List<DocumentScore> results = 
 			searchAPI.formDocumentScoresForQueryFromInvertedIndex();
 		

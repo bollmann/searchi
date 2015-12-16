@@ -10,7 +10,7 @@ public class TestDocumentIDs extends TestCase {
 	
 	@Test
 	public void testAccess() {
-		DocumentIDs docIds = new DocumentIDs();
+		DocumentIDs docIds = DocumentIDs.getInstance();
 		String url1 = docIds.getURLFor(9999);
 		String url2 = docIds.getURLFor(18000);
 		

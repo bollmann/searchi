@@ -5,7 +5,8 @@ var jade = require('jade');
 var path = require('path');
 
 router.get('/', function(req, res, next) {
-	res.render('test');
+	var htmlResults = jade.renderFile(path.join(__dirname, '../views/imageResults.jade'), {q: req.query.q})
+	res.send(htmlResults)
 });
 
 module.exports = router;
