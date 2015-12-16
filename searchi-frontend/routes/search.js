@@ -12,7 +12,7 @@ router.get('/', function(req, res, next) {
   request(url, function(err, resp, body){
   	if(body && typeof body != 'undefined' && body.indexOf('<') < 0){
   		body = JSON.parse(body);
-  		if(body.indexer.0)
+  		if(body.indexer)
   			htmlResults = jade.renderFile(path.join(__dirname, '../views/resultsList.jade'), body)
   		else
   			htmlResults = jade.renderFile(path.join(__dirname, '../views/noResults.jade'), {query: req.query.q})
