@@ -174,7 +174,12 @@ public class SearchEngineInterface extends HttpServlet {
 		Map<String, Double> indexerScore = new HashMap<String, Double>(1000);
 
 		try {
-
+			for (DocumentScore doc : rankedDocs) {
+				String url = dId.getURLFor(doc.getDocId());
+				indexerScore.put(url, (double) doc.getScore());
+				lookupList.add(url);
+			}
+			
 			int resultCount = 0;
 			for (DocumentScore doc : rankedDocs) {
 				SearchResult sr = new SearchResult();
@@ -184,8 +189,7 @@ public class SearchEngineInterface extends HttpServlet {
 				sr.setScore(doc.getScore());
 				sr.setSnippet(doc.toString());
 				indexerResultMap.put(String.valueOf(resultCount), sr.toMap());
-				indexerScore.put(url, (double) doc.getScore());
-				lookupList.add(url);
+				
 				resultCount++;
 				if (resultCount >= resultCount) {
 					break;
@@ -215,11 +219,7 @@ public class SearchEngineInterface extends HttpServlet {
 			endTime = Calendar.getInstance().getTime();
 			logger.info("Domain ranking took "
 					+ printTimeDiff(startTime, endTime));
-
-			for(DocumentScore doc: rankedDocs){
-				String url = dId.getURLFor(doc.getDocId());
-				lookupList.add(url);
-			}
+			
 			
 			Map<String, Map<String, String>> pageRankResultMap = new HashMap<String, Map<String, String>>();
 			resultCount = 0;

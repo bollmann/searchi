@@ -126,18 +126,20 @@ public class IndexerClientServlet extends HttpServlet {
 			for(DocumentScore doc: rankedDocs){
 				String url = dId.getURLFor(doc.getDocId());
 				lookupList.add(url);
+				indexerScore.put(url, (double) doc.getScore());
 			}
 			
 			int resultCount = 0;
 			for (DocumentScore doc : rankedDocs) {
 				SearchResult sr = new SearchResult();
 				// lookup id to get document
+				
 				String url = dId.getURLFor(doc.getDocId());
 				sr.setUrl(url);
 				sr.setScore(doc.getScore());
 				sr.setSnippet(doc.toHtml());
 				buffer.append("<li>" + sr.toHtml() + "</li>");
-				indexerScore.put(url, (double) doc.getScore());				
+								
 				resultCount++;
 				if (resultCount > 10) {
 					break;
@@ -163,6 +165,7 @@ public class IndexerClientServlet extends HttpServlet {
 
 			List<SearchResult> drResults = SearchEngineUtils
 					.getSortedSearchResultUsingScores(domainRankScore);
+			
 			Date endTime = Calendar.getInstance().getTime();
 			logger.info("Sorted search results - " + drResults.size()+ " -- ");
 			logger.info("Domain ranking took "+ SearchEngineUtils.printTimeDiff(startTime, endTime));
