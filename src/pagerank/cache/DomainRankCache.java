@@ -33,10 +33,12 @@ public final class DomainRankCache {
 	}
 	
 	public static DomainRankCache getInstance() {
-		if (drCache == null) {
+		logger.info("DOmainRankCache is " + drCache);
+		if (drCache == null) {			
 			drCache = new DomainRankCache();
 			drCache.loadFromDB(PRCreateTable.DR_TABLE_NAME);
 		}
+		
 		logger.info("Instantiated the DomainRank cache");
 		return drCache;
 	}
