@@ -10,7 +10,7 @@ router.get('/', function(req, res, next) {
   var ips = JSON.parse(fs.readFileSync('ips.json', 'utf8'))
   var url = ips.servlet + "searchInterface?q=" + req.query.q
   request(url, function(err, resp, body){
-  	if(body && typeof body != 'undefined' && body.indexOf('<') > 2){
+  	if(body && typeof body != 'undefined' && body.indexOf('<') < 0){
   		body = JSON.parse(body);
   		if(body.indexer)
   			htmlResults = jade.renderFile(path.join(__dirname, '../views/resultsList.jade'), body)
