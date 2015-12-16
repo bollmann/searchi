@@ -6,9 +6,11 @@ import indexer.db.dao.DocumentFeatures;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -93,6 +95,25 @@ public final class SearchEngine {
 		return documentList;
 	}
 
+	/** Hacky static method to support image search. It wraps documents in 
+	 * document scores with inverted index data */
+	public static List<String> formDocumentScoresForQueryFromImageIndex(List<QueryWord> query,
+			Map<QueryWord, List<String>> invertedIndexMap) {
+		Set<String> seenUrls = new HashSet<>();
+		Logger logger = Logger.getLogger(SearchEngine.class);
+		for (QueryWord qword : query) {
+		
+			List<String> docs = invertedIndexMap.get(qword);
+			
+			for(String imageUrl : docs) {
+				if(!seenUrls.contains(imageUrl)) {
+					seenUrls.add(imageUrl);
+				}
+			}
+		}
+		List<String> documentList = new ArrayList<String>(seenUrls);
+		return documentList;
+	}
 	/**
 	 * Returns final ranked documents using weighted combination
 	 * of different rankers.

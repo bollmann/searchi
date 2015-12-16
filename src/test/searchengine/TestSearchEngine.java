@@ -20,6 +20,7 @@ public class TestSearchEngine extends TestCase {
 
 	@Test
 	public void testGetDocumentScoresForQueryAndInvertedIndex() {
+
 		QueryWord qWordA = new QueryWord("a");
 		QueryWord qWordAn = new QueryWord("an");
 		QueryWord qWordthe = new QueryWord("the");
@@ -52,6 +53,7 @@ public class TestSearchEngine extends TestCase {
 		feats2.add(feat6);
 
 		Map<QueryWord, List<DocumentFeatures>> invertedIndex = new HashMap<>();
+
 		invertedIndex.put(qWordA, feats1);
 		invertedIndex.put(qWordAn, feats2);
 		invertedIndex.put(qWordthe, new ArrayList<DocumentFeatures>()); // a result for a query
@@ -69,5 +71,39 @@ public class TestSearchEngine extends TestCase {
 			}
 		}
 
+	}
+	
+	@Test
+	public void testFormDocumentScoresForQueryFromImageIndex() {
+		List<QueryWord> processedQuery = new ArrayList<>();
+		QueryWord qwA = new QueryWord("a");
+		QueryWord qwAn = new QueryWord("an");
+		QueryWord qwThe = new QueryWord("the");
+		
+		processedQuery.add(qwA);
+		processedQuery.add(qwAn);
+		processedQuery.add(qwThe);
+		
+
+		List<String> feats1 = new ArrayList<>();
+		feats1.add("1");
+		feats1.add("2");
+		
+
+		List<String> feats2 = new ArrayList<>();
+		feats2.add("2");
+		feats2.add("3");
+		
+		List<String> feats3 = new ArrayList<>();
+		feats3.add("3");
+		
+		Map<QueryWord, List<String>> invertedIndexMap = new HashMap<>();
+		invertedIndexMap.put(qwA, feats1);
+		invertedIndexMap.put(qwAn, feats2);
+		invertedIndexMap.put(qwThe, feats3);
+		
+		List<String> result = SearchEngine.formDocumentScoresForQueryFromImageIndex(processedQuery, invertedIndexMap);
+		
+		System.out.println(result);
 	}
 }
