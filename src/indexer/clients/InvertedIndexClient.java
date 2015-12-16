@@ -96,7 +96,7 @@ public class InvertedIndexClient {
 	public Map<QueryWord, List<DocumentFeatures>> getInvertedIndexForQueryMultiThreaded(
 			List<QueryWord> query) {
 		Map<QueryWord, List<DocumentFeatures>> wordDocumentInfoMap = new HashMap<>();
-		logger.info("Starting an es of size " + query.size());
+//		logger.info("Starting an es of size " + query.size());
 		if (query.size() <= 0) {
 			return wordDocumentInfoMap;
 		}
@@ -120,7 +120,7 @@ public class InvertedIndexClient {
 			List<QueryWord> query) {
 		Map<QueryWord, List<String>> wordImageInfoMap = 
 			new HashMap<>();
-		logger.info("Starting an es of size " + query.size());
+//		logger.info("Starting an es of size " + query.size());
 		if(query.size() <= 0) {
 			return wordImageInfoMap;
 		}

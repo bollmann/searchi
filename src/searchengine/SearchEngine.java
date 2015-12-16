@@ -101,9 +101,9 @@ public final class SearchEngine {
 			Map<QueryWord, List<String>> invertedIndexMap) {
 		Set<String> seenUrls = new HashSet<>();
 		Logger logger = Logger.getLogger(SearchEngine.class);
-		for (QueryWord qword : query) {
-		
-			List<String> docs = invertedIndexMap.get(qword);
+		for (Entry<QueryWord, List<String>> entry : invertedIndexMap.entrySet()) {
+//			logger.info("Getting docs for " + entry.getKey());
+			List<String> docs = entry.getValue();
 			
 			for(String imageUrl : docs) {
 				if(!seenUrls.contains(imageUrl)) {

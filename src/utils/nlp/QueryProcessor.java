@@ -1,7 +1,6 @@
 package utils.nlp;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -99,7 +98,7 @@ public class QueryProcessor {
 		Map<String, String> posMap = getPOSMap(query);
 //		logger.info(posMap);
 		for (Entry<String, String> entry : posMap.entrySet()) {
-			logger.info("Word " + entry.getKey() + " POS " + entry.getValue());
+//			logger.info("Word " + entry.getKey() + " POS " + entry.getValue());
 			if(posRankMap.containsKey(entry.getValue())) {
 				rankMap.put(entry.getKey(), posRankMap.get(entry.getValue()));
 			}
@@ -184,7 +183,7 @@ public class QueryProcessor {
 					qWord.setnGramSize(entry.getKey());
 					double weight = 0.0;
 					for (String word : wordString.split(" ")) {
-						logger.info("Weighting " + word + " from " + wordRanks);
+//						logger.info("Weighting " + word + " from " + wordRanks);
 						if(wordRanks.containsKey(word)) {
 							weight += wordRanks.get(word);
 						} else {

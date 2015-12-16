@@ -3,14 +3,9 @@ package searchengine.servlets;
 import indexer.DocumentScore;
 import indexer.api.DocumentIDs;
 import indexer.clients.InvertedIndexClient;
-import indexer.db.dao.DocumentFeatures;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.ArrayList;
@@ -51,26 +46,29 @@ public class SearchEngineInterface extends HttpServlet {
 		gson = new Gson();
 		dId = (DocumentIDs) getServletContext().getAttribute("forwardIndex");
 		Date startTime, endTime;
-		if(dId == null) {
-			
+		if (dId == null) {
+
 			startTime = Calendar.getInstance().getTime();
 			dId = DocumentIDs.getInstance();
 			endTime = Calendar.getInstance().getTime();
-			logger.info("DocumentIds load took " + printTimeDiff(startTime, endTime));
+			logger.info("DocumentIds load took "
+					+ printTimeDiff(startTime, endTime));
 			getServletContext().setAttribute("forwardIndex", dId);
 		}
 		iic = InvertedIndexClient.getInstance();
-		startTime = Calendar.getInstance().getTime();;
+		startTime = Calendar.getInstance().getTime();
+		
 		pageRank = new PageRankAPI();
 		endTime = Calendar.getInstance().getTime();
 		logger.info("Page rank load took " + printTimeDiff(startTime, endTime));
 		startTime = Calendar.getInstance().getTime();
 		queryProcessor = QueryProcessor.getInstance();
 		endTime = Calendar.getInstance().getTime();
-		logger.info("Query processor load took " + printTimeDiff(startTime, endTime));
+		logger.info("Query processor load took "
+				+ printTimeDiff(startTime, endTime));
 
 	}
-	
+
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
@@ -88,18 +86,20 @@ public class SearchEngineInterface extends HttpServlet {
 					List<String> query = Arrays.asList(queryStr.split("\\s+"));
 					List<QueryWord> processedQuery = queryProcessor
 							.getProcessedQuery(query, 1);
-					
+
 					Map<QueryWord, List<String>> imageIndex = iic
 							.getImageIndexForQueryMultiThreaded(processedQuery);
 
 					List<String> rankedDocs = SearchEngine
-							.formDocumentScoresForQueryFromImageIndex(processedQuery, imageIndex);
+							.formDocumentScoresForQueryFromImageIndex(
+									processedQuery, imageIndex);
+//					logger.info("Ranked docs:" + rankedDocs);
 					int results = 0;
 					for (String doc : rankedDocs) {
 						Map<String, String> map = new HashMap<>();
 						map.put("url", doc);
 						resultList.add(map);
-						if(results >= 0) {
+						if (results >= 20) {
 							break;
 						}
 					}
@@ -156,8 +156,8 @@ public class SearchEngineInterface extends HttpServlet {
 		/********************* Get Inverted Index for Query words *************************/
 
 		Date startTime = Calendar.getInstance().getTime();
-		List<DocumentScore> rankedDocs = 
-			SearchEngineUtils.getRankedIndexerResults(processedQuery);
+		List<DocumentScore> rankedDocs = SearchEngineUtils
+				.getRankedIndexerResults(processedQuery);
 
 		Date endTime = Calendar.getInstance().getTime();
 
