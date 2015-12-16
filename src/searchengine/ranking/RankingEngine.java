@@ -93,6 +93,12 @@ public final class RankingEngine {
 			rankerPosition.setWeight(rankerSet.get(RankerType.RANKER_POSITION));
 			rankers.add(rankerPosition);
 		}
+		
+		if (rankerSet.containsKey(RankerType.RANKER_URLCOUNT)) {
+			Ranker rankerUrlCount = new RankerUrlCount(documentList, query);
+			rankerUrlCount.setWeight(rankerSet.get(RankerType.RANKER_URLCOUNT));
+			rankers.add(rankerUrlCount);
+		}
 
 		// Mulithreaded ranker execution
 		ExecutorService es = Executors.newFixedThreadPool(rankers.size());
@@ -102,7 +108,7 @@ public final class RankingEngine {
 
 		es.shutdown();
 		try {
-			es.awaitTermination(1, TimeUnit.MINUTES);
+			es.awaitTermination(10, TimeUnit.MINUTES);
 		} catch (InterruptedException e) {
 			throw new Exception(e);
 		}

@@ -1,7 +1,5 @@
 package indexer.api;
 
-
-
 import indexer.db.dao.DocumentIndex;
 
 import java.util.HashMap;
@@ -16,10 +14,12 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 /**
  * Provides an in-memory, read-only view of the DocumentIDs table.
  */
-public class DocumentIDs {
+public final class DocumentIDs {
+	private static DocumentIDs dId;
+	
 	private Map<Integer, String> docIDs;
 	
-	public DocumentIDs() {
+	private DocumentIDs() {
 		 docIDs = new HashMap<Integer, String>();
 		 DynamoDBMapper db = DynamoDBUtils.connectDB();
 		 
@@ -30,7 +30,14 @@ public class DocumentIDs {
 		 }
 	}
 	
-	Map<Integer, String> getDocumentIDs() {
+	public static DocumentIDs getInstance() {
+		if  (dId == null) {
+			dId = new DocumentIDs();			
+		}
+		return dId;
+	}
+	
+	public Map<Integer, String> getDocumentIDs() {
 		return docIDs;
 	}
 	

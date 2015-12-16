@@ -3,6 +3,7 @@ package test.indexer;
 import indexer.clients.InvertedIndexClient;
 import indexer.db.dao.DocumentFeatures;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -13,15 +14,23 @@ import junit.framework.TestCase;
 
 import org.junit.Test;
 
+import searchengine.query.QueryWord;
+
 public class TestInvertedIndexClient extends TestCase {
 	
 	@Test
 	public void testInvertedIndexForQuery() {
 		InvertedIndexClient iic = InvertedIndexClient.getInstance();
-		List<String> query = Arrays.asList("some available query on barrack obama".split(" "));
+		List<String> words = Arrays.asList("some available query on barrack obama".split(" "));
+		List<QueryWord> query = new ArrayList<>();
+		
+		for (String word : words) {
+			query.add(new QueryWord(word));
+		}
+		
 		Date start, end;
 		start = Calendar.getInstance().getTime();
-		Map<String, List<DocumentFeatures>> results = iic.getInvertedIndexForQueryMultiThreaded(query);
+		Map<QueryWord, List<DocumentFeatures>> results = iic.getInvertedIndexForQueryMultiThreaded(query);
 		end = Calendar.getInstance().getTime();
 		System.out.println("Time taken for single threaded: " + (end.getTime() - start.getTime()));
 //		System.out.println(results.size());

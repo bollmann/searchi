@@ -27,6 +27,7 @@ public class QueryWord {
 
 	public QueryWord(String word) {
 		this.word = word;
+		this.weight = 1.0;
 	}
 
 	public String getWord() {
@@ -36,11 +37,6 @@ public class QueryWord {
 	@Override
 	public String toString() {
 		return "word:" + word + " " + nGramSize + "-gram weight:" + weight;
-	}
-
-	public double getWeight() {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 
 }

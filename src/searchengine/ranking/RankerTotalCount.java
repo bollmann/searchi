@@ -69,7 +69,7 @@ public final class RankerTotalCount extends Ranker {
 		this.normalize = bool;
 	}
 
-	public static double combineTotalCounts(
+	private double combineTotalCounts(
 			Map<QueryWord, DocumentFeatures> wordFeatures) {
 		double result = 0;
 		

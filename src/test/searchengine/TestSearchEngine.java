@@ -14,13 +14,21 @@ import junit.framework.TestCase;
 import org.junit.Test;
 
 import searchengine.SearchEngine;
+import searchengine.query.QueryWord;
 
 public class TestSearchEngine extends TestCase {
 
 	@Test
 	public void testGetDocumentScoresForQueryAndInvertedIndex() {
-		List<String> query = Arrays.asList("a an the".split(" "));
-
+		QueryWord qWordA = new QueryWord("a");
+		QueryWord qWordAn = new QueryWord("an");
+		QueryWord qWordthe = new QueryWord("the");
+		
+		List<QueryWord> query = new ArrayList<>();
+		query.add(qWordA);
+		query.add(qWordAn);		
+		query.add(qWordthe);
+		
 		DocumentFeatures feat1 = new DocumentFeatures();
 		feat1.setDocId(1);
 		DocumentFeatures feat2 = new DocumentFeatures();
@@ -43,10 +51,10 @@ public class TestSearchEngine extends TestCase {
 		feats2.add(feat5);
 		feats2.add(feat6);
 
-		Map<String, List<DocumentFeatures>> invertedIndex = new HashMap<String, List<DocumentFeatures>>();
-		invertedIndex.put("a", feats1);
-		invertedIndex.put("an", feats2);
-		invertedIndex.put("the", new ArrayList<DocumentFeatures>()); // a result for a query
+		Map<QueryWord, List<DocumentFeatures>> invertedIndex = new HashMap<>();
+		invertedIndex.put(qWordA, feats1);
+		invertedIndex.put(qWordAn, feats2);
+		invertedIndex.put(qWordthe, new ArrayList<DocumentFeatures>()); // a result for a query
 																	 // word can't be null
 		SearchEngine searchAPI = new SearchEngine(query, invertedIndex, 1000);
 		List<DocumentScore> results = 

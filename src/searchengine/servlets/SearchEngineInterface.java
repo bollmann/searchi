@@ -51,7 +51,7 @@ public class SearchEngineInterface extends HttpServlet {
 		gson = new Gson();
 		dId = (DocumentIDs) getServletContext().getAttribute("forwardIndex");
 		if(dId == null) {
-			dId = new DocumentIDs();
+			dId = DocumentIDs.getInstance();
 			getServletContext().setAttribute("forwardIndex", dId);
 		}
 		iic = InvertedIndexClient.getInstance();
