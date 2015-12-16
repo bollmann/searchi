@@ -48,24 +48,32 @@ public class SearchEngineInterface extends HttpServlet {
 
 	@Override
 	public void init() {
-		Date startTime = Calendar.getInstance().getTime();
 		gson = new Gson();
 		dId = (DocumentIDs) getServletContext().getAttribute("forwardIndex");
-
+		Date startTime, endTime;
 		if(dId == null) {
+			
+			startTime = Calendar.getInstance().getTime();
 			dId = DocumentIDs.getInstance();
+			endTime = Calendar.getInstance().getTime();
+			logger.info("DocumentIds load took " + printTimeDiff(startTime, endTime));
 			getServletContext().setAttribute("forwardIndex", dId);
 		}
 		iic = InvertedIndexClient.getInstance();
+		startTime = Calendar.getInstance().getTime();;
 		pageRank = new PageRankAPI();
+		endTime = Calendar.getInstance().getTime();
+		logger.info("Page rank load took " + printTimeDiff(startTime, endTime));
+		startTime = Calendar.getInstance().getTime();
 		queryProcessor = QueryProcessor.getInstance();
+		endTime = Calendar.getInstance().getTime();
+		logger.info("Query processor load took " + printTimeDiff(startTime, endTime));
 		try {
 			frontendIP = new URL(getFrontendIP());
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
-		Date endTime = Calendar.getInstance().getTime();
-		logger.info("Init took " + printTimeDiff(startTime, endTime));
+
 	}
 
 	private String getFrontendIP() {

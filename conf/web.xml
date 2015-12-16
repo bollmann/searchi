@@ -13,7 +13,7 @@
     
     <servlet-mapping>
         <servlet-name>SearchEngineInterface</servlet-name>
-        <url-pattern>/searchInterface</url-pattern>
+        <url-pattern>/searchInterface/*</url-pattern>
     </servlet-mapping>
 
 </web-app>
