@@ -7,7 +7,9 @@ var fs = require('fs');
 
 
 router.get('/', function(req, res, next) {
-  res.render('test')
+  var results = JSON.parse(fs.readFileSync('results.json'))
+  console.log(results.combined)
+  res.render('test', {results: results.combined})
 });
 
 module.exports = router;

@@ -19,17 +19,17 @@ html
             a(href='#', aria-label='Next')
               span(aria-hidden='true') »
 
-    .contents
-      .content
-        h1 1
-      .content
-        h1 2
-      .content
-        h1 3
-      .content
-        h1 4
-      .content
-        h1 5
+      .list-group
+        .contents
+          for result in results
+            if result.url
+              .content
+                a.list-group-item('href'=result.url)
+                  h4.text-primary= result.url
+                  p.list-group-item-text(url= result.url) ...
+                  p.small Rank: 
+                    b= result.rank
+
 
 
 

@@ -1,5 +1,5 @@
 $( document ).ready(function() { 
-    pageSize = 1;
+    pageSize = 100;
     pagesCount = $(".content").length;
     var currentPage = 1;
     
@@ -37,7 +37,7 @@ $( document ).ready(function() {
     $(".pagination li.pageNext").click(function() {
         if($(this).prev().is('.active')) return;
         $('.pageNumbers.active').removeClass('active').next().addClass('active');
-        currentPage = currentPage < totalPages ? (currentPage+1) : totalPages;
+        currentPage = currentPage < totalPages ? (currentPage + 1) : totalPages;
         showPage();
     });
 });

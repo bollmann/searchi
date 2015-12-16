@@ -1,0 +1,44 @@
+ul.nav.nav-pills(role='tablist')
+  li.active(role='presentation')
+    a(href='#indexer', aria-controls='indexer', role='tab', data-toggle='tab') Indexer
+  li(role='presentation')
+    a(href='#pagerank', aria-controls='pagerank', role='tab', data-toggle='tab') PageRank
+  li(role='presentation')
+    a(href='#combined', aria-controls='combined', role='tab', data-toggle='tab') Combined
+// Tab panes
+.tab-content
+  #indexer.tab-pane.active.fade.in(role='tabpanel')
+
+    //- br
+    //- h1.small Results fetched in #{indexer.time.time}ms
+    //- .list-group
+    //-   each result in indexer
+    //-     if result.url
+    //-       a.list-group-item('href'=result.url)
+    //-         h4.text-primary= result.url
+    //-         p.list-group-item-text(url= result.url) ...
+    //-         p.small Rank: 
+    //-           b= result.rank
+
+  #pagerank.tab-pane.fade(role='tabpanel')
+    //- br 
+    //- h1.small Results fetched in #{pagerank.time.time}ms
+    //- .list-group
+    //-   each result in pagerank
+    //-     if result.url
+    //-       a.list-group-item('href'=result.url)
+    //-         h4.text-primary= result.url
+    //-         p.list-group-item-text(url= result.url) ...
+    //-         p.small Rank: 
+    //-           b= result.rank
+
+  #combined.tab-pane.fade(role='tabpanel')
+    br
+    .list-group
+      each result in combined
+        if result.url
+          a.list-group-item('href'=result.url)
+            h4.text-primary= result.url
+            p.list-group-item-text(url= result.url) ...
+            p.small Rank: 
+              b= result.rank

@@ -12,9 +12,9 @@ router.get('/', function(req, res, next) {
   request(url, function(err, resp, body){
   	if(body && typeof body != 'undefined' && body.indexOf('<') < 0){
   		body = JSON.parse(body);
-      console.log(body)
-  		if(body.combined)
-  			htmlResults = jade.renderFile(path.join(__dirname, '../views/resultsList.jade'), body)
+      console.log('aaaa')
+      if(body.combined)
+  			htmlResults = jade.renderFile(path.join(__dirname, '../views/resultsList.jade'), {results: body.combined, query: req.query.q, count: Object.keys(body.combined).length - 1})
   		else
   			htmlResults = jade.renderFile(path.join(__dirname, '../views/noResults.jade'), {query: req.query.q})
   		res.send(htmlResults)
