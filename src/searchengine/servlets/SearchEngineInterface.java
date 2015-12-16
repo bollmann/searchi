@@ -216,11 +216,15 @@ public class SearchEngineInterface extends HttpServlet {
 			logger.info("Domain ranking took "
 					+ printTimeDiff(startTime, endTime));
 
+			for(DocumentScore doc: rankedDocs){
+				String url = dId.getURLFor(doc.getDocId());
+				lookupList.add(url);
+			}
+			
 			Map<String, Map<String, String>> pageRankResultMap = new HashMap<String, Map<String, String>>();
 			resultCount = 0;
 			for (SearchResult doc : pqueue) {
-				pageRankResultMap.put(String.valueOf(resultCount), doc.toMap());
-				lookupList.add(doc.getUrl());
+				pageRankResultMap.put(String.valueOf(resultCount), doc.toMap());				
 				resultCount++;
 				if (resultCount > resultCount) {
 					break;
@@ -241,7 +245,9 @@ public class SearchEngineInterface extends HttpServlet {
 			List<SearchResult> result = SearchEngineUtils.weightedMergeScores(
 					indexerScore, domainRankScore, weights);
 
+			logger.info("Initial combined results size " + result.size());
 			result = SearchEngineUtils.diversifyResults(result, 2);
+			logger.info("filtered combined results size " + result.size());
 			
 			resultCount = 0;
 			for (SearchResult doc : result) {

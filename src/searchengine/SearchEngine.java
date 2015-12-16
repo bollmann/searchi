@@ -132,9 +132,9 @@ public final class SearchEngine {
 		for (int ind = 0; ind < numDocs; ++ind) {
 			double score = 0;
 			
-			logger.info("Document Features - " + documentList.get(ind).getWordFeatures());
+			//logger.info("Document Features - " + documentList.get(ind).getWordFeatures());
 			for (Ranker ranker : rankers) {
-				logger.info("DocId - " + documentList.get(ind).getDocId() +" Ranker - " + ranker.getRankingName() + " score " + ranker.getRanks().get(ind));
+			//	logger.info("DocId - " + documentList.get(ind).getDocId() +" Ranker - " + ranker.getRankingName() + " score " + ranker.getRanks().get(ind));
 				
 				score += ranker.getRanks().get(ind) * ranker.getWeight();
 			}

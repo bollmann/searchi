@@ -171,6 +171,12 @@ public class SearchEngineUtils {
 			filteredList.add(result);
 
 		}
+		logger.info("Domain Count map " + domainCountMap);
+		
+		if (filteredList.size() < 10) {
+			logger.info("Very few results. No filtering done");
+			return resultList;
+		}
 
 		return filteredList;
 	}

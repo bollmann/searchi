@@ -131,8 +131,7 @@ public final class PageRankAPI {
 		} catch (Exception e) {
 			// Do Nothing - Try to find for page as is.
 		}
-
-		logger.info("Got in GetDomainRank");
+		
 		DRDao domainRank = (DRDao) dynamoWrapper.getItem(domain, DRDao.class);
 		if (domainRank == null) {
 			return 0.0;
@@ -153,8 +152,7 @@ public final class PageRankAPI {
 		if (page == null || page.isEmpty()) {
 			throw new IllegalArgumentException("Invalid page. Can't find domainrank score");
 		}
-
-		logger.info("Got in GetDomainRankCached");
+		
 		String domain = page.trim();
 		try {
 			domain = StringUtils.getDomainFromUrl(page);
