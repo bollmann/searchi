@@ -31,6 +31,7 @@ $(document).ready(function() {
 
 	var query = $('#searchBox').val();
 	var parameters = {q: query};
+	$('#localSearchBtn').addClass('active')
 	$.get('/search', parameters, function(data){
 		$('#searchResults').html(data);
 		loadResultSnippets(query);
@@ -105,6 +106,9 @@ function loadResultSnippets (query){
 }
 
 function insertSnippet(listElement, query){
+	if(!$('#localSearchBtn').hasClass('active'))
+		return false
+
 	var parameters = {url: $(listElement).attr('url')}
 	$.get('./snippet', parameters, function(data){
 		$(listElement).html(highlightSnippet(data, query))

@@ -1,31 +1,32 @@
 doctype html
-head
-  meta(charset='utf-8')
-  meta(http-equiv='X-UA-Compatible', content='IE=edge')
-  meta(name='viewport', content='width=device-width, initial-scale=1')
-  title Searchi | 404
-  link(href='/css/bootstrap.min.css', rel='stylesheet')
-  link(href='/css/error.css', rel='stylesheet')
+html
+  head
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    title Searchi | 404
+    link(href='/css/bootstrap.min.css', rel='stylesheet')
+    link(href='/css/error.css', rel='stylesheet')
 
-body
-  nav.navbar.navbar-default.navbar-fixed-top
+  body
+    nav.navbar.navbar-default.navbar-fixed-top
+      .container
+        .navbar-header
+            button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#navbar1', aria-expanded='false')
+              span.sr-only Toggle navigation
+              span.icon-bar
+              span.icon-bar
+              span.icon-bar
+            a.pull-left(href='/')
+              img#brandImg('alt'='Searchi', 'src'='/images/searchi_navbar.png')
+
     .container
-      .navbar-header
-          button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#navbar1', aria-expanded='false')
-            span.sr-only Toggle navigation
-            span.icon-bar
-            span.icon-bar
-            span.icon-bar
-          a.pull-left(href='/')
-            img#brandImg('alt'='Searchi', 'src'='/images/searchi_navbar.png')
-
-  .container
-    .jumbotron
-      h1 Oops, page not found!
-      br
-      p.lead The requested URL 
-        b
-          span #{url}
-        |  does not exist
-  script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js')
-  script(src='/js/bootstrap.min.js')
+      .jumbotron
+        h1 Oops, page not found!
+        br
+        p.lead The requested URL 
+          b
+            span #{url}
+          |  does not exist
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js')
+    script(src='/js/bootstrap.min.js')
