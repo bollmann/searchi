@@ -27,7 +27,10 @@ public final class PageRankAPI {
 		this.dynamoWrapper = DynamoDBWrapper.getInstance(
 				DynamoDBWrapper.US_EAST, DynamoDBWrapper.CLIENT_PROFILE);
 		this.drCache = DomainRankCache.getInstance();
-		this.prCache = PageRankCache.getInstance();
+		
+		// TODO Rethink this
+		this.prCache = null;//PageRankCache.getInstance();
+		
 	}
 
 	/**

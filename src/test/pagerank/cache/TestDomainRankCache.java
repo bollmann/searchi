@@ -12,11 +12,11 @@ import pagerank.cache.DomainRankCache;
 
 public class TestDomainRankCache extends TestCase {
 
-	@Test
-	public void testGetInstance() {
-		DomainRankCache cache = DomainRankCache.getInstance();
-		assertNotNull(cache);	
-	}
+//	@Test
+//	public void testGetInstance() {
+//		DomainRankCache cache = DomainRankCache.getInstance();
+//		assertNotNull(cache);	
+//	}
 
 	@Test
 	public void testLoadFromDB() throws IllegalArgumentException, MalformedURLException {
@@ -32,6 +32,28 @@ public class TestDomainRankCache extends TestCase {
 		Map<String, Double> ranks = cache.getDomainRanks();		
 		assertTrue(ranks.containsKey("intocareers.org"));
 		System.out.println(ranks.keySet().size());
+		
+		/** ------ Finding max and min domainrank -------*/
+		double maxScore = Double.MIN_VALUE;
+		double minScore = Double.MAX_VALUE;
+		String maxScPage = "";
+		String minScPage = "";
+		
+		for (String key : ranks.keySet()) {
+			double val = ranks.get(key);
+			if (Double.compare(val, maxScore ) > 0) {
+				 maxScore = val;
+				 maxScPage = key;
+			}
+			if (Double.compare(val, minScore ) < 0) {
+				minScore = val; 
+				minScPage = key;
+			}
+		}
+		
+		System.out.println("Max DomainScore is " + maxScore + " for " + maxScPage);
+		System.out.println("Min DomainScore is " + minScore + " for " + minScPage);
+		
 		
 		/** ------ Comparing Cache fetch vs DB fetch -------*/
 		

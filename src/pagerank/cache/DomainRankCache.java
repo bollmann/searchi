@@ -32,6 +32,7 @@ public final class DomainRankCache {
 		if (drCache == null) {
 			drCache = new DomainRankCache();
 			drCache.loadFromDB(PRCreateTable.DR_TABLE_NAME);
+			drCache.normalize();
 		}
 		return drCache;
 	}
@@ -65,6 +66,13 @@ public final class DomainRankCache {
 			return domainRankMap.get(domain);
 		
 		return 0.0;
+	}
+	
+	private void normalize() {
+		int max= 1000;
+		for (String dom : domainRankMap.keySet()) {			
+			domainRankMap.put(dom, domainRankMap.get(dom)/max);
+		}
 	}
 
 }
