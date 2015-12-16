@@ -68,31 +68,9 @@ public class SearchEngineInterface extends HttpServlet {
 		queryProcessor = QueryProcessor.getInstance();
 		endTime = Calendar.getInstance().getTime();
 		logger.info("Query processor load took " + printTimeDiff(startTime, endTime));
-		try {
-			frontendIP = new URL(getFrontendIP());
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		}
 
 	}
-
-	private String getFrontendIP() {
-		try {
-			System.out.println(new File(".").getAbsolutePath());
-			BufferedReader a = new BufferedReader(new FileReader(new File(
-					"conf/ip_config")));
-			String line;
-			while ((line = a.readLine()) != null)
-				if (line.startsWith("frontend")) {
-					System.out.println(line.split(" = ")[1].trim());
-					return line.split(" = ")[1].trim();
-				}
-		} catch (IOException e) {
-			System.out.println(e.getMessage());
-		}
-		return null;
-	}
-
+	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
@@ -178,8 +156,8 @@ public class SearchEngineInterface extends HttpServlet {
 		/********************* Get Inverted Index for Query words *************************/
 
 		Date startTime = Calendar.getInstance().getTime();
-		List<DocumentScore> rankedDocs = SearchEngineUtils
-				.getRankedIndexerResults(processedQuery);
+		List<DocumentScore> rankedDocs = 
+			SearchEngineUtils.getRankedIndexerResults(processedQuery);
 
 		Date endTime = Calendar.getInstance().getTime();
 
