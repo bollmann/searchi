@@ -14,6 +14,7 @@ var amazonImg = require('./routes/amazonImg');
 var weather = require('./routes/weather')
 var snippet = require('./routes/snippet')
 var searchImages = require('./routes/searchImages');
+var test = require('./routes/test');
 var app = express();
 
 // view engine setup
@@ -39,6 +40,7 @@ app.use('/amazonImg', amazonImg);
 app.use('/weather', weather);
 app.use('/snippet', snippet);
 app.use('/searchImages', searchImages);
+app.use('/test', test);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
