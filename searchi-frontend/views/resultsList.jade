@@ -9,28 +9,28 @@ ul.nav.nav-pills(role='tablist')
 .tab-content
   #indexer.tab-pane.active.fade.in(role='tabpanel')
 
-    br
-    h1.small Results fetched in #{indexer.time.time}ms
-    .list-group
-      each result in indexer
-        if result.url
-          a.list-group-item('href'=result.url)
-            h4.text-primary= result.url
-            p.list-group-item-text(url= result.url) ...
-            p.small Rank: 
-              b= result.rank
+    //- br
+    //- h1.small Results fetched in #{indexer.time.time}ms
+    //- .list-group
+    //-   each result in indexer
+    //-     if result.url
+    //-       a.list-group-item('href'=result.url)
+    //-         h4.text-primary= result.url
+    //-         p.list-group-item-text(url= result.url) ...
+    //-         p.small Rank: 
+    //-           b= result.rank
 
   #pagerank.tab-pane.fade(role='tabpanel')
-    br 
-    h1.small Results fetched in #{pagerank.time.time}ms
-    .list-group
-      each result in pagerank
-        if result.url
-          a.list-group-item('href'=result.url)
-            h4.text-primary= result.url
-            p.list-group-item-text(url= result.url) ...
-            p.small Rank: 
-              b= result.rank
+    //- br 
+    //- h1.small Results fetched in #{pagerank.time.time}ms
+    //- .list-group
+    //-   each result in pagerank
+    //-     if result.url
+    //-       a.list-group-item('href'=result.url)
+    //-         h4.text-primary= result.url
+    //-         p.list-group-item-text(url= result.url) ...
+    //-         p.small Rank: 
+    //-           b= result.rank
 
   #combined.tab-pane.fade(role='tabpanel')
     br
