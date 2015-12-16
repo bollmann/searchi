@@ -212,8 +212,8 @@ public class SearchEngineInterface extends HttpServlet {
 			}
 			// domainRankScore = pageRankAPI.getDomainRankBatch(lookupList);
 
-			logger.info("Page rank returned " + domainRankScore.size()
-					+ " results");
+			//logger.info("Page rank returned " + domainRankScore.size()
+			//		+ " results");
 			List<SearchResult> pqueue = SearchEngineUtils
 					.getSortedSearchResultUsingScores(domainRankScore);
 
