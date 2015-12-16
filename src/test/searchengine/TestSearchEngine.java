@@ -14,12 +14,21 @@ import junit.framework.TestCase;
 import org.junit.Test;
 
 import searchengine.SearchEngine;
+import searchengine.query.QueryWord;
 
 public class TestSearchEngine extends TestCase {
 
 	@Test
 	public void testGetDocumentScoresForQueryAndInvertedIndex() {
 		List<String> query = Arrays.asList("a an the".split(" "));
+		List<QueryWord> processedQuery = new ArrayList<>();
+		QueryWord qwA = new QueryWord("a");
+		QueryWord qwAn = new QueryWord("an");
+		QueryWord qwThe = new QueryWord("the");
+		
+		processedQuery.add(qwA);
+		processedQuery.add(qwAn);
+		processedQuery.add(qwThe);
 
 		DocumentFeatures feat1 = new DocumentFeatures();
 		feat1.setDocId(1);
@@ -43,12 +52,12 @@ public class TestSearchEngine extends TestCase {
 		feats2.add(feat5);
 		feats2.add(feat6);
 
-		Map<String, List<DocumentFeatures>> invertedIndex = new HashMap<String, List<DocumentFeatures>>();
-		invertedIndex.put("a", feats1);
-		invertedIndex.put("an", feats2);
-		invertedIndex.put("the", new ArrayList<DocumentFeatures>()); // a result for a query
+		Map<QueryWord, List<DocumentFeatures>> invertedIndex = new HashMap<>();
+		invertedIndex.put(qwA, feats1);
+		invertedIndex.put(qwAn, feats2);
+		invertedIndex.put(qwThe, new ArrayList<DocumentFeatures>()); // a result for a query
 																	 // word can't be null
-		SearchEngine searchAPI = new SearchEngine(query, invertedIndex, 1000);
+		SearchEngine searchAPI = new SearchEngine(processedQuery, invertedIndex, 1000);
 		List<DocumentScore> results = 
 			searchAPI.formDocumentScoresForQueryFromInvertedIndex();
 		
@@ -61,5 +70,39 @@ public class TestSearchEngine extends TestCase {
 			}
 		}
 
+	}
+	
+	@Test
+	public void testFormDocumentScoresForQueryFromImageIndex() {
+		List<QueryWord> processedQuery = new ArrayList<>();
+		QueryWord qwA = new QueryWord("a");
+		QueryWord qwAn = new QueryWord("an");
+		QueryWord qwThe = new QueryWord("the");
+		
+		processedQuery.add(qwA);
+		processedQuery.add(qwAn);
+		processedQuery.add(qwThe);
+		
+
+		List<String> feats1 = new ArrayList<>();
+		feats1.add("1");
+		feats1.add("2");
+		
+
+		List<String> feats2 = new ArrayList<>();
+		feats2.add("2");
+		feats2.add("3");
+		
+		List<String> feats3 = new ArrayList<>();
+		feats3.add("3");
+		
+		Map<QueryWord, List<String>> invertedIndexMap = new HashMap<>();
+		invertedIndexMap.put(qwA, feats1);
+		invertedIndexMap.put(qwAn, feats2);
+		invertedIndexMap.put(qwThe, feats3);
+		
+		List<String> result = SearchEngine.formDocumentScoresForQueryFromImageIndex(processedQuery, invertedIndexMap);
+		
+		System.out.println(result);
 	}
 }

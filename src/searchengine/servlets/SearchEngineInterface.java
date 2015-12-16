@@ -100,20 +100,22 @@ public class SearchEngineInterface extends HttpServlet {
 					queryStr = URLDecoder.decode(queryStr, "UTF-8");
 					List<String> query = Arrays.asList(queryStr.split("\\s+"));
 
-					Map<QueryWord, List<DocumentFeatures>> imageIndex = iic
+					Map<QueryWord, List<String>> imageIndex = iic
 							.getImageIndexForQueryMultiThreaded(query);
 
 					List<QueryWord> processedQuery = queryProcessor
 							.getProcessedQuery(query, 1);
 
-					SearchEngine search = new SearchEngine(processedQuery,
-							imageIndex, iic.getCorpusSize());
-					List<DocumentScore> rankedDocs = search
-							.formDocumentScoresForQueryFromInvertedIndex();
-					for (DocumentScore doc : rankedDocs) {
+					List<String> rankedDocs = SearchEngine
+							.formDocumentScoresForQueryFromImageIndex(processedQuery, imageIndex);
+					int results = 0;
+					for (String doc : rankedDocs) {
 						Map<String, String> map = new HashMap<>();
-						map.put("url", dId.getURLFor(doc.getDocId()));
+						map.put("url", doc);
 						resultList.add(map);
+						if(results >= 0) {
+							break;
+						}
 					}
 				} catch (Exception e) {
 
