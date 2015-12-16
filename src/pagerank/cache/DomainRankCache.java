@@ -69,7 +69,7 @@ public final class DomainRankCache {
 	}
 	
 	private void normalize() {
-		int max= 1000;
+		double max= 1000.0;
 		for (String dom : domainRankMap.keySet()) {			
 			domainRankMap.put(dom, domainRankMap.get(dom)/max);
 		}
