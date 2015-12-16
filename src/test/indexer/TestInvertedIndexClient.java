@@ -50,5 +50,22 @@ public class TestInvertedIndexClient extends TestCase {
 		assertFalse(results.get("query").size() == 0);
 	}
 	
-	
+	@Test
+	public void testImageIndexForQuery() {
+		InvertedIndexClient iic = InvertedIndexClient.getInstance();
+		
+		List<QueryWord> query = new ArrayList<>();
+		query.add(new QueryWord("cats"));
+		query.add(new QueryWord("and"));
+		query.add(new QueryWord("dogs"));
+		
+		Map<QueryWord, List<String>> imageResults = iic.getImageIndexForQueryMultiThreaded(query);
+		
+		for(QueryWord word: imageResults.keySet()) {
+			List<String> images = imageResults.get(word);
+			System.out.println("got " + images.size() + " images for query word '" + word.getWord() + "': ");
+			System.out.println(images);
+		}
+		assertTrue(true);
+	}
 }

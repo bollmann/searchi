@@ -15,6 +15,7 @@ public class InvertedIndexFetcher extends Thread {
 	private final Logger logger = Logger.getLogger(getClass());
 	private Map<QueryWord, List<DocumentFeatures>> invertedIndex = null;
 	private String word;
+	
 	public InvertedIndexFetcher(Map<QueryWord, List<DocumentFeatures>> invertedIndex, String word) {
 		this.invertedIndex = invertedIndex;
 		this.word = word;

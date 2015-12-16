@@ -101,20 +101,42 @@ public class InvertedIndexClient {
 		}
 		ExecutorService es = Executors.newFixedThreadPool(query.size());
 		for (QueryWord qword : query) {
-			InvertedIndexFetcher f = new InvertedIndexFetcher(
-					wordDocumentInfoMap, qword.getWord());
+			InvertedIndexFetcher f = new InvertedIndexFetcher(wordDocumentInfoMap, qword.getWord());
 			es.execute(f);
 		}
 		es.shutdown();
 		
 		try {
-			boolean finshed = es.awaitTermination(1, TimeUnit.MINUTES);
+			boolean finished = es.awaitTermination(1, TimeUnit.MINUTES);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 		return wordDocumentInfoMap;
+	}
+	
+	public Map<QueryWord, List<String>> getImageIndexForQueryMultiThreaded(
+			List<QueryWord> query) {
+		Map<QueryWord, List<String>> wordImageInfoMap = 
+			new HashMap<>();
+		logger.info("Starting an es of size " + query.size());
+		if(query.size() <= 0) {
+			return wordImageInfoMap;
+		}
+		ExecutorService es = Executors.newFixedThreadPool(query.size());
+		for (QueryWord qword : query) {
+			ImageIndexFetcher f = new ImageIndexFetcher(wordImageInfoMap, qword.getWord());
+			es.execute(f);
+		}
+		es.shutdown();
+		
+		try {
+			boolean finished = es.awaitTermination(1, TimeUnit.MINUTES);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return wordImageInfoMap;
 	}
 
 	public static DynamoDBMapper connectDB() {
