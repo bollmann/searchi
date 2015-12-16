@@ -82,4 +82,18 @@ public class TestQueryProcessor extends TestCase {
 		assertTrue(wordResults.contains("a query"));
 //		System.out.println(result);
 	}
+	
+	@Test
+	public void testGetProcessedQuery2() {
+		List<String> query = Arrays.asList("how to reverse a linked list".split(" "));
+		int nGrams = 3;
+		QueryProcessor q = QueryProcessor.getInstance();
+		List<QueryWord> result = q.getProcessedQuery(query, 2);
+		assertEquals(11, result.size());
+		List<String> wordResults = new ArrayList<String>();
+		for(QueryWord qWord : result) {
+			wordResults.add(qWord.getWord());
+		}
+//		System.out.println(result);
+	}
 }

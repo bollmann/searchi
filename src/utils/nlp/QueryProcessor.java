@@ -33,10 +33,13 @@ public class QueryProcessor {
 		posRankMap.put("NNP", 100); // barrack, obama
 		posRankMap.put("NN", 90); // president
 		posRankMap.put("JJ", 80); // random
-		posRankMap.put("WP", 3);
+		
+		posRankMap.put("VB", 25); // reverse
+		posRankMap.put("TO", 15); // to
 		posRankMap.put("RB", 10); // crap
 		posRankMap.put("DT", 5); // the
 		posRankMap.put("VBZ", 4); // is
+		posRankMap.put("WP", 3);
 	}
 
 	private QueryProcessor() {
@@ -94,9 +97,12 @@ public class QueryProcessor {
 	public Map<String, Integer> rankWords(String query) {
 		Map<String, Integer> rankMap = new HashMap<>();
 		Map<String, String> posMap = getPOSMap(query);
-		logger.info(posMap);
+//		logger.info(posMap);
 		for (Entry<String, String> entry : posMap.entrySet()) {
-			rankMap.put(entry.getKey(), posRankMap.get(entry.getValue()));
+			logger.info("Word " + entry.getKey() + " POS " + entry.getValue());
+			if(posRankMap.containsKey(entry.getValue())) {
+				rankMap.put(entry.getKey(), posRankMap.get(entry.getValue()));
+			}
 		}
 
 		return rankMap;
@@ -178,7 +184,12 @@ public class QueryProcessor {
 					qWord.setnGramSize(entry.getKey());
 					double weight = 0.0;
 					for (String word : wordString.split(" ")) {
-						weight += wordRanks.get(word);
+						logger.info("Weighting " + word + " from " + wordRanks);
+						if(wordRanks.containsKey(word)) {
+							weight += wordRanks.get(word);
+						} else {
+							weight += 1.0;
+						}
 					}
 //					logger.debug("Giving " + wordString + " weight of " + weight);
 					qWord.setWeight(weight * (1 /(double) 100));
