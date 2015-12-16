@@ -246,9 +246,9 @@ public class SearchEngineInterface extends HttpServlet {
 			List<SearchResult> result = SearchEngineUtils.weightedMergeScores(
 					indexerScore, domainRankScore, weights);
 
-			logger.info("Initial combined results size " + result.size());
+			//logger.info("Initial combined results size " + result.size());
 			result = SearchEngineUtils.diversifyResults(result, 2);
-			logger.info("filtered combined results size " + result.size());
+			//logger.info("filtered combined results size " + result.size());
 			
 			resultCount = 0;
 			for (SearchResult doc : result) {

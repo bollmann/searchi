@@ -51,7 +51,7 @@ public final class RankerTfIdf extends Ranker {
 		
 		for (DocumentScore score : docs) {
 			i++;
-			logCond(i);
+		//	logCond(i);
 			double scoreValue = combineTfIdfs(score.getWordFeatures());
 			
 			maxScore = Double.compare(scoreValue, maxScore ) > 0 ? scoreValue : maxScore;
