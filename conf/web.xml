@@ -15,5 +15,16 @@
         <servlet-name>SearchEngineInterface</servlet-name>
         <url-pattern>/searchInterface/*</url-pattern>
     </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>IndexerClientServlet</servlet-name>
+        <servlet-class>searchengine.servlets.IndexerClientServlet</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>IndexerClientServlet</servlet-name>
+        <url-pattern>/search/*</url-pattern>
+    </servlet-mapping>
+    
 
 </web-app>

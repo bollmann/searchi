@@ -131,9 +131,15 @@ public final class SearchEngine {
 
 		for (int ind = 0; ind < numDocs; ++ind) {
 			double score = 0;
+			
+			logger.info("Document Features - " + documentList.get(ind).getWordFeatures());
 			for (Ranker ranker : rankers) {
+				logger.info("DocId - " + documentList.get(ind).getDocId() +" Ranker - " + ranker.getRankingName() + " score " + ranker.getRanks().get(ind));
+				
 				score += ranker.getRanks().get(ind) * ranker.getWeight();
 			}
+			
+			
 			documentList.get(ind).setScore(score);
 		}
 		return documentList;
@@ -154,14 +160,14 @@ public final class SearchEngine {
 		rankingEngine = new RankingEngine(documentList,
 				query, corpusSize, wordDfs);
 			
-		rankingEngine.addRanker(RankerType.RANKER_TFIDF, 5.0);
-		rankingEngine.addRanker(RankerType.RANKER_HEADER, 1.0);
-		rankingEngine.addRanker(RankerType.RANKER_LINKS, 3.0);
+		rankingEngine.addRanker(RankerType.RANKER_TFIDF, 6.0);
+		rankingEngine.addRanker(RankerType.RANKER_HEADER, 2.0);
+		rankingEngine.addRanker(RankerType.RANKER_LINKS, 0.5);
 		rankingEngine.addRanker(RankerType.RANKER_META, 4.0);
-		rankingEngine.addRanker(RankerType.RANKER_POSITION, -10.0);
+		rankingEngine.addRanker(RankerType.RANKER_POSITION, -5.0);
 		rankingEngine.addRanker(RankerType.RANKER_QUERYMATCH, 2.0);
 		rankingEngine.addRanker(RankerType.RANKER_TOTALCOUNT, 1.0);
-		rankingEngine.addRanker(RankerType.RANKER_URLCOUNT, 10.0);
+		rankingEngine.addRanker(RankerType.RANKER_URLCOUNT, 4.0);
 				
 	}
 

@@ -23,6 +23,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
+import com.google.gson.Gson;
+
 import pagerank.api.PageRankAPI;
 import searchengine.SearchEngine;
 import searchengine.query.QueryWord;
@@ -40,14 +42,26 @@ public class IndexerClientServlet extends HttpServlet {
 	@Override
 	public void init() {
 		dId = (DocumentIDs) getServletContext().getAttribute("forwardIndex");
+		Date startTime, endTime;
 		if(dId == null) {
+			
+			startTime = Calendar.getInstance().getTime();
 			dId = DocumentIDs.getInstance();
+			endTime = Calendar.getInstance().getTime();
+			logger.info("DocumentIds load took " + printTimeDiff(startTime, endTime));
 			getServletContext().setAttribute("forwardIndex", dId);
 		}
-		queryProcessor = QueryProcessor.getInstance();
 		iic = InvertedIndexClient.getInstance();
+		startTime = Calendar.getInstance().getTime();;
 		pageRankAPI = new PageRankAPI();
+		endTime = Calendar.getInstance().getTime();
+		logger.info("Page rank load took " + printTimeDiff(startTime, endTime));
+		startTime = Calendar.getInstance().getTime();
+		queryProcessor = QueryProcessor.getInstance();
+		endTime = Calendar.getInstance().getTime();
+		logger.info("Query processor load took " + printTimeDiff(startTime, endTime));
 	}
+	
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -161,11 +175,14 @@ public class IndexerClientServlet extends HttpServlet {
 
 			/******************************** Final display *********************/
 			
-			Double[] weights = { 0.98, 0.02 };
+			Double[] weights = { 0.9, 0.1 };
 			List<SearchResult> result = SearchEngineUtils
 					.weightedMergeScores(indexerScore, domainRankScore, weights);
 			buffer.append("<br>Combined Results:<ol>");
 
+			// diversify results
+			result = SearchEngineUtils.diversifyResults(result, 2);
+			
 			resultCount = 0;
 			for (SearchResult doc : result) {
 				buffer.append("<li>" + doc.toHtml() + "</li>");
@@ -190,5 +207,10 @@ public class IndexerClientServlet extends HttpServlet {
 			out.close();
 		}
 		
+	}
+	
+	private String printTimeDiff(Date startTime, Date endTime) {
+		long timeDiff = (endTime.getTime() - startTime.getTime());
+		return timeDiff / 1000 + "s," + timeDiff % 1000 + "ms:";
 	}
 }
