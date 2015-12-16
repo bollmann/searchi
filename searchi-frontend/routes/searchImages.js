@@ -5,8 +5,21 @@ var jade = require('jade');
 var path = require('path');
 
 router.get('/', function(req, res, next) {
-	var htmlResults = jade.renderFile(path.join(__dirname, '../views/imageResults.jade'), {q: req.query.q})
-	res.send(htmlResults)
+	var ips = JSON.parse(fs.readFileSync('ips.json', 'utf8'))
+  	var url = ips.servlet + "searchInterface/image?q=" + req.query.q
+  	request(url, function(err, resp, body){
+	if(body && typeof body != 'undefined' && body.indexOf('<') < 0){
+		body = JSON.parse(body)
+		if(body.images.length > 0)
+			htmlResults = jade.renderFile(path.join(__dirname, '../views/imageResults.jade'), {q: req.query.q})
+		else
+			htmlResults = jade.renderFile(path.join(__dirname, '../views/noResults.jade'), {query: req.query.q})
+		res.send(htmlResults)
+	} else {
+  		var htmlResults = jade.renderFile(path.join(__dirname, '../views/noResults.jade'), {query: req.query.q})
+  		res.send(htmlResults)
+	}
+  	});
 });
 
 module.exports = router;

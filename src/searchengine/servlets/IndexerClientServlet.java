@@ -135,7 +135,7 @@ public class IndexerClientServlet extends HttpServlet {
 			Date startTime = Calendar.getInstance().getTime();
 			
 			for (String page : lookupList) {
-				double score = pageRankAPI.getDomainRank(page);
+				double score = pageRankAPI.getDomainRankCached(page);
 				domainRankScore.put(page, score);
 			}
 			

@@ -201,7 +201,7 @@ public class SearchEngineInterface extends HttpServlet {
 			Map<String, Double> domainRankScore = new HashMap<>();
 
 			for (String page : lookupList) {
-				double score = pageRank.getDomainRank(page);
+				double score = pageRank.getDomainRankCached(page);
 				domainRankScore.put(page, score);
 			}
 			// domainRankScore = pageRankAPI.getDomainRankBatch(lookupList);

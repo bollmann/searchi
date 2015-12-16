@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import pagerank.db.ddl.PRCreateTable;
 
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
@@ -12,6 +14,8 @@ import db.wrappers.DynamoDBWrapper;
 import db.wrappers.ScanSegmentTask;
 
 public final class DomainRankCache {
+	
+	private static final Logger logger = Logger.getLogger(DomainRankCache.class);
 	
 	private static DomainRankCache drCache;
 	private final DynamoDBWrapper dynamoWrapper;
@@ -29,11 +33,13 @@ public final class DomainRankCache {
 	}
 	
 	public static DomainRankCache getInstance() {
-		if (drCache == null) {
+		logger.info("DOmainRankCache is " + drCache);
+		if (drCache == null) {			
 			drCache = new DomainRankCache();
 			drCache.loadFromDB(PRCreateTable.DR_TABLE_NAME);
-			drCache.normalize();
 		}
+		
+		logger.info("Instantiated the DomainRank cache");
 		return drCache;
 	}
 	
@@ -52,8 +58,13 @@ public final class DomainRankCache {
 				String domain = item.get(KEY_NAME).getS();
 				String domainRank = item.get(VALUE_NAME).getN();
 				
-				domainRankMap.put(domain, Double.parseDouble(domainRank));				
+				domainRankMap.put(domain, Double.parseDouble(domainRank));
 			}
+		}
+		logger.info("Cache Loaded. Normalizing the values");
+		double max= 1000.0;
+		for (String dom : domainRankMap.keySet()) {			
+			domainRankMap.put(dom, domainRankMap.get(dom)/max);
 		}
 	}
 	
@@ -66,13 +77,6 @@ public final class DomainRankCache {
 			return domainRankMap.get(domain);
 		
 		return 0.0;
-	}
-	
-	private void normalize() {
-		double max= 1000.0;
-		for (String dom : domainRankMap.keySet()) {			
-			domainRankMap.put(dom, domainRankMap.get(dom)/max);
-		}
 	}
 
 }
