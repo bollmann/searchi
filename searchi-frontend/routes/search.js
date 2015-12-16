@@ -9,16 +9,19 @@ var fs = require('fs');
 router.get('/', function(req, res, next) {
   var ips = JSON.parse(fs.readFileSync('ips.json', 'utf8'))
   var url = ips.servlet + "searchInterface?q=" + req.query.q
-  res.send('ha');
-  // request(url, function(err, resp, body){
-		// body = JSON.parse(body);
-		// console.log(body);
-		// if(body.indexer)
-		// 	htmlResults = jade.renderFile(path.join(__dirname, '../views/resultsList.jade'), body)
-		// else
-		// 	htmlResults = jade.renderFile(path.join(__dirname, '../views/noResults.jade'), {query: req.query.q})
-		// res.send(htmlResults)
-	// });	
+  request(url, function(err, resp, body){
+  	if(body && typeof body != 'undefined'){
+  		body = JSON.parse(body);
+  		if(body.indexer)
+  			htmlResults = jade.renderFile(path.join(__dirname, '../views/resultsList.jade'), body)
+  		else
+  			htmlResults = jade.renderFile(path.join(__dirname, '../views/noResults.jade'), {query: req.query.q})
+  		res.send(htmlResults)
+  	} else {
+  		var htmlResults = jade.renderFile(path.join(__dirname, '../views/noResults.jade'), {query: req.query.q})
+  		res.send(htmlResults)
+  	}
+	});	
 });
 
 module.exports = router;

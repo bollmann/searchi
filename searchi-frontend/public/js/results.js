@@ -150,6 +150,7 @@ $(function(){
 			$(this).addClass('active')
 			$('#localSearchBtn').removeClass('active')
 			$('#amazonSearchBtn').removeClass('active')
+			$('#imageSearchBtn').removeClass('active')
 			
 			$('#searchResults').html('<div class="progress"><div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%"><span class="sr-only">Loading...</span></div></div>')
 			var parameters = {q: twitterQuery};
@@ -166,6 +167,8 @@ $(function(){
 			$(this).addClass('active')
 			$('#localSearchBtn').removeClass('active')
 			$('#twitterSearchBtn').removeClass('active')
+			$('#imageSearchBtn').removeClass('active')
+		
 			
 			$('#searchResults').html('<div class="progress"><div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%"><span class="sr-only">Loading...</span></div></div>')
 			var parameters = {q: amazonQuery};
@@ -183,6 +186,8 @@ $(function(){
 			$(this).addClass('active')
 			$('#twitterSearchBtn').removeClass('active')
 			$('#amazonSearchBtn').removeClass('active')
+			$('#imageSearchBtn').removeClass('active')
+		
 			
 			$('#searchResults').html('<div class="progress"><div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%"><span class="sr-only">Loading...</span></div></div>')
 			var query = $('#searchBox').val();
@@ -190,6 +195,25 @@ $(function(){
 			$.get('/search', parameters, function(data){
 				$('#searchResults').html(data);
 				loadResultSnippets(query);
+			})
+		}
+	});
+});
+
+$(function(){
+	$('#imageSearchBtn').click(function(e) {
+		if(!$(this).hasClass('active')){
+			$(this).addClass('active')
+			$('#twitterSearchBtn').removeClass('active')
+			$('#amazonSearchBtn').removeClass('active')
+			$('#localSearchBtn').removeClass('active')
+		
+
+			$('#searchResults').html('<div class="progress"><div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%"><span class="sr-only">Loading...</span></div></div>')
+			var query = $('#searchBox').val();
+			var parameters = {q: query};
+			$.get('/searchImages', parameters, function(data){
+				$('#searchResults').html(data);
 			})
 		}
 	});

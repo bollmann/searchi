@@ -6,6 +6,9 @@ head
   title Searchi
   link(href='css/bootstrap.min.css', rel='stylesheet')
   link(href='css/results.css', rel='stylesheet')
+  link(rel='stylesheet', href='//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css')
+  link(rel='stylesheet', href='//blueimp.github.io/Gallery/css/blueimp-gallery.min.css')
+  link(rel='stylesheet', href='css/bootstrap-image-gallery.min.css')
 
 body
   nav.navbar.navbar-default.navbar-fixed-top
@@ -26,6 +29,8 @@ body
             button#twitterSearchBtn.btn.btn-margin.btn-primary.navbar-btn(type='button', disabled='disabled') Twitter
           li
             button#amazonSearchBtn.btn.btn-margin.btn-primary.navbar-btn(type='button', disabled='disabled') Amazon
+          li
+            button#imageSearchBtn.btn.btn-margin.btn-warning.navbar-btn(type='button') Images
         ul.nav.navbar-nav.navbar-right
           form.navbar-form.navbar-left(role='search')
             .form-group
@@ -43,3 +48,5 @@ body
 script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js')
 script(src='js/bootstrap.min.js')
 script(src='js/results.js')
+script(src='//blueimp.github.io/Gallery/js/jquery.blueimp-gallery.min.js')
+script(src='js/bootstrap-image-gallery.min.js')
