@@ -37,6 +37,7 @@ public final class DomainRankCache {
 			drCache = new DomainRankCache();
 			drCache.loadFromDB(PRCreateTable.DR_TABLE_NAME);
 		}
+		logger.info("Instantiated the DomainRank cache");
 		return drCache;
 	}
 	

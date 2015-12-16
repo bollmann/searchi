@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
+
 import pagerank.cache.DomainRankCache;
 import pagerank.cache.PageRankCache;
 import pagerank.db.dao.DRDao;
@@ -18,6 +20,7 @@ import db.wrappers.DynamoDBWrapper;
 
 public final class PageRankAPI {
 
+	private static final Logger logger = Logger.getLogger(PageRankAPI.class);
 	private final DynamoDBWrapper dynamoWrapper;
 
 	private final DomainRankCache drCache;
@@ -26,8 +29,8 @@ public final class PageRankAPI {
 	public PageRankAPI() {
 		this.dynamoWrapper = DynamoDBWrapper.getInstance(
 				DynamoDBWrapper.US_EAST, DynamoDBWrapper.CLIENT_PROFILE);
-		this.drCache = DomainRankCache.getInstance();
 		
+		this.drCache = DomainRankCache.getInstance();		
 		// TODO Rethink this
 		this.prCache = null;//PageRankCache.getInstance();
 		
@@ -127,6 +130,7 @@ public final class PageRankAPI {
 			// Do Nothing - Try to find for page as is.
 		}
 
+		logger.info("Got in GetDomainRank");
 		DRDao domainRank = (DRDao) dynamoWrapper.getItem(domain, DRDao.class);
 		if (domainRank == null) {
 			return 0.0;
@@ -148,6 +152,7 @@ public final class PageRankAPI {
 			throw new IllegalArgumentException("Invalid page. Can't find domainrank score");
 		}
 
+		logger.info("Got in GetDomainRankCached");
 		String domain = page.trim();
 		try {
 			domain = StringUtils.getDomainFromUrl(page);
