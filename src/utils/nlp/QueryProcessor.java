@@ -31,6 +31,7 @@ public class QueryProcessor {
 	public void initPosRankMap() {
 		posRankMap.put("NNP", 100); // barrack, obama
 		posRankMap.put("NN", 90); // president
+		posRankMap.put("NNS", 90); // rankings
 		posRankMap.put("JJ", 80); // random
 		
 		posRankMap.put("VB", 25); // reverse
@@ -98,7 +99,7 @@ public class QueryProcessor {
 		Map<String, String> posMap = getPOSMap(query);
 //		logger.info(posMap);
 		for (Entry<String, String> entry : posMap.entrySet()) {
-//			logger.info("Word " + entry.getKey() + " POS " + entry.getValue());
+//			logger.info("Word " + entry.getKey() + " POS " + entry.getValue() + " weight " + posRankMap.get(entry.getValue()));
 			if(posRankMap.containsKey(entry.getValue())) {
 				rankMap.put(entry.getKey(), posRankMap.get(entry.getValue()));
 			}
@@ -167,7 +168,7 @@ public class QueryProcessor {
 		// TODO Auto-generated method stub
 		String queryString = StringUtils.join(query, " ");
 		Map<String, Integer> wordRanks = rankWords(queryString);
-
+		
 		Map<Integer, List<String>> nGramMap = generateNGrams(query, nGramLimit);
 		List<QueryWord> result = new ArrayList<QueryWord>();
 		Set<String> seenWords = new HashSet<String>();
@@ -187,7 +188,7 @@ public class QueryProcessor {
 						if(wordRanks.containsKey(word)) {
 							weight += wordRanks.get(word);
 						} else {
-							weight += 1.0;
+							weight += 50;
 						}
 					}
 //					logger.debug("Giving " + wordString + " weight of " + weight);

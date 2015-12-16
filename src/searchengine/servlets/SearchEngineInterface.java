@@ -34,6 +34,7 @@ import com.google.gson.Gson;
 @SuppressWarnings("serial")
 public class SearchEngineInterface extends HttpServlet {
 	private final Logger logger = Logger.getLogger(getClass());
+	private final int resultCount = 50;
 	Gson gson = null;
 	URL frontendIP = null;
 	DocumentIDs dId;
@@ -57,7 +58,7 @@ public class SearchEngineInterface extends HttpServlet {
 		}
 		iic = InvertedIndexClient.getInstance();
 		startTime = Calendar.getInstance().getTime();
-		
+
 		pageRank = new PageRankAPI();
 		endTime = Calendar.getInstance().getTime();
 		logger.info("Page rank load took " + printTimeDiff(startTime, endTime));
@@ -93,13 +94,13 @@ public class SearchEngineInterface extends HttpServlet {
 					List<String> rankedDocs = SearchEngine
 							.formDocumentScoresForQueryFromImageIndex(
 									processedQuery, imageIndex);
-//					logger.info("Ranked docs:" + rankedDocs);
+					// logger.info("Ranked docs:" + rankedDocs);
 					int results = 0;
 					for (String doc : rankedDocs) {
 						Map<String, String> map = new HashMap<>();
 						map.put("url", doc);
 						resultList.add(map);
-						if (results >= 20) {
+						if (results >= resultCount) {
 							break;
 						}
 					}
@@ -154,7 +155,7 @@ public class SearchEngineInterface extends HttpServlet {
 				+ " and generated nGrams " + processedQuery);
 
 		/********************* Get Inverted Index for Query words *************************/
-
+		Date totalStartTime = Calendar.getInstance().getTime();
 		Date startTime = Calendar.getInstance().getTime();
 		List<DocumentScore> rankedDocs = SearchEngineUtils
 				.getRankedIndexerResults(processedQuery);
@@ -186,7 +187,7 @@ public class SearchEngineInterface extends HttpServlet {
 				indexerScore.put(url, (double) doc.getScore());
 				lookupList.add(url);
 				resultCount++;
-				if (resultCount >= 10) {
+				if (resultCount >= resultCount) {
 					break;
 				}
 			}
@@ -221,7 +222,7 @@ public class SearchEngineInterface extends HttpServlet {
 				pageRankResultMap.put(String.valueOf(resultCount), doc.toMap());
 				lookupList.add(doc.getUrl());
 				resultCount++;
-				if (resultCount > 10) {
+				if (resultCount > resultCount) {
 					break;
 				}
 			}
@@ -240,24 +241,27 @@ public class SearchEngineInterface extends HttpServlet {
 			List<SearchResult> result = SearchEngineUtils.weightedMergeScores(
 					indexerScore, domainRankScore, weights);
 
+			result = SearchEngineUtils.diversifyResults(result, 2);
+			
 			resultCount = 0;
 			for (SearchResult doc : result) {
 				combinedResultMap.put(String.valueOf(resultCount), doc.toMap());
 				lookupList.add(doc.getUrl());
 				indexerScore.put(doc.getUrl(), doc.getScore());
 				resultCount++;
-				if (resultCount > 10) {
+				if (resultCount > resultCount) {
 					break;
 				}
 			}
 			endTime = Calendar.getInstance().getTime();
 			timeMap = new HashMap<String, String>();
+			Date totalEndTime = Calendar.getInstance().getTime();
 			timeMap.put("time",
-					String.valueOf(endTime.getTime() - startTime.getTime()));
+					String.valueOf(totalEndTime.getTime() - totalStartTime.getTime()));
 			combinedResultMap.put("time", timeMap);
 
-			searchResultMap.put("indexer", indexerResultMap);
-			searchResultMap.put("pagerank", pageRankResultMap);
+//			searchResultMap.put("indexer", indexerResultMap);
+//			searchResultMap.put("pagerank", pageRankResultMap);
 			searchResultMap.put("combined", combinedResultMap);
 
 		} catch (IllegalArgumentException e) {
