@@ -101,13 +101,13 @@ public class InvertedIndexClient {
 		}
 		ExecutorService es = Executors.newFixedThreadPool(query.size());
 		for (QueryWord qword : query) {
-			InvertedIndexFetcher f = new InvertedIndexFetcher(wordDocumentInfoMap, qword.getWord());
+			InvertedIndexFetcher f = new InvertedIndexFetcher(wordDocumentInfoMap, qword);
 			es.execute(f);
 		}
 		es.shutdown();
 		
 		try {
-			boolean finished = es.awaitTermination(1, TimeUnit.MINUTES);
+			boolean finished = es.awaitTermination(15, TimeUnit.MINUTES);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
