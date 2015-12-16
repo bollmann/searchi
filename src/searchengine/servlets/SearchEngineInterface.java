@@ -34,7 +34,7 @@ import com.google.gson.Gson;
 @SuppressWarnings("serial")
 public class SearchEngineInterface extends HttpServlet {
 	private final Logger logger = Logger.getLogger(getClass());
-	private final int resultCount = 50;
+	private static final int MAX_RESULT_COUNT = 50;
 	Gson gson = null;
 	URL frontendIP = null;
 	DocumentIDs dId;
@@ -100,9 +100,10 @@ public class SearchEngineInterface extends HttpServlet {
 						Map<String, String> map = new HashMap<>();
 						map.put("url", doc);
 						resultList.add(map);
-						if (results >= resultCount) {
+						if (results >= MAX_RESULT_COUNT) {
 							break;
 						}
+						results++;
 					}
 				} catch (Exception e) {
 
@@ -191,7 +192,7 @@ public class SearchEngineInterface extends HttpServlet {
 				indexerResultMap.put(String.valueOf(resultCount), sr.toMap());
 				
 				resultCount++;
-				if (resultCount >= resultCount) {
+				if (resultCount >= MAX_RESULT_COUNT) {
 					break;
 				}
 			}
@@ -226,7 +227,7 @@ public class SearchEngineInterface extends HttpServlet {
 			for (SearchResult doc : pqueue) {
 				pageRankResultMap.put(String.valueOf(resultCount), doc.toMap());				
 				resultCount++;
-				if (resultCount > resultCount) {
+				if (resultCount > MAX_RESULT_COUNT) {
 					break;
 				}
 			}
@@ -255,7 +256,7 @@ public class SearchEngineInterface extends HttpServlet {
 				lookupList.add(doc.getUrl());
 				indexerScore.put(doc.getUrl(), doc.getScore());
 				resultCount++;
-				if (resultCount > resultCount) {
+				if (resultCount > MAX_RESULT_COUNT) {
 					break;
 				}
 			}
