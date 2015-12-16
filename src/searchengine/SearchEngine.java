@@ -75,6 +75,11 @@ public final class SearchEngine {
 
 		for (QueryWord qword : query) {
 			List<DocumentFeatures> docs = invertedIndexMap.get(qword);
+			if (docs == null) {
+				logger.info("No documents indexed for word - " + qword.getWord());
+				continue;
+			}
+			
 
 			for (DocumentFeatures features : docs) {
 				DocumentScore rankedDoc = documentRanks.get(features.getDocId());
